@@ -25,7 +25,7 @@ function UserProvider(props) {
               default:
           }
       });
-  })
+    },[])
 
 
     const value = useMemo(() => ({ user, setUser}), [user])

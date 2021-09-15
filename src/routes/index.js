@@ -1,3 +1,5 @@
+import Login from "../pages/Login"
+
 const Routes = [
     {
         path: "/",
@@ -9,6 +11,11 @@ const Routes = [
         exact: true,
         auth: true,
         page: () => <h2>User Config page</h2>,
+    },
+    {
+        path: "/sanjaa",
+        exact: true,
+        page: () => <Login/>,
     }
 ]
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({labelStyle, hideLabel, label, className, ...props}) => {
+const Input = ({labelStyle, hideLabel, label, className, errorMessage, ...props}) => {
     return (
         <div>
             {hideLabel ? null : <label htmlFor={props.id} className={`${labelStyle}`}>
@@ -14,7 +14,7 @@ const Input = ({labelStyle, hideLabel, label, className, ...props}) => {
                 hover:bg-white transition ease-in duration-100 " ${className}`}
             />
             <p className="mt-2 text-sm text-red-600 text-right" id="email-error">
-                {props.errorMessage}
+                {errorMessage}
             </p>
         </div>
     );

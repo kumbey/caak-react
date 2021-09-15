@@ -25,7 +25,7 @@ const PageSwitch = (props) => {
     return (
       <UserProvider>
         <NavBar/>
-        <WithAuth/>
+        {/* <WithAuth/> */}
         <Switch location={background || location}>
           {Routes.map((route, index) => {
             if(route.auth){
