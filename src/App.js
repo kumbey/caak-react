@@ -1,12 +1,16 @@
+import {
+    BrowserRouter as Router
+  } from "react-router-dom";
+
 import './App.css';
-import NavBar from "./components/navigation/NavBar";
-import Login from "./pages/Login";
+import PageSwitch from "./components/extra/PageSwitch";
 
 function App() {
     return (
         <div className="App">
-            <NavBar/>
-            <Login/>
+            <Router>
+                <PageSwitch/>
+            </Router>
         </div>
     );
 }
