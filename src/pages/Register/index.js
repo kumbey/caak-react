@@ -1,15 +1,12 @@
 import React from 'react';
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import Divider from "../../components/divider";
 import Input from "../../components/input";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {faFacebook, faGoogle} from '@fortawesome/free-brands-svg-icons';
 
-
-const Login = () => {
-    library.add(faFacebook, faGoogle);
+const Register = () => {
     return (
         <Backdrop>
             <div className=" sm:mx-auto sm:w-full sm:max-w-md flex  items-center justify-center py-6 min-w-max">
@@ -24,7 +21,7 @@ const Login = () => {
                         </svg>
                     </div>
                     <div className={"flex justify-center align-center py-8"}>
-                        <span className={"font-black text-4xl"}>Нэвтрэх</span>
+                        <span className={"font-bold text-4xl"}>Бүртгүүлэх</span>
                     </div>
                     {/*Social Buttons*/}
                     <div className={"flex flex-col justify-center"}>
@@ -52,7 +49,7 @@ const Login = () => {
                              text={"эсвэл"}
                              className={"my-4 font-light"}
                     />
-                    {/*Login Form*/}
+                    {/*Register Form*/}
                     <form className="space-y-6" action="/" method="POST">
                         <Input errorMessage={"Имэйл бүртгэлтэй байна"} label={<div><span className={"font-bold"}>Имэйл хаяг</span> эсвэл <span
                             className={"font-bold"}>Утасны дугаар</span></div>}
@@ -60,23 +57,14 @@ const Login = () => {
                                placeholder={"example@mail.com"}
                                className={"py-3 pr-3 border border-gray-300"}
                         />
-                        <Input label={<div className={"flex flex-row justify-between items-center"}><b
-                        >Нууц үг</b><a href={"/"}><span
-                            className={"underline  font-medium text-primary hover:text-primary-hover"}>Нууц үгээ мартсан уу?</span></a>
-                        </div>}
-                               labelStyle={"block text-base font-medium text-black mb-3"}
-                               placeholder={"Таны нууц үг"}
-                               className={"py-3 pr-3 border border-gray-300"}
-                        />
-
                         <div>
                             <Button type={"submit"} rounded primary
                                     background={"bg-primary text-white w-full py-4 font-bold justify-center rounded-lg hover:bg-primary-hover"}>Нэвтрэх</Button>
                         </div>
                         <div className="text-base text-center">
-                            <span className={"text-gray-primary"}>Хэрэв та элсээгүй бол </span>
+                            <span className={"text-gray-primary"}>Хэрэв та бүртгэлтэй бол </span>
                             <a href="/"
-                               className="font-bold text-primary  hover:text-primary-hover"> "Бүртгүүлэх"</a>
+                               className="font-bold text-primary  hover:text-primary-hover"> "Нэвтрэх"</a>
 
                         </div>
                     </form>
@@ -96,7 +84,7 @@ const Login = () => {
                 </div>
             </div>
         </Backdrop>
-    )
+    );
 };
 
-export default Login;
+export default Register;
