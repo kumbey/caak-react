@@ -48,7 +48,7 @@ export default function NavBar() {
                     </div>
                     <div className={"flex flex-row items-center hidden md:inline-flex lg:inline-flex"}>
                         <Button rounded secondary className={"mr-2"}>Нэвтрэх</Button>
-                        <Button rounded className={"mr-2"}>Бүртгэл үүсгэх</Button>
+                        <Button rounded primary className={"mr-2"}>Бүртгэл үүсгэх</Button>
                         <div className={"relative"}>
                             <Button onClick={() => setIsMenuOpen(!isMenuOpen)} secondary
                                     icon={<svg xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +56,8 @@ export default function NavBar() {
                                                viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                               d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
-                                    </svg>} circular className={"p-1"}/>
+                                    </svg>} circular className={"p-1"}
+                            />
 
                             <div
                                 onClick={() => setIsMenuOpen(false)}
@@ -85,8 +86,8 @@ export default function NavBar() {
             <div className={`bg-gray-100 h-screen w-4/5 ${isMobileMenuOpen ? "block" : "hidden"}`} id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col w-max">
                     <div className={"flex flex-row"}>
-                        <Button rounded className={"ml-2"} secondary>Нэвтрэх</Button>
-                        <Button rounded className={"ml-2"}>Бүртгэл үүсгэх</Button>
+                        <Button rounded  className={"ml-2"} secondary>Нэвтрэх</Button>
+                        <Button rounded className={"ml-2"} primary>Бүртгэл үүсгэх</Button>
                     </div>
 
                     <div className={`relative`}>
