@@ -1,0 +1,20 @@
+{
+    "CreateAPIKey": 0,
+    "AppSyncApiName": "caakmn",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcaakmn248efac3",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "S3DeploymentBucket": "amplify-caakmn-devs-100650-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/065da54df08a0649348b69c3a442b496a48e3832"
+}

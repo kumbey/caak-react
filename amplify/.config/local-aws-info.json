@@ -1,0 +1,7 @@
+{
+  "devs": {
+    "configLevel": "project",
+    "useProfile": true,
+    "profileName": "nano"
+  }
+}

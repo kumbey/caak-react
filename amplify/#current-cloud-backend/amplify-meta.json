@@ -1,0 +1,151 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-caakmn-devs-100650-authRole",
+      "UnauthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::699925983689:role/amplify-caakmn-devs-100650-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+      "UnauthRoleName": "amplify-caakmn-devs-100650-unauthRole",
+      "StackName": "amplify-caakmn-devs-100650",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:699925983689:stack/amplify-caakmn-devs-100650/1a5d1b70-0a00-11ec-ba81-023477035e84",
+      "AmplifyAppId": "d3cv0kq0oa3k6b"
+    }
+  },
+  "auth": {
+    "caakmn248efac3": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "output": {
+        "UserPoolId": "ap-southeast-1_aPFBL1JrG",
+        "UserPoolName": "caakauth",
+        "AppClientID": "2ifs9p3e5kpvk26esr45sqmh5p",
+        "AppClientSecret": "br1v1rnplg1qmft9e74996k8k0g2v5ilhcvogmodnotubdb3q3e",
+        "AppClientIDWeb": "513vv9i9nrnd4glini11ips7bt",
+        "HostedUIDomain": "caakauth",
+        "IdentityPoolId": "ap-southeast-1:761b8e04-4eed-48bc-bd42-09320bb21645",
+        "IdentityPoolName": "caakiam",
+        "CreatedSNSRole": "arn:aws:iam::699925983689:role/service-role/caakauth-SMS-Role",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\",\"implicit\"],\"AllowedOAuthScopes\":[\"aws.cognito.signin.user.admin\",\"email\",\"openid\",\"phone\",\"profile\"],\"CallbackURLs\":[\"https://localhost:3000/popupsignin/\",\"https://prod.d3cv0kq0oa3k6b.amplifyapp.com/popupsignin/\"],\"LogoutURLs\":[\"https://localhost:3000/\",\"https://prod.d3cv0kq0oa3k6b.amplifyapp.com/\"]}"
+      },
+      "lastPushTimeStamp": "2021-09-08T06:08:04.110Z"
+    }
+  },
+  "api": {
+    "caakmn": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authcaakmn248efac3"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "t72xxpseifctlji4egzhmmxwsi",
+        "GraphQLAPIEndpointOutput": "https://6gnxf22onnbhthhwytct62iesi.appsync-api.ap-southeast-1.amazonaws.com/graphql"
+      },
+      "lastPushTimeStamp": "2021-09-14T05:17:53.215Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apicaakmn"
+      },
+      "lastPushDirHash": "g1qXfJBkjUFj0CVffeW5Qsq+t8o="
+    }
+  },
+  "storage": {
+    "s30c6bf4f5": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "BucketName": "caakmn8fe6c2cb480d45cc8e0c9fac64b9f294100650-devs",
+        "Region": "ap-southeast-1"
+      },
+      "lastPushTimeStamp": "2021-09-14T05:17:49.735Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+        "logicalId": "storages30c6bf4f5"
+      }
+    }
+  },
+  "function": {
+    "userpoolpostconfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "Region": "ap-southeast-1",
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:userpoolpostconfirmation-devs",
+        "Name": "userpoolpostconfirmation-devs",
+        "LambdaExecutionRole": "caakmnLambdaRolee0d8f565-devs"
+      },
+      "lastPushTimeStamp": "2021-09-14T05:17:49.737Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/userpoolpostconfirmation-cloudformation-template.json",
+        "logicalId": "functionuserpoolpostconfirmation"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+        "s3Key": "amplify-builds/userpoolpostconfirmation-6b7a5232433258332f4b-build.zip"
+      },
+      "lastBuildTimeStamp": "2021-09-14T04:48:23.011Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-09-14T04:48:23.050Z",
+      "distZipFilename": "userpoolpostconfirmation-6b7a5232433258332f4b-build.zip",
+      "lastPushDirHash": "GnnzexTytmwgbLDCJAvRL6RYRg0="
+    },
+    "users": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "caakmn248efac3",
+          "attributes": [
+            "UserPoolId"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ],
+      "output": {
+        "Region": "ap-southeast-1",
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:users-devs",
+        "Name": "users-devs",
+        "LambdaExecutionRole": "caakmnLambdaRole37096d08-devs"
+      },
+      "lastPushTimeStamp": "2021-09-14T05:17:53.215Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/users-cloudformation-template.json",
+        "logicalId": "functionusers"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+        "s3Key": "amplify-builds/users-317130564669385a7954-build.zip"
+      },
+      "lastDevBuildTimeStamp": "2021-09-14T04:08:33.384Z",
+      "lastBuildType": "PROD",
+      "lastBuildTimeStamp": "2021-09-14T05:12:01.990Z",
+      "lastPackageTimeStamp": "2021-09-14T05:12:03.729Z",
+      "distZipFilename": "users-317130564669385a7954-build.zip",
+      "lastPushDirHash": "/7yAggDiM+VNiqRjH7rCrrz54h4="
+    }
+  }
+}

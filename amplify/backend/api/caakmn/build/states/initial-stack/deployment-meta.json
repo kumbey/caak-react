@@ -1,0 +1,26 @@
+{
+  "stackTemplatePathOrUrl": "amplify-appsync-files/065da54df08a0649348b69c3a442b496a48e3832/states/initial-stack/cloudformation-template.json",
+  "previousMetaKey": "amplify-appsync-files/065da54df08a0649348b69c3a442b496a48e3832/states/initial-stack/deployment-meta.json",
+  "parameters": {
+    "DynamoDBModelTableReadIOPS": "5",
+    "unauthRoleName": "Cognito_caakiamUnauth_Role",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "env": "devs",
+    "S3DeploymentRootKey": "amplify-appsync-files/065da54df08a0649348b69c3a442b496a48e3832/states/initial-stack",
+    "CreateAPIKey": "0",
+    "AuthCognitoUserPoolId": "ap-southeast-1_aPFBL1JrG",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "authRoleName": "Cognito_caakiamAuth_Role",
+    "DynamoDBEnablePointInTimeRecovery": "false",
+    "S3DeploymentBucket": "amplify-caakmn-devs-100650-deployment",
+    "DynamoDBModelTableWriteIOPS": "5",
+    "APIKeyExpirationEpoch": "0",
+    "AppSyncApiName": "caakmn"
+  },
+  "stackName": "arn:aws:cloudformation:ap-southeast-1:699925983689:stack/amplify-caakmn-devs-100650-apicaakmn-JL0FEIAHDPP9/6fa8bd50-0a00-11ec-a28b-0291f4688d58",
+  "capabilities": [
+    "CAPABILITY_NAMED_IAM",
+    "CAPABILITY_AUTO_EXPAND"
+  ],
+  "tableNames": []
+}
