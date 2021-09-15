@@ -1,12 +1,12 @@
 import React from 'react';
 
 const Button = (props) => {
-    if (props.secondary)
+    if (props.secondary || props.primary)
         return <button
             onClick={props.onClick}
-            type="button"
+            type={props.type}
             className={`
-            inline-flex items-center text-sm font-medium shadow-sm fontPrimary bg-gray-200 hover:bg-gray-300 focus:outline-none 
+            inline-flex items-center text-sm font-medium shadow-sm  ${props.secondary ? "fontPrimary bg-gray-200" : props.background || "bg-primary text-white"} hover:bg-gray-300 focus:outline-none 
             ${!props.circular ? "px-3 py-2" : ""}
             ${props.rounded ? "rounded" : ""} 
             ${props.circular ? "rounded-full" : ""}
@@ -20,11 +20,13 @@ const Button = (props) => {
     return (
         <button
             onClick={props.onClick}
-            type="button"
+            type={props.type}
             className={`
-            inline-flex items-center text-sm font-medium shadow-sm text-white bg-primary hover:bg-red-400 focus:outline-none 
+            inline-flex items-center shadow-sm focus:outline-none 
+            ${props.background || "bg-primary"}
+            ${props.text || "text-white"}
             ${!props.circular ? "px-3 py-2" : ""}
-            ${props.rounded ? "rounded" : ""} 
+            ${props.rounded ? "rounded" : ""}
             ${props.circular ? "rounded-full" : ""}
             ${props.className}`}
         >

@@ -1,11 +1,9 @@
 import React from 'react';
+import Input from "./index";
 
 const SearchInput = (props) => {
     return (
         <div className="w-full">
-            <label htmlFor="search" className="sr-only">
-                Search
-            </label>
             <div className="relative">
                 <div
                     className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -16,14 +14,7 @@ const SearchInput = (props) => {
                     </svg>
                     {/*<SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />*/}
                 </div>
-
-                <input
-                    id="search"
-                    name="search"
-                    className="block w-full bg-gray-100 border border-transparent rounded-md py-2.5 pl-8 pr-3 text-base placeholder-gray-400 focus:outline-none focus:text-gray-900 focus:placeholder-gray-500 hover:placeholder-fontPrimary focus:ring-1 focus:ring-primary focus:border-primary sm:text-sm hover:border-primary hover:bg-white transition ease-in duration-200"
-                    placeholder={props.placeholder}
-                    type="search"
-                />
+                <Input placeholder={props.placeholder} label={"хайлт хийх"} className={"py-2.5 pl-8 pr-3 bg-gray-100 hover:placeholder-fontPrimary "}/>
             </div>
         </div>
     );
