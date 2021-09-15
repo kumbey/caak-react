@@ -1,8 +1,8 @@
-import Button from "./Button";
-import logo from '../assets/images/logo.png'
-import SearchInput from "./SearchInput";
 import {useState} from "react";
-import {menu_data} from './menu_data'
+import Button from "../button";
+import logo from '../../assets/images/logo.png'
+import SearchInput from "../input/SearchInput";
+import {menu_data} from '../menu_data'
 
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -47,8 +47,8 @@ export default function NavBar() {
                         <SearchInput placeholder={"Хайлт хийх"}/>
                     </div>
                     <div className={"flex flex-row hidden md:inline-flex lg:inline-flex"}>
-                        <Button className={"mr-2"} type={"secondary"}>Нэвтрэх</Button>
-                        <Button className={"mr-2"} type={"primary"}>Бүртгэл үүсгэх</Button>
+                        <Button rounded secondary className={"mr-2"}>Нэвтрэх</Button>
+                        <Button rounded className={"mr-2"}>Бүртгэл үүсгэх</Button>
                         <div className={`relative`}>
                             <button
                                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -89,8 +89,8 @@ export default function NavBar() {
             <div className={`bg-gray-100 h-screen w-4/5 ${isMobileMenuOpen ? "block" : "hidden"}`} id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1 flex flex-col w-max">
                     <div className={"flex flex-row"}>
-                        <Button className={"ml-2"} type={"secondary"}>Нэвтрэх</Button>
-                        <Button className={"ml-2"} type={"primary"}>Бүртгэл үүсгэх</Button>
+                        <Button className={"ml-2"} secondary>Нэвтрэх</Button>
+                        <Button className={"ml-2"}>Бүртгэл үүсгэх</Button>
                     </div>
 
                     <div className={`relative`}>
