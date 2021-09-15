@@ -14,7 +14,7 @@ const SearchInput = (props) => {
                     </svg>
                     {/*<SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />*/}
                 </div>
-                <Input placeholder={props.placeholder} label={"хайлт хийх"} className={"py-2.5 pl-8 pr-3 bg-gray-100 hover:placeholder-fontPrimary "}/>
+                <Input {...props} label={"хайлт хийх"} className={"py-2.5 pl-8 pr-3 bg-gray-100 hover:placeholder-fontPrimary "}/>
             </div>
         </div>
     );

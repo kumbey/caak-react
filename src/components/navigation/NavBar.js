@@ -44,7 +44,7 @@ export default function NavBar() {
 
 
                     <div className="min-w-0 flex-1 px-1 py-4 md:px-2 lg:px-4 xl:col-span-6 max-w-xl mx-4">
-                        <SearchInput placeholder={"Хайлт хийх"}/>
+                        <SearchInput hideLabel placeholder={"Хайлт хийх"}/>
                     </div>
                     <div className={"flex flex-row items-center hidden md:inline-flex lg:inline-flex"}>
                         <Button rounded secondary className={"mr-2"}>Нэвтрэх</Button>
