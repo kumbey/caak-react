@@ -1,5 +1,4 @@
 import Home from "../pages/Home"
-import Login from "../pages/Login"
 
 const Routes = [
     {
@@ -16,7 +15,7 @@ const Routes = [
     {
         path: "/sanjaa",
         exact: true,
-        page: () => <Login/>,
+        page: () => <Confirmation email={"sanjasapple@gmail.com"}/>,
     }
 ]
 
