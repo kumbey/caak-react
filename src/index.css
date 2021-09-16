@@ -10,7 +10,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: max(100vh, 800px);
+    height: clamp(800px, 100vh, 900px);
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(4px);
