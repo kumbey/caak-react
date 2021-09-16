@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from "../loader";
 
 const Button = (props) => {
     if (props.secondary || props.primary)
@@ -14,7 +15,7 @@ const Button = (props) => {
         >
             {props.iconPosition === "left" ? props.icon : ""}
             {props.circular ? props.icon : ""}
-            {props.children}
+            {props.loading ? <Loader/> : props.children}
             {props.iconPosition === "right" ? props.icon : ""}
         </button>
     return (
@@ -31,7 +32,8 @@ const Button = (props) => {
             ${props.className}`}
         >
             {props.iconPosition === "left" ? props.icon : ""}
-            {props.children}
+            {props.loading ? <Loader/> : props.children}
+
             {props.iconPosition === "right" ? props.icon : ""}
         </button>
     );

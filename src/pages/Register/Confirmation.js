@@ -1,7 +1,10 @@
 import React from 'react';
 import Backdrop from "../../components/Backdrop";
+import OtpInput from "../../components/input/OtpInput";
+import Button from "../../components/button";
 
 const Confirmation = ({email}) => {
+    const [code, setCode] = React.useState()
     return (
         <Backdrop>
             <div className="sm:mx-auto sm:w-full sm:max-w-md flex sm:py-6 min-w-max h-full ">
@@ -20,18 +23,10 @@ const Confirmation = ({email}) => {
                     </div>
 
                     <div className={"py-2"}><span className={"text-sm"}>{email}</span></div>
-                    <div className={"py-2"}>
-                        <span>Баталгаажуулах код</span>
-                        <div id="divOuter">
-                            <div id="divInner">
-                                <input id="partitioned" type="text" maxLength="6"
-                                       onInput={(e) => e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')}
-                                       onKeyPress={(e) => {
-                                           if (e.target.value.length === 6) return false
-                                       }}/>
-                            </div>
-                        </div>
-
+                    <div className={"py-2 flex flex-col"}>
+                        <OtpInput label={"Баталгаажуулах код"} onChange={(e) => setCode(e.target.value)}/>
+                        <Button loading rounded
+                                className={"py-3 justify-center font-bold text-base hover:bg-primary-hover"}>Баталгаажуулах</Button>
                     </div>
 
                     {/*Footer*/}

@@ -1,5 +1,6 @@
 import UserInformation from "../pages/Register/UserInformation";
 import Confirmation from "../pages/Register/Confirmation";
+import Login from "../pages/Login";
 
 const Routes = [
     {
