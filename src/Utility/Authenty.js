@@ -1,53 +1,37 @@
-import { Auth } from "aws-amplify"
+import { Auth , API, graphqlOperation} from "aws-amplify"
+import { getUser } from "../graphql-custom/user/queries";
 
 
-export async function getSystemUser(user, setUser){
+export async function isLogged(user, setUser){
     
   try{
-      if(!user.sysUser){
-          console.log(user)
+
+      const usr = await Auth.currentAuthenticatedUser()
+
+      if(usr && user){
+
+        const {sysUser, ...cogUser} = user
+        console.log(sysUser, cogUser)
+        if(JSON.encode(usr) === JSON.encode(cogUser)){
+            if(!sysUser){
+              let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
+              setUser({...usr, sysUser: resp.data.getUser})
+            }
+        }
+      }else{
+        setUser(null)
       }
   }catch(ex){
     console.log(ex)
   }
 }
 
-export const signIn = async (username, password, setUser) => {
-    try {
-      const currentUser = await Auth.signIn(username, password);
-      return currentUser
-    } catch (error) {
-      throw error
-    }
-}
-
-export const signOut = async () => {
-  try {
-    await Auth.signOut();
-  } catch (error) {
-    throw error
-  }
-}
-
-export const signOn = async (setUser) => {
+export async function signIn(setUser){
   try{
-      // let currentUser = await Auth.currentAuthenticatedUser()
+      const usr = await Auth.currentAuthenticatedUser()
+      let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
+      setUser({...usr, sysUser: resp.data.getUser})
   }catch(ex){
     console.log(ex)
   }
 }
-
-export const getSignedUser = async () => {
-  try{
-      let currentUser = await Auth.currentAuthenticatedUser()
-      return currentUser
-  }catch(ex){
-    console.log(ex)
-    return null
-  }
-}
-
-const Authenty = {signOn, signIn, signOut, getSignedUser}
-
-
-export default Authenty

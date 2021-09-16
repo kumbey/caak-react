@@ -139,15 +139,11 @@
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "parent_id",
+                        "AttributeName": "status",
                         "AttributeType": "S"
                     },
                     {
                         "AttributeName": "updatedAt",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "type",
                         "AttributeType": "S"
                     },
                     {
@@ -209,42 +205,10 @@
                 },
                 "GlobalSecondaryIndexes": [
                     {
-                        "IndexName": "byParent",
+                        "IndexName": "byStatus",
                         "KeySchema": [
                             {
-                                "AttributeName": "parent_id",
-                                "KeyType": "HASH"
-                            },
-                            {
-                                "AttributeName": "updatedAt",
-                                "KeyType": "RANGE"
-                            }
-                        ],
-                        "Projection": {
-                            "ProjectionType": "ALL"
-                        },
-                        "ProvisionedThroughput": {
-                            "Fn::If": [
-                                "ShouldUsePayPerRequestBilling",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                {
-                                    "ReadCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableReadIOPS"
-                                    },
-                                    "WriteCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableWriteIOPS"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "IndexName": "byType",
-                        "KeySchema": [
-                            {
-                                "AttributeName": "type",
+                                "AttributeName": "status",
                                 "KeyType": "HASH"
                             },
                             {
@@ -862,7 +826,7 @@
                 }
             }
         },
-        "QuerygetPostByTypeResolver": {
+        "QuerygetPostByStatusResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -874,7 +838,7 @@
                         "Name"
                     ]
                 },
-                "FieldName": "getPostByType",
+                "FieldName": "getPostByStatus",
                 "TypeName": "Query",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -891,7 +855,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "getPostByType",
+                                        "getPostByStatus",
                                         "req",
                                         "vtl"
                                     ]
@@ -915,7 +879,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "getPostByType",
+                                        "getPostByStatus",
                                         "res",
                                         "vtl"
                                     ]

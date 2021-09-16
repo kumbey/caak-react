@@ -178,7 +178,7 @@ export function checkUser(user){
     if(!user){
         return false
     }else{
-        if(!user.userdetail){
+        if(!user.sysUser){
             return false
         }
     }

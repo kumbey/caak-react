@@ -1,14 +1,20 @@
+import { AES } from "crypto-js"
+import Configure from "../configure";
 
 export function get(key){
     const stored = sessionStorage.getItem(key);
         if (!stored || stored === "undefined") {
             return null;
         }
-    return JSON.parse(stored);
+    
+    const decrypted = AES.decrypt(stored, Configure.AESKey)
+
+    return JSON.parse(decrypted);
 }
 
 export function set(key, value){
-    sessionStorage.setItem(key, JSON.stringify(value))
+    const encrypted = AES.encrypt(JSON.stringify(value), Configure.AESKey)
+    sessionStorage.setItem(key, encrypted)
     return true
 }
 

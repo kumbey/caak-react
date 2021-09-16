@@ -1,10 +1,11 @@
+import Home from "../pages/Home"
 import Login from "../pages/Login"
 
 const Routes = [
     {
         path: "/",
         exact: true,
-        page: () => <h2>Home page</h2>,
+        page: () => <Home/>,
     },
     {
         path: "/profile/userconfig",
