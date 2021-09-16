@@ -37,7 +37,7 @@ const Confirmation = ({email}) => {
                   label={"Баталгаажуулах код"}
                   onChange={(e) => setCode(e.target.value)}
               />
-              <Button round className={"font-bold text-base "}>
+              <Button round loading className={"font-bold text-base "}>
                 Баталгаажуулах
               </Button>
             </div>

@@ -77,7 +77,7 @@ const Login = () => {
             className={"my-4 font-light"}
           />
           {/*Login Form*/}
-          <form className="space-y-6" action="/" method="POST">
+          <div className="space-y-6">
             <Input
               error
               errorMessage={"Имэйл бүртгэлтэй байна"}
@@ -135,7 +135,7 @@ const Login = () => {
                 "Бүртгүүлэх"
               </a>
             </div>
-          </form>
+          </div>
           {/*Footer*/}
           <div
             className={
