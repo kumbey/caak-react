@@ -4,8 +4,8 @@ import {
     useLocation,
   } from "react-router-dom";
 import { UserProvider } from "../../context/userContext";
+import QueryModals from "../../pages/QueryModals";
 import Routes from "../../routes";
-import WithAuth from "../auth/WithAuth";
 import NavBar from "../navigation/NavBar";
 import PrivateRoute from "./PrivateRoute";
 
@@ -25,7 +25,6 @@ const PageSwitch = (props) => {
     return (
       <UserProvider>
         <NavBar/>
-        {/* <WithAuth/> */}
         <Switch location={background || location}>
           {Routes.map((route, index) => {
             if(route.auth){
@@ -56,6 +55,7 @@ const PageSwitch = (props) => {
         {background && <Route path="/post/:id" component={null}/>}
         {background && <Route path="/spost/:id" component={null}/>}
         {background && <Route path="/edit/:id" component={null}/>}
+        <QueryModals/>
       </UserProvider>
     );
   }

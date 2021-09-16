@@ -73,25 +73,28 @@ type Category @aws_iam @aws_cognito_user_pools {
 type Post @aws_iam @aws_cognito_user_pools {
   id: ID!
   title: String!
-  subject: String
-  file_id: ID!
+  commentType: Boolean!
   status: String!
-  commentType: String!
   type: String!
-  parent_id: ID
   user_id: ID!
   group_id: ID!
   category_id: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  order: Int
-  file: File @aws_iam @aws_cognito_user_pools
   user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
-  subs(updatedAt: ModelStringKeyConditionInput, filter: ModelPostFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
   reactions(filter: ModelPostReactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostReactionConnection @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
+}
+
+type PostItems @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  file_id: ID!
+  title: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  file: File @aws_iam @aws_cognito_user_pools
 }
 
 type Comment @aws_iam @aws_cognito_user_pools {
@@ -164,6 +167,19 @@ type Group @aws_iam @aws_cognito_user_pools {
   members(filter: ModelGroupUsersFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
 }
 
+type Notification @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  type: String!
+  from: ID!
+  to: ID!
+  group_id: ID
+  post_id: ID
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  post: Post @aws_iam @aws_cognito_user_pools
+  group: Group @aws_iam @aws_cognito_user_pools
+}
+
 type Query {
   getUserCustom(id: ID!): User @aws_iam @aws_cognito_user_pools
   getFile(id: ID!): File @aws_iam @aws_cognito_user_pools
@@ -185,9 +201,11 @@ type Query {
   listCategories(filter: ModelCategoryFilterInput, limit: Int, nextToken: String): ModelCategoryConnection @aws_iam @aws_cognito_user_pools
   getPost(id: ID!): Post @aws_iam @aws_cognito_user_pools
   listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
-  getPostByType(type: String, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostByStatus(status: String, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
   getPostByGroup(group_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
   getPostByUser(user_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostItems(id: ID!): PostItems @aws_iam @aws_cognito_user_pools
+  listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
   getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
   listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
   getPostReaction(post_id: ID!, user_id: ID!): PostReaction @aws_iam @aws_cognito_user_pools
@@ -201,6 +219,8 @@ type Query {
   getGroupUsersByGroup(group_id: ID, sortDirection: ModelSortDirection, filter: ModelGroupUsersFilterInput, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
   getGroup(id: ID!): Group @aws_iam @aws_cognito_user_pools
   listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_iam @aws_cognito_user_pools
+  getNotification(id: ID!): Notification @aws_iam @aws_cognito_user_pools
+  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
 }
 
 type Mutation {
@@ -229,6 +249,9 @@ type Mutation {
   createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post
   updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post
   deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post
+  createPostItems(input: CreatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
+  updatePostItems(input: UpdatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
+  deletePostItems(input: DeletePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
@@ -247,6 +270,9 @@ type Mutation {
   createGroup(input: CreateGroupInput!, condition: ModelGroupConditionInput): Group
   updateGroup(input: UpdateGroupInput!, condition: ModelGroupConditionInput): Group
   deleteGroup(input: DeleteGroupInput!, condition: ModelGroupConditionInput): Group
+  createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
 }
 
 input CreateUserInputCustom {
@@ -435,6 +461,9 @@ type Subscription {
   onCreatePost: Post @aws_subscribe(mutations: ["createPost"]) @aws_iam @aws_cognito_user_pools
   onUpdatePost: Post @aws_subscribe(mutations: ["updatePost"]) @aws_iam @aws_cognito_user_pools
   onDeletePost: Post @aws_subscribe(mutations: ["deletePost"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostItems: PostItems @aws_subscribe(mutations: ["createPostItems"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostItems: PostItems @aws_subscribe(mutations: ["updatePostItems"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostItems: PostItems @aws_subscribe(mutations: ["deletePostItems"]) @aws_iam @aws_cognito_user_pools
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
@@ -453,6 +482,9 @@ type Subscription {
   onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
   onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
   onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
+  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"]) @aws_iam @aws_cognito_user_pools
+  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"]) @aws_iam @aws_cognito_user_pools
+  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"]) @aws_iam @aws_cognito_user_pools
 }
 
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
@@ -706,18 +738,14 @@ type ModelPostConnection @aws_iam @aws_cognito_user_pools {
 input ModelPostFilterInput {
   id: ModelIDInput
   title: ModelStringInput
-  subject: ModelStringInput
-  file_id: ModelIDInput
+  commentType: ModelBooleanInput
   status: ModelStringInput
-  commentType: ModelStringInput
   type: ModelStringInput
-  parent_id: ModelIDInput
   user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
-  order: ModelIntInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
@@ -726,35 +754,27 @@ input ModelPostFilterInput {
 input CreatePostInput {
   id: ID
   title: String!
-  subject: String
-  file_id: ID!
+  commentType: Boolean!
   status: String!
-  commentType: String!
   type: String!
-  parent_id: ID
   user_id: ID!
   group_id: ID!
   category_id: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
-  order: Int
 }
 
 input UpdatePostInput {
   id: ID!
   title: String
-  subject: String
-  file_id: ID
+  commentType: Boolean
   status: String
-  commentType: String
   type: String
-  parent_id: ID
   user_id: ID
   group_id: ID
   category_id: ID
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
-  order: Int
 }
 
 input DeletePostInput {
@@ -763,21 +783,53 @@ input DeletePostInput {
 
 input ModelPostConditionInput {
   title: ModelStringInput
-  subject: ModelStringInput
-  file_id: ModelIDInput
+  commentType: ModelBooleanInput
   status: ModelStringInput
-  commentType: ModelStringInput
   type: ModelStringInput
-  parent_id: ModelIDInput
   user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
   createdAt: ModelStringInput
   updatedAt: ModelStringInput
-  order: ModelIntInput
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
   not: ModelPostConditionInput
+}
+
+type ModelPostItemsConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostItems]
+  nextToken: String
+}
+
+input ModelPostItemsFilterInput {
+  file_id: ModelIDInput
+  title: ModelStringInput
+  and: [ModelPostItemsFilterInput]
+  or: [ModelPostItemsFilterInput]
+  not: ModelPostItemsFilterInput
+}
+
+input CreatePostItemsInput {
+  id: ID
+  file_id: ID!
+  title: String
+}
+
+input UpdatePostItemsInput {
+  file_id: ID
+  title: String
+}
+
+input DeletePostItemsInput {
+  id: ID!
+}
+
+input ModelPostItemsConditionInput {
+  file_id: ModelIDInput
+  title: ModelStringInput
+  and: [ModelPostItemsConditionInput]
+  or: [ModelPostItemsConditionInput]
+  not: ModelPostItemsConditionInput
 }
 
 type ModelCommentConnection @aws_iam @aws_cognito_user_pools {
@@ -1049,6 +1101,56 @@ input ModelGroupConditionInput {
   and: [ModelGroupConditionInput]
   or: [ModelGroupConditionInput]
   not: ModelGroupConditionInput
+}
+
+type ModelNotificationConnection @aws_iam @aws_cognito_user_pools {
+  items: [Notification]
+  nextToken: String
+}
+
+input ModelNotificationFilterInput {
+  id: ModelIDInput
+  type: ModelStringInput
+  from: ModelIDInput
+  to: ModelIDInput
+  group_id: ModelIDInput
+  post_id: ModelIDInput
+  and: [ModelNotificationFilterInput]
+  or: [ModelNotificationFilterInput]
+  not: ModelNotificationFilterInput
+}
+
+input CreateNotificationInput {
+  id: ID
+  type: String!
+  from: ID!
+  to: ID!
+  group_id: ID
+  post_id: ID
+}
+
+input UpdateNotificationInput {
+  id: ID!
+  type: String
+  from: ID
+  to: ID
+  group_id: ID
+  post_id: ID
+}
+
+input DeleteNotificationInput {
+  id: ID!
+}
+
+input ModelNotificationConditionInput {
+  type: ModelStringInput
+  from: ModelIDInput
+  to: ModelIDInput
+  group_id: ModelIDInput
+  post_id: ModelIDInput
+  and: [ModelNotificationConditionInput]
+  or: [ModelNotificationConditionInput]
+  not: ModelNotificationConditionInput
 }
 
 input ModelIDKeyConditionInput {

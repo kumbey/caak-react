@@ -142,7 +142,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1632201138
+                        1632309257
                     ]
                 }
             },
@@ -901,7 +901,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getPostByType"
+                                            "fieldName": "getPostByStatus"
                                         }
                                     ]
                                 },
@@ -1000,6 +1000,95 @@
                                             },
                                             "typeName": "Subscription",
                                             "fieldName": "onDeletePost"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/*",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "PostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "getPostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "listPostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onCreatePostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onUpdatePostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onDeletePostItems"
                                         }
                                     ]
                                 },
@@ -1549,6 +1638,118 @@
                                             },
                                             "typeName": "Subscription",
                                             "fieldName": "onDeleteGroup"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/*",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Notification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "getNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "listNotifications"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "AuthRolePolicy03": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Roles": [
+                    {
+                        "Ref": "authRoleName"
+                    }
+                ],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "appsync:GraphQL"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onCreateNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onUpdateNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onDeleteNotification"
                                         }
                                     ]
                                 }
@@ -2298,7 +2499,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getPostByType"
+                                            "fieldName": "getPostByStatus"
                                         }
                                     ]
                                 },
@@ -2397,6 +2598,95 @@
                                             },
                                             "typeName": "Subscription",
                                             "fieldName": "onDeletePost"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/*",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "PostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "getPostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "listPostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onCreatePostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onUpdatePostItems"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onDeletePostItems"
                                         }
                                     ]
                                 },
@@ -2946,6 +3236,118 @@
                                             },
                                             "typeName": "Subscription",
                                             "fieldName": "onDeleteGroup"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/*",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Notification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "getNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Query",
+                                            "fieldName": "listNotifications"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "UnauthRolePolicy03": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Roles": [
+                    {
+                        "Ref": "unauthRoleName"
+                    }
+                ],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "appsync:GraphQL"
+                            ],
+                            "Resource": [
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onCreateNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onUpdateNotification"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Fn::Sub": [
+                                        "arn:aws:appsync:${AWS::Region}:${AWS::AccountId}:apis/${apiId}/types/${typeName}/fields/${fieldName}",
+                                        {
+                                            "apiId": {
+                                                "Fn::GetAtt": [
+                                                    "GraphQLAPI",
+                                                    "ApiId"
+                                                ]
+                                            },
+                                            "typeName": "Subscription",
+                                            "fieldName": "onDeleteNotification"
                                         }
                                     ]
                                 }
@@ -3627,6 +4029,87 @@
                 "NoneDataSource"
             ]
         },
+        "PostItems": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "Parameters": {
+                    "AppSyncApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "AppSyncApiName": {
+                        "Ref": "AppSyncApiName"
+                    },
+                    "APIKeyExpirationEpoch": {
+                        "Ref": "APIKeyExpirationEpoch"
+                    },
+                    "CreateAPIKey": {
+                        "Ref": "CreateAPIKey"
+                    },
+                    "AuthCognitoUserPoolId": {
+                        "Ref": "AuthCognitoUserPoolId"
+                    },
+                    "authRoleName": {
+                        "Ref": "authRoleName"
+                    },
+                    "unauthRoleName": {
+                        "Ref": "unauthRoleName"
+                    },
+                    "env": {
+                        "Ref": "env"
+                    },
+                    "S3DeploymentBucket": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "S3DeploymentRootKey": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "GetAttGraphQLAPIApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "/",
+                        [
+                            "https://s3.amazonaws.com",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "stacks",
+                            "PostItems.json"
+                        ]
+                    ]
+                }
+            },
+            "DependsOn": [
+                "GraphQLSchema",
+                "NoneDataSource"
+            ]
+        },
         "Comment": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
@@ -4113,6 +4596,87 @@
                 "NoneDataSource"
             ]
         },
+        "Notification": {
+            "Type": "AWS::CloudFormation::Stack",
+            "Properties": {
+                "Parameters": {
+                    "AppSyncApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    },
+                    "DynamoDBModelTableReadIOPS": {
+                        "Ref": "DynamoDBModelTableReadIOPS"
+                    },
+                    "DynamoDBModelTableWriteIOPS": {
+                        "Ref": "DynamoDBModelTableWriteIOPS"
+                    },
+                    "DynamoDBBillingMode": {
+                        "Ref": "DynamoDBBillingMode"
+                    },
+                    "DynamoDBEnablePointInTimeRecovery": {
+                        "Ref": "DynamoDBEnablePointInTimeRecovery"
+                    },
+                    "DynamoDBEnableServerSideEncryption": {
+                        "Ref": "DynamoDBEnableServerSideEncryption"
+                    },
+                    "AppSyncApiName": {
+                        "Ref": "AppSyncApiName"
+                    },
+                    "APIKeyExpirationEpoch": {
+                        "Ref": "APIKeyExpirationEpoch"
+                    },
+                    "CreateAPIKey": {
+                        "Ref": "CreateAPIKey"
+                    },
+                    "AuthCognitoUserPoolId": {
+                        "Ref": "AuthCognitoUserPoolId"
+                    },
+                    "authRoleName": {
+                        "Ref": "authRoleName"
+                    },
+                    "unauthRoleName": {
+                        "Ref": "unauthRoleName"
+                    },
+                    "env": {
+                        "Ref": "env"
+                    },
+                    "S3DeploymentBucket": {
+                        "Ref": "S3DeploymentBucket"
+                    },
+                    "S3DeploymentRootKey": {
+                        "Ref": "S3DeploymentRootKey"
+                    },
+                    "GetAttGraphQLAPIApiId": {
+                        "Fn::GetAtt": [
+                            "GraphQLAPI",
+                            "ApiId"
+                        ]
+                    }
+                },
+                "TemplateURL": {
+                    "Fn::Join": [
+                        "/",
+                        [
+                            "https://s3.amazonaws.com",
+                            {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "stacks",
+                            "Notification.json"
+                        ]
+                    ]
+                }
+            },
+            "DependsOn": [
+                "GraphQLSchema",
+                "NoneDataSource"
+            ]
+        },
         "FunctionDirectiveStack": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
@@ -4278,10 +4842,10 @@
                 "Aura",
                 "User",
                 "Category",
-                "Post",
                 "Group",
                 "Comment",
                 "PostReaction",
+                "Post",
                 "ReportType",
                 "GroupUsers"
             ]
@@ -4337,12 +4901,14 @@
                 "UserCategory",
                 "Category",
                 "Post",
+                "PostItems",
                 "Comment",
                 "PostReaction",
                 "ReportedPost",
                 "ReportType",
                 "GroupUsers",
                 "Group",
+                "Notification",
                 "FunctionDirectiveStack",
                 "ConnectionStack"
             ]
