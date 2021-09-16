@@ -12,9 +12,9 @@ const Login = () => {
     library.add(faFacebook, faGoogle);
     return (
         <Backdrop>
-            <div className=" sm:mx-auto sm:w-full sm:max-w-md flex  items-center justify-center py-6 min-w-max">
+            <div className="sm:mx-auto sm:w-full sm:max-w-md flex sm:py-6 min-w-max h-full ">
                 <div
-                    className="sm:h-full h-screen sm:w-full  w-screen relative bg-white py-8 px-10 shadow-xl rounded-lg h-full loginCard min-w-max">
+                    className="sm:w-full w-screen relative bg-white py-8 px-10  shadow-xl rounded-lg  loginCard min-w-max">
                     <div className={"cursor-pointer relative"}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 absolute right-0" fill="none"
                              viewBox="0 0 24 24"
@@ -58,7 +58,7 @@ const Login = () => {
                             className={"font-bold"}>Утасны дугаар</span></div>}
                                labelStyle={"block text-base font-medium text-black mb-3"}
                                placeholder={"example@mail.com"}
-                               className={"py-3 pr-3 border border-gray-300"}
+                               className={"py-3 border border-gray-300"}
                         />
                         <Input label={<div className={"flex flex-row justify-between items-center"}><b
                         >Нууц үг</b><a href={"/"}><span
@@ -82,7 +82,7 @@ const Login = () => {
                     </form>
                     {/*Footer*/}
                     <div
-                        className={"flex justify-center items-center divide-x divide-gray-primary divide-opacity-20 text-sm pt-10"}>
+                        className={"signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary divide-opacity-20 text-sm py-5"}>
                         <a href={"/"} className={"flex-1 text-center py-2 "}>
                             <span>Үйлчилгээний нөхцөл</span>
                         </a>

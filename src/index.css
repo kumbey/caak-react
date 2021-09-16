@@ -10,11 +10,47 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
+    height: max(100vh, 700px);
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     backdrop-filter: blur(4px);
+}
+
+.signFooter {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 0;
+}
+
+#partitioned {
+    font-size: 20px;
+    padding-left: 12px;
+    letter-spacing: 39px;
+    border: 0;
+    background-image: linear-gradient(
+            270deg, #000 70%, hsla(0, 0%, 100%, 0) 0);
+    background-position: bottom;
+    background-size: 50px 1px;
+    background-repeat: repeat-x;
+    background-position-x: 35px;
+    width: 305px;
+}
+
+#divInner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    grid-gap: 8px;
+    gap: 8px;
+    left: 0;
+    position: sticky;
+}
+
+#divOuter {
+    width: 296px;
+    overflow: hidden;
+    align-self: center;
 }

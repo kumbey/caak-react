@@ -3,7 +3,7 @@ import React from 'react';
 const Select = (props) => {
     return (
         <div className={props.containerStyle}>
-            <label htmlFor={props.id} className={`block ${props.labelStyle}`}>
+            <label htmlFor={props.id} className={`block  ${props.labelStyle}`}>
                 {props.label}
             </label>
             <select
