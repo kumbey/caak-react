@@ -139,7 +139,7 @@ const Login = () => {
           {/*Footer*/}
           <div
             className={
-              "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary divide-opacity-20 text-sm py-5"
+              "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary mt-8 divide-opacity-20 text-sm "
             }
           >
             <a href={"/"} className={"flex-1 text-center py-2 "}>

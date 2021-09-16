@@ -45,7 +45,7 @@ const Confirmation = ({email}) => {
             {/*Footer*/}
             <div
                 className={
-                  "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary divide-opacity-20 text-sm py-2 sm:py-3"
+                  "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary divide-opacity-20 text-sm mt-8"
                 }
             >
               <a href={"/"} className={"flex-1 text-center py-2 "}>
