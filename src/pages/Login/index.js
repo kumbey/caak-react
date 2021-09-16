@@ -54,11 +54,16 @@ const Login = () => {
                     />
                     {/*Login Form*/}
                     <form className="space-y-6" action="/" method="POST">
-                        <Input errorMessage={"Имэйл бүртгэлтэй байна"} label={<div><span className={"font-bold"}>Имэйл хаяг</span> эсвэл <span
-                            className={"font-bold"}>Утасны дугаар</span></div>}
-                               labelStyle={"block text-base font-medium text-black mb-3"}
-                               placeholder={"example@mail.com"}
-                               className={"py-3 border border-gray-300"}
+                        <Input errorMessage={"Имэйл бүртгэлтэй байна"} 
+                            label={<div>
+                                <span className={"font-bold"}>Имэйл хаяг</span>
+                                эсвэл 
+                                <span className={"font-bold"}>Утасны дугаар</span>
+                                </div>
+                            }
+                            labelStyle={"block text-base font-medium text-black mb-3"}
+                            placeholder={"example@mail.com"}
+                            className={"py-3 border border-gray-300"}
                         />
                         <Input label={<div className={"flex flex-row justify-between items-center"}><b
                         >Нууц үг</b><a href={"/"}><span
@@ -71,7 +76,9 @@ const Login = () => {
 
                         <div>
                             <Button type={"submit"} rounded primary
-                                    background={"bg-primary text-white w-full py-4 font-bold justify-center rounded-lg hover:bg-primary-hover"}>Нэвтрэх</Button>
+                                    background={"bg-primary text-white w-full py-4 font-bold justify-center rounded-lg hover:bg-primary-hover"}>
+                                Нэвтрэх
+                            </Button>
                         </div>
                         <div className="text-base text-center">
                             <span className={"text-gray-primary"}>Хэрэв та элсээгүй бол </span>

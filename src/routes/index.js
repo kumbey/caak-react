@@ -15,7 +15,7 @@ const Routes = [
     {
         path: "/sanjaa",
         exact: true,
-        page: () => <Confirmation email={"sanjasapple@gmail.com"}/>,
+        page: () => "",
     }
 ]
 
