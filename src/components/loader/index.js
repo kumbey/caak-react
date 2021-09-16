@@ -1,14 +1,13 @@
-const Loader = () =>{
+import React from "react";
 
-    return(
-        <div className="lds-ellipsis light">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+const Loader = () => {
+    return (
+        <div className="spinner">
+            <div className="bounce1"/>
+            <div className="bounce2"/>
+            <div className="bounce3"/>
         </div>
-    )
+    );
+};
 
-}
-
-export default Loader
+export default Loader;

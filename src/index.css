@@ -1,16 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "./assets/css/components/buttons.css";
+@import "./assets/css/components/inputs.css";
+
 @layer base {
     html {
         @apply font-inter;
     }
 }
+/*TODO Fix Full screen Height*/
 .backdrop {
     position: absolute;
     top: 0;
     left: 0;
-    height: max(100vh, 800px);
+    height: clamp(800px, 100vh, 900px);
     width: 100%;
     background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(4px);
@@ -24,13 +28,37 @@
     bottom: 0;
 }
 
-#partitioned {
+.verificationCode-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: start;
+    margin-bottom: 20px;
+}
+
+.verificationCode-outerDiv {
+    width: 296px;
+    overflow: hidden;
+    align-self: center;
+}
+
+.verificationCode-innerDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+    gap: 8px;
+    left: 0;
+    position: sticky;
+}
+
+.verificationCode-outerDiv input {
     font-size: 20px;
     padding-left: 12px;
     letter-spacing: 39px;
     border: 0;
-    background-image: linear-gradient(
-            270deg, #000 70%, hsla(0, 0%, 100%, 0) 0);
+    background-image: linear-gradient(to left, black 70%, rgba(255, 255, 255, 0) 0%);
     background-position: bottom;
     background-size: 50px 1px;
     background-repeat: repeat-x;
@@ -38,88 +66,61 @@
     width: 305px;
 }
 
-#divInner {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: start;
-    grid-gap: 8px;
-    gap: 8px;
-    left: 0;
-    position: sticky;
+.verificationCode-outerDiv input:focus {
+    outline: none;
 }
 
-#divOuter {
-    width: 296px;
-    overflow: hidden;
-    align-self: center;
+.verificationCode-outerDiv input::-webkit-outer-spin-button,
+.verificationCode-outerDiv input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 
-/* Loader */
+.spinner {
+    width: max-content;
+    text-align: center;
+}
 
-.lds-ellipsis {
+.spinner > div {
+    width: 9px;
+    height: 9px;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: #fff;
+    border-radius: 100%;
     display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  .lds-ellipsis div {
-    position: absolute;
-    top: 33px;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
-  }
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
 
-  .lds-ellipsis div {
-      @apply bg-primary
-  }
-  .lds-ellipsis.light div {
-    @apply bg-white
-  }
+.spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
 
-  .lds-ellipsis div:nth-child(1) {
-    left: 8px;
-    animation: lds-ellipsis1 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(2) {
-    left: 8px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(3) {
-    left: 32px;
-    animation: lds-ellipsis2 0.6s infinite;
-  }
-  .lds-ellipsis div:nth-child(4) {
-    left: 56px;
-    animation: lds-ellipsis3 0.6s infinite;
-  }
-  @keyframes lds-ellipsis1 {
-    0% {
-      transform: scale(0);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  @keyframes lds-ellipsis3 {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-  @keyframes lds-ellipsis2 {
-    0% {
-      transform: translate(0, 0);
-    }
-    100% {
-      transform: translate(24px, 0);
-    }
-  }
+.spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
 
-  
-  
+@-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0)
+    }
+    40% {
+        -webkit-transform: scale(1.0)
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%, 80%, 100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+    }
+}
+

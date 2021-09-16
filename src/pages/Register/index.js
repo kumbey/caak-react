@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -28,20 +28,16 @@ const Register = () => {
                         <Button
                             onClick={() => null}
                             icon={<FontAwesomeIcon size={"lg"} className={"text-white mr-2"} icon={faFacebook}/>}
-                            rounded
-                            background={"bg-facebook"}
-                            text={"text-white"}
-                            className={"p-1 hover:bg-facebook-hover border border-transparent justify-center text-base font-bold mb-2 rounded-md"}
+                            round
+                            className={"hover:bg-facebook-hover border border-transparent justify-center text-base font-bold mb-2 bg-facebook"}
                             iconPosition={"left"}
                         >Facebook-ээр нэвтрэх
                         </Button>
                         <Button
                             onClick={() => null}
                             icon={<FontAwesomeIcon size={"lg"} className={"text-primary mr-2"} icon={faGoogle}/>}
-                            rounded
-                            background={"bg-white"}
-                            text={"text-black"}
-                            className={"p-1 hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md"}
+                            round
+                            className={"bg-white text-black hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2"}
                             iconPosition={"left"}
                         >Gmail-ээр нэвтрэх</Button>
                     </div>
@@ -51,7 +47,7 @@ const Register = () => {
                     />
                     {/*Register Form*/}
                     <form className="space-y-6" action="/" method="POST">
-                        <Input errorMessage={"Имэйл бүртгэлтэй байна"}
+                        <Input error errorMessage={"Имэйл бүртгэлтэй байна"}
                                label={<div><span className={"font-bold"}>Имэйл хаяг</span> эсвэл <span
                                    className={"font-bold"}>Утасны дугаар</span></div>}
                                labelStyle={"block text-base font-medium text-black mb-3"}
@@ -59,13 +55,13 @@ const Register = () => {
                                className={"py-3 pr-3 border border-gray-300"}
                         />
                         <div>
-                            <Button type={"submit"} rounded primary
-                                    background={"bg-primary text-white w-full py-4 font-bold justify-center rounded-lg hover:bg-primary-hover"}>Нэвтрэх</Button>
+                            <Button type={"submit"} round skin={"primary"}
+                                    className={"w-full font-bold justify-center text-base"}>Бүртгүүлэх</Button>
                         </div>
                         <div className="text-base text-center">
                             <span className={"text-gray-primary"}>Хэрэв та бүртгэлтэй бол </span>
                             <a href="/"
-                               className="font-bold text-primary  hover:text-primary-hover"> "Нэвтрэх"</a>
+                               className="font-bold text-primary  hover:text-primary-hover">"Нэвтрэх"</a>
 
                         </div>
                     </form>
