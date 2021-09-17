@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import Divider from "../../components/divider";
@@ -6,14 +6,64 @@ import Input from "../../components/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import Consts from "../../Utility/Consts";
+import Validate from "../../Utility/Validate"
+import { checkUsernameType, useQuery } from "../../Utility/Util";
+import Auth from "@aws-amplify/auth";
 
 const Login = () => {
   library.add(faFacebook, faGoogle);
+
+
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const validate = {
+    username: {
+        value: username, 
+        type: Consts.typeUsername, 
+        onChange: setUsername
+    },
+    password: {
+        value: password,
+        type: Consts.typePassword,
+        onChange: setPassword
+    }
+  }
+
+  const { handleChange, errors, handleSubmit } = Validate(validate)
+  const {removeQuery, addQuery, addQuerys} = useQuery()
+
+  async function doSignIn(){
+      try{
+          setLoading(true)
+          let user_name = username
+
+          if(checkUsernameType(user_name) === Consts.typePhoneNumber){
+              user_name = "+976"+ user_name
+          }
+
+          await Auth.signIn(user_name, password)
+          removeQuery("signInUp")
+      }catch(ex){
+          if(ex.code === "UserNotConfirmedException"){
+              addQuerys({signInUp: "signUp", type: "confirm"})
+          }else if(ex.code === "NotAuthorizedException"){
+              setError("Нэврэх нэр эсвэл нууц үг буруу байна")
+          }
+      }finally{
+          setLoading(false)
+      }
+  }
+
+
   return (
     <Backdrop>
       <div className="min-w-max sm:mx-auto sm:py-6 sm:w-full sm:max-w-md flex h-full">
         <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
-          <div className={"cursor-pointer relative"}>
+          <div className={"cursor-pointer relative"} onClick={() => removeQuery("signInUp")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="absolute right-0 w-6 h-6"
@@ -78,9 +128,13 @@ const Login = () => {
           />
           {/*Login Form*/}
           <div className="space-y-6">
+            <p className="error" id="email-error">
+                {error}
+            </p>
             <Input
-              error
-              errorMessage={"Имэйл бүртгэлтэй байна"}
+              name="username"
+              value={username}
+              errorMessage={errors.username}
               label={
                 <div>
                   <span className={"font-bold"}>Имэйл хаяг</span> эсвэл{" "}
@@ -88,10 +142,14 @@ const Login = () => {
                 </div>
               }
               labelStyle={"block text-base font-medium text-black mb-3"}
-              placeholder={"example@mail.com"}
+              placeholder={"example@mail.com/99887766"}
               className={"py-3 border border-gray-300"}
+              onChange={handleChange}
             />
             <Input
+              name="password"
+              value={password}
+              errorMessage={errors.password}
               label={
                 <div className={"flex flex-row justify-between items-center"}>
                   <b>Нууц үг</b>
@@ -109,16 +167,19 @@ const Login = () => {
               labelStyle={"block text-base font-medium text-black mb-3"}
               placeholder={"Таны нууц үг"}
               className={"py-3 pr-3 border border-gray-300"}
+              onChange={handleChange}
             />
 
             <div>
               <Button
+                loading={loading}
                 type={"submit"}
                 round
                 skin={"primary"}
                 className={
                   "w-full font-bold text-base justify-center border border-transparent"
                 }
+                onClick={() => handleSubmit(doSignIn)}
               >
                 Нэвтрэх
               </Button>
@@ -127,13 +188,13 @@ const Login = () => {
               <span className={"text-gray-primary"}>
                 Хэрэв та элсээгүй бол{" "}
               </span>
-              <a
-                href="/"
-                className="text-primary hover:text-primary-hover font-bold"
+              <span
+                onClick={() => addQuery("signInUp","signUp")}
+                className="text-primary hover:text-primary-hover font-bold cursor-pointer"
               >
                 {" "}
                 "Бүртгүүлэх"
-              </a>
+              </span>
             </div>
           </div>
           {/*Footer*/}

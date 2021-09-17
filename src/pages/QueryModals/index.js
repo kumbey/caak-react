@@ -12,6 +12,8 @@ const QueryModals = () => {
         signIn: <Login/>
     })
 
+    let param = getQuery().get(Consts.signInUp)
+
     const [page, setPage] = useState("")
 
     
@@ -22,16 +24,14 @@ const QueryModals = () => {
     
     const definePage = () => {
 
-        const param = getQuery().get(Consts.signInUp)
-
         if(checkUser(user)){
             if(Object.keys(user.sysUser).length <= 0){
                 // LOAD USER INFO PAGE HERE
-                return "" 
+                return page 
             }else{
                 if(user.sysUser.category.items.length <= 0){
                     //LOAD SELECT CATEGORY PAGE HERE
-                    return "" 
+                    return page 
                 }
             }
         }
@@ -40,7 +40,7 @@ const QueryModals = () => {
 
     return(
         <Fragment>
-            {modals[page]}
+            {modals[param]}
         </Fragment>
     )
 }

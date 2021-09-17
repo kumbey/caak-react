@@ -4,7 +4,7 @@ import OtpInput from "../../components/input/OtpInput";
 import Button from "../../components/button";
 
 const Confirmation = ({email}) => {
-  const [code, setCode] = React.useState();
+  const [code, setCode] = React.useState("");
   return (
       <Backdrop>
         <div className="min-w-max sm:mx-auto sm:py-6 sm:w-full sm:max-w-md flex h-full">
@@ -35,7 +35,8 @@ const Confirmation = ({email}) => {
             <div className={"py-2 flex flex-col"}>
               <OtpInput
                   label={"Баталгаажуулах код"}
-                  onChange={(e) => setCode(e.target.value)}
+                  value={code}
+                  onChange={(e) => setCode(e)}
               />
               <Button round loading className={"font-bold text-base "}>
                 Баталгаажуулах
