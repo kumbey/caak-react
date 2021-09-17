@@ -1,4 +1,6 @@
-import Confirmation from "../pages/Register/Confirmation";
+import Card from "../components/card/";
+import Login from "../pages/Login";
+import Feed from "../pages/Home/Feed";
 
 const Routes = [
   {
@@ -15,7 +17,7 @@ const Routes = [
   {
     path: "/sanjaa",
     exact: true,
-    page: () => <Confirmation />,
+    page: () => <Feed />,
   },
 ];
 
