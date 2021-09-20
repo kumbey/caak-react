@@ -3,13 +3,35 @@
 @tailwind utilities;
 @import "./assets/css/components/buttons.css";
 @import "./assets/css/components/inputs.css";
+@import "./assets/css/components/dropdown.css";
 
 @layer base {
     html {
-        @apply font-inter;
+        @apply font-roboto;
+    }
+    body {
+        @apply bg-caak-bleachedsilk
     }
 }
-/*TODO Fix Full screen Height*/
+/*Custom sizing class*/
+@layer utilities {
+    .h-22px {
+        height: 22px;
+    }
+
+    .h-34px {
+        height: 34px;
+    }
+
+    .w-22px {
+        width: 22px;
+    }
+
+    .w-34px {
+        width: 34px;
+    }
+}
+
 .backdrop {
     position: absolute;
     top: 0;
