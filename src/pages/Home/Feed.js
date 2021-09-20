@@ -19,8 +19,12 @@ const Feed = () => {
     []
   );
   return (
-    <main className={"w-max-7xl sm:px-6 lg:px-10 px-2 py-1 mx-auto px-2 flex flex-row "}>
-      <div className={"py-10 flex justify-center items-center "}>
+    <main
+      className={
+        "max-w-7xl sm:px-6 lg:px-10 px-2 py-1 mx-auto px-2 flex justify-center items-center"
+      }
+    >
+      <div className={"py-10 flex justify-center items-center w-full "}>
         {/*<Card verifiedUser video/>*/}
         <Masonry
           className={"flex justify-center items-center"}
