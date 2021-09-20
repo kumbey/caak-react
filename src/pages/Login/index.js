@@ -1,221 +1,145 @@
-import React, { useState } from "react";
+import React from "react";
+import { useHistory } from "react-router";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
-import Divider from "../../components/divider";
-import Input from "../../components/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import Consts from "../../Utility/Consts";
-import Validate from "../../Utility/Validate"
-import { checkUsernameType, useQuery } from "../../Utility/Util";
-import Auth from "@aws-amplify/auth";
+import { faFacebook, faGoogle, faTwitter, faApple } from "@fortawesome/free-brands-svg-icons";
+import {faQuestionCircle, faEnvelope} from '@fortawesome/free-regular-svg-icons'
 
-const Login = () => {
-  library.add(faFacebook, faGoogle);
+export default function Login() {
+    const history = useHistory();
 
-
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  const validate = {
-    username: {
-        value: username, 
-        type: Consts.typeUsername, 
-        onChange: setUsername
-    },
-    password: {
-        value: password,
-        type: Consts.typePassword,
-        onChange: setPassword
+    function register() {
+        history.push("/register");
     }
-  }
 
-  const { handleChange, errors, handleSubmit } = Validate(validate)
-  const {removeQuery, addQuery, addQuerys} = useQuery()
+    function home(){
+        history.push("/")
+    }
 
-  async function doSignIn(){
-      try{
-          setLoading(true)
-          let user_name = username
+    function ephone(){
+        history.push("/ephone")
+    }
 
-          if(checkUsernameType(user_name) === Consts.typePhoneNumber){
-              user_name = "+976"+ user_name
-          }
-
-          await Auth.signIn(user_name, password)
-          removeQuery("signInUp")
-      }catch(ex){
-          if(ex.code === "UserNotConfirmedException"){
-              addQuerys({signInUp: "signUp", type: "confirm"})
-          }else if(ex.code === "NotAuthorizedException"){
-              setError("Нэврэх нэр эсвэл нууц үг буруу байна")
-          }
-      }finally{
-          setLoading(false)
-      }
-  }
-
-
-  return (
-    <Backdrop>
-      <div className="min-w-max sm:mx-auto sm:py-6 sm:w-full sm:max-w-md flex h-full">
-        <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
-          <div className={"cursor-pointer relative"} onClick={() => removeQuery("signInUp")}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="absolute right-0 w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </div>
-          <div className={"flex justify-center align-center py-8"}>
-            <span className={"font-black text-4xl"}>Нэвтрэх</span>
-          </div>
-          {/*Social Buttons*/}
-          <div className={"flex flex-col justify-center"}>
+    return (
+        <Backdrop>
+            <div className=" sm:mx-auto pt-40 pb-96 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
+                <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
+                    <div className="flex justify-end">
+                    <Button
+                        onClick={home}
+                        className={
+                            "bg-gray-300 rounded-full text-black"
+                        }
+                    >
+                        ✖
+                    </Button>
+                    </div>
+                    <div className={"flex text-caak-generalblack justify-center align-center mb-4 font-bold text-24px"}>
+                        Шинэ Саак-т нэвтрэх!
+                    </div>
+                    {/*Social Buttons*/}
+                    <div className={"flex flex-col justify-center "}>
+                        <Button
+                            onClick={() => null}
+                            round
+                            className={
+                            "hover:bg-gray-100 border border-gray-200  justify-center  font-bold mb-2 rounded-lg text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-primary mr-2"}
+                                icon={faGoogle}
+                            />
+                            Google
+                        </Button>
+                        <Button
+                            onClick={() => null}
+                            round
+                            className={
+                                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-facebook mr-2"}
+                                icon={faFacebook}
+                            />
+                            Facebook
+                        </Button>
+                        <Button
+                        onClick={ephone}
+                            round
+                            className={
+                                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-generalblack mr-2"}
+                                icon={faEnvelope}
+                            />
+                            Имайл хаяг / Утасны дугаар
+                        </Button>
+            <div className="flex justify-between">
             <Button
               onClick={() => null}
-              icon={
-                <FontAwesomeIcon
-                  size={"lg"}
-                  className={"text-white mr-2"}
-                  icon={faFacebook}
-                />
-              }
               round
               className={
-                "hover:bg-facebook-hover border border-transparent justify-center text-base font-bold mb-2 rounded-md text-white bg-facebook"
+                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
               }
-              iconPosition={"left"}
             >
-              Facebook-ээр нэвтрэх
+                <div className="px-16">
+                <FontAwesomeIcon
+                  size={"lg"}
+                  className={"text-caak-twitter"}
+                  icon={faTwitter}
+                />
+                </div>
             </Button>
             <Button
               onClick={() => null}
-              icon={
-                <FontAwesomeIcon
-                  size={"lg"}
-                  className={"text-primary mr-2"}
-                  icon={faGoogle}
-                />
-              }
               round
               className={
                 "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-black bg-white"
               }
-              iconPosition={"left"}
             >
-              Gmail-ээр нэвтрэх
+                <div className="px-16">
+                <FontAwesomeIcon
+                  size={"lg"}
+                  icon={faApple}
+                />
+                </div>
             </Button>
-          </div>
-          <Divider
-            textSize={"text-base font-light"}
-            textColor={"text-gray-500"}
-            color={"bg-gray-100"}
-            text={"эсвэл"}
-            className={"my-4 font-light"}
-          />
-          {/*Login Form*/}
-          <div className="space-y-6">
-            <p className="error" id="email-error">
-                {error}
-            </p>
-            <Input
-              name="username"
-              value={username}
-              errorMessage={errors.username}
-              label={
-                <div>
-                  <span className={"font-bold"}>Имэйл хаяг</span> эсвэл{" "}
-                  <span className={"font-bold"}>Утасны дугаар</span>
-                </div>
-              }
-              labelStyle={"block text-base font-medium text-black mb-3"}
-              placeholder={"example@mail.com/99887766"}
-              className={"py-3 border border-gray-300"}
-              onChange={handleChange}
-            />
-            <Input
-              name="password"
-              value={password}
-              errorMessage={errors.password}
-              label={
-                <div className={"flex flex-row justify-between items-center"}>
-                  <b>Нууц үг</b>
-                  <a href={"/"}>
-                    <span
-                      className={
-                        "underline font-medium text-primary hover:text-primary-hover"
-                      }
-                    >
-                      Нууц үгээ мартсан уу?
-                    </span>
-                  </a>
-                </div>
-              }
-              labelStyle={"block text-base font-medium text-black mb-3"}
-              placeholder={"Таны нууц үг"}
-              className={"py-3 pr-3 border border-gray-300"}
-              onChange={handleChange}
-            />
-
-            <div>
-              <Button
-                loading={loading}
-                type={"submit"}
-                round
-                skin={"primary"}
-                className={
-                  "w-full font-bold text-base justify-center border border-transparent"
-                }
-                onClick={() => handleSubmit(doSignIn)}
-              >
-                Нэвтрэх
-              </Button>
-            </div>
-            <div className="text-base text-center">
-              <span className={"text-gray-primary"}>
-                Хэрэв та элсээгүй бол{" "}
-              </span>
-              <span
-                onClick={() => addQuery("signInUp","signUp")}
-                className="text-primary hover:text-primary-hover font-bold cursor-pointer"
-              >
-                {" "}
-                "Бүртгүүлэх"
-              </span>
             </div>
           </div>
+          
           {/*Footer*/}
           <div
             className={
-              "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary mt-8 divide-opacity-20 text-sm "
+              "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4 divide-opacity-20 text-sm "
             }
           >
-            <a href={"/"} className={"flex-1 text-center py-2 "}>
-              <span>Үйлчилгээний нөхцөл</span>
-            </a>
-            <a href={"/"} className={"flex-1 text-center py-2 align-middle"}>
-              <span>Нууцлал</span>
-            </a>
-            <a href={"/"} className={"flex-1 text-center py-2 "}>
-              <span>Холбоо барих</span>
-            </a>
-          </div>
+                <div className=" text-caak-blue text-15px">
+                    <span>
+                        Шинэ хэрэглэгч бол{" "}
+                    </span>
+                    <span 
+                        onClick={register}
+                        className="text-caak-primary text-15px font-bold cursor-pointer"
+                    >
+                    {" "}
+                        Бүртгүүлэх
+                    </span>
+                </div>
+                <FontAwesomeIcon
+                    className={"text-caak-darkBlue cursor-pointer "}
+                    icon={faQuestionCircle}
+                />
+        </div>
         </div>
       </div>
     </Backdrop>
-  );
-};
-export default Login;
+    )
+}
