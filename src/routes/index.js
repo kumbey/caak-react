@@ -1,5 +1,5 @@
 import Card from "../components/card/";
-import Login from "../pages/Login";
+import Login from "../pages/Register/Completed";
 import Feed from "../pages/Home/Feed";
 
 const Routes = [
@@ -17,7 +17,7 @@ const Routes = [
   {
     path: "/sanjaa",
     exact: true,
-    page: () => <Feed />,
+    page: () => <Login />,
   },
 ];
 

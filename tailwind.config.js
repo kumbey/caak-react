@@ -18,6 +18,7 @@ module.exports = {
       },
       colors: {
         caak: {
+          primary: "#f64900",
           bleachedsilk: "#F2F2F2",
           aleutian: "#9A9FB4",
           liquidnitrogen: "#F3F3F4",
@@ -44,12 +45,12 @@ module.exports = {
           buffalosauce: "#F65A18",
           bleachedsilk1: "#F3F3F3",
           bleudefrance: "#367CE6",
-        },
-        primary: {
-          light: "#F65A18",
-          DEFAULT: "#F65A18",
-          hover: "#F65A60",
-          dark: "#F65A18",
+          generalblack: "#21293C",
+          secondprimary: "#F54000",
+          twitter: "#1DA1F2",
+          facebook: "#1877F2",
+          shit: "#AFAFAF",
+          red: "#E60033"
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -58,14 +59,8 @@ module.exports = {
           primary: "#4B587C",
           verified: "#2196F3",
         },
-        generalblack: {
-          DEFAULT: "#21293C",
-        },
         gray: {
           primary: "#666666",
-        },
-        fontPrimary: {
-          DEFAULT: "#21293C",
         },
         facebook: {
           DEFAULT: "#5f73a7",
@@ -73,12 +68,14 @@ module.exports = {
         },
       },
       fontSize: {
-        "11px": "11px",
         "12px": "12px",
+        "13px": "13px",
         "14px": "14px",
         "15px": "15px",
         "16px": "16px",
         "17px": "17px",
+        "24px": "24px",
+        "56px": "56px"
       },
       fontFamily: {
         roboto: ["Roboto"],

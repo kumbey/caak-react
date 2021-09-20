@@ -1,87 +1,143 @@
 import React from "react";
+import { useHistory } from "react-router";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
-import Divider from "../../components/divider";
-import Input from "../../components/input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook, faGoogle, faTwitter, faApple } from "@fortawesome/free-brands-svg-icons";
+import {faQuestionCircle, faEnvelope} from '@fortawesome/free-regular-svg-icons'
 
-const Register = () => {
+export default function Register() {
+    const history = useHistory();
+
+    function userInfo() {
+        history.push("/userinfo");
+    }
+    
+    function home(){
+        history.push("/")
+    }
+    function login(){
+        history.push("/login")
+    }
     return (
         <Backdrop>
-            <div className="sm:mx-auto sm:w-full sm:max-w-md flex sm:py-6 min-w-max h-full ">
-                <div
-                    className="sm:w-full w-screen relative bg-white py-8 px-10  shadow-xl rounded-lg  loginCard min-w-max">
-                    <div className={"cursor-pointer relative"}>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 absolute right-0" fill="none"
-                             viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                  d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
+            <div className=" sm:mx-auto pt-40 pb-96 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
+                <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
+                    <div className="flex justify-end">
+                    <Button
+                        onClick={home}
+                        className={
+                            "bg-gray-300 rounded-full text-black"
+                        }
+                    >
+                        ✖
+                    </Button>
                     </div>
-                    <div className={"flex justify-center align-center py-8"}>
-                        <span className={"font-bold text-4xl"}>Бүртгүүлэх</span>
+                    <div className={"flex text-caak-generalblack justify-center align-center mb-4 font-bold text-24px"}>
+                        Шинэ Саак-т бүртгүүлэх!
                     </div>
                     {/*Social Buttons*/}
-                    <div className={"flex flex-col justify-center"}>
+                    <div className={"flex flex-col justify-center "}>
                         <Button
                             onClick={() => null}
-                            icon={<FontAwesomeIcon size={"lg"} className={"text-white mr-2"} icon={faFacebook}/>}
                             round
-                            className={"hover:bg-facebook-hover border border-transparent justify-center text-base font-bold mb-2 bg-facebook"}
-                            iconPosition={"left"}
-                        >Facebook-ээр нэвтрэх
+                            className={
+                            "hover:bg-gray-100 border border-gray-200  justify-center  font-bold mb-2 rounded-lg text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-primary mr-2"}
+                                icon={faGoogle}
+                            />
+                            Google
                         </Button>
                         <Button
                             onClick={() => null}
-                            icon={<FontAwesomeIcon size={"lg"} className={"text-primary mr-2"} icon={faGoogle}/>}
                             round
-                            className={"bg-white text-black hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2"}
-                            iconPosition={"left"}
-                        >Gmail-ээр нэвтрэх</Button>
-                    </div>
-                    <Divider textSize={"text-base font-light"} textColor={"text-gray-500"} color={"bg-gray-100"}
-                             text={"эсвэл"}
-                             className={"my-4 font-light"}
-                    />
-                    {/*Register Form*/}
-                    <form className="space-y-6" action="/" method="POST">
-                        <Input error errorMessage={"Имэйл бүртгэлтэй байна"}
-                               label={<div><span className={"font-bold"}>Имэйл хаяг</span> эсвэл <span
-                                   className={"font-bold"}>Утасны дугаар</span></div>}
-                               labelStyle={"block text-base font-medium text-black mb-3"}
-                               placeholder={"example@mail.com"}
-                               className={"py-3 pr-3 border border-gray-300"}
-                        />
-                        <div>
-                            <Button type={"submit"} round skin={"primary"}
-                                    className={"w-full font-bold justify-center text-base"}>Бүртгүүлэх</Button>
-                        </div>
-                        <div className="text-base text-center">
-                            <span className={"text-gray-primary"}>Хэрэв та бүртгэлтэй бол </span>
-                            <a href="/"
-                               className="font-bold text-primary  hover:text-primary-hover">"Нэвтрэх"</a>
-
-                        </div>
-                    </form>
-                    {/*Footer*/}
-                    <div
-                        className={"signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary divide-opacity-20 text-sm mt-8"}>
-                        <a href={"/"} className={"flex-1 text-center py-2 "}>
-                            <span>Үйлчилгээний нөхцөл</span>
-                        </a>
-                        <a href={"/"} className={"flex-1 text-center py-2 align-middle"}>
-                            <span>Нууцлал</span>
-                        </a>
-                        <a href={"/"} className={"flex-1 text-center py-2 "}>
-                            <span>Холбоо барих</span>
-                        </a>
-                    </div>
+                            className={
+                                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-facebook mr-2"}
+                                icon={faFacebook}
+                            />
+                            Facebook
+                        </Button>
+                        <Button
+                            onClick={userInfo}
+                            round
+                            className={
+                                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
+                            }
+                        >
+                            <FontAwesomeIcon
+                                size={"lg"}
+                                className={"text-caak-generalblack mr-2"}
+                                icon={faEnvelope}
+                            />
+                            Имайл хаяг / Утасны дугаар
+                        </Button>
+            <div className="flex justify-between">
+            <Button
+              onClick={() => null}
+              round
+              className={
+                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
+              }
+            >
+                <div className="px-16">
+                <FontAwesomeIcon
+                  size={"lg"}
+                  className={"text-caak-twitter"}
+                  icon={faTwitter}
+                />
                 </div>
+            </Button>
+            <Button
+              onClick={() => null}
+              round
+              className={
+                "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-black bg-white"
+              }
+            >
+                <div className="px-16">
+                <FontAwesomeIcon
+                  size={"lg"}
+                  icon={faApple}
+                />
+                </div>
+            </Button>
             </div>
-        </Backdrop>
-    );
-};
-
-export default Register;
+          </div>
+          
+          {/*Footer*/}
+          <div
+            className={
+              "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4 divide-opacity-20 text-sm "
+            }
+          >
+                <div className=" text-caak-blue text-15px">
+                    <span>
+                        Бүртгэлтэй хэрэглэгч бол{" "}
+                    </span>
+                    <span 
+                        onClick={login}
+                        className="text-caak-primary text-15px font-bold cursor-pointer"
+                    >
+                    {" "}
+                        Нэвтрэх
+                    </span>
+                </div>
+                <FontAwesomeIcon
+                    className={"text-caak-darkBlue cursor-pointer "}
+                    icon={faQuestionCircle}
+                />
+        </div>
+        </div>
+      </div>
+    </Backdrop>
+    )
+}
