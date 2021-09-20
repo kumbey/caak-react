@@ -1,12 +1,22 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "../button";
 import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
+import DropDown from "./DropDown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { faFire } from "@fortawesome/free-solid-svg-icons";
+import user from '../navigation/user.json'
 
-export default function NavBar() {
+import Dummy from "dummyjs";
+
+export default function NavBar( ) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <nav className="bg-white">
@@ -64,12 +74,82 @@ export default function NavBar() {
               "flex flex-row items-center hidden md:inline-flex lg:inline-flex"
             }
           >
-            <Button round skin={"secondary"} className={"mr-2"}>
-              Нэвтрэх
-            </Button>
-            <Button round skin={"primary"} className={"mr-2"}>
-              Бүртгэл үүсгэх
-            </Button>
+            {user ? (
+              <div className={"flex flex-row items-center"}>
+                <div className={"mr-4"}>
+                  <Button
+                    roundedSquare
+                    skin={"primary"}
+                    className={"w-36px h-36px px-0 py-0"}
+                    icon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                    }
+                  />
+                </div>
+                <div className={"relative inline-block mr-4"}>
+                  <FontAwesomeIcon
+                    size={"lg"}
+                    className={"text-generalblack"}
+                    icon={faBell}
+                  />
+                  <span
+                    className={
+                      "absolute text-center -top-2 w-18px h-18px border-1 rounded-full border-white font-medium -right-2 bg-caak-bleudefrance text-white text-12px"
+                    }
+                  >
+                    3
+                  </span>
+                </div>
+                <div className={"flex flex-row mr-4"}>
+                  <div className={"w-45px h-45px mr-2"}>
+                    <img
+                      data-dummy="200x200"
+                      src={Dummy.img("200x200")}
+                      className={"w-full block object-cover rounded-full"}
+                    />
+                  </div>
+                  <div className={"flex flex-col justify-center"}>
+                    <span className={"text-generalblack text-14px font-bold"}>
+                      {user[0].name}
+                    </span>
+                    <div className={"flex flex-row items-center"}>
+                      <FontAwesomeIcon
+                          size={"md"}
+                          className={"text-generalblack mr-1"}
+                          icon={faFire}
+                      />
+                      <span
+                        className={"text-14px text-caak-darkBlue font-medium"}
+                      >
+                        2434
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className={"flex flex-row"}>
+                <Button round skin={"secondary"} className={"mr-2"}>
+                  Нэвтрэх
+                </Button>
+                <Button round skin={"primary"} className={"mr-2"}>
+                  Бүртгэл үүсгэх
+                </Button>
+              </div>
+            )}
             <div className={"relative"}>
               <Button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -93,32 +173,11 @@ export default function NavBar() {
                 circular
                 className={"p-1"}
               />
-
-              <div
-                onClick={() => setIsMenuOpen(false)}
-                className={`absolute w-max rounded-md shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden right-0 mt-2 transition ease-in-out duration-200 ${
-                  isMenuOpen ? "block" : "hidden"
-                }`}
-              >
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  className="relative flex flex-col self-start w-full py-2 align-baseline"
-                >
-                  {menu_data.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="hover:bg-gray-50 flex flex-row items-center px-4 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
-                    >
-                      {item.image}
-
-                      <p className="text-base font-medium text-gray-900">
-                        {item.name}
-                      </p>
-                    </a>
-                  ))}
-                </div>
-              </div>
+              <DropDown
+                open={isMenuOpen}
+                onToggle={toggleMenu}
+                items={menu_data}
+              />
             </div>
           </div>
         </div>

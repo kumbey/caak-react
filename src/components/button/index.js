@@ -8,6 +8,7 @@ const Button = ({
   iconPosition,
   icon,
   loading,
+  roundedSquare,
   ...props
 }) => {
   return (
@@ -15,11 +16,11 @@ const Button = ({
       {...props}
       className={`button ${skin ? skin : ""} ${round ? "round" : ""} ${
         circular ? "circular" : ""
-      } ${props.className}`}
+      } ${roundedSquare ? "rounded-lg" : ""} ${props.className}`}
       disabled={loading}
     >
       {iconPosition === "left" ? icon : ""}
-      {circular ? icon : ""}
+      {circular || roundedSquare ? icon : ""}
       {loading ? <Loader /> : props.children}
       {iconPosition === "right" ? icon : ""}
     </button>

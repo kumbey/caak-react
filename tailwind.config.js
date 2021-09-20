@@ -73,6 +73,7 @@ module.exports = {
         },
       },
       fontSize: {
+        "11px": "11px",
         "12px": "12px",
         "14px": "14px",
         "15px": "15px",
