@@ -6,7 +6,6 @@ const Input = ({
   label,
   className,
   errorMessage,
-  error,
   ...props
 }) => {
   return (
@@ -16,12 +15,12 @@ const Input = ({
           {label}
         </label>
       )}
-      <input {...props} className={`${className} ${error ? "error" : ""}`} />
-      {error && (
+      <input {...props} className={`${className} ${errorMessage ? `border border-caak-red`: ``}`} />
+       
         <p className="error" id="email-error">
           {errorMessage}
         </p>
-      )}
+      
     </div>
   );
 };

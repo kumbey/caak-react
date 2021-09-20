@@ -127,7 +127,7 @@ export default function NavBar( ) {
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
-                          size={"md"}
+                          size={"lg"}
                           className={"text-generalblack mr-1"}
                           icon={faFire}
                       />
