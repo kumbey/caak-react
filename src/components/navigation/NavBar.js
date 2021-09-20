@@ -3,8 +3,13 @@ import Button from "../button";
 import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
+import { useQuery } from "../../Utility/Util";
+import Consts from "../../Utility/Consts";
 
 export default function NavBar() {
+
+  const {addQuery} = useQuery()
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -64,7 +69,12 @@ export default function NavBar() {
               "flex flex-row items-center hidden md:inline-flex lg:inline-flex"
             }
           >
-            <Button round skin={"secondary"} className={"mr-2"}>
+            <Button 
+              round 
+              skin={"secondary"} 
+              className={"mr-2"} 
+              onClick={() => addQuery(Consts.signInUp, Consts.signIn)}
+            >
               Нэвтрэх
             </Button>
             <Button round skin={"primary"} className={"mr-2"}>

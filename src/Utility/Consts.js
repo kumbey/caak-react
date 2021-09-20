@@ -12,7 +12,9 @@ const Consts = {
     regexNumber: /[^\d.]/ig,
     typeRequired: "required",
     SS_UserKey: "user",
-    signInUp: "signInUp"
+    signInUp: "signInUp",
+    signIn: "signIn",
+    signUp: "signUp"
 }
 
 export default Consts

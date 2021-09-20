@@ -93,7 +93,7 @@
 
 
 
-#set( $optionalNonNullableFields = ["title", "commentType", "status", "type", "user_id", "group_id", "category_id", "createdAt", "updatedAt"] )
+#set( $optionalNonNullableFields = ["title", "commentType", "status", "type", "user_id", "group_id", "category_id", "updatedAt"] )
 #foreach( $field in $optionalNonNullableFields )
   #if( $context.arguments.input.keySet().contains($field) && $util.isNull($context.args.input.get($field)) )
 $util.error("An argument you marked as Non-Null is set to Null in the query or the body of your request.")

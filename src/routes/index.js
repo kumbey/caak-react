@@ -1,5 +1,3 @@
-import Card from "../components/card/";
-import Login from "../pages/Login";
 import Feed from "../pages/Home/Feed";
 
 const Routes = [

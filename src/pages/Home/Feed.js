@@ -14,10 +14,10 @@ const Feed = () => {
     }))
   );
 
-  const CardWithClick = React.useCallback(
-    (props) => <Card {...props} video verifiedUser />,
-    []
-  );
+  // const CardWithClick = React.useCallback(
+  //   (props) => <Card {...props} video verifiedUser />,
+  //   []
+  // );
   return (
     <main
       className={

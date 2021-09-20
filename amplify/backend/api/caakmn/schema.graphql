@@ -33,7 +33,7 @@ type User @model
   aura: Aura! @connection(fields:["id"])
   is_public: Boolean
   status: String!
-  category: UserCategory @connection(keyName:"byUser" ,fields:["id"])
+  category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
 }
 
 type Username @model
@@ -113,8 +113,7 @@ type Post @model
   category_id: ID!
   category: Category @connection(fields:["category_id"])
   comments: [Comment] @connection(keyName:"byPost", fields:["id"])
-  reactions: [PostReaction] @connection(keyName: "byPost", fields:["id"])
-  createdAt: AWSDateTime!
+  items: [PostItems] @connection(keyName:"byPost", fields:["id"])
   updatedAt: AWSDateTime!
 }
 
@@ -122,10 +121,15 @@ type PostItems @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(name: "byPost", fields:["post_id","order"]){
+  id: ID!
+  post_id: ID!
+  post: Post! @connection(fields:["post_id"])
   file_id: ID!
   file: File @connection(fields:["file_id"])
   title: String
+  order: Int
 }
 
 
@@ -150,16 +154,18 @@ type Comment @model
   replyTo: User @connection(fields:["replyUserID"])
 }
 
-type PostReaction @model
-  @auth(rules: [
-    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
-    { allow: public, provider: iam, operations: [read]}
-  ])
-  @key(fields:["post_id","user_id"])
-  @key(name:"byPost", fields:["post_id"]){
-  post_id: ID!
-  user_id: ID!
-}
+# type Reactions @model
+#   @auth(rules: [
+#     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+#     { allow: public, provider: iam, operations: [read]}
+#   ])
+#   @key(fields:["id","user_id"])
+#   @key(name:"byUser", fields:["user_id"]){
+#   id: ID!
+#   user_id: ID!
+#   type: String!
+#   on: String!
+# }
 
 type ReportedPost @model
    @auth(rules: [
