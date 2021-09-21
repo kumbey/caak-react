@@ -45,6 +45,11 @@ const user0001 = /* GraphQL */ `{
     aura {
       point
     }
+    category{
+      items{
+        id
+      }
+    }
   }`
 
   export default user0001

@@ -26,7 +26,7 @@ export default function NavBar( ) {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-fontPrimary hover:text-white hover:bg-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white inline-flex items-center justify-center p-2 rounded-md"
+              className="text-caak-generalblack hover:text-white hover:bg-caak-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white inline-flex items-center justify-center p-2 rounded-md"
             >
               <span className="sr-only">Open main menu</span>
               {isMobileMenuOpen ? (

@@ -19,6 +19,7 @@ module.exports = {
       colors: {
         caak: {
           primary: "#f64900",
+          primaryHover: "#F65A60",
           bleachedsilk: "#F2F2F2",
           aleutian: "#9A9FB4",
           liquidnitrogen: "#F3F3F4",

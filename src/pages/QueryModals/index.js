@@ -29,7 +29,7 @@ const QueryModals = () => {
                 // LOAD USER INFO PAGE HERE
                 return page 
             }else{
-                if(user.sysUser.category.items.length <= 0){
+                if(user.sysUser.category && user.sysUser.category.items.length <= 0){
                     //LOAD SELECT CATEGORY PAGE HERE
                     return page 
                 }

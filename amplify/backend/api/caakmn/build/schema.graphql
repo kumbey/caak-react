@@ -29,6 +29,7 @@ type User @aws_iam @aws_cognito_user_pools {
   cover_pic: File @aws_iam @aws_cognito_user_pools
   username(filter: ModelUsernameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   aura: Aura! @aws_iam @aws_cognito_user_pools
+  category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
 }
 
 type Username @aws_iam @aws_cognito_user_pools {
@@ -79,22 +80,25 @@ type Post @aws_iam @aws_cognito_user_pools {
   user_id: ID!
   group_id: ID!
   category_id: ID!
-  createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  createdAt: AWSDateTime!
   user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
+  items(order: ModelIntKeyConditionInput, filter: ModelPostItemsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-  reactions(filter: ModelPostReactionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostReactionConnection @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
 }
 
 type PostItems @aws_iam @aws_cognito_user_pools {
   id: ID!
+  post_id: ID!
   file_id: ID!
   title: String
+  order: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   file: File @aws_iam @aws_cognito_user_pools
+  post: Post! @aws_iam @aws_cognito_user_pools
 }
 
 type Comment @aws_iam @aws_cognito_user_pools {
@@ -112,13 +116,6 @@ type Comment @aws_iam @aws_cognito_user_pools {
   replyTo: User @aws_iam @aws_cognito_user_pools
   post: Post! @aws_iam @aws_cognito_user_pools
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-}
-
-type PostReaction @aws_iam @aws_cognito_user_pools {
-  post_id: ID!
-  user_id: ID!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
 }
 
 type ReportedPost @aws_iam @aws_cognito_user_pools {
@@ -208,8 +205,6 @@ type Query {
   listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
   getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
   listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-  getPostReaction(post_id: ID!, user_id: ID!): PostReaction @aws_iam @aws_cognito_user_pools
-  listPostReactions(post_id: ID, user_id: ModelIDKeyConditionInput, filter: ModelPostReactionFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostReactionConnection @aws_iam @aws_cognito_user_pools
   getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
   listReportedPosts(filter: ModelReportedPostFilterInput, limit: Int, nextToken: String): ModelReportedPostConnection @aws_iam @aws_cognito_user_pools
   getReportType(id: ID!): ReportType @aws_iam @aws_cognito_user_pools
@@ -255,9 +250,6 @@ type Mutation {
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
-  createPostReaction(input: CreatePostReactionInput!, condition: ModelPostReactionConditionInput): PostReaction
-  updatePostReaction(input: UpdatePostReactionInput!, condition: ModelPostReactionConditionInput): PostReaction
-  deletePostReaction(input: DeletePostReactionInput!, condition: ModelPostReactionConditionInput): PostReaction
   createReportedPost(input: CreateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   updateReportedPost(input: UpdateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   deleteReportedPost(input: DeleteReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
@@ -467,9 +459,6 @@ type Subscription {
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostReaction: PostReaction @aws_subscribe(mutations: ["createPostReaction"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostReaction: PostReaction @aws_subscribe(mutations: ["updatePostReaction"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostReaction: PostReaction @aws_subscribe(mutations: ["deletePostReaction"]) @aws_iam @aws_cognito_user_pools
   onCreateReportedPost: ReportedPost @aws_subscribe(mutations: ["createReportedPost"]) @aws_iam @aws_cognito_user_pools
   onUpdateReportedPost: ReportedPost @aws_subscribe(mutations: ["updateReportedPost"]) @aws_iam @aws_cognito_user_pools
   onDeleteReportedPost: ReportedPost @aws_subscribe(mutations: ["deleteReportedPost"]) @aws_iam @aws_cognito_user_pools
@@ -744,7 +733,6 @@ input ModelPostFilterInput {
   user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
-  createdAt: ModelStringInput
   updatedAt: ModelStringInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
@@ -760,7 +748,6 @@ input CreatePostInput {
   user_id: ID!
   group_id: ID!
   category_id: ID!
-  createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
 
@@ -773,7 +760,6 @@ input UpdatePostInput {
   user_id: ID
   group_id: ID
   category_id: ID
-  createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
 
@@ -789,7 +775,6 @@ input ModelPostConditionInput {
   user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
-  createdAt: ModelStringInput
   updatedAt: ModelStringInput
   and: [ModelPostConditionInput]
   or: [ModelPostConditionInput]
@@ -802,8 +787,11 @@ type ModelPostItemsConnection @aws_iam @aws_cognito_user_pools {
 }
 
 input ModelPostItemsFilterInput {
+  id: ModelIDInput
+  post_id: ModelIDInput
   file_id: ModelIDInput
   title: ModelStringInput
+  order: ModelIntInput
   and: [ModelPostItemsFilterInput]
   or: [ModelPostItemsFilterInput]
   not: ModelPostItemsFilterInput
@@ -811,13 +799,18 @@ input ModelPostItemsFilterInput {
 
 input CreatePostItemsInput {
   id: ID
+  post_id: ID!
   file_id: ID!
   title: String
+  order: Int
 }
 
 input UpdatePostItemsInput {
+  id: ID!
+  post_id: ID
   file_id: ID
   title: String
+  order: Int
 }
 
 input DeletePostItemsInput {
@@ -825,8 +818,10 @@ input DeletePostItemsInput {
 }
 
 input ModelPostItemsConditionInput {
+  post_id: ModelIDInput
   file_id: ModelIDInput
   title: ModelStringInput
+  order: ModelIntInput
   and: [ModelPostItemsConditionInput]
   or: [ModelPostItemsConditionInput]
   not: ModelPostItemsConditionInput
@@ -888,40 +883,6 @@ input ModelCommentConditionInput {
   and: [ModelCommentConditionInput]
   or: [ModelCommentConditionInput]
   not: ModelCommentConditionInput
-}
-
-type ModelPostReactionConnection @aws_iam @aws_cognito_user_pools {
-  items: [PostReaction]
-  nextToken: String
-}
-
-input ModelPostReactionFilterInput {
-  post_id: ModelIDInput
-  user_id: ModelIDInput
-  and: [ModelPostReactionFilterInput]
-  or: [ModelPostReactionFilterInput]
-  not: ModelPostReactionFilterInput
-}
-
-input CreatePostReactionInput {
-  post_id: ID!
-  user_id: ID!
-}
-
-input UpdatePostReactionInput {
-  post_id: ID!
-  user_id: ID!
-}
-
-input DeletePostReactionInput {
-  post_id: ID!
-  user_id: ID!
-}
-
-input ModelPostReactionConditionInput {
-  and: [ModelPostReactionConditionInput]
-  or: [ModelPostReactionConditionInput]
-  not: ModelPostReactionConditionInput
 }
 
 type ModelReportedPostConnection @aws_iam @aws_cognito_user_pools {
@@ -1171,4 +1132,13 @@ input ModelStringKeyConditionInput {
   gt: String
   between: [String]
   beginsWith: String
+}
+
+input ModelIntKeyConditionInput {
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
 }

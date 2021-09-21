@@ -4,10 +4,15 @@
 
 .button.primary {
     @apply bg-caak-primary text-white hover:bg-primary-hover  focus:outline-none
+    @apply inline-flex items-center text-sm justify-center font-medium shadow-sm px-3 py-2 bg-caak-primary text-white hover:bg-caak-primaryHover focus:outline-none
+}
+
+.button.primary {
+    @apply bg-caak-primary text-white hover:bg-caak-primaryHover focus:outline-none
 }
 
 .button.secondary {
-    @apply text-fontPrimary bg-gray-200 hover:bg-gray-300 focus:outline-none
+    @apply text-caak-generalblack bg-gray-200 hover:bg-gray-300 focus:outline-none
 }
 
 .button.round {
