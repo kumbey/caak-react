@@ -11,22 +11,12 @@ import Button from "../../components/button";
 const UserInformation = () => {
   const history = useHistory();
 
-    function register() {
-        history.push("/register");
-    }
-    
     function home(){
         history.push("/")
     }
-    function confirm() {
-      history.push("/confirm")
-    }
-    function login() {
-      history.push("/login")
-    }
   return (
     <Backdrop>
-      <div className="min-w-max sm:mx-auto sm:py-20 sm:w-full sm:max-w-md flex h-full">
+      <div className=" sm:mx-auto pt-40 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
         <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
           <div className="flex justify-between items-center  cursor-pointer ">
                         <div className="flex items-center">
@@ -35,7 +25,7 @@ const UserInformation = () => {
                         className={"text-caak-extraBlack mr-2"}
                         icon={faChevronLeft}
                     />
-                        <div onClick={register} className="text-caak-generalblack text-13px cursor-pointer">
+                        <div onClick={() => {}} className="text-caak-generalblack text-13px cursor-pointer">
                           Бүртгүүлэх сонголт руу буцах
                           </div>
                         </div>
@@ -114,7 +104,7 @@ const UserInformation = () => {
               labelStyle={"block text-sm  text-black mb-2 mt-4"}
               className={"py-3 pr-3 border border-gray-300"}
             />
-            <Button onClick={confirm} className="w-full mt-8 text-caak-shit text-17px font-bold bg-caak-titaniumwhite rounded-lg">
+            <Button onClick={() => {}} className="w-full mt-8 text-caak-shit text-17px font-bold bg-caak-titaniumwhite rounded-lg">
               Бүртгүүлэх
             </Button>
           </div>
@@ -130,7 +120,7 @@ const UserInformation = () => {
               Бүртгэлтэй хэрэглэгч бол{" "}
             </span>
             <span
-            onClick={login}
+            onClick={() => {}}
               className="text-caak-primary hover:text-primary-hover font-bold cursor-pointer"
             >
               {" "}

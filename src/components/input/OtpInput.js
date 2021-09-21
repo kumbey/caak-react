@@ -8,13 +8,10 @@ import Consts from "../../Utility/Consts";
 function OtpInput({className, onChange, ...props}) {
 
     return (
-        <div className={`verificationCode-wrapper ${props.className}`}>
-            <label htmlFor="verificationCode">Баталгаажуулах
-                код</label>
+        <div className={`verificationCode-wrapper ${className}`}>
             <div className="verificationCode-outerDiv">
-                <div className="verificationCode-innerDiv">
-                    <input type="text"
-                        maxLength="6"
+                    <input type="number"
+                        maxLength="4"
                         name="verificationCode"
                         id="verificationCode"
                         spellCheck="false"
@@ -24,7 +21,6 @@ function OtpInput({className, onChange, ...props}) {
                         {...props}
                     >
                     </input>
-                </div>
             </div>
         </div>
     )

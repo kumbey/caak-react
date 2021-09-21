@@ -6,12 +6,13 @@ const Input = ({
   label,
   className,
   errorMessage,
+  id,
   ...props
 }) => {
   return (
     <div className={"input"}>
       {hideLabel ? null : (
-        <label htmlFor={props.id} className={`${labelStyle}`}>
+        <label htmlFor={id} className={`${labelStyle}`}>
           {label}
         </label>
       )}

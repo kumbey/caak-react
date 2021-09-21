@@ -16,7 +16,7 @@ const Routes = [
     page: () => <h2>User Config page</h2>,
   },
   {
-    path: "/sanjaa",
+    path: "/user",
     exact: true,
     page: () => <Feed />,
   },

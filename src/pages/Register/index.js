@@ -8,16 +8,9 @@ import {faQuestionCircle, faEnvelope} from '@fortawesome/free-regular-svg-icons'
 
 export default function Register() {
     const history = useHistory();
-
-    function userInfo() {
-        history.push("/userinfo");
-    }
     
     function home(){
         history.push("/")
-    }
-    function login(){
-        history.push("/login")
     }
     return (
         <Backdrop>
@@ -67,7 +60,7 @@ export default function Register() {
                             Facebook
                         </Button>
                         <Button
-                            onClick={userInfo}
+                            onClick={() => {}}
                             round
                             className={
                                 "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
@@ -124,7 +117,7 @@ export default function Register() {
                         Бүртгэлтэй хэрэглэгч бол{" "}
                     </span>
                     <span 
-                        onClick={login}
+                        onClick={() => {}}
                         className="text-caak-primary text-15px font-bold cursor-pointer"
                     >
                     {" "}
