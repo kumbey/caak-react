@@ -19,6 +19,7 @@ module.exports = {
       colors: {
         caak: {
           primary: "#f64900",
+          primaryHover: "#F65A60",
           bleachedsilk: "#F2F2F2",
           aleutian: "#9A9FB4",
           liquidnitrogen: "#F3F3F4",
@@ -75,6 +76,7 @@ module.exports = {
         "16px": "16px",
         "17px": "17px",
         "24px": "24px",
+        "44px": "44px",
         "56px": "56px"
       },
       fontFamily: {

@@ -9,16 +9,8 @@ import {faQuestionCircle, faEnvelope} from '@fortawesome/free-regular-svg-icons'
 export default function Login() {
     const history = useHistory();
 
-    function register() {
-        history.push("/register");
-    }
-
     function home(){
         history.push("/")
-    }
-
-    function ephone(){
-        history.push("/ephone")
     }
 
     return (
@@ -41,7 +33,7 @@ export default function Login() {
                     {/*Social Buttons*/}
                     <div className={"flex flex-col justify-center "}>
                         <Button
-                            onClick={() => null}
+                            onClick={() => {}}
                             round
                             className={
                             "hover:bg-gray-100 border border-gray-200  justify-center  font-bold mb-2 rounded-lg text-caak-generalblack text-16px bg-white"
@@ -55,7 +47,7 @@ export default function Login() {
                             Google
                         </Button>
                         <Button
-                            onClick={() => null}
+                            onClick={() => {}}
                             round
                             className={
                                 "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
@@ -69,7 +61,7 @@ export default function Login() {
                             Facebook
                         </Button>
                         <Button
-                        onClick={ephone}
+                        onClick={() => {}}
                             round
                             className={
                                 "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2 rounded-md text-caak-generalblack text-16px bg-white"
@@ -126,7 +118,7 @@ export default function Login() {
                         Шинэ хэрэглэгч бол{" "}
                     </span>
                     <span 
-                        onClick={register}
+                        onClick={() => {}}
                         className="text-caak-primary text-15px font-bold cursor-pointer"
                     >
                     {" "}
