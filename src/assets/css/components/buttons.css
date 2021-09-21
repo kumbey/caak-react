@@ -1,5 +1,5 @@
 .button {
-    @apply inline-flex items-center text-sm justify-center font-medium shadow-sm px-3 py-2 bg-caak-primary text-white hover:bg-caak-primaryHover focus:outline-none
+    @apply inline-flex items-center text-sm justify-center rounded-square font-medium shadow-sm px-3 py-2 bg-caak-primary text-white hover:bg-caak-primaryHover focus:outline-none
 }
 
 .button.primary {
@@ -11,7 +11,15 @@
 }
 
 .button.round {
-    @apply rounded
+    @apply rounded-square
+}
+
+.button.white {
+    @apply bg-white text-caak-primary text-16px font-bold justify-start py-3.5 w-48 px-4 shadow-button
+}
+
+.button.transparent {
+    @apply text-caak-generalblack text-16px font-bold justify-start py-3.5 w-48 px-4 border-transparent shadow-none hover:bg-caak-titaniumwhite bg-transparent
 }
 
 .button.circular {

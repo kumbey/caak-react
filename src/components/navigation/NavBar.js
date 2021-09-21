@@ -20,7 +20,7 @@ export default function NavBar( ) {
 
   return (
     <nav className="bg-white">
-      <div className="max-w-7xl sm:px-6 lg:px-8 px-2 py-1 mx-auto">
+      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="md:hidden lg:hidden flex">
             {/* Mobile menu button */}
@@ -76,7 +76,7 @@ export default function NavBar( ) {
           >
             {user ? (
               <div className={"flex flex-row items-center"}>
-                <div className={"mr-4"}>
+                <div className={"mr-6"}>
                   <Button
                     roundedSquare
                     skin={"primary"}
@@ -99,7 +99,7 @@ export default function NavBar( ) {
                     }
                   />
                 </div>
-                <div className={"relative inline-block mr-4"}>
+                <div className={"relative inline-block mr-6"}>
                   <FontAwesomeIcon
                     size={"lg"}
                     className={"text-generalblack"}
@@ -113,7 +113,7 @@ export default function NavBar( ) {
                     3
                   </span>
                 </div>
-                <div className={"flex flex-row mr-4"}>
+                <div className={"flex flex-row mr-6"}>
                   <div className={"w-45px h-45px mr-2"}>
                     <img
                       data-dummy="200x200"
@@ -121,13 +121,13 @@ export default function NavBar( ) {
                       className={"w-full block object-cover rounded-full"}
                     />
                   </div>
-                  <div className={"flex flex-col justify-center"}>
+                  <div className={"flex flex-col items-center justify-center"}>
                     <span className={"text-generalblack text-14px font-bold"}>
                       {user[0].name}
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
-                          size={"lg"}
+                          size={"sm"}
                           className={"text-generalblack mr-1"}
                           icon={faFire}
                       />
