@@ -62,6 +62,7 @@ const Validate = (variables) => {
     const handleChange = e => {
         const { name, value } = e.target;
         variables[name].onChange(value)
+        setErrors({...errors, [name]: ""})
     }
 
     const handleSubmit = (callback) => {

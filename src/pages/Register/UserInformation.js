@@ -1,26 +1,32 @@
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import Input from "../../components/input";
 import Backdrop from "../../components/Backdrop";
 import Select from "../../components/input/Select";
 import Button from "../../components/button";
+import { closeModal } from "../../Utility/Util";
 
 const UserInformation = () => {
-  const history = useHistory();
 
-    function home(){
-        history.push("/")
-    }
+  const history = useHistory()
+  const { state } = useLocation()
+
   return (
     <Backdrop>
       <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
                 <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
                 <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
-                        <div onClick={() => {}} className="flex items-center">
+                        <div 
+                          onClick={() => history.replace({pathname: "/register", state: state})}
+                          className="flex items-center"
+                        >
                             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
                             <p  className="text-caak-generalblack text-13px">Бүртгүүлэх сонголт руу буцах</p>
                         </div>
-                        <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"/>
+                        <span 
+                          onClick={() => closeModal(history, state)}
+                          className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"
+                        />
                     </div>
                     <div className={"flex text-caak-generalblack justify-center text-center align-center mt-5 mb-4 font-bold text-24px"}>
                         Имайл хаяг/Утасны дугаар <br/> бүртгүүлэх!
