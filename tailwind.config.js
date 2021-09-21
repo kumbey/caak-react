@@ -76,6 +76,7 @@ module.exports = {
         "16px": "16px",
         "17px": "17px",
         "24px": "24px",
+        "44px": "44px",
         "56px": "56px"
       },
       fontFamily: {

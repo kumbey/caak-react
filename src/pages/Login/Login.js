@@ -9,15 +9,16 @@ import Input from "../../components/input";
 
 export default function Login() {
     const history = useHistory();
-    function login(){
-        history.push("/login")
+
+    function home(){
+        history.push("/")
     }
     return (
         <Backdrop>
-            <div className="min-w-max sm:mx-auto py-40 sm:w-full sm:max-w-md flex h-full">
+            <div className=" sm:mx-auto pt-40 pb-96 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
                 <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
                     <div className="flex justify-between items-center  cursor-pointer ">
-                        <div onClick={login} className="flex items-center">
+                        <div onClick={() => {}} className="flex items-center">
                     <FontAwesomeIcon
                         size={"lg"}
                         className={"text-caak-extraBlack mr-2"}
@@ -26,7 +27,7 @@ export default function Login() {
                         <p  className="text-caak-generalblack text-13px">Нэвтрэх сонголт руу буцах</p>
                         </div>
                     <Button
-                        onClick={() => null}
+                        onClick={home}
                         className={
                             "bg-gray-300 rounded-full text-black"
                         }

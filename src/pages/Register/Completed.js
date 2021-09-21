@@ -12,7 +12,7 @@ export default function Completed() {
     }
     return (
         <Backdrop>
-            <div className=" sm:mx-auto py-40 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
+            <div className=" sm:mx-auto pt-40 pb-96 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
                 <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
                     <div className="flex justify-end">
                     </div>
