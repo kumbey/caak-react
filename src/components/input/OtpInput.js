@@ -11,13 +11,10 @@ function OtpInput({className, onChange, ...props}) {
         <div className={`verificationCode-wrapper ${className}`}>
             <div className="verificationCode-outerDiv">
                     <input type="number"
-                        maxLength="4"
+                        maxLength="7"
                         name="verificationCode"
                         id="verificationCode"
                         spellCheck="false"
-                        onChange={(e) => {
-                            onChange(e.target.value.replace(Consts.regexNumber, ""));
-                        }}
                         {...props}
                     >
                     </input>

@@ -3,9 +3,6 @@ import { useHistory } from "react-router";
 import Input from "../../components/input";
 import Backdrop from "../../components/Backdrop";
 import Select from "../../components/input/Select";
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faQuestionCircle} from '@fortawesome/free-regular-svg-icons'
 import Button from "../../components/button";
 
 const UserInformation = () => {
@@ -16,65 +13,49 @@ const UserInformation = () => {
     }
   return (
     <Backdrop>
-      <div className=" sm:mx-auto pt-40 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
-        <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
-          <div className="flex justify-between items-center  cursor-pointer ">
-                        <div className="flex items-center">
-                    <FontAwesomeIcon
-                        size={"lg"}
-                        className={"text-caak-extraBlack mr-2"}
-                        icon={faChevronLeft}
-                    />
-                        <div onClick={() => {}} className="text-caak-generalblack text-13px cursor-pointer">
-                          Бүртгүүлэх сонголт руу буцах
-                          </div>
+      <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
+                <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
+                <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
+                        <div onClick={() => {}} className="flex items-center">
+                            <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
+                            <p  className="text-caak-generalblack text-13px">Бүртгүүлэх сонголт руу буцах</p>
                         </div>
-                    <Button
-                        onClick={home}
-                        className={
-                            "bg-gray-300 rounded-full text-black"
-                        }
-                    >
-                        ✖
-                    </Button>
+                        <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"/>
                     </div>
                     <div className={"flex text-caak-generalblack justify-center text-center align-center mt-5 mb-4 font-bold text-24px"}>
                         Имайл хаяг/Утасны дугаар <br/> бүртгүүлэх!
                     </div>
-          <div>
-            <div className="flex justify-center">
-              <div className="mr-3">
-            <Input
+                <div className=" px-c13">
+                    <div className="flex justify-between">
+                <Input
                         placeholder={"Овог"}
-                        className={"py-3 border border-caak-titaniumwhite"}
+                        className={"py-3 border border-caak-titaniumwhite w-c12 h-c9 bg-caak-titaniumwhite"}
                     />
-                    </div>
                     <Input
                         placeholder={"Нэр"}
-                        className={"py-3 border border-caak-titaniumwhite"}
+                        className={"py-3 border border-caak-titaniumwhite w-c12 h-c9 bg-caak-titaniumwhite"}
                     />
-            </div>
-            <Input
+              </div>
+              <Input
                         placeholder={"Нийтэд харагдах нэр"}
-                        className={"py-3 border border-caak-titaniumwhite mt-4"}
+                        className={"py-3 border border-caak-titaniumwhite bg-caak-titaniumwhite"}
                     />
-          </div>
+                    
 
-          <div className={"flex flex-col mt-3"}>
-            <div className={"flex flex-row"}>
-              <Select placeholder={"asdsd"} containerStyle={"flex-1"}>
+            <div className={"flex"}>
+              <Select placeholder={"asdsad"} containerStyle={"flex-1"} className=" h-c9 w-c14 bg-caak-titaniumwhite">
                 <option>1998</option>
                 <option>1999</option>
                 <option>2000</option>
                 <option>2001</option>
               </Select>
-              <Select containerStyle={"flex-1 mx-2"}>
+              <Select containerStyle={"flex-1"}  className=" h-c9 w-c14 bg-caak-titaniumwhite">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
                 <option>4</option>
               </Select>
-              <Select containerStyle={"flex-1"}>
+              <Select containerStyle={"flex-1"}  className=" h-c9 w-c14 bg-caak-titaniumwhite">
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -82,56 +63,59 @@ const UserInformation = () => {
                 <option>5</option>
               </Select>
             </div>
-          </div>
-          <div>
-          <Input
-              errorMessage={"Дээрх дугаартай хэрэглэгч бүртгэлтэй байна."}
+          <div className="mt-b2">
+            <Input
+              //errorMessage={"Дээрх дугаартай хэрэглэгч бүртгэлтэй байна."}
               placeholder={"Имайл хаяг/Утасны дугаар"}
               type={"text"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
+              labelStyle={"block text-sm  text-black"}
+              className={"h-c9 border border-gray-300 bg-caak-titaniumwhite"}
             />
-            <Input
-              type={"password"}
-              placeholder={"Нууц үг"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
-            />
-            <Input
-              errorMessage={"Нууц үг таарахгүй байна"}
-              type={"password"}
-              placeholder={"Нууц үгээ давтан оруулна уу"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
-            />
-            <Button onClick={() => {}} className="w-full mt-8 text-caak-shit text-17px font-bold bg-caak-titaniumwhite rounded-lg">
+            <div className="flex items-center relative">
+                <Input
+                  placeholder={"Нууц үг"}
+                  className={"border border-caak-titaniumwhite w-ce h-c9 bg-caak-liquidnitrogen"}
+                />
+                <span className="icon-fi-rs-view absolute top-c6  right-c6 text-caak-darkBlue text-13px" />
+            </div>
+          
+            <div className="flex items-center relative ">
+              <Input
+                //errorMessage={"Нууц үг таарахгүй байна"}
+                placeholder={"Нууц үгээ давтан оруулна уу"}
+                className={"border border-caak-titaniumwhite w-ce h-c9 bg-caak-liquidnitrogen"}
+              />
+                <span className="icon-fi-rs-view absolute top-c6 right-c6 text-caak-darkBlue text-13px" />
+            </div>
+
+            <Button onClick={() => {}} className="mt-c3 w-full h-c9 text-caak-shit text-17px font-bold bg-caak-titaniumwhite rounded-lg">
               Бүртгүүлэх
             </Button>
+            <p className="text-12px pt-b1 text-caak-aleutian">Таны овог нэр, Төрсөн он сар болон Нууц үг нийтэд харагдахгүй болно!</p>
+            </div>
           </div>
           
           {/*Footer*/}
           <div
-            className={
-              "signFooter flex justify-between border-t items-center mt-8"
-            }
-          >
-            <div className="my-2 text-center text-15px">
-            <span className={"text-gray-primary"}>
-              Бүртгэлтэй хэрэглэгч бол{" "}
-            </span>
-            <span
-            onClick={() => {}}
-              className="text-caak-primary hover:text-primary-hover font-bold cursor-pointer"
+                className={
+                    "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+                }
             >
-              {" "}
-              Нэвтрэх
-            </span>
-          </div>
-          <FontAwesomeIcon
-                    className={"text-caak-darkblue cursor-pointer "}
-                    icon={faQuestionCircle}
-                />
-          </div>
+                <div className="text-caak-blue text-15px">
+                    <span>
+                        Бүртгэлтэй хэрэглэгч бол{" "}
+                    </span>
+                    <a
+                        href="/register"
+                        className="text-caak-primary text-15px font-bold cursor-pointer"
+                    >
+                    {" "}
+                        Нэвтрэх
+                    </a>
+                    
+                </div>
+                <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
+        </div>
         </div>
       </div>
     </Backdrop>
