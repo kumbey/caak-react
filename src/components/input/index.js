@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 
 const Input = ({
   labelStyle,
@@ -7,32 +6,27 @@ const Input = ({
   className,
   errorMessage,
   id,
-  type,
+  containerStyle,
   ...props
 }) => {
-
-  const [showPassword, setShowPassword] = useState(false)
-
   return (
-    <div className={"input relative"}>
+    <div className={`input ${containerStyle && containerStyle}`}>
       {hideLabel ? null : (
         <label htmlFor={id} className={`${labelStyle}`}>
           {label}
         </label>
       )}
-      <input type={showPassword ? "text" : type} {...props} className={`${className} ${errorMessage ? `border border-caak-titaniumwhite`: ``}`} />
-      {
-        type === "password" ? 
-          <span 
-            onClick={() => setShowPassword(!showPassword)}
-            className="icon-fi-rs-view absolute right-c6 text-caak-darkBlue cursor-pointer" style={{top: "14px"}}
-          /> 
-          : null
-      }
+      <input
+        {...props}
+        className={`${className} ${
+          errorMessage ? `border border-caak-red` : ``
+        }`}
+      />
+      {errorMessage && (
         <p className="error" id="email-error">
           {errorMessage}
         </p>
-      
+      )}
     </div>
   );
 };

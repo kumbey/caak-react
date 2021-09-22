@@ -26,6 +26,7 @@ export default function NavBar( ) {
   };
 
 
+  //TODO Change Icon
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
@@ -136,9 +137,9 @@ export default function NavBar( ) {
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
-                          size={"sm"}
-                          className={"text-generalblack mr-1"}
-                          icon={faFire}
+                        size={"sm"}
+                        className={"text-generalblack mr-1"}
+                        icon={faFire}
                       />
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
@@ -151,17 +152,17 @@ export default function NavBar( ) {
               </div>
             ) : (
               <div className={"flex flex-row"}>
-                <Button 
-                  round 
-                  skin={"secondary"} 
+                <Button
+                  round
+                  skin={"secondary"}
                   className={"mr-2"}
                   onClick={() => history.push({pathname: "/login", state: {background: location}})}
                 >
                   Нэвтрэх
                 </Button>
-                <Button 
-                  round 
-                  skin={"primary"} 
+                <Button
+                  round
+                  skin={"primary"}
                   className={"mr-2"}
                   onClick={() => history.push({pathname: "/register", state: {background: location}})}
                 >
@@ -209,17 +210,17 @@ export default function NavBar( ) {
       >
         <div className="w-max flex flex-col px-2 pt-2 pb-3 space-y-1">
           <div className={"flex flex-row"}>
-            <Button 
-              round 
-              className={"ml-2"} 
+            <Button
+              round
+              className={"ml-2"}
               skin={"secondary"}
               onClick={() => history.push({pathname: "/login", state: {background: location}})}
             >
               Нэвтрэх
             </Button>
-            <Button 
-              round 
-              className={"ml-2"} 
+            <Button
+              round
+              className={"ml-2"}
               skin={"primary"}
               onClick={() => history.push({pathname: "/register", state: {background: location}})}
             >
