@@ -95,11 +95,10 @@ const AddPost = () => {
                     "-top-3 left-0 right-0 bg-white rounded-square w-full"
                   }
                 />
-
               </div>
             </div>
             {uploadedFiles.length !== 0 ? (
-                // <Draggable items={uploadedFiles}/>
+              // <Draggable items={uploadedFiles}/>
               <UploadedMediaEdit
                 files={uploadedFiles}
                 onChangeText={setTextCount}
@@ -107,7 +106,7 @@ const AddPost = () => {
                 onChangeFiles={setUploadedFiles}
               />
             ) : (
-                // <Draggable/>
+              // <Draggable/>
               <DropZoneWithCaption
                 onChange={setTextCount}
                 textCount={textCount}
@@ -116,7 +115,7 @@ const AddPost = () => {
             )}
 
             <div className={"flex flex-row pb-5 px-7"}>
-              <Button className={"w-3/4 mr-2 mt-4"} disabled>
+              <Button className={"w-3/4 mr-2 mt-4"}>
                 Нийтлэх
               </Button>
               <Button
