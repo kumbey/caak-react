@@ -36,7 +36,7 @@ const AddPost = () => {
             />
             <div
               className={
-                "text-22px text-center text-caak-generalblack font-bold p-4.5 leading-7"
+                "text-22px text-center text-caak-generalblack font-bold py-4 leading-7"
               }
             >
               Нийтлэл нэмэх

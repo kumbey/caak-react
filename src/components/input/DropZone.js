@@ -28,7 +28,7 @@ const DropZone = ({
   });
   useEffect(() => {
     onSelected(files);
-  }, [acceptedFiles]);
+  }, [acceptedFiles, files]);
   return (
     <div
       {...getRootProps({
