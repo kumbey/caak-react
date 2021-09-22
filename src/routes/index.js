@@ -3,6 +3,8 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/UserInformation"
 import Logout from "../pages/Logout";
 import AddPost from "../pages/Blog/AddPost";
+import Confirmation from "../pages/Register/Confirmation"
+import Group from "../pages/Group/index"
 
 const Routes = [
   {

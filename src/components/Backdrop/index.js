@@ -1,8 +1,8 @@
-const Backdrop = ({children, onClick}) => {
+const Backdrop = ({children, onClick, className}) => {
     // Log state
     return (
         <div
-            className="backdrop"
+            className={`backdrop ${className}`}
             onClick={onClick}
         >
             {children}

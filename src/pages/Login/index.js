@@ -6,6 +6,7 @@ import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { closeModal } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
+import Backdrop from "../../components/Backdrop";
 
 export default function Login({ type, ...props }) {
   const history = useHistory();
@@ -13,7 +14,7 @@ export default function Login({ type, ...props }) {
   const { user } = useUser();
 
   return !user ? (
-    <Backdrop>
+    <Backdrop className={"flex justify-center items-center"}>
       <div className=" sm:mx-auto w-cb sm:max-h-md pt-40">
         <div className=" sm:w-full pb-c1 px-10 bg-white rounded-lg shadow-xl">
           <div
