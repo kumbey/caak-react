@@ -1,6 +1,7 @@
 import React from 'react';
 
 const Divider = (props) => {
+    //TODO fix undefined classname
     return (
         <div className={`relative ${props.className}`}>
             <div className="absolute inset-0 flex items-center" aria-hidden="true">

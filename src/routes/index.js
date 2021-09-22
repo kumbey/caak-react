@@ -2,14 +2,25 @@ import LoginRegsiter from "../pages/Login";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/UserInformation"
 import Logout from "../pages/Logout";
-import Group from "../pages/Group";
-import Confirmation from "../pages/Register/Confirmation";
+import AddPost from "../pages/Blog/AddPost";
 
 const Routes = [
   {
     path: "/",
     exact: true,
     page: () => <h2>Home page</h2>,
+  },
+  {
+    path: "/sanjaa",
+    exact: true,
+    background: true,
+    page: () => <AddPost />,
+  },
+  {
+    path: "/purwee",
+    exact: true,
+    background: true,
+    page: () => <Login />,
   },
   {
     path: "/profile/userconfig",

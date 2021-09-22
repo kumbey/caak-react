@@ -9,15 +9,18 @@ const Button = ({
   icon,
   loading,
   roundedSquare,
+  disabled,
   ...props
 }) => {
   return (
     <button
       {...props}
       className={`button ${skin ? skin : ""} ${round ? "round" : ""} ${
-        circular ? "circular" : ""
-      } ${roundedSquare ? "rounded-square" : ""} ${props.className}`}
-      disabled={loading}
+        disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
+      } ${circular ? "circular" : ""} ${
+        roundedSquare ? "rounded-square" : ""
+      } ${props.className}`}
+      disabled={disabled || loading}
     >
       {iconPosition === "left" ? icon : ""}
       {circular || roundedSquare ? icon : ""}
