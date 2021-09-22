@@ -194,6 +194,32 @@
                   }
                 ]
               ]
+            },
+            "API_CAAKMN_USERNAMETABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+              }
+            },
+            "API_CAAKMN_USERNAMETABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                    }
+                  }
+                ]
+              ]
             }
           }
         },
@@ -594,6 +620,68 @@
                       {
                         "Fn::ImportValue": {
                           "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
                         }
                       },
                       "/index/*"
