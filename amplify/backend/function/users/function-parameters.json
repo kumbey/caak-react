@@ -29,6 +29,12 @@
         "update",
         "delete"
       ],
+      "Username:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
       "Aura:@model(appsync)": [
         "create",
         "read",

@@ -7,20 +7,28 @@ import DropDown from "./DropDown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faFire } from "@fortawesome/free-solid-svg-icons";
-import user from '../navigation/user.json'
 
 import Dummy from "dummyjs";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
+import { useHistory, useLocation } from "react-router";
 
 export default function NavBar( ) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const {user} = useUser()
+  const history = useHistory()
+  const location = useLocation()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+
   return (
     <nav className="bg-white">
-      <div className="max-w-7xl sm:px-6 lg:px-8 px-2 py-1 mx-auto">
+      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="md:hidden lg:hidden flex">
             {/* Mobile menu button */}
@@ -74,9 +82,9 @@ export default function NavBar( ) {
               "flex flex-row items-center hidden md:inline-flex lg:inline-flex"
             }
           >
-            {user ? (
+            {checkUser(user) ? (
               <div className={"flex flex-row items-center"}>
-                <div className={"mr-4"}>
+                <div className={"mr-6"}>
                   <Button
                     roundedSquare
                     skin={"primary"}
@@ -99,7 +107,7 @@ export default function NavBar( ) {
                     }
                   />
                 </div>
-                <div className={"relative inline-block mr-4"}>
+                <div className={"relative inline-block mr-6"}>
                   <FontAwesomeIcon
                     size={"lg"}
                     className={"text-generalblack"}
@@ -113,29 +121,29 @@ export default function NavBar( ) {
                     3
                   </span>
                 </div>
-                <div className={"flex flex-row mr-4"}>
+                <div className={"flex flex-row mr-6"}>
                   <div className={"w-45px h-45px mr-2"}>
                     <img
-                      alt=""
+                      alt={user.sysUser.nickname}
                       data-dummy="200x200"
                       src={Dummy.img("200x200")}
                       className={"w-full block object-cover rounded-full"}
                     />
                   </div>
-                  <div className={"flex flex-col justify-center"}>
+                  <div className={"flex flex-col items-center justify-center"}>
                     <span className={"text-generalblack text-14px font-bold"}>
-                      {user[0].name}
+                      {user.sysUser.nickname}
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
-                          size={"lg"}
+                          size={"sm"}
                           className={"text-generalblack mr-1"}
                           icon={faFire}
                       />
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
                       >
-                        2434
+                        {user.sysUser.aura.point}
                       </span>
                     </div>
                   </div>
@@ -143,10 +151,20 @@ export default function NavBar( ) {
               </div>
             ) : (
               <div className={"flex flex-row"}>
-                <Button round skin={"secondary"} className={"mr-2"}>
+                <Button 
+                  round 
+                  skin={"secondary"} 
+                  className={"mr-2"}
+                  onClick={() => history.push({pathname: "/login", state: {background: location}})}
+                >
                   Нэвтрэх
                 </Button>
-                <Button round skin={"primary"} className={"mr-2"}>
+                <Button 
+                  round 
+                  skin={"primary"} 
+                  className={"mr-2"}
+                  onClick={() => history.push({pathname: "/register", state: {background: location}})}
+                >
                   Бүртгэл үүсгэх
                 </Button>
               </div>
@@ -191,10 +209,20 @@ export default function NavBar( ) {
       >
         <div className="w-max flex flex-col px-2 pt-2 pb-3 space-y-1">
           <div className={"flex flex-row"}>
-            <Button round className={"ml-2"} skin={"secondary"}>
+            <Button 
+              round 
+              className={"ml-2"} 
+              skin={"secondary"}
+              onClick={() => history.push({pathname: "/login", state: {background: location}})}
+            >
               Нэвтрэх
             </Button>
-            <Button round className={"ml-2"} skin={"primary"}>
+            <Button 
+              round 
+              className={"ml-2"} 
+              skin={"primary"}
+              onClick={() => history.push({pathname: "/register", state: {background: location}})}
+            >
               Бүртгэл үүсгэх
             </Button>
           </div>

@@ -1,6 +1,6 @@
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: 'class', // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'class'
   important: true,
   theme: {
     extend: {
@@ -15,6 +15,7 @@ module.exports = {
       boxShadow: {
         dropdown: "0 3px 20px rgba(0, 0, 0, 0.25)",
         card: "0px 1px 2px rgba(0, 0, 0, 0.1)",
+        button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
       },
       colors: {
         caak: {
@@ -51,7 +52,7 @@ module.exports = {
           twitter: "#1DA1F2",
           facebook: "#1877F2",
           shit: "#AFAFAF",
-          red: "#E60033"
+          red: "#E60033",
         },
         darkblue: {
           DEFAULT: "#6C7392",

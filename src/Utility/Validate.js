@@ -46,6 +46,13 @@ const Validation = (values) => {
                     errors[key] = "Утга оруулна уу?"
                 }
                 break
+            case Consts.typeDate:
+                if(!value) {
+                    errors[key] = "Та мэйл хаяг эсвэл утасны дугаар оруулна уу"
+                }else if(!Consts.regexDate.test(value)){
+                    errors[key] = "Он сар өдөрөө сонгоно уу"
+                }
+                break
             default: 
                 
         }
@@ -58,10 +65,35 @@ const Validation = (values) => {
 const Validate = (variables) => {
     
     const [errors, setErrors] = useState({})
+    const [isValid, setIsValid] = useState(false)
 
     const handleChange = e => {
         const { name, value } = e.target;
         variables[name].onChange(value)
+        if(!variables[name].ignoreOn){ 
+            let fieldValidation = {
+                [name]: {...variables[name], value: value}
+            }
+            if(variables[name].type === Consts.typePasswordRepeat){
+                fieldValidation.password = variables.password
+            }
+
+            let retErrors = Validation(fieldValidation)
+            if(Object.keys(retErrors).length <= 0){
+                let err = errors
+                delete err[name]
+                setErrors(err)
+            }else{
+                setErrors({...errors, ...retErrors})
+            }
+        }
+
+        let retErrors = Validation({...variables, [name]: {...variables[name], value: value}})
+        if(Object.keys(retErrors).length <= 0){
+            setIsValid(true)
+        }else{
+            setIsValid(false)
+        }
     }
 
     const handleSubmit = (callback) => {
@@ -75,7 +107,7 @@ const Validate = (variables) => {
         setErrors(retErrors)
     }
 
-    return { handleChange, handleSubmit, errors }
+    return { handleChange, handleSubmit, errors , isValid}
 }
 
 export default Validate

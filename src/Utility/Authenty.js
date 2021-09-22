@@ -11,12 +11,13 @@ export async function isLogged(user, setUser){
       if(usr && user){
 
         const {sysUser, ...cogUser} = user
-        console.log(sysUser, cogUser)
-        if(JSON.encode(usr) === JSON.encode(cogUser)){
+        if(JSON.toString(usr) === JSON.toString(cogUser)){
             if(!sysUser){
               let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
               setUser({...usr, sysUser: resp.data.getUser})
             }
+        }else{
+          setUser(null)
         }
       }else{
         setUser(null)

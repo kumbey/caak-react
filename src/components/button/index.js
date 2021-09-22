@@ -16,7 +16,7 @@ const Button = ({
       {...props}
       className={`button ${skin ? skin : ""} ${round ? "round" : ""} ${
         circular ? "circular" : ""
-      } ${roundedSquare ? "rounded-lg" : ""} ${props.className}`}
+      } ${roundedSquare ? "rounded-square" : ""} ${props.className}`}
       disabled={loading}
     >
       {iconPosition === "left" ? icon : ""}

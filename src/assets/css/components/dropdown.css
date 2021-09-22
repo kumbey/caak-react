@@ -1,5 +1,5 @@
 .dropdown {
-    @apply z-50 absolute w-max rounded-md overflow-hidden right-0 mt-2
+    @apply z-50 absolute w-max rounded-sm overflow-hidden -right-2 mt-3
 }
 
 .dropdown > div {

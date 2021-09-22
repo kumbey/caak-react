@@ -3,8 +3,8 @@ import { useHistory } from "react-router";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faGoogle, faTwitter, faApple } from "@fortawesome/free-brands-svg-icons";
-import {faQuestionCircle, faEnvelope} from '@fortawesome/free-regular-svg-icons'
+import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 
 export default function Login() {
     const history = useHistory();
