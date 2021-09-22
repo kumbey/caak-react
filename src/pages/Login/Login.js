@@ -1,7 +1,6 @@
 import Auth from "@aws-amplify/auth";
 import {useState} from "react";
 import { useHistory, useLocation } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import { useUser } from "../../context/userContext";
@@ -58,8 +57,8 @@ export default function Login() {
     }
     
     return ( !checkUser(user) ?
-            <Backdrop>
-                <div className=" sm:mx-auto pt-40 w-ca sm:max-h-md">
+    <div className="backdrop flex justify-center items-center">
+                <div className=" sm:mx-auto  w-ca sm:max-h-md">
                     <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
                         <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                             <div 
@@ -135,6 +134,6 @@ export default function Login() {
             </div>
             </div>
         </div>
-        </Backdrop> : null
+        </div> : null
     )
 }

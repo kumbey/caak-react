@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory, useLocation } from "react-router";
 import Input from "../../components/input";
-import Backdrop from "../../components/Backdrop";
-import Select from "../../components/input/Select";
 import Button from "../../components/button";
 import { closeModal } from "../../Utility/Util";
 import { useState } from "react/cjs/react.development";
@@ -65,10 +63,9 @@ const UserInformation = () => {
 
 
   return (
-    <Backdrop>
-      <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
-            <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
-                <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
+    <div className="backdrop flex justify-center items-center">
+            <div className="w-cc bg-white rounded-lg shadow-xl">
+                <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                         <div 
                           onClick={() => history.replace({pathname: "/register", state: state})}
                           className="flex items-center"
@@ -170,7 +167,7 @@ const UserInformation = () => {
           {/*Footer*/}
           <div
                 className={
-                    "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+                    "pb-c1 signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
                 }
             >
                 <div className="text-caak-blue text-15px">
@@ -189,8 +186,7 @@ const UserInformation = () => {
                 <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
         </div>
         </div>
-      </div>
-    </Backdrop>
+    </div>
   );
 };
 

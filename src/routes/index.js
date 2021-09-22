@@ -2,6 +2,8 @@ import LoginRegsiter from "../pages/Login";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/UserInformation"
 import Logout from "../pages/Logout";
+import Group from "../pages/Group";
+import Confirmation from "../pages/Register/Confirmation";
 
 const Routes = [
   {
@@ -44,6 +46,18 @@ const Routes = [
     exact: true,
     background: true,
     page: () => <Register />,
+  },
+  {
+    path: "/register/confirmation/",
+    exact: true,
+    background: true,
+    page: () => <Confirmation />,
+  },
+  {
+    path: "/group",
+    exact: true,
+    background: true,
+    page: () => <Group />,
   },
 ];
 

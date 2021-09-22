@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -16,8 +15,8 @@ export default function Login({type, ...props}) {
 
     return (
         !user ? 
-            <Backdrop>
-                <div className=" sm:mx-auto pt-40 w-cb sm:max-h-md">
+        <div className="backdrop flex justify-center items-center">
+                <div className=" sm:mx-auto w-cb sm:max-h-md">
                     <div className=" sm:w-full px-10 pb-c1 bg-white rounded-lg shadow-xl">
                         <div 
                             onClick={() => closeModal(history, state)} 
@@ -145,6 +144,6 @@ export default function Login({type, ...props}) {
             </div>
             </div>
             </div>
-        </Backdrop> : null
+        </div> : null
     )
 }

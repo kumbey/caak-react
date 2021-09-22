@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
 
@@ -11,8 +10,8 @@ export default function Confirmation() {
         history.push("/")
     }
   return (
-    <Backdrop>
-      <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
+    <div className="backdrop flex justify-center items-center">
+      <div className=" sm:mx-auto w-cc sm:max-h-md">
                 <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
                 <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                         <div className="flex items-center">
@@ -69,7 +68,7 @@ export default function Confirmation() {
         </div>
         </div>
       </div>
-    </Backdrop>
+    </div>
   );
 };
 

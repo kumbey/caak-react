@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCheckCircle} from '@fortawesome/free-regular-svg-icons'
@@ -11,8 +10,8 @@ export default function Completed() {
         history.push("/")
     }
     return (
-        <Backdrop>
-            <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
+        <div className="backdrop flex justify-center items-center">
+            <div className=" sm:mx-auto w-cc sm:max-h-md">
                 <div className=" sm:w-full bg-white rounded-lg shadow-xl">
                 <div className="flex  px-c6 justify-end pt-c6 items-center  cursor-pointer ">
                     <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"/>
@@ -33,6 +32,6 @@ export default function Completed() {
                     </div>
         </div>
       </div>
-    </Backdrop>
+    </div>
     )
 }
