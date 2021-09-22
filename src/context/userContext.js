@@ -39,7 +39,6 @@ function UserProvider(props) {
     },[])
 
     useEffect(() => {
-      console.log("FROM CONTEXT",user)
       if(user){
           SessionStorageUtil.set(Consts.SS_UserKey, user) 
       }else{

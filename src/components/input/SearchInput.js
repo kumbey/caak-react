@@ -1,9 +1,8 @@
 import React from 'react';
 import Input from "./index";
 
-const SearchInput = (props) => {
+const SearchInput = ({ label,...props}) => {
     return (
-        <div className="w-full">
             <div className="relative">
                 <div
                     className="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
@@ -14,9 +13,8 @@ const SearchInput = (props) => {
                     </svg>
                     {/*<SearchIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />*/}
                 </div>
-                <Input {...props} label={"хайлт хийх"} className={"py-2.5 pl-8 pr-3 bg-gray-100 hover:placeholder-caak-generalblack"}/>
+                <Input {...props} label={label} className={"h-c30 pl-8 bg-gray-100 hover:placeholder-caak-generalblack"}/>
             </div>
-        </div>
     );
 };
 
