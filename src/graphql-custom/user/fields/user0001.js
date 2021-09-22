@@ -2,6 +2,7 @@ const user0001 = /* GraphQL */ `{
     id
     firstname
     lastname
+    nickname
     birthdate
     gender
     pic_id

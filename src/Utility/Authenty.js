@@ -9,7 +9,6 @@ export async function isLogged(user, setUser){
       const usr = await Auth.currentAuthenticatedUser()
 
       if(usr && user){
-
         const {sysUser, ...cogUser} = user
         if(JSON.toString(usr) === JSON.toString(cogUser)){
             if(!sysUser){
@@ -30,7 +29,6 @@ export async function isLogged(user, setUser){
 export async function signIn(setUser){
   try{
       const usr = await Auth.currentAuthenticatedUser()
-      console.log(usr)
       let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
       setUser({...usr, sysUser: resp.data.getUser})
   }catch(ex){
