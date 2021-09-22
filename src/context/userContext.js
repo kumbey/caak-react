@@ -1,8 +1,8 @@
 import {createContext, useContext, useState, useEffect, useMemo} from 'react'
-import { Hub } from 'aws-amplify';
+import { Hub } from 'aws-amplify'
 import { isLogged, signIn } from '../Utility/Authenty'
-import SessionStorageUtil from '../Utility/SessionStorageUtil';
-import Consts from '../Utility/Consts';
+import SessionStorageUtil from '../Utility/SessionStorageUtil'
+import Consts from '../Utility/Consts'
 
 const UserContext = createContext()
 
@@ -32,13 +32,13 @@ function UserProvider(props) {
                 signIn(setUser)
                 break
               default:
+                break
           }
       });
       // eslint-disable-next-line
     },[])
 
     useEffect(() => {
-      console.log("FROM CONTEXT",user)
       if(user){
           SessionStorageUtil.set(Consts.SS_UserKey, user) 
       }else{

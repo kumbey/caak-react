@@ -46,15 +46,34 @@ const PageSwitch = (props) => {
               )
             }
           })}
-            <Route path="/post/:id" component={null}/>
-            <Route path="/edit/:id" component={null}/>
-            <Route component={null} />
         </Switch>
+        {Routes.map((route, index) => {
+            if(route.background){
+              if(route.auth){
+                return ( background && 
+                  <PrivateRoute
+                    key={index}
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.page}
+                    isAuth={props.isAuth}
+                  />
+                )
+              }else{
+                return ( background && 
+                  <Route
+                    key={index}
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.page}
+                  />
+                )
+              }
+            }else{
+              return null
+            }
+        })}
         <Route path="/" component={null}/>
-        <Route path="/popupsignin" component={null}/>
-        {background && <Route path="/post/:id" component={null}/>}
-        {background && <Route path="/spost/:id" component={null}/>}
-        {background && <Route path="/edit/:id" component={null}/>}
         <QueryModals/>
       </UserProvider>
     );

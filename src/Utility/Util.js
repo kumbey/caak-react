@@ -186,6 +186,14 @@ export function checkUser(user){
     return true
 }
 
+export function closeModal(history, state){
+    if(state && state.background){
+        history.goBack()
+    }else{
+        history.replace("/")
+    }
+}
+
 var object = {
                 useQuery, 
                 mailNumber, 
@@ -196,7 +204,8 @@ var object = {
                 checkUsernameType,
                 getRandomInt,
                 generateFileUrl,
-                checkUser
+                checkUser,
+                closeModal
             }
 export default object
 

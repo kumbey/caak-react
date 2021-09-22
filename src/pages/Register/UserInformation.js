@@ -1,141 +1,198 @@
 import React from "react";
-import { useHistory } from "react-router";
+import {useHistory, useLocation} from "react-router";
 import Input from "../../components/input";
 import Backdrop from "../../components/Backdrop";
-import Select from "../../components/input/Select";
-import {faChevronLeft} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faQuestionCircle} from '@fortawesome/free-regular-svg-icons'
 import Button from "../../components/button";
+import {closeModal} from "../../Utility/Util";
+import {useState} from "react/cjs/react.development";
+import Consts from "../../Utility/Consts";
+import Validate from "../../Utility/Validate";
+import DateSelect from "../../components/input/DateSelect";
 
 const UserInformation = () => {
-  const history = useHistory();
 
-    function home(){
-        history.push("/")
+    const history = useHistory()
+    const {state} = useLocation()
+
+    const [firstname, setFirstname] = useState("")
+    const [lastname, setLastname] = useState("")
+    const [nickname, setNickname] = useState("")
+    const [birthdate, setBirthdate] = useState("")
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [passwordRepeat, setPasswordRepeat] = useState("")
+
+    const validate = {
+        firstname: {
+            value: firstname,
+            type: Consts.typeRequired,
+            onChange: setFirstname
+        },
+        lastname: {
+            value: lastname,
+            type: Consts.typeRequired,
+            onChange: setLastname
+        },
+        nickname: {
+            value: nickname,
+            type: Consts.typeRequired,
+            onChange: setNickname
+        },
+        birthdate: {
+            value: birthdate,
+            type: Consts.typeDate,
+            onChange: setBirthdate
+        },
+        username: {
+            value: username,
+            type: Consts.typeUsername,
+            onChange: setUsername
+        },
+        password: {
+            value: password,
+            type: Consts.typePassword,
+            onChange: setPassword
+        },
+        passwordRepeat: {
+            value: passwordRepeat,
+            type: Consts.typePasswordRepeat,
+            onChange: setPasswordRepeat,
+        }
     }
-  return (
-    <Backdrop>
-      <div className=" sm:mx-auto pt-40 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
-        <div className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
-          <div className="flex justify-between items-center  cursor-pointer ">
-                        <div className="flex items-center">
-                    <FontAwesomeIcon
-                        size={"lg"}
-                        className={"text-caak-extraBlack mr-2"}
-                        icon={faChevronLeft}
-                    />
-                        <div onClick={() => {}} className="text-caak-generalblack text-13px cursor-pointer">
-                          Бүртгүүлэх сонголт руу буцах
-                          </div>
+
+    const {handleChange, errors, handleSubmit, isValid} = Validate(validate)
+
+
+    return (
+        <Backdrop>
+            <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
+                <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
+                    <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
+                        <div
+                            onClick={() => history.replace({pathname: "/register", state: state})}
+                            className="flex items-center"
+                        >
+                            <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
+                            <p className="text-caak-generalblack text-13px">Бүртгүүлэх сонголт руу буцах</p>
                         </div>
-                    <Button
-                        onClick={home}
-                        className={
-                            "bg-gray-300 rounded-full text-black"
-                        }
-                    >
-                        ✖
-                    </Button>
+                        <span
+                            onClick={() => closeModal(history, state)}
+                            className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"
+                        />
                     </div>
-                    <div className={"flex text-caak-generalblack justify-center text-center align-center mt-5 mb-4 font-bold text-24px"}>
+                    <div
+                        className={"flex text-caak-generalblack justify-center text-center align-center mt-5 mb-4 font-bold text-24px"}>
                         Имайл хаяг/Утасны дугаар <br/> бүртгүүлэх!
                     </div>
-          <div>
-            <div className="flex justify-center">
-              <div className="mr-3">
-            <Input
-                        placeholder={"Овог"}
-                        className={"py-3 border border-caak-titaniumwhite"}
-                    />
-                    </div>
-                    <Input
-                        placeholder={"Нэр"}
-                        className={"py-3 border border-caak-titaniumwhite"}
-                    />
-            </div>
-            <Input
-                        placeholder={"Нийтэд харагдах нэр"}
-                        className={"py-3 border border-caak-titaniumwhite mt-4"}
-                    />
-          </div>
+                    <div className=" px-c13">
+                        <div className="flex justify-between">
+                            <Input
+                                value={lastname}
+                                name={"lastname"}
+                                errorMessage={errors.lastname}
+                                onChange={handleChange}
+                                placeholder={"Овог"}
+                                className={"py-3 border border-caak-titaniumwhite w-c12 h-c9 bg-caak-titaniumwhite"}
+                            />
+                            <Input
+                                value={firstname}
+                                name={"firstname"}
+                                errorMessage={errors.firstname}
+                                onChange={handleChange}
+                                placeholder={"Нэр"}
+                                className={"py-3 border border-caak-titaniumwhite w-c12 h-c9 bg-caak-titaniumwhite"}
+                            />
+                        </div>
+                        <Input
+                            value={nickname}
+                            name={"nickname"}
+                            errorMessage={errors.nickname}
+                            onChange={handleChange}
+                            placeholder={"Нийтэд харагдах нэр"}
+                            className={"py-3 border border-caak-titaniumwhite bg-caak-titaniumwhite"}
+                        />
 
-          <div className={"flex flex-col mt-3"}>
-            <div className={"flex flex-row"}>
-              <Select placeholder={"asdsd"} containerStyle={"flex-1"}>
-                <option>1998</option>
-                <option>1999</option>
-                <option>2000</option>
-                <option>2001</option>
-              </Select>
-              <Select containerStyle={"flex-1 mx-2"}>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </Select>
-              <Select containerStyle={"flex-1"}>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </Select>
+                        <DateSelect
+                            value={birthdate}
+                            errorMessage={errors.birthdate}
+                            name={"birthdate"}
+                            onChange={handleChange}
+                        />
+
+                        <div className="mt-b2">
+                            <Input
+                                value={username}
+                                name={"username"}
+                                onChange={handleChange}
+                                errorMessage={errors.username}
+                                placeholder={"Имайл хаяг/Утасны дугаар"}
+                                type={"text"}
+                                labelStyle={"block text-sm  text-black"}
+                                className={"h-c9 border border-gray-300 bg-caak-titaniumwhite"}
+                            />
+                            <Input
+                                value={password}
+                                name={"password"}
+                                onChange={handleChange}
+                                errorMessage={errors.password}
+                                type={"password"}
+                                placeholder={"Нууц үг"}
+                                className={"border border-caak-titaniumwhite w-ce h-c9 bg-caak-liquidnitrogen"}
+                            />
+
+                            <Input
+                                value={passwordRepeat}
+                                name={"passwordRepeat"}
+                                onChange={handleChange}
+                                errorMessage={errors.passwordRepeat}
+                                type={"password"}
+                                placeholder={"Нууц үгээ давтан оруулна уу"}
+                                className={"border border-caak-titaniumwhite w-ce h-c9 bg-caak-liquidnitrogen"}
+                            />
+
+                            <Button
+                                onClick={() => handleSubmit()}
+                                className={`
+                mt-c3 w-full 
+                h-c9 
+                text-17px 
+                font-bold 
+                ${isValid ? "bg-caak-primary text-white" : "bg-caak-titaniumwhite text-caak-shit"}
+                rounded-lg`
+                                }
+                            >
+                                Бүртгүүлэх
+                            </Button>
+                            <p className="text-12px pt-b1 text-caak-aleutian">Таны овог нэр, Төрсөн он сар болон Нууц үг
+                                нийтэд харагдахгүй болно!</p>
+                        </div>
+                    </div>
+
+                    {/*Footer*/}
+                    <div
+                        className={
+                            "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+                        }
+                    >
+                        <div className="text-caak-blue text-15px">
+                    <span>
+                        Бүртгэлтэй хэрэглэгч бол{" "}
+                    </span>
+                            <a
+                                href="/register"
+                                className="text-caak-primary text-15px font-bold cursor-pointer"
+                            >
+                                {" "}
+                                Нэвтрэх
+                            </a>
+
+                        </div>
+                        <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div>
-          <Input
-              errorMessage={"Дээрх дугаартай хэрэглэгч бүртгэлтэй байна."}
-              placeholder={"Имайл хаяг/Утасны дугаар"}
-              type={"text"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
-            />
-            <Input
-              type={"password"}
-              placeholder={"Нууц үг"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
-            />
-            <Input
-              errorMessage={"Нууц үг таарахгүй байна"}
-              type={"password"}
-              placeholder={"Нууц үгээ давтан оруулна уу"}
-              labelStyle={"block text-sm  text-black mb-2 mt-4"}
-              className={"py-3 pr-3 border border-gray-300"}
-            />
-            <Button onClick={() => {}} className="w-full mt-8 text-caak-shit text-17px font-bold bg-caak-titaniumwhite rounded-lg">
-              Бүртгүүлэх
-            </Button>
-          </div>
-          
-          {/*Footer*/}
-          <div
-            className={
-              "signFooter flex justify-between border-t items-center mt-8"
-            }
-          >
-            <div className="my-2 text-center text-15px">
-            <span className={"text-gray-primary"}>
-              Бүртгэлтэй хэрэглэгч бол{" "}
-            </span>
-            <span
-            onClick={() => {}}
-              className="text-caak-primary hover:text-primary-hover font-bold cursor-pointer"
-            >
-              {" "}
-              Нэвтрэх
-            </span>
-          </div>
-          <FontAwesomeIcon
-                    className={"text-caak-darkblue cursor-pointer "}
-                    icon={faQuestionCircle}
-                />
-          </div>
-        </div>
-      </div>
-    </Backdrop>
-  );
+        </Backdrop>
+    );
 };
 
 export default UserInformation;

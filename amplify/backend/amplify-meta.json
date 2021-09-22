@@ -55,12 +55,11 @@
         "GraphQLAPIIdOutput": "t72xxpseifctlji4egzhmmxwsi",
         "GraphQLAPIEndpointOutput": "https://6gnxf22onnbhthhwytct62iesi.appsync-api.ap-southeast-1.amazonaws.com/graphql"
       },
-      "lastPushTimeStamp": "2021-09-17T13:50:47.394Z",
+      "lastPushTimeStamp": "2021-09-22T04:19:34.921Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apicaakmn"
-      },
-      "lastPushDirHash": "freu6SLXFR2OMCh6VWTWLrPi3ZU="
+      }
     }
   },
   "storage": {
@@ -71,7 +70,7 @@
         "BucketName": "caakmn8fe6c2cb480d45cc8e0c9fac64b9f294100650-devs",
         "Region": "ap-southeast-1"
       },
-      "lastPushTimeStamp": "2021-09-17T13:50:47.382Z",
+      "lastPushTimeStamp": "2021-09-22T04:19:34.922Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storages30c6bf4f5"
@@ -89,7 +88,7 @@
         "Name": "userpoolpostconfirmation-devs",
         "LambdaExecutionRole": "caakmnLambdaRolee0d8f565-devs"
       },
-      "lastPushTimeStamp": "2021-09-17T13:50:47.385Z",
+      "lastPushTimeStamp": "2021-09-22T04:19:34.922Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/userpoolpostconfirmation-cloudformation-template.json",
         "logicalId": "functionuserpoolpostconfirmation"
@@ -126,7 +125,7 @@
         "Name": "users-devs",
         "LambdaExecutionRole": "caakmnLambdaRole37096d08-devs"
       },
-      "lastPushTimeStamp": "2021-09-17T13:50:47.387Z",
+      "lastPushTimeStamp": "2021-09-22T04:26:58.779Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/users-cloudformation-template.json",
         "logicalId": "functionusers"
@@ -134,7 +133,9 @@
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
         "s3Key": "amplify-builds/users-317130564669385a7954-build.zip"
-      }
+      },
+      "lastDevBuildTimeStamp": "2021-09-22T04:36:31.114Z",
+      "lastBuildType": "DEV"
     }
   }
 }

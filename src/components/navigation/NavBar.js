@@ -7,16 +7,25 @@ import DropDown from "./DropDown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faFire } from "@fortawesome/free-solid-svg-icons";
-import user from "../navigation/user.json";
 
 import Dummy from "dummyjs";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
+import { useHistory, useLocation } from "react-router";
 
-export default function NavBar() {
+export default function NavBar( ) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const {user} = useUser()
+  const history = useHistory()
+  const location = useLocation()
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+
   //TODO Change Icon
   return (
     <nav className="bg-white">
@@ -74,7 +83,7 @@ export default function NavBar() {
               "flex flex-row items-center hidden md:inline-flex lg:inline-flex"
             }
           >
-            {user ? (
+            {checkUser(user) ? (
               <div className={"flex flex-row items-center"}>
                 <div className={"mr-6"}>
                   <Button
@@ -116,6 +125,7 @@ export default function NavBar() {
                 <div className={"flex flex-row mr-6"}>
                   <div className={"w-45px h-45px mr-2"}>
                     <img
+                      alt={user.sysUser.nickname}
                       data-dummy="200x200"
                       src={Dummy.img("200x200")}
                       className={"w-full block object-cover rounded-full"}
@@ -123,7 +133,7 @@ export default function NavBar() {
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
                     <span className={"text-generalblack text-14px font-bold"}>
-                      {user[0].name}
+                      {user.sysUser.nickname}
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
@@ -134,7 +144,7 @@ export default function NavBar() {
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
                       >
-                        2434
+                        {user.sysUser.aura.point}
                       </span>
                     </div>
                   </div>
@@ -142,10 +152,20 @@ export default function NavBar() {
               </div>
             ) : (
               <div className={"flex flex-row"}>
-                <Button round skin={"secondary"} className={"mr-2"}>
+                <Button
+                  round
+                  skin={"secondary"}
+                  className={"mr-2"}
+                  onClick={() => history.push({pathname: "/login", state: {background: location}})}
+                >
                   Нэвтрэх
                 </Button>
-                <Button round skin={"primary"} className={"mr-2"}>
+                <Button
+                  round
+                  skin={"primary"}
+                  className={"mr-2"}
+                  onClick={() => history.push({pathname: "/register", state: {background: location}})}
+                >
                   Бүртгэл үүсгэх
                 </Button>
               </div>
@@ -190,10 +210,20 @@ export default function NavBar() {
       >
         <div className="w-max flex flex-col px-2 pt-2 pb-3 space-y-1">
           <div className={"flex flex-row"}>
-            <Button round className={"ml-2"} skin={"secondary"}>
+            <Button
+              round
+              className={"ml-2"}
+              skin={"secondary"}
+              onClick={() => history.push({pathname: "/login", state: {background: location}})}
+            >
               Нэвтрэх
             </Button>
-            <Button round className={"ml-2"} skin={"primary"}>
+            <Button
+              round
+              className={"ml-2"}
+              skin={"primary"}
+              onClick={() => history.push({pathname: "/register", state: {background: location}})}
+            >
               Бүртгэл үүсгэх
             </Button>
           </div>

@@ -23,6 +23,7 @@ type User @model
   username: [Username]! @connection(keyName:"byUser", fields:["id"])
   firstname: String!
   lastname: String
+  nickname: String
   birthdate: String
   gender: String!
   pic_id: ID

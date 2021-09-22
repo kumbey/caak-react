@@ -1,4 +1,7 @@
-import AddPost from "../pages/Blog/AddPost";
+import LoginRegsiter from "../pages/Login";
+import Login from "../pages/Login/Login";
+import Register from "../pages/Register/UserInformation"
+import Logout from "../pages/Logout";
 
 const Routes = [
   {
@@ -13,9 +16,34 @@ const Routes = [
     page: () => <h2>User Config page</h2>,
   },
   {
-    path: "/sanjaa",
+    path: "/logout",
     exact: true,
-    page: () => <AddPost />,
+    background: true,
+    page: () => <Logout/>,
+  },
+  {
+    path: "/login",
+    exact: true,
+    background: true,
+    page: () => <LoginRegsiter type="signIn"/>,
+  },
+  {
+    path: "/register",
+    exact: true,
+    background: true,
+    page: () => <LoginRegsiter type="signUp"/>,
+  },
+  {
+    path: "/login/main",
+    exact: true,
+    background: true,
+    page: () => <Login />,
+  },
+  {
+    path: "/register/main",
+    exact: true,
+    background: true,
+    page: () => <Register />,
   },
 ];
 

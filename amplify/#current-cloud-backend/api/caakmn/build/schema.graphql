@@ -16,6 +16,7 @@ type User @aws_iam @aws_cognito_user_pools {
   id: ID!
   firstname: String!
   lastname: String
+  nickname: String
   birthdate: String
   gender: String!
   pic_id: ID
@@ -485,6 +486,7 @@ input ModelUserFilterInput {
   id: ModelIDInput
   firstname: ModelStringInput
   lastname: ModelStringInput
+  nickname: ModelStringInput
   birthdate: ModelStringInput
   gender: ModelStringInput
   pic_id: ModelIDInput
@@ -501,6 +503,7 @@ input CreateUserInput {
   id: ID
   firstname: String!
   lastname: String
+  nickname: String
   birthdate: String
   gender: String!
   pic_id: ID
@@ -514,6 +517,7 @@ input UpdateUserInput {
   id: ID!
   firstname: String
   lastname: String
+  nickname: String
   birthdate: String
   gender: String
   pic_id: ID
@@ -530,6 +534,7 @@ input DeleteUserInput {
 input ModelUserConditionInput {
   firstname: ModelStringInput
   lastname: ModelStringInput
+  nickname: ModelStringInput
   birthdate: ModelStringInput
   gender: ModelStringInput
   pic_id: ModelIDInput

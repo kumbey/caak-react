@@ -1,98 +1,76 @@
 import React from "react";
-import {useHistory} from "react-router";
+import { useHistory } from "react-router";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
-import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faQuestionCircle} from "@fortawesome/free-regular-svg-icons";
 import OtpInput from "../../components/input/OtpInput";
 
-const Confirmation = () => {
-    const history = useHistory();
-
-    function home() {
+export default function Confirmation() {
+  const history = useHistory();
+    
+    function home(){
         history.push("/")
     }
-
-    return (
-        <Backdrop>
-            <div className=" sm:mx-auto pt-40 sm:max-w-md sm:max-h-md sm-my-auto h-full ">
-                <div
-                    className="loginCard min-w-max sm:w-full relative w-screen px-10 py-8 bg-white rounded-lg shadow-xl">
-                    <div className="flex justify-between items-center  cursor-pointer ">
-
-                        {/* head */}
+  return (
+    <Backdrop>
+      <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
+                <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
+                <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                         <div className="flex items-center">
-                            <FontAwesomeIcon
-                                size={"lg"}
-                                className={"text-caak-extraBlack mr-2"}
-                                icon={faChevronLeft}
-                            />
-                            <p onClick={() => {
-                            }} className="text-caak-generalblack text-13px">Бүртгүүлэх сонголт руу буцах</p>
+                            <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
+                            <p  className="text-caak-generalblack text-13px">Бүртгүүлэх хэсэг рүү буцах</p>
                         </div>
-                        <Button
-                            onClick={home}
-                            className={
-                                "bg-gray-300 rounded-full text-black"
-                            }
-                        >
-                            ✖
-                        </Button>
+                        <span onClick={home} className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-full"/>
                     </div>
-
-                    {/* body */}
-                    <div className={"text-caak-generalblack text-center mt-5 mb-4 font-bold text-24px"}>
-                        Баталгаажуулах код <br/> илгээгдлээ
-                    </div>
-                    <div className="text-center text-15px text-caak-darkBlue">
-                        Таны утасны дугаар болох ** ** ** 47 руу <br/> баталгаажуулах код илгээгдсэн болно.
-                    </div>
-                    <OtpInput/>
-                    <div className={"py-2 flex flex-col"}>
-
-                        <div className=" flex justify-center text-14px text-caak-darkBlue">
-                            Баталгаажуулах код дахин авах
-                        </div>
-                        <div
-                            className=" flex justify-center items-center text-14px text-caak-primary mb-5 font-bold cursor-pointer">
-                            <span className={"icon-fi-rs-resend"}/>
-                            Дахин илгээх
-                        </div>
-                        <Button onClick={() => {
-                        }} round className={" font-bold bg-caak-primary py-3 text-17px"}>
-                            Баталгаажуулах
-                        </Button>
-                    </div>
-
-                    {/*Footer*/}
-                    <div
-                        className={
-                            "signFooter flex justify-between border-t items-center mt-8"
-                        }
-                    >
-                        <div className="my-2 text-center text-15px">
-                  <span className={"text-gray-primary"}>
-                    Бүртгэлтэй хэрэглэгч бол{" "}
-                  </span>
-                            <span
-                                onClick={() => {
-                                }}
-                                className="text-caak-primary hover:text-primary-hover font-bold cursor-pointer"
-                            >
-                    {" "}
-                                Нэвтрэх
-                  </span>
-                        </div>
-                        <FontAwesomeIcon
-                            className={"text-caak-darkblue cursor-pointer "}
-                            icon={faQuestionCircle}
-                        />
-                    </div>
-                </div>
+          
+          {/* body */}
+          <div className={"text-caak-generalblack text-center font-bold text-24px mt-c3"}>
+            Баталгаажуулах код <br/> илгээгдлээ
+          </div>
+          <div className="text-center text-15px text-caak-darkBlue mt-c3">
+            Таны утасны дугаар болох ** ** ** 47 руу <br/> баталгаажуулах код илгээгдсэн болно.
+          </div>
+          <div className="mt-c11">
+            <OtpInput/>
             </div>
-        </Backdrop>
-    );
+          <div className={" flex flex-col "}>
+            
+            <div className=" flex justify-center text-14px text-caak-darkBlue mt-c20">
+              Баталгаажуулах код дахин авах
+            </div>
+              <div className=" flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer">
+                <span className={"icon-fi-rs-resend text-13px mr-1"}/>
+                Дахин илгээх
+              </div>
+                <Button onClick={() => {}} round className={" font-bold bg-caak-primary mt-c6 mx-c13 h-c9 text-17px"}>
+                  Баталгаажуулах
+                </Button>
+          </div>
+
+              {/*Footer*/}
+              <div
+                className={
+                    "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+                }
+            >
+                <div className="text-caak-blue text-15px">
+                    <span>
+                        Бүртгэлтэй хэрэглэгч бол{" "}
+                    </span>
+                    <a
+                        href="/register"
+                        className="text-caak-primary text-15px font-bold cursor-pointer"
+                    >
+                    {" "}
+                        Нэвтрэх
+                    </a>
+                    
+                </div>
+                <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
+        </div>
+        </div>
+      </div>
+    </Backdrop>
+  );
 };
 
-export default Confirmation;
+
