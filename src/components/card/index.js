@@ -1,5 +1,4 @@
 import Dummy from "dummyjs";
-import {useEffect, useRef, useState} from "react"; // es6
 
 const Card = ({video, verifiedUser, ...data}) => {
     // const videoRef = useRef();
@@ -172,6 +171,7 @@ const Card = ({video, verifiedUser, ...data}) => {
                 </div>
             ) : (
                 <img
+                    alt=""
                     data-dummy="400,100x100,600"
                     src={Dummy.img("400,100x100,800")}
                     className={"w-full max-h-96 block object-cover"}

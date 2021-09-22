@@ -116,6 +116,7 @@ export default function NavBar( ) {
                 <div className={"flex flex-row mr-4"}>
                   <div className={"w-45px h-45px mr-2"}>
                     <img
+                      alt=""
                       data-dummy="200x200"
                       src={Dummy.img("200x200")}
                       className={"w-full block object-cover rounded-full"}

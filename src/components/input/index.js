@@ -16,7 +16,7 @@ const Input = ({
           {label}
         </label>
       )}
-      <input {...props} className={`${className} ${errorMessage ? `border border-caak-titaniumwhite`: ``}`} />
+      <input {...props} className={`${className} ${errorMessage ? `border border-caak-red`: ``}`} />
        
         <p className="error" id="email-error">
           {errorMessage}

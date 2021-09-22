@@ -18,7 +18,7 @@ export default function Login() {
             <div className=" sm:mx-auto pt-40 w-cb sm:max-h-md">
                 <div className=" sm:w-full px-10 pb-c1 bg-white rounded-lg shadow-xl">
                     <div onClick={home} className="relative pt-c6">
-                        <span className="icon-fi-rs-close absolute right-0 text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"/>
+                        <span className="icon-fi-rs-close absolute right-0 text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-full"/>
                     </div>
                     <div className={"flex text-caak-generalblack justify-center mb-c2 font-bold text-24px pt-c5 "}>
                         Шинэ Саак-т бүртгүүлэх!

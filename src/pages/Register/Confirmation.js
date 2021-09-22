@@ -12,14 +12,14 @@ export default function Confirmation() {
     }
   return (
     <Backdrop>
-      <div className=" sm:mx-auto pt-40 w-cb sm:max-h-md">
+      <div className=" sm:mx-auto pt-40 w-cc sm:max-h-md">
                 <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
                 <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                         <div className="flex items-center">
                             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
                             <p  className="text-caak-generalblack text-13px">Бүртгүүлэх хэсэг рүү буцах</p>
                         </div>
-                        <span onClick={home} className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-lg"/>
+                        <span onClick={home} className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-full"/>
                     </div>
           
           {/* body */}
@@ -29,10 +29,12 @@ export default function Confirmation() {
           <div className="text-center text-15px text-caak-darkBlue mt-c3">
             Таны утасны дугаар болох ** ** ** 47 руу <br/> баталгаажуулах код илгээгдсэн болно.
           </div>
-          <OtpInput/>
+          <div className="mt-c11">
+            <OtpInput/>
+            </div>
           <div className={" flex flex-col "}>
             
-            <div className=" flex justify-center text-14px text-caak-darkBlue mt-c1">
+            <div className=" flex justify-center text-14px text-caak-darkBlue mt-c20">
               Баталгаажуулах код дахин авах
             </div>
               <div className=" flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer">

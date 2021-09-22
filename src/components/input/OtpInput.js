@@ -1,27 +1,37 @@
-import Consts from "../../Utility/Consts";
+import React, { useState } from "react";
 
-/**
- * Verification Code input field that expands to width of parent container. Get value with #verificationCode
- *
- * DO NOT PUT MORE THAN 1 OF THIS COMPONENT ON THE SAME PAGE! It will break due to ID related errors.
- */
-function OtpInput({className, onChange, ...props}) {
+export default function Test  ()  {
+    const [otp, setOtp] = useState(new Array(6).fill(""))
 
-    return (
-        <div className={`verificationCode-wrapper ${className}`}>
-            <div className="verificationCode-outerDiv">
-                    <input type="number"
-                        maxLength="7"
-                        name="verificationCode"
-                        id="verificationCode"
-                        spellCheck="false"
-                        {...props}
-                    >
-                    </input>
-            </div>
+    const handleChange= (element,  index) => {
+        if(isNaN(element.value)) 
+        return false;
+
+        setOtp([...otp.map((d, idx)=> (idx === index) ? element.value : d)]);
+
+        if(element.nextSibling){
+            element.nextSibling.focus();
+        }
+    }
+    return(
+        <div className="flex justify-between mx-c13">
+            {
+                otp.map((data, index) => {
+                    return(
+                        <input
+                        
+                            value={data}
+                            key={index}
+                            onChange={e => handleChange(e.target, index)}
+                            onFocus={e => e.target.select({})}
+                            id="neg" 
+                            type="regexPassword" 
+                            maxLength="1" 
+                            className="w-c15 h-c20 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
+                        />
+                    )
+                })
+            }
         </div>
     )
 }
-
-
-export default OtpInput;
