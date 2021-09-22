@@ -1,4 +1,3 @@
-import React from "react";
 
 const Input = ({
   labelStyle,
@@ -6,21 +5,28 @@ const Input = ({
   label,
   className,
   errorMessage,
+  id,
+  containerStyle,
   ...props
 }) => {
   return (
-    <div className={"input"}>
+    <div className={`input ${containerStyle && containerStyle}`}>
       {hideLabel ? null : (
-        <label htmlFor={props.id} className={`${labelStyle}`}>
+        <label htmlFor={id} className={`${labelStyle}`}>
           {label}
         </label>
       )}
-      <input {...props} className={`${className} ${errorMessage ? `border border-caak-red`: ``}`} />
-       
+      <input
+        {...props}
+        className={`${className} ${
+          errorMessage ? `border border-caak-red` : ``
+        }`}
+      />
+      {errorMessage && (
         <p className="error" id="email-error">
           {errorMessage}
         </p>
-      
+      )}
     </div>
   );
 };

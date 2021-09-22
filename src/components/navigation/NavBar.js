@@ -7,17 +7,17 @@ import DropDown from "./DropDown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faFire } from "@fortawesome/free-solid-svg-icons";
-import user from '../navigation/user.json'
+import user from "../navigation/user.json";
 
 import Dummy from "dummyjs";
 
-export default function NavBar( ) {
+export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  //TODO Change Icon
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
@@ -127,9 +127,9 @@ export default function NavBar( ) {
                     </span>
                     <div className={"flex flex-row items-center"}>
                       <FontAwesomeIcon
-                          size={"sm"}
-                          className={"text-generalblack mr-1"}
-                          icon={faFire}
+                        size={"sm"}
+                        className={"text-generalblack mr-1"}
+                        icon={faFire}
                       />
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
