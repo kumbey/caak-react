@@ -29,6 +29,7 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
             className={
               "py-2 border-transparent hover:border-transparent focus:ring-transparent"
             }
+            hideError
             containerStyle={"w-full"}
           />
           <FontAwesomeIcon
