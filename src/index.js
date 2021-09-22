@@ -7,7 +7,6 @@ import Amplify from "aws-amplify";
 import awsConfig  from "./aws-exports";
 import Configure from './configure';
 
-
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.

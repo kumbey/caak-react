@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";

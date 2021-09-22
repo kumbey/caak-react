@@ -58,6 +58,18 @@ const Routes = [
     background: true,
     page: () => <Register />,
   },
+  {
+    path: "/register/confirmation/",
+    exact: true,
+    background: true,
+    page: () => <Confirmation />,
+  },
+  {
+    path: "/group",
+    exact: true,
+    background: true,
+    page: () => <Group />,
+  },
 ];
 
 export default Routes;

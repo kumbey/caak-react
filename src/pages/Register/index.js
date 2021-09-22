@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router";
-import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
@@ -14,7 +13,7 @@ export default function Login() {
     }
 
     return (
-        <Backdrop>
+        <div className="backdrop flex justify-center items-center">
             <div className=" sm:mx-auto pt-40 w-cb sm:max-h-md">
                 <div className=" sm:w-full px-10 pb-c1 bg-white rounded-lg shadow-xl">
                     <div onClick={home} className="relative pt-c6">
@@ -122,6 +121,6 @@ export default function Login() {
         </div>
         </div>
       </div>
-    </Backdrop>
+    </div>
     )
 }
