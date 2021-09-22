@@ -38,9 +38,9 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
           <span />
         </div>
         <div className={"p-2"}>
-          {items.map((item) => {
+          {items.map((item,index) => {
             return (
-              <div onClick={() => onSelect(item)} className={"flex flex-col"}>
+              <div key={index} onClick={() => onSelect(item)} className={"flex flex-col"}>
                 <div
                   className={
                     "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"

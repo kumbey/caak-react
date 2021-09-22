@@ -1,6 +1,4 @@
-import Card from "../components/card/";
-import Login from "../pages/Register/Confirmation";
-//import Feed from "../pages/Home/Feed";
+import AddPost from "../pages/Blog/AddPost";
 
 const Routes = [
   {
@@ -15,9 +13,9 @@ const Routes = [
     page: () => <h2>User Config page</h2>,
   },
   {
-    path: "/user",
+    path: "/sanjaa",
     exact: true,
-    page: () => <Login />,
+    page: () => <AddPost />,
   },
 ];
 

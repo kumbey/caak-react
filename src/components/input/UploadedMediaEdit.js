@@ -1,6 +1,7 @@
 import React from "react";
 import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
+import AddPostCardSmall from "../card/AddPostCardSmall";
 
 const Card = ({ video, onClick, stateFiles, ...data }) => {
   const popItem = (index1) => {
@@ -10,13 +11,13 @@ const Card = ({ video, onClick, stateFiles, ...data }) => {
     onClick(filteredArray);
   };
   return (
-    <div key={data.index} className={"relative p-1 w-full"}>
+    <div key={data.index} className={"relative mb-1 w-full"}>
       {video ? (
         <CardVideoContainer data={data.data} />
       ) : (
         <img
           src={data.data.preview}
-          className={"rounded-md h-full max-h-80 w-full object-cover mr-2"}
+          className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
       )}
@@ -72,7 +73,7 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="editor-selection max-h-96 overflow-y-scroll">
+        <div className="max-h-96 editor-selection overflow-y-scroll">
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
@@ -80,7 +81,7 @@ const UploadedMediaEdit = ({
           >
             {files.map((item, index) => {
               let video;
-              if (item.type.startsWith("video")) {
+              if (item.type && item.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";
@@ -96,6 +97,7 @@ const UploadedMediaEdit = ({
                 />
               );
             })}
+            {files.length < 10 && <AddPostCardSmall files={files} onChangeFile={onChangeFiles}/>}
           </Masonry>
         </div>
       </div>

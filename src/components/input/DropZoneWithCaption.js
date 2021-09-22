@@ -3,7 +3,7 @@ import DropZone from "./DropZone";
 const DropZoneWithCaption = ({ onChangeText, textCount, onSelected }) => {
   return (
     <div>
-      <div className={"relative flex flex-row mt-2  items-center px-7"}>
+      <div className={"relative flex flex-row mt-2 items-center px-7"}>
         <textarea
           rows={1}
           onChange={(e) => onChangeText(e.target.value.length)}
@@ -20,7 +20,16 @@ const DropZoneWithCaption = ({ onChangeText, textCount, onSelected }) => {
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <DropZone onSelected={onSelected} />
+        <DropZone
+          title={"Зураг/Видео нэмэх"}
+          subTitleStyle={"text-caak-aleutian text-14px"}
+          titleStyle={
+            "items-center text-caak-generalblack font-medium text-18px "
+          }
+          subTitle={"эсвэл шууд чирэн оруулна уу"}
+          className={"flex items-center w-full h-64"}
+          onSelected={onSelected}
+        />
       </div>
     </div>
   );

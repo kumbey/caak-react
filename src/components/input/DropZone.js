@@ -1,7 +1,15 @@
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 
-const DropZone = ({ onSelected }) => {
+const DropZone = ({
+  onSelected,
+  className,
+  title,
+  subTitle,
+  subTitleStyle,
+  titleStyle,
+  icon,
+}) => {
   const [files, setFiles] = useState([]);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -18,27 +26,21 @@ const DropZone = ({ onSelected }) => {
     noClick: false,
     multiple: true,
   });
-
   useEffect(() => {
-    onSelected(acceptedFiles);
-  }, [acceptedFiles, onSelected]);
-
+    onSelected(files);
+  }, [acceptedFiles]);
   return (
     <div
       {...getRootProps({
-        className:
-          "cursor-pointer custom-file-upload flex flex-col justify-center items-center rounded-square bg-caak-liquidnitrogen  w-full h-64 ",
+        className: `cursor-pointer flex flex-col justify-center items-center rounded-square bg-caak-liquidnitrogen ${
+          className && className
+        }`,
       })}
     >
       <input {...getInputProps()} />
-      <span
-        className={"items-center text-caak-generalblack font-medium text-18px"}
-      >
-        Зураг/Видео нэмэх
-      </span>
-      <span className={" text-caak-aleutian text-14px"}>
-        эсвэл шууд чирэн оруулна уу
-      </span>
+      {icon && icon}
+      <span className={`${titleStyle}`}>{title}</span>
+      <span className={`${subTitleStyle}`}>{subTitle}</span>
     </div>
   );
 };
