@@ -6,14 +6,16 @@ const Input = ({
   label,
   className,
   errorMessage,
+  hideError,
   id,
   type,
+  containerStyle,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className={"input relative"}>
+    <div className={`input relative ${containerStyle}`}>
       {hideLabel ? null : (
         <label htmlFor={id} className={`${labelStyle}`}>
           {label}
@@ -33,11 +35,11 @@ const Input = ({
           style={{ top: "14px" }}
         />
       ) : null}
-      {/*{errorMessage && (*/}
+      {!hideError && (
         <p className="error" id="email-error">
           {errorMessage}
         </p>
-      {/*)}*/}
+      )}
     </div>
   );
 };
