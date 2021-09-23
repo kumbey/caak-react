@@ -1,6 +1,6 @@
 import Divider from "../../../components/divider";
 
-const Header = ({ title, iconLeft, iconRight, onExit }) => {
+const Header = ({ title, iconLeft, iconRight, hideDivider }) => {
   return (
     <div className={"relative header"}>
       {iconLeft}
@@ -12,7 +12,7 @@ const Header = ({ title, iconLeft, iconRight, onExit }) => {
         {title}
       </div>
       {iconRight}
-      <Divider />
+      {hideDivider && <Divider />}
     </div>
   );
 };
