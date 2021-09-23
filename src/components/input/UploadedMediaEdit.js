@@ -3,15 +3,36 @@ import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 
-const Card = ({ video, onClick, stateFiles, ...data }) => {
-  const popItem = (index1) => {
-    const filteredArray = stateFiles.filter(function (item, index) {
-      return index !== index1;
+const Card = ({
+  video,
+  onClick,
+  uploadedFiles,
+  setIsEditing,
+  setCurrentEditingIndex,
+  ...data
+}) => {
+  const popItem = (index_arg) => {
+    const filteredArray = uploadedFiles.filter(function (item, index) {
+      return index !== index_arg;
     });
     onClick(filteredArray);
   };
+
+  const editHandler = (index) => {
+    setIsEditing(true);
+    setCurrentEditingIndex(index);
+  };
+
   return (
-    <div key={data.index} className={"relative mb-1 w-full"}>
+    <div key={data.index} className={"relative mb-1 w-full group"}>
+      <span
+        onClick={() => editHandler(data.index)}
+        className={
+          "absolute transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+        }
+      >
+        Засварлах
+      </span>
       {video ? (
         <CardVideoContainer data={data.data} />
       ) : (
@@ -36,7 +57,9 @@ const UploadedMediaEdit = ({
   onChangeText,
   onChangeFiles,
   textCount,
-  files,
+  uploadedFiles,
+  setIsEditing,
+  setCurrentEditingIndex,
 }) => {
   return (
     <div>
@@ -79,9 +102,9 @@ const UploadedMediaEdit = ({
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {files.map((item, index) => {
+            {uploadedFiles.map((item, index) => {
               let video;
-              if (item.type && item.type.startsWith("video")) {
+              if (item && item.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";
@@ -92,12 +115,19 @@ const UploadedMediaEdit = ({
                   data={item}
                   index={index}
                   onClick={onChangeFiles}
-                  stateFiles={files}
+                  uploadedFiles={uploadedFiles}
                   video={video}
+                  setIsEditing={setIsEditing}
+                  setCurrentEditingIndex={setCurrentEditingIndex}
                 />
               );
             })}
-            {files.length < 10 && <AddPostCardSmall files={files} onChangeFile={onChangeFiles}/>}
+            {uploadedFiles.length < 10 && (
+              <AddPostCardSmall
+                uploadedFiles={uploadedFiles}
+                onChangeFile={onChangeFiles}
+              />
+            )}
           </Masonry>
         </div>
       </div>
@@ -107,7 +137,10 @@ const UploadedMediaEdit = ({
         }
       >
         <span className={"icon-fi-rs-desc  cursor-pointer"} />
-        <span className={"font-medium text-15px ml-2  cursor-pointer"}>
+        <span
+          onClick={() => setIsEditing(true)}
+          className={"font-medium text-15px ml-2  cursor-pointer"}
+        >
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
