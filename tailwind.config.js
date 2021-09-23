@@ -84,7 +84,7 @@ module.exports = {
         "28px": "28px",
         "40px": "40px",
         "44px": "44px",
-        "56px": "56px"
+        "56px": "56px",
       },
       fontFamily: {
         roboto: ["Roboto"],
@@ -136,11 +136,11 @@ module.exports = {
         cb: "400px",
         cc: "450px",
         cg: "854px",
-      }
-    }
+      },
+    },
   },
   variants: {
-    extend: { placeholderColor: ["hover"] },
+    extend: { placeholderColor: ["hover"], opacity: ["group-hover"] },
   },
   plugins: [require("@tailwindcss/forms")],
 };

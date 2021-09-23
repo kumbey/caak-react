@@ -1,26 +1,90 @@
-import React from 'react';
-import Divider from "../divider";
+import { useEffect, useState } from "react";
+import { ReactSortable } from "react-sortablejs";
 
-const EditNewPostCaption = () => {
-    return (
-        <div>
-            <div className={"relative header mb-3"}>
-            <span
-                className={
-                    "icon-fi-rs-close absolute text-12px right-3 top-1/4 cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
-                }
+
+const EditNewPostCaption = ({
+  onChangeFiles,
+  uploadedFiles,
+  setCurrentEditingIndex,
+  currentEditingIndex,
+}) => {
+  const [textCount, setTextCount] = useState(0);
+  const [post, setPost] = useState();
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    uploadedFiles[currentEditingIndex] &&
+      setPost(uploadedFiles[currentEditingIndex]);
+  }, [uploadedFiles, currentEditingIndex]);
+  return (
+    <div>
+      {post ? (
+        <div className={""}>
+          <img
+            className={"max-h-80 w-full object-contain "}
+            src={post.preview}
+            alt={"sdd"}
+          />
+          <div className={"relative flex flex-row mt-2 items-center px-4"}>
+            <textarea
+              rows={3}
+              onChange={(e) => setTextCount(e.target.value.length)}
+              maxLength={"60"}
+              placeholder={"Нийтлэлийн тайлбар оруулах..."}
+              className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
             />
-                <div
-                    className={
-                        "text-22px text-center text-caak-generalblack font-bold p-4.5 leading-7"
-                    }
-                >
-                    Нийтлэл нэмэх
-                </div>
-                <Divider />
-            </div>
+            <span
+              className={"absolute right-8 text-14px text-caak-generalblack"}
+            >
+              {textCount}/60
+            </span>
+          </div>
         </div>
-    );
-};
+      ) : (
+        <div className={"animate-pulse w-full h-full bg-blue-300"} />
+      )}
+      <div className={"px-4 flex flex-row"}>
+        <ReactSortable
+          list={posts}
+          setList={setPosts}
+          onEnd={(e) => console.log(e)}
+        >
+          {uploadedFiles.map((item, index) => {
+            return (
+              <div
+                key={index}
+                onClick={() => setCurrentEditingIndex(index)}
+                className={"relative w-20 h-20 mr-2 rounded-square"}
+              >
+                <img
+                  className={"w-full h-full rounded-square object-cover"}
+                  src={item.preview}
+                  alt={"sd"}
+                />
+              </div>
+            );
+          })}
+        </ReactSortable>
+      </div>
+      {/*<input {...getInputProps()}></input>*/}
 
+      <div className={"px-4 flex flex-row"}>
+        {uploadedFiles.map((item, index) => {
+          return (
+            <div
+              key={index}
+              onClick={() => setCurrentEditingIndex(index)}
+              className={"relative w-20 h-20 mr-2 rounded-square"}
+            >
+              <img
+                className={"w-full h-full rounded-square object-cover"}
+                src={item.preview}
+                alt={"sd"}
+              />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 export default EditNewPostCaption;

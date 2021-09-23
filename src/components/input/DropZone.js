@@ -10,10 +10,10 @@ const DropZone = ({
   titleStyle,
   icon,
 }) => {
-  const [files, setFiles] = useState([]);
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+  const [dropZoneFiles, setDropZoneFiles] = useState([]);
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
-      setFiles(
+      setDropZoneFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
@@ -26,10 +26,10 @@ const DropZone = ({
     noClick: false,
     multiple: true,
   });
+
   useEffect(() => {
-    onSelected(files);
-    // eslint-disable-next-line
-  }, [acceptedFiles, files]);
+    onSelected(dropZoneFiles);
+  }, [dropZoneFiles]);
   return (
     <div
       {...getRootProps({
