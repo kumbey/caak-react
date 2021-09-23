@@ -4,6 +4,7 @@ import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
+import Backdrop from "../../components/Backdrop";
 
 export default function Login() {
     const history = useHistory();
@@ -13,9 +14,9 @@ export default function Login() {
     }
 
     return (
-        <div className="backdrop flex justify-center items-center">
-            <div className=" sm:mx-auto pt-40 w-cb sm:max-h-md">
-                <div className=" sm:w-full px-10 pb-c1 bg-white rounded-lg shadow-xl">
+        <Backdrop className="flex justify-center items-center">
+            <div className=" ph:w-full bg-white rounded-lg shadow-xl">
+                <div className=" px-10 bg-white rounded-lg shadow-xl">
                     <div onClick={home} className="relative pt-c6">
                         <span className="icon-fi-rs-close absolute right-0 text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-full"/>
                     </div>
@@ -102,7 +103,7 @@ export default function Login() {
           {/*Footer*/}
           <div
             className={
-              "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
+              "signFooter mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
             }
           >
                 <div className=" text-caak-blue text-15px">
@@ -121,6 +122,6 @@ export default function Login() {
         </div>
         </div>
       </div>
-    </div>
+      </Backdrop>
     )
 }
