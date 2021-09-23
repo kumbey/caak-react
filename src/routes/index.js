@@ -10,7 +10,7 @@ const Routes = [
   {
     path: "/",
     exact: true,
-    page: () => <h2>Home page</h2>,
+    page: () => <h3>asd</h3>,
   },
   {
     path: "/sanjaa",
@@ -22,7 +22,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <Login />,
+    page: () => <Group />,
   },
   {
     path: "/profile/userconfig",

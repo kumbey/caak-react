@@ -7,6 +7,7 @@ import { useUser } from "../../context/userContext";
 import Consts from "../../Utility/Consts";
 import { checkUser, checkUsernameType, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
+import Backdrop from "../../components/Backdrop";
 
 export default function Login() {
 
@@ -57,9 +58,8 @@ export default function Login() {
     }
     
     return ( !checkUser(user) ?
-    <div className="backdrop flex justify-center items-center">
-                <div className=" sm:mx-auto  w-ca sm:max-h-md">
-                    <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
+    <Backdrop className="flex justify-center items-center ">
+                    <div className=" ph:w-full bg-white rounded-lg shadow-xl">
                         <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                             <div 
                                 onClick={() => history.replace({pathname: "/login", state: state})}
@@ -70,13 +70,13 @@ export default function Login() {
                             </div>
                             <span
                                 onClick={() => closeModal(history, state)}
-                                className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded-lg"
+                                className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center cursor-pointer items-center rounded-full"
                             />
                         </div>
                         <div className={"flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"}>
                             Имайл хаяг/Утасны дугаар <br/> нэвтрэх!
                         </div>
-                        <div className="px-c8">
+                        <div className="px-c8 ph:px-c28">
                             <p className="error">
                                 {error}
                             </p>
@@ -95,11 +95,11 @@ export default function Login() {
                                     errorMessage={errors.password}
                                     onChange={handleChange}
                                     placeholder={"Нууц үг"}
-                                    className={"border border-caak-titaniumwhite w-ci h-c9 bg-caak-liquidnitrogen"}
+                                    className={"border border-caak-titaniumwhite w-ci ph:w-full h-c9 bg-caak-liquidnitrogen"}
                                 />
                             </div>
                         </div>
-                        <div className="flex px-c8 justify-between items-center text-caak-generalblack text-14px mt-5">
+                        <div className="flex px-c8 ph:px-c2 justify-between items-center text-caak-generalblack text-14px mt-5">
                                 <Button
                                     loading={loading}
                                     onClick={() => handleSubmit(doSignIn)}
@@ -114,7 +114,7 @@ export default function Login() {
                 {/*Footer*/}
                 <div
                     className={
-                        "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+                        "signFooter mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
                     }
                 >
                     <div className="text-caak-blue text-15px">
@@ -132,8 +132,7 @@ export default function Login() {
                     </div>
                     <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
             </div>
-            </div>
         </div>
-        </div> : null
+        </Backdrop> : null
     )
 }

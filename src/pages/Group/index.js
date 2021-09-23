@@ -13,23 +13,25 @@ export default function Group() {
 
                 {/* menu */}
                 <div className="absolute  bottom-b3 2xl:left-cf 2xl:right-cf xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
-                    <div className="flex justify-between   items-end">
+                    <div className="flex justify-between">
                         <div className="flex  items-end">
-                        <img alt="profile" className="w-c19 h-c19 rounded rounded-lg bg-caak-red"/>
-                        <div className="ml-c6">
-                            <div>
-                                <p className="text-26px font-bold text-caak-generalblack">Монгол өв уламжлал</p>
-                            </div>
-                            <div className="flex items-center">
-                                <span className="icon-fi-rs-megaphone text-16px text-caak-darkBlue flex"/>
-                                <p className="text-15px ml-a1 text-caak-darkBlue">Нээлттэй бүлэг</p>
-                                <p className="mx-a1">·</p> 
-                                <p className="text-15px text-caak-darkBlue">245k гишүүнтэй</p>
+                            <img alt="profile" className="w-c19 bg-caak-red h-c19 rounded rounded-lg"/>
+                            <div className="ml-c6">
+                                <div>
+                                    <p className="text-26px font-bold text-caak-generalblack">Монгол өв уламжлал</p>
+                                </div>
+                                <div className="flex items-center  btn:grid">
+                                    <div>
+                                        <span className="icon-fi-rs-megaphone text-16px text-caak-darkBlue flex"/>
+                                        <p className="text-15px ml-a1 text-caak-darkBlue">Нээлттэй бүлэг</p>
+                                    </div>
+                                    <p className="mx-a1">·</p> 
+                                    <p className="text-15px text-caak-darkBlue">245k гишүүнтэй</p>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                        <div className="2xl:flex xl:flex lg:flex md:flex sm:grid mb-b1 items-center">
-                            <Button className="h-c13 text-15px rounded rounded-lg bg-caak-titaniumwhite text-caak-generalblack"> 
+                        <div className="flex ph:w-c14 btn:grid btn:justify-center items-end">
+                            <Button className="ph:mb-b1 h-c13 text-15px rounded rounded-lg bg-caak-titaniumwhite text-caak-generalblack"> 
                                 <span className="icon-fi-rs-check text-12px mr-a1"/>
                                 Нэгдсэн
                             </Button>
@@ -37,11 +39,13 @@ export default function Group() {
                                 <span className="icon-fi-rs-link text-15px mr-a1"/>
                                 Найзаа урих
                             </Button>
-                            <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
-                                <span className="icon-fi-rs-notification text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
-                            </div>
-                            <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
-                                <span className="icon-fi-rs-settings text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
+                            <div className="flex btn:justify-end">
+                                <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
+                                    <span className="icon-fi-rs-notification text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
+                                </div>
+                                <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
+                                    <span className="icon-fi-rs-settings text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,7 +90,7 @@ export default function Group() {
                     {/* top members */}
                     <div className="mt-c13">
                         <p className="text-17px text-caak-generalblack font-bold">Шилдэг гишүүнүүд</p>
-                        <div className="grid grid-cols-5 gap-b1 w-c26 mt-c6">
+                        <div className="grid grid-cols-5 gap-b1 2xl:w-c26 mt-c6 md:w-c12">
                             {
                                 pro.map((data, index) => {
                                     return(

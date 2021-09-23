@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
+import Backdrop from "../../components/Backdrop";
 
 export default function Confirmation() {
   const history = useHistory();
@@ -10,15 +11,14 @@ export default function Confirmation() {
         history.push("/")
     }
   return (
-    <div className="backdrop flex justify-center items-center">
-      <div className=" sm:mx-auto w-cc sm:max-h-md">
-                <div className=" sm:w-full pb-c1 bg-white rounded-lg shadow-xl">
+    <Backdrop className="flex justify-center items-center">
+      <div className="ph:w-full bg-white rounded-lg shadow-xl">
                 <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                         <div className="flex items-center">
                             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
                             <p  className="text-caak-generalblack text-13px">Бүртгүүлэх хэсэг рүү буцах</p>
                         </div>
-                        <span onClick={home} className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-full"/>
+                        <span onClick={home} className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-full cursor-pointer"/>
                     </div>
           
           {/* body */}
@@ -67,8 +67,7 @@ export default function Confirmation() {
                 <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
         </div>
         </div>
-      </div>
-    </div>
+    </Backdrop>
   );
 };
 
