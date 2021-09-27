@@ -126,7 +126,7 @@ const EditNewPostCaption = ({
           );
         })}
       </ReactSortable>
-      <div className={"flex flex-row pb-4 px-4"}>
+      <div className={"flex flex-row px-4"}>
         <Button className={"mr-2 mt-4 w-full text-17px"}>Хадгалах</Button>
       </div>
     </div>

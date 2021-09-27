@@ -159,7 +159,7 @@ const UploadedMediaEdit = ({
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
-        <div className={"flex flex-row pb-4 px-4"}>
+        <div className={"flex flex-row px-4"}>
             <Button
                 icon={
                     <span
