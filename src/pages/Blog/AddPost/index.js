@@ -21,7 +21,6 @@ const AddPost = () => {
     { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
     { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
   ];
-  console.log(uploadedFiles)
   return (
     <Backdrop>
       <div className={`flex justify-center items-center mt-10`}>
@@ -108,7 +107,6 @@ const AddPost = () => {
           )}
 
           <div className={"flex flex-row pb-4 px-4"}>
-            <Button className={"w-3/4 mr-2 mt-4"}>Нийтлэх</Button>
             <Button
               icon={
                 <span
@@ -119,11 +117,27 @@ const AddPost = () => {
               }
               iconPosition={"left"}
               className={
-                "white text-caak-generalblack py-3 w-1/4 ml-1 mt-4 justify-center"
+                "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
               }
             >
               Ноорог
             </Button>
+            <Button
+              icon={
+                <span
+                  className={
+                    "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+                  }
+                />
+              }
+              iconPosition={"left"}
+              className={
+                "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+              }
+            >
+              Хугацаа оруулах
+            </Button>
+            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
           </div>
         </div>
       </div>

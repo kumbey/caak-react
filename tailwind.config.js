@@ -53,6 +53,7 @@ module.exports = {
           bleudefrance: "#367CE6",
           generalblack: "#21293C",
           secondprimary: "#F54000",
+          mortargrey: "#9E9E9E",
           twitter: "#1DA1F2",
           facebook: "#1877F2",
           shit: "#AFAFAF",
