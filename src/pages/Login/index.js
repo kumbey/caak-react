@@ -1,39 +1,53 @@
-import React from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { closeModal } from "../../Utility/Util";
-import { useUser } from "../../context/userContext";
 import Backdrop from "../../components/Backdrop";
+import { isLogged } from "../../Utility/Authenty";
+import { useUser } from "../../context/userContext";
 
 export default function Login({ type, ...props }) {
+
   const history = useHistory();
   const { state } = useLocation();
-  const { user } = useUser();
 
-  return !user ? (
-    <Backdrop className={"flex justify-center items-center"}>
-      <div className=" sm:mx-auto w-cb sm:max-h-md pt-40">
-        <div className=" sm:w-full pb-c1 px-10 bg-white rounded-lg shadow-xl">
+  const host = "/federated/login/"
+  const windowName = "_blank"
+  const {user, setUser} = useUser()
+
+  const openWindow = (type) => {
+      const opened = window.open(host + type, windowName)
+      const timer = setInterval(function() {
+          if(opened.closed) {
+              clearInterval(timer);
+              isLogged(user, setUser)
+              closeModal(history, state)
+          }
+      }, 100);
+  }
+
+  return (
+    <Backdrop className={"flex justify-center items-center "}>
+        <div className="ph:w-full bg-white rounded-lg shadow-xl">
           <div
             onClick={() => closeModal(history, state)}
-            className="pt-c6 relative"
+            className="pt-c6 pr-c6 relative"
           >
-            <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 absolute right-0 flex items-center justify-center rounded-lg" />
+            <span className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 absolute right-0 flex items-center justify-center rounded-full cursor-pointer" />
           </div>
           <div
             className={
-              "flex text-caak-generalblack justify-center mb-c2 font-bold text-24px pt-c5 "
+              "text-center text-caak-generalblack mb-c2 font-bold text-24px pt-c5 "
             }
           >
             Шинэ Саак-т {type === "signUp" ? " бүртгүүлэх!" : " нэвтрэх!"}
           </div>
           {/*Social Buttons*/}
-          <div className={"flex flex-col items-center"}>
+          <div className={"flex flex-col items-center px-c13 "}>
             <Button
-              onClick={() => {}}
+              onClick={() => openWindow("google")}
               round
               className={
                 "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
@@ -47,7 +61,7 @@ export default function Login({ type, ...props }) {
               <p className="">Google</p>
             </Button>
             <Button
-              onClick={() => {}}
+              onClick={() => openWindow("facebook")}
               round
               className={
                 "hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative"
@@ -117,7 +131,7 @@ export default function Login({ type, ...props }) {
           {/*Footer*/}
           <div
             className={
-              "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
+              "signFooter px-c2 mb-c1 flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20 text-sm "
             }
           >
             {type === "signUp" ? (
@@ -146,7 +160,6 @@ export default function Login({ type, ...props }) {
             <span className="icon-fi-rs-help text-18px" />
           </div>
         </div>
-      </div>
     </Backdrop>
-  ) : null;
+  )
 }

@@ -27,13 +27,13 @@ const DateSelect = ({value, errorMessage, onChange, ...props}) => {
 
     return (
         <div>
-            <div className={"flex"}>
+            <div className={"flex justify-between"}>
                 <Select
                     value={year}
                     name={"year"} 
                     onChange={(e) => setYear(e.target.value)}
                     containerStyle={"flex-1"} 
-                    className=" h-c9 w-c14 bg-caak-titaniumwhite"
+                    className=" h-c9 bg-caak-titaniumwhite"
                 >
                     <option value="placeholder">
                         {"Он"}

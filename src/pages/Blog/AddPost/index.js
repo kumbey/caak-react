@@ -7,20 +7,34 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
+import { closeModal } from "../../../Utility/Util";
+import { useHistory, useLocation, useParams } from "react-router";
+import { useEffect } from "react/cjs/react.development";
 
 const AddPost = () => {
+
+  const history = useHistory()
+  const { state } = useLocation()
+  const { postid } = useParams()
+
   const [isEditing, setIsEditing] = useState(false);
   const [currentEditingIndex, setCurrentEditingIndex] = useState();
   const [textCount, setTextCount] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
   const [uploadedFiles, setUploadedFiles] = useState([]);
+
   const groupData = [
     { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
     { name: "UX/UI дизайнерууд", id: 2, image: Dummy.img("100x100") },
     { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
     { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
   ];
+
+  useEffect(() => {
+    // console.log(uploadedFiles)
+  }, [uploadedFiles])
+  
   return (
     <Backdrop>
       <div className={`flex justify-center items-center mt-10`}>
@@ -33,6 +47,7 @@ const AddPost = () => {
                 <Header
                   iconRight={
                     <span
+                      onClick={() => closeModal(history, state)}
                       className={
                         "icon-fi-rs-close absolute text-12px right-3 top-1/4 cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
                       }
@@ -105,6 +120,40 @@ const AddPost = () => {
               />
             </Fragment>
           )}
+
+          <div className={"flex flex-row pb-4 px-4"}>
+            <Button
+              icon={
+                <span
+                  className={
+                    "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
+                  }
+                />
+              }
+              iconPosition={"left"}
+              className={
+                "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+              }
+            >
+              Ноорог
+            </Button>
+            {/* <Button
+              icon={
+                <span
+                  className={
+                    "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+                  }
+                />
+              }
+              iconPosition={"left"}
+              className={
+                "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+              }
+            >
+              Хугацаа оруулах
+            </Button> */}
+            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+          </div>
         </div>
       </div>
     </Backdrop>

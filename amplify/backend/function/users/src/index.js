@@ -66,20 +66,19 @@ async function createUserCustom(ctx){
         }
         
         result = await getUser(input.id)
+        result = result.Item
         
         variables = {
             ...input,
             ...variables
         }
         
-        if(!Object.keys(result).length){
+        if(!result || Object.keys(result).length <= 0){
             await createUser(variables)
-            await updateCongitoUser(variables)
+            // await updateCongitoUser(variables)
             result = await getUser(input.id)
             result = result.Item
         }
-
-        
 
         return result
     }catch(ex){

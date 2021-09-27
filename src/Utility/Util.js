@@ -194,6 +194,17 @@ export function closeModal(history, state){
     }
 }
 
+export function checkUsername(username){
+
+    let usrname = username
+
+    if(checkUsernameType(usrname) === Consts.typePhoneNumber){
+        usrname = "+976"+ usrname
+    }
+
+    return usrname
+}
+
 var object = {
                 useQuery, 
                 mailNumber, 
@@ -202,6 +213,7 @@ var object = {
                 mergeDate, 
                 unmergeDate,
                 checkUsernameType,
+                checkUsername,
                 getRandomInt,
                 generateFileUrl,
                 checkUser,

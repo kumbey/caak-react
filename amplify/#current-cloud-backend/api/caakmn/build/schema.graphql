@@ -14,11 +14,11 @@ type File @aws_iam @aws_cognito_user_pools {
 
 type User @aws_iam @aws_cognito_user_pools {
   id: ID!
-  firstname: String!
+  firstname: String
   lastname: String
   nickname: String
   birthdate: String
-  gender: String!
+  gender: String
   pic_id: ID
   cover_pic_id: ID
   about: String
@@ -31,6 +31,26 @@ type User @aws_iam @aws_cognito_user_pools {
   username(filter: ModelUsernameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   aura: Aura! @aws_iam @aws_cognito_user_pools
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
+}
+
+type UserPostTotals @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  user_id: ID!
+  pending: Int
+  confirmed: Int
+  archived: Int
+  reported: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type GroupPostTotals @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  group_id: ID!
+  pending: Int
+  confirmed: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type Username @aws_iam @aws_cognito_user_pools {
@@ -184,6 +204,10 @@ type Query {
   listFiles(filter: ModelFileFilterInput, limit: Int, nextToken: String): ModelFileConnection @aws_iam @aws_cognito_user_pools
   getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
+  getUserPostTotals(id: ID!): UserPostTotals @aws_iam @aws_cognito_user_pools
+  listUserPostTotals(filter: ModelUserPostTotalsFilterInput, limit: Int, nextToken: String): ModelUserPostTotalsConnection @aws_iam @aws_cognito_user_pools
+  getGroupPostTotals(id: ID!): GroupPostTotals @aws_iam @aws_cognito_user_pools
+  listGroupPostTotals(filter: ModelGroupPostTotalsFilterInput, limit: Int, nextToken: String): ModelGroupPostTotalsConnection @aws_iam @aws_cognito_user_pools
   getUsername(id: ID!): Username @aws_iam @aws_cognito_user_pools
   listUsernames(filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   usernameByUser(user_id: ID, sortDirection: ModelSortDirection, filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
@@ -224,15 +248,9 @@ type Mutation {
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
-  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
-  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
   createUsername(input: CreateUsernameInput!, condition: ModelUsernameConditionInput): Username
   updateUsername(input: UpdateUsernameInput!, condition: ModelUsernameConditionInput): Username
   deleteUsername(input: DeleteUsernameInput!, condition: ModelUsernameConditionInput): Username
-  createAura(input: CreateAuraInput!, condition: ModelAuraConditionInput): Aura
-  updateAura(input: UpdateAuraInput!, condition: ModelAuraConditionInput): Aura
-  deleteAura(input: DeleteAuraInput!, condition: ModelAuraConditionInput): Aura
   createFollowedUsers(input: CreateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   updateFollowedUsers(input: UpdateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   deleteFollowedUsers(input: DeleteFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
@@ -272,8 +290,8 @@ input CreateUserInputCustom {
   id: ID
   firstname: String
   lastname: String
+  nickname: String
   birthdate: String
-  gender: String
 }
 
 enum ModelSortDirection {
@@ -433,15 +451,9 @@ type Subscription {
   onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
   onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
   onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
   onCreateUsername: Username @aws_subscribe(mutations: ["createUsername"]) @aws_iam @aws_cognito_user_pools
   onUpdateUsername: Username @aws_subscribe(mutations: ["updateUsername"]) @aws_iam @aws_cognito_user_pools
   onDeleteUsername: Username @aws_subscribe(mutations: ["deleteUsername"]) @aws_iam @aws_cognito_user_pools
-  onCreateAura: Aura @aws_subscribe(mutations: ["createAura"]) @aws_iam @aws_cognito_user_pools
-  onUpdateAura: Aura @aws_subscribe(mutations: ["updateAura"]) @aws_iam @aws_cognito_user_pools
-  onDeleteAura: Aura @aws_subscribe(mutations: ["deleteAura"]) @aws_iam @aws_cognito_user_pools
   onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
@@ -499,52 +511,34 @@ input ModelUserFilterInput {
   not: ModelUserFilterInput
 }
 
-input CreateUserInput {
-  id: ID
-  firstname: String!
-  lastname: String
-  nickname: String
-  birthdate: String
-  gender: String!
-  pic_id: ID
-  cover_pic_id: ID
-  about: String
-  is_public: Boolean
-  status: String!
+type ModelUserPostTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [UserPostTotals]
+  nextToken: String
 }
 
-input UpdateUserInput {
-  id: ID!
-  firstname: String
-  lastname: String
-  nickname: String
-  birthdate: String
-  gender: String
-  pic_id: ID
-  cover_pic_id: ID
-  about: String
-  is_public: Boolean
-  status: String
+input ModelUserPostTotalsFilterInput {
+  user_id: ModelIDInput
+  pending: ModelIntInput
+  confirmed: ModelIntInput
+  archived: ModelIntInput
+  reported: ModelIntInput
+  and: [ModelUserPostTotalsFilterInput]
+  or: [ModelUserPostTotalsFilterInput]
+  not: ModelUserPostTotalsFilterInput
 }
 
-input DeleteUserInput {
-  id: ID!
+type ModelGroupPostTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupPostTotals]
+  nextToken: String
 }
 
-input ModelUserConditionInput {
-  firstname: ModelStringInput
-  lastname: ModelStringInput
-  nickname: ModelStringInput
-  birthdate: ModelStringInput
-  gender: ModelStringInput
-  pic_id: ModelIDInput
-  cover_pic_id: ModelIDInput
-  about: ModelStringInput
-  is_public: ModelBooleanInput
-  status: ModelStringInput
-  and: [ModelUserConditionInput]
-  or: [ModelUserConditionInput]
-  not: ModelUserConditionInput
+input ModelGroupPostTotalsFilterInput {
+  group_id: ModelIDInput
+  pending: ModelIntInput
+  confirmed: ModelIntInput
+  and: [ModelGroupPostTotalsFilterInput]
+  or: [ModelGroupPostTotalsFilterInput]
+  not: ModelGroupPostTotalsFilterInput
 }
 
 type ModelUsernameConnection @aws_iam @aws_cognito_user_pools {
@@ -592,27 +586,6 @@ input ModelAuraFilterInput {
   and: [ModelAuraFilterInput]
   or: [ModelAuraFilterInput]
   not: ModelAuraFilterInput
-}
-
-input CreateAuraInput {
-  user_id: ID!
-  point: Int!
-}
-
-input UpdateAuraInput {
-  user_id: ID!
-  point: Int
-}
-
-input DeleteAuraInput {
-  user_id: ID!
-}
-
-input ModelAuraConditionInput {
-  point: ModelIntInput
-  and: [ModelAuraConditionInput]
-  or: [ModelAuraConditionInput]
-  not: ModelAuraConditionInput
 }
 
 type ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools {

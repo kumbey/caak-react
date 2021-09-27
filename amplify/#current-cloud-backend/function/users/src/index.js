@@ -7,6 +7,8 @@
 	API_CAAKMN_FOLLOWEDUSERSTABLE_NAME
 	API_CAAKMN_GRAPHQLAPIENDPOINTOUTPUT
 	API_CAAKMN_GRAPHQLAPIIDOUTPUT
+	API_CAAKMN_USERNAMETABLE_ARN
+	API_CAAKMN_USERNAMETABLE_NAME
 	API_CAAKMN_USERTABLE_ARN
 	API_CAAKMN_USERTABLE_NAME
 	AUTH_CAAKMN248EFAC3_USERPOOLID
@@ -51,7 +53,7 @@ async function createUserCustom(ctx){
         }
 
         result = await createAura({
-            id: result.id,
+            id: input.id,
             point: 0
         })
         
@@ -64,20 +66,19 @@ async function createUserCustom(ctx){
         }
         
         result = await getUser(input.id)
+        result = result.Item
         
         variables = {
             ...input,
             ...variables
         }
         
-        if(!Object.keys(result).length){
+        if(!result || Object.keys(result).length <= 0){
             await createUser(variables)
-            await updateCongitoUser(variables)
+            // await updateCongitoUser(variables)
             result = await getUser(input.id)
             result = result.Item
         }
-
-        
 
         return result
     }catch(ex){
@@ -100,6 +101,10 @@ async function updateCongitoUser(usr){
                 {
                     Name: "birthdate",
                     Value: usr.birthdate
+                },
+                {
+                    Name: "nickname",
+                    Value: usr.nickname
                 }
             ],
             UserPoolId: process.env.AUTH_CAAKMN248EFAC3_USERPOOLID,

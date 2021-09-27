@@ -143,32 +143,6 @@
                 ]
               ]
             },
-            "API_CAAKMN_USERTABLE_NAME": {
-              "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-              }
-            },
-            "API_CAAKMN_USERTABLE_ARN": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:dynamodb:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":table/",
-                  {
-                    "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
-                    }
-                  }
-                ]
-              ]
-            },
             "API_CAAKMN_AURATABLE_NAME": {
               "Fn::ImportValue": {
                 "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:AuraTable:Name"
@@ -216,6 +190,32 @@
                   {
                     "Fn::ImportValue": {
                       "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UsernameTable:Name"
+                    }
+                  }
+                ]
+              ]
+            },
+            "API_CAAKMN_USERTABLE_NAME": {
+              "Fn::ImportValue": {
+                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
+              }
+            },
+            "API_CAAKMN_USERTABLE_ARN": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:dynamodb:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":table/",
+                  {
+                    "Fn::ImportValue": {
+                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTable:Name"
                     }
                   }
                 ]

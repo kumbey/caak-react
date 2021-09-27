@@ -24,7 +24,7 @@ const Button = ({
     >
       {iconPosition === "left" ? icon : ""}
       {circular || roundedSquare ? icon : ""}
-      {loading ? <Loader /> : props.children}
+      {loading ? <Loader className={'bg-white'}/> : props.children}
       {iconPosition === "right" ? icon : ""}
     </button>
   );
