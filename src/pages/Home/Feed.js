@@ -12,6 +12,9 @@ const Feed = () => {
       src: `https://picsum.photos/id/1/${Math.random(0, 1) > 0.5 ? 800 : 600}/${
         Math.random(0, 1) > 0.5 ? 600 : 800
       }/`,
+      title: `Өнөөдрийн зурвас: Найз минь надад шүлэг бичсэн! ${Math.floor(Math.random() * 100)}`,
+      comments: `${Math.floor(Math.random() * 50)}`,
+      likes: `${Math.floor(Math.random() * 100)}`
     }))
   );
 
@@ -45,7 +48,7 @@ const Feed = () => {
   const [activeIndex, setActiveIndex] = useState();
 
   const CardWithClick = useCallback(
-    (props) => <Card {...props} video verifiedUser />,
+    (props) => <Card {...props} verifiedUser />,
     []
   );
   //TODO Responsive
@@ -53,7 +56,7 @@ const Feed = () => {
     <main className={"flex justify-center items-center"}>
       <div className={"py-10 flex justify-center w-full px-7"}>
         {/*<Card verifiedUser video/>*/}
-        <div className={"h-full w-2/12"}>
+        <div className={"h-full w-3/12"}>
           <div className={"flex flex-col items-start"}>
             {feedType.map(({ icon, active, type, id }) => {
               return (
@@ -83,7 +86,7 @@ const Feed = () => {
           </div>
         </div>
         <div
-          className={"flex flex-row justify-center items-center w-8/12 px-4"}
+          className={"flex flex-row justify-center items-center w-9/12 px-4"}
         >
           {/*<CardRecommend/>*/}
           {/*TODO useMasonry to fix attribute warnings*/}
@@ -91,13 +94,13 @@ const Feed = () => {
             // className={"flex flex-row justify-center items-center w-8/12"}
             items={items}
             columnGutter={16}
-            columnWidth={325}
-            overscanBy={3}
+            columnWidth={400}
+            overscanBy={2}
             render={Card}
           />
         </div>
 
-        <div className={"bg-red-100 h-full w-2/12"}/>
+        {/*<div className={"md:block hidden bg-red-100 h-full w-2/12"}/>*/}
       </div>
     </main>
   );

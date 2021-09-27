@@ -5,6 +5,8 @@ import Logout from "../pages/Logout";
 import AddPost from "../pages/Blog/AddPost";
 import Confirmation from "../pages/Register/Confirmation"
 import Group from "../pages/Group/index"
+import Feed from "../pages/Home/Feed";
+import ViewPost from "../pages/Blog/ViewPost";
 
 const Routes = [
   {
@@ -16,7 +18,7 @@ const Routes = [
     path: "/sanjaa",
     exact: true,
     background: true,
-    page: () => <AddPost />,
+    page: () => <ViewPost />,
   },
   {
     path: "/purwee",
