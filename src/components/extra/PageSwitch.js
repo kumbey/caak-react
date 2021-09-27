@@ -6,8 +6,10 @@ import {
 import { UserProvider } from "../../context/userContext";
 import QueryModals from "../../pages/QueryModals";
 import Routes from "../../routes";
+import WithAuth from "../auth/WithAuth";
 import NavBar from "../navigation/NavBar";
 import PrivateRoute from "./PrivateRoute";
+import UnAuthRoute from "./UnAuthRoute";
 
 const PageSwitch = (props) => {
 
@@ -24,11 +26,20 @@ const PageSwitch = (props) => {
   
     return (
       <UserProvider>
+        <WithAuth/>
         <NavBar/>
         <Switch location={background || location}>
           {Routes.map((route, index) => {
             if(route.auth){
               return (<PrivateRoute
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                component={route.page}
+                isAuth={props.isAuth}
+              />)
+            }else if(route.unAuth){
+              return (<UnAuthRoute
                 key={index}
                 path={route.path}
                 exact={route.exact}

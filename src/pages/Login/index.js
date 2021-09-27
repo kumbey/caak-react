@@ -1,19 +1,34 @@
-import React from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { closeModal } from "../../Utility/Util";
-import { useUser } from "../../context/userContext";
 import Backdrop from "../../components/Backdrop";
+import { isLogged } from "../../Utility/Authenty";
+import { useUser } from "../../context/userContext";
 
 export default function Login({ type, ...props }) {
+
   const history = useHistory();
   const { state } = useLocation();
-  const { user } = useUser();
 
-  return !user ? (
+  const host = "/federated/login/"
+  const windowName = "_blank"
+  const {user, setUser} = useUser()
+
+  const openWindow = (type) => {
+      const opened = window.open(host + type, windowName)
+      const timer = setInterval(function() {
+          if(opened.closed) {
+              clearInterval(timer);
+              isLogged(user, setUser)
+              closeModal(history, state)
+          }
+      }, 100);
+  }
+
+  return (
     <Backdrop className={"flex justify-center items-center "}>
         <div className="ph:w-full bg-white rounded-lg shadow-xl">
           <div
@@ -32,7 +47,7 @@ export default function Login({ type, ...props }) {
           {/*Social Buttons*/}
           <div className={"flex flex-col items-center px-c13 "}>
             <Button
-              onClick={() => {}}
+              onClick={() => openWindow("google")}
               round
               className={
                 "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
@@ -46,7 +61,7 @@ export default function Login({ type, ...props }) {
               <p className="">Google</p>
             </Button>
             <Button
-              onClick={() => {}}
+              onClick={() => openWindow("facebook")}
               round
               className={
                 "hover:bg-gray-100 border border-gray-200 w-80 h-11   font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white relative"
@@ -146,5 +161,5 @@ export default function Login({ type, ...props }) {
           </div>
         </div>
     </Backdrop>
-  ) : null;
+  )
 }

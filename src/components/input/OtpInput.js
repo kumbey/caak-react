@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect, createRef } from "react";
 
-export default function Test  ()  {
+export default function Test  ({ name, onChange, errorMessage})  {
     const [otp, setOtp] = useState(new Array(6).fill(""))
     const refs = useRef(otp.map(() => createRef()))
     const [pointer, setPointer] = useState(0)
-
-    const input = otp.join("")
 
     useEffect(() => {
         let arr = [...otp]
@@ -14,6 +12,14 @@ export default function Test  ()  {
         refs.current[pointer].current.focus()
         // eslint-disable-next-line
      }, [pointer])
+
+     useEffect(() => {
+        onChange({target:{
+            name: name,
+            value: otp.join("")
+        }})
+        // eslint-disable-next-line
+     }, [otp])
 
     const handleChange= (value,  index) => {
         if(isNaN(value)) 
@@ -42,26 +48,30 @@ export default function Test  ()  {
     }
 
     return(
-        <div className="flex justify-between mx-c13">
-            {
-                otp.map((data, index) => {
-                    return(
-                        <input
-                            disabled={pointer === index ? false : true}
-                            ref={refs.current[index]}
-                            value={data}
-                            key={index}
-                            onKeyUp={(e) => handleKeyDown(e)}
-                            onChange={e => handleChange(e.target.value, index)}
-                            id={index}
-                            type="text"
-                            maxLength="1" 
-                            className="w-c15 h-c20 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
-                        />
-                    )
-                })
-            }
-            {input}
+        <div className="mx-c13">
+            <div className="flex justify-between w-full">
+                {
+                    otp.map((data, index) => {
+                        return(
+                            <input
+                                disabled={pointer === index ? false : true}
+                                ref={refs.current[index]}
+                                value={data}
+                                key={index}
+                                onKeyUp={(e) => handleKeyDown(e)}
+                                onChange={e => handleChange(e.target.value, index)}
+                                id={index}
+                                type="text"
+                                maxLength="1" 
+                                className="w-c15 h-c20 text-28px text-caak-generalblack text-center bg-caak-liquidnitrogen border border-caak-titaniumwhite rounded-lg"
+                            />
+                        )
+                    })
+                }
+            </div>
+            <p className="error">
+                {errorMessage}
+            </p>
         </div>
     )
 }

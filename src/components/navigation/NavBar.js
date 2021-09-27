@@ -157,6 +157,7 @@ export default function NavBar( ) {
                   skin={"secondary"}
                   className={"mr-2"}
                   onClick={() => history.push({pathname: "/login", state: {background: location}})}
+                  // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.com"}})}
                 >
                   Нэвтрэх
                 </Button>

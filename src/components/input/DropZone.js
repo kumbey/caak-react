@@ -29,6 +29,7 @@ const DropZone = ({
 
   useEffect(() => {
     onSelected(dropZoneFiles);
+    // eslint-disable-next-line
   }, [dropZoneFiles]);
   return (
     <div

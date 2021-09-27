@@ -4,7 +4,6 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 async function getUsername(user_id){
   try {
-
     const params = {
       TableName: process.env.API_CAAKMN_USERNAMETABLE_NAME,
     }
@@ -22,6 +21,7 @@ async function getUsername(user_id){
 
     return result
   } catch (err) {
+    console.log("ERROR from getUsername")
     throw err
   }
 }

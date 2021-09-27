@@ -34,7 +34,7 @@
         },
         "users": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/users-317130564669385a7954-build.zip"
+          "s3Key": "amplify-builds/users-3132674b4c6766324f59-build.zip"
         }
       }
     }
