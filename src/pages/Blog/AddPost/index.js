@@ -21,6 +21,7 @@ const AddPost = () => {
     { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
     { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
   ];
+  console.log(uploadedFiles)
   return (
     <Backdrop>
       <div className={`flex justify-center items-center mt-10`}>
@@ -61,7 +62,7 @@ const AddPost = () => {
                 <Header
                   iconLeft={
                     <span
-                      onClick={()=>setIsEditing(false)}
+                      onClick={() => setIsEditing(false)}
                       className={
                         "icon-fi-rs-back absolute text-12px w-7 h-7 left-3 top-1/4 cursor-pointer text-center bg-caak-titaniumwhite p-2 rounded-full"
                       }
@@ -80,6 +81,7 @@ const AddPost = () => {
           ) : (
             <Fragment>
               <Header
+                hideDivider
                 iconRight={
                   <span
                     className={

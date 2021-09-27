@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 
-
 const EditNewPostCaption = ({
   onChangeFiles,
   uploadedFiles,
@@ -10,7 +9,6 @@ const EditNewPostCaption = ({
 }) => {
   const [textCount, setTextCount] = useState(0);
   const [post, setPost] = useState();
-  const [posts, setPosts] = useState([]);
   useEffect(() => {
     uploadedFiles[currentEditingIndex] &&
       setPost(uploadedFiles[currentEditingIndex]);
@@ -42,33 +40,16 @@ const EditNewPostCaption = ({
       ) : (
         <div className={"animate-pulse w-full h-full bg-blue-300"} />
       )}
-      <div className={"px-4 flex flex-row"}>
-        <ReactSortable
-          list={posts}
-          setList={setPosts}
-          onEnd={(e) => console.log(e)}
-        >
-          {uploadedFiles.map((item, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => setCurrentEditingIndex(index)}
-                className={"relative w-20 h-20 mr-2 rounded-square"}
-              >
-                <img
-                  className={"w-full h-full rounded-square object-cover"}
-                  src={item.preview}
-                  alt={"sd"}
-                />
-              </div>
-            );
-          })}
-        </ReactSortable>
-      </div>
-      {/*<input {...getInputProps()}></input>*/}
-
-      <div className={"px-4 flex flex-row"}>
+      {/*<div className={"px-4 flex flex-row"}>*/}
+      <ReactSortable
+        animation={150}
+        list={uploadedFiles}
+        setList={(e) => console.log(e)} //TODO Returning different array
+        // onEnd={(e) => console.log(e)}
+        className={"flex flex-row px-4"}
+      >
         {uploadedFiles.map((item, index) => {
+          // console.log(item)
           return (
             <div
               key={index}
@@ -83,7 +64,27 @@ const EditNewPostCaption = ({
             </div>
           );
         })}
-      </div>
+      </ReactSortable>
+      {/*</div>*/}
+      {/*<input {...getInputProps()}></input>*/}
+
+      {/*<div className={"px-4 flex flex-row"}>*/}
+      {/*  {uploadedFiles.map((item, index) => {*/}
+      {/*    return (*/}
+      {/*      <div*/}
+      {/*        key={index}*/}
+      {/*        onClick={() => setCurrentEditingIndex(index)}*/}
+      {/*        className={"relative w-20 h-20 mr-2 rounded-square"}*/}
+      {/*      >*/}
+      {/*        <img*/}
+      {/*          className={"w-full h-full rounded-square object-cover"}*/}
+      {/*          src={item.preview}*/}
+      {/*          alt={"sd"}*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*    );*/}
+      {/*  })}*/}
+      {/*</div>*/}
     </div>
   );
 };
