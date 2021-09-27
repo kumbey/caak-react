@@ -17,6 +17,7 @@ const DropZone = ({
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
+            caption: "",
           })
         )
       );
