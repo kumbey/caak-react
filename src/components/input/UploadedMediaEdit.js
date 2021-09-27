@@ -46,7 +46,7 @@ const Card = ({
         <CardVideoContainer data={data.data} />
       ) : (
         <img
-          src={data.data.preview}
+          src={data.data.url}
           className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
@@ -117,7 +117,7 @@ const UploadedMediaEdit = ({
           >
             {uploadedFiles.map((item, index) => {
               let video;
-              if (item && item.type.startsWith("video")) {
+              if (item && item && item.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";

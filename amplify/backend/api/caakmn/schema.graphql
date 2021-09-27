@@ -12,6 +12,7 @@ type File @model
     level: String!
     ext: String!
     url: String
+    type: String
 }
 
 type User @model(mutations: null)

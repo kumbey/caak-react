@@ -44,12 +44,12 @@ const EditNewPostCaption = ({
                 "videoPlayer w-full max-h-80 block object-contain  bg-black"
               }
             >
-              <source src={post.preview} type="video/mp4" />
+              <source src={post.url} type="video/mp4" />
             </video>
           ) : (
             <img
               className={"max-h-80 w-full object-contain bg-black"}
-              src={post.preview}
+              src={post.url}
               alt={"sdd"}
             />
           )}
@@ -105,12 +105,12 @@ const EditNewPostCaption = ({
                     "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
                   }
                 >
-                  <source src={item.preview} type="video/mp4" />
+                  <source src={item.url} type="video/mp4" />
                 </video>
               ) : (
                 <img
                   className={"w-full h-full rounded-square object-cover"}
-                  src={item.preview}
+                  src={item.url}
                   alt={""}
                 />
               )}

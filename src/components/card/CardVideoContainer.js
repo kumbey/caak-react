@@ -35,18 +35,21 @@ const CardVideoContainer = ({ ...data }) => {
     return `${time.minutes}:${time.seconds}`;
   }
 
+  // eslint-disable-next-line
   function currentVideoTime() {
     const time = formatTime(Math.round(currentTime));
     return `${time.minutes}:${time.seconds}`;
   }
 
   useEffect(() => {
-    videoRef.current.ontimeupdate = (e) => {
-      setCurrentTime(e.currentTarget.currentTime);
-    };
-    videoRef.current.onloadeddata = (e) => {
-      setVideoDuration(e.currentTarget.duration);
-    };
+    // if(videoRef){
+      videoRef.current.ontimeupdate = (e) => {
+        setCurrentTime(e.currentTarget.currentTime);
+      };
+      videoRef.current.onloadeddata = (e) => {
+        setVideoDuration(e.currentTarget.duration);
+      };
+    // }
   }, []);
   return (
     <div className={"relative"}>
@@ -78,7 +81,7 @@ const CardVideoContainer = ({ ...data }) => {
           "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
         }
       >
-        <source src={data.data.preview} type="video/mp4" />
+        <source src={data.data.url} type="video/mp4" />
       </video>
 
       {/*<div className={"absolute bottom-0"}>*/}

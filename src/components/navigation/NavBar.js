@@ -106,6 +106,7 @@ export default function NavBar( ) {
                         />
                       </svg>
                     }
+                    onClick={() => history.push({pathname: "/post/add/new", state: {background: location}})}
                   />
                 </div>
                 <div className={"relative inline-block mr-6"}>

@@ -10,7 +10,6 @@ const WithAuth = () => {
 
     useEffect(() => {
         if(user){
-            console.log(user.sysUser)
             if(!user.sysUser){
                 history.push({pathname: "/register/main", state: {background: location, onlyInfo: true}})
             }
