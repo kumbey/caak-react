@@ -9,6 +9,7 @@ const Card = ({
   uploadedFiles,
   setIsEditing,
   setCurrentEditingIndex,
+  error,
   ...data
 }) => {
   const popItem = (index_arg) => {
@@ -28,11 +29,19 @@ const Card = ({
       <span
         onClick={() => editHandler(data.index)}
         className={
-          "absolute transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+          "absolute z-10 transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
         }
       >
         Засварлах
       </span>
+      {error && (
+        <span
+          className={
+            "icon-fi-rs-close absolute bg-white w-full h-full flex justify-center items-center bg-opacity-70 text-caak-primary"
+          }
+        />
+      )}
+
       {video ? (
         <CardVideoContainer data={data.data} />
       ) : (
@@ -85,9 +94,13 @@ const UploadedMediaEdit = ({
           onChange={(e) => onChangeText(e.target.value.length)}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
-          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
+          className="pr-12 mb-2 w-full rounded border-transparent resize placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary"
         />
-        <span className={"absolute right-8 text-14px text-caak-generalblack"}>
+        <span
+          className={
+            "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
+          }
+        >
           {textCount}/60
         </span>
       </div>
@@ -96,7 +109,7 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="max-h-96 editor-selection overflow-y-scroll">
+        <div className="overflow-y-scroll max-h-96 editor-selection">
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
@@ -113,6 +126,7 @@ const UploadedMediaEdit = ({
                 <Card
                   key={index}
                   data={item}
+                  // error
                   index={index}
                   onClick={onChangeFiles}
                   uploadedFiles={uploadedFiles}
