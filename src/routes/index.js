@@ -5,6 +5,8 @@ import Logout from "../pages/Logout";
 import AddPost from "../pages/Blog/AddPost";
 import Confirmation from "../pages/Register/Confirmation"
 import Group from "../pages/Group/index"
+import PendingPost from "../pages/Group/PendingPostAdmin";
+import Check from "../pages/Group/Check";
 
 const Routes = [
   {
@@ -22,7 +24,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <Group />,
+    page: () => <PendingPost />,
   },
   {
     path: "/profile/userconfig",
@@ -71,6 +73,12 @@ const Routes = [
     exact: true,
     background: true,
     page: () => <Group />,
+  },
+  {
+    path: "/check",
+    exact: true,
+    background: true,
+    page: () => <Check />,
   },
 ];
 

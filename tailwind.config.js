@@ -4,6 +4,7 @@ module.exports = {
   important: true,
   theme: {
     extend: {
+      appearance: ['hover', 'focus'],
       letterSpacing: {
         "17px": "17px",
         "18px": "18px",
@@ -45,6 +46,7 @@ module.exports = {
           buttonblue: "#2196F3",
           christmassilver: "#E0E0E0",
           mercury: "#EBEBEB",
+          posthover: "#F5F5F5",
           shiroiwhite: "#E8F6EE",
           algalfuel: "#2FC474",
           boilingmagma: "#FE3400",
@@ -57,6 +59,7 @@ module.exports = {
           facebook: "#1877F2",
           shit: "#AFAFAF",
           red: "#E60033",
+          darkgray: "#A7A9AB"
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -107,6 +110,7 @@ module.exports = {
         c1: "18px",
         c11: "20px",
         c2: "25px",
+        c34: "28px",
         c4: "29px",
         c3: "30px",
         c24: "32px",
@@ -115,6 +119,7 @@ module.exports = {
         c32: "37px",
         c13: "40px",
         c27: "41px",
+        c37: "42px",
         c5: "43px",
         c9: "44px",
         c30: "48px",
@@ -122,10 +127,13 @@ module.exports = {
         c15: "55px",
         c20: "68px",
         c7: "70px",
+        c33: "72px",
         c29: "78px",
         c19: "90px",
         c31: "92px",
+        c35: "97px",
         c14: "118px",
+        c36: "146px",
         c10: "155px",
         c12: "181px",
         c17: "196px",
@@ -133,6 +141,7 @@ module.exports = {
         c23: "240px",
         c22: "275px",
         c18: "278px",
+        ch: "300px",
         ci: "320px",
         cf: "356px",
         ce: "370px",
