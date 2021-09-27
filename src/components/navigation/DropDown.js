@@ -1,10 +1,12 @@
 import React from "react";
 
-const DropDown = ({ items, open, onToggle }) => {
+const DropDown = ({ items, open, onToggle, className }) => {
   return (
     <div
       onClick={onToggle}
-      className={`dropdown shadow-dropdown ${open ? "" : "hidden"}`}
+      className={`dropdown shadow-dropdown ${open ? "" : "hidden"} ${
+        className && className
+      }`}
     >
       <div onClick={(e) => e.stopPropagation()}>
         {items.map((item) => (
