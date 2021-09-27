@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 
 const EditNewPostCaption = ({
@@ -25,15 +25,35 @@ const EditNewPostCaption = ({
     uploadedFiles[currentEditingIndex] &&
       setPost(uploadedFiles[currentEditingIndex]);
   }, [uploadedFiles, currentEditingIndex]);
+  const videoRef = useRef();
+  useEffect(() => {
+    videoRef.current && videoRef.current.load();
+  }, [post]);
+
   return (
     <div>
-      {post ? (
+      {post && (
         <div>
-          <img
-            className={"max-h-80 w-full object-contain bg-black"}
-            src={post.preview}
-            alt={"sdd"}
-          />
+          {post.type.startsWith("video") ? (
+            <video
+              ref={videoRef}
+              disablePictureInPicture
+              controls
+              controlsList="nodownload noremoteplayback noplaybackrate"
+              className={
+                "videoPlayer w-full max-h-80 block object-contain  bg-black"
+              }
+            >
+              <source src={post.preview} type="video/mp4" />
+            </video>
+          ) : (
+            <img
+              className={"max-h-80 w-full object-contain bg-black"}
+              src={post.preview}
+              alt={"sdd"}
+            />
+          )}
+
           <div className={"relative flex flex-row mt-2 items-center px-4"}>
             <textarea
               rows={2}
@@ -52,8 +72,6 @@ const EditNewPostCaption = ({
             </span>
           </div>
         </div>
-      ) : (
-        <div className={"animate-pulse w-full h-full bg-blue-300"} />
       )}
       <ReactSortable
         animation={150}
@@ -67,7 +85,7 @@ const EditNewPostCaption = ({
             <div
               key={index}
               onClick={() => setCurrentEditingIndex(index)}
-              className={`relative group border-2 border-transparent w-20 h-20 mr-1 mt-2 p-1 rounded-square ${
+              className={`relative flex justify-center items-center group border-2 border-transparent w-20 h-20 mr-1 mt-2 p-1 rounded-square ${
                 currentEditingIndex === index &&
                 "border-2 border-caak-mortargrey"
               }`}
@@ -78,11 +96,24 @@ const EditNewPostCaption = ({
                   item === featuredPost && "text-caak-primary opacity-100"
                 }`}
               />
-              <img
-                className={"w-full h-full rounded-square object-cover"}
-                src={item.preview}
-                alt={"sd"}
-              />
+              {item.type.startsWith("video") ? (
+                <video
+                  height={"20rem"}
+                  disablePictureInPicture
+                  controlsList="nodownload noremoteplayback noplaybackrate"
+                  className={
+                    "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
+                  }
+                >
+                  <source src={item.preview} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  className={"w-full h-full rounded-square object-cover"}
+                  src={item.preview}
+                  alt={""}
+                />
+              )}
             </div>
           );
         })}
