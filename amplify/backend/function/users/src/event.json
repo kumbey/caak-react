@@ -2,12 +2,11 @@
   "typeName": "Mutation",
   "fieldName": "createUserCustom",
   "arguments": { "input": { 
-    "id": "0b42f222-412d-4ce3-aca3-a27898692c5b",
-    "firstname": "nanotekmn",
+    "id": "2b616f46-e125-4b75-92b8-d7f48b153284",
+    "firstname": "magnai",
     "nickname": "nano",
-    "lastname": "l",
-    "birthdate": "1993-03-08",
-    "gender": "male"
+    "lastname": "lkh",
+    "birthdate": "1993-03-08"
   } },
   "identity": {
     "claims": {

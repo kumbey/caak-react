@@ -106,6 +106,7 @@ export default function NavBar( ) {
                         />
                       </svg>
                     }
+                    onClick={() => history.push({pathname: "/post/add/new", state: {background: location}})}
                   />
                 </div>
                 <div className={"relative inline-block mr-6"}>
@@ -157,6 +158,7 @@ export default function NavBar( ) {
                   skin={"secondary"}
                   className={"mr-2"}
                   onClick={() => history.push({pathname: "/login", state: {background: location}})}
+                  // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.com"}})}
                 >
                   Нэвтрэх
                 </Button>

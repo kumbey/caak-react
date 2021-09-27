@@ -13,7 +13,7 @@ const Card = ({ video, verifiedUser, ...data }) => {
         <CardImageContainer data={["1", "2"]} />
       )}
 
-      <CardFooter />
+      <CardFooter data={data.data}/>
     </div>
   );
 };

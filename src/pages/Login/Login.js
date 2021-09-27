@@ -3,17 +3,16 @@ import {useState} from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
-import { useUser } from "../../context/userContext";
 import Consts from "../../Utility/Consts";
-import { checkUser, checkUsernameType, closeModal } from "../../Utility/Util";
+import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
+import { useEffect } from "react/cjs/react.development";
 
 export default function Login() {
 
     const history = useHistory()
     const {state} =  useLocation()
-    const { user } = useUser()
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -33,32 +32,34 @@ export default function Login() {
         }
     }
 
-    const { handleChange, errors, handleSubmit } = Validate(validate)
+    const { handleChange, errors, setErrors, handleSubmit } = Validate(validate)
+
+    useEffect(() => {
+        if(state.errors){
+          setErrors(state.errors)
+        }
+        // eslint-disable-next-line 
+    },[])
 
     async function doSignIn(){
         try{
             setLoading(true)
-            let user_name = username
 
-            if(checkUsernameType(user_name) === Consts.typePhoneNumber){
-                user_name = "+976"+ user_name
-            }
-
-            await Auth.signIn(user_name, password)
+            await Auth.signIn(checkUsername(username), password)
+            setLoading(false)
             closeModal(history, state)
         }catch(ex){
+            setLoading(false)
             if(ex.code === "UserNotConfirmedException"){
-                console.log("NEED TO CONFIRM")
+                history.replace({pathname: "/register/confirmation/", state: {...state, username: checkUsername(username), password: password}})
             }else if(ex.code === "NotAuthorizedException"){
                 setError("Нэврэх нэр эсвэл нууц үг буруу байна")
             }
-        }finally{
-            setLoading(false)
         }
     }
     
-    return ( !checkUser(user) ?
-    <Backdrop className="flex justify-center items-center ">
+    return (
+        <Backdrop className="flex justify-center items-center ">
                     <div className=" ph:w-full bg-white rounded-lg shadow-xl">
                         <div className="flex  px-c6 justify-between pt-c6 items-center  cursor-pointer ">
                             <div 
@@ -76,19 +77,19 @@ export default function Login() {
                         <div className={"flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"}>
                             Имайл хаяг/Утасны дугаар <br/> нэвтрэх!
                         </div>
-                        <div className="px-c8 ph:px-c28">
-                            <p className="error">
-                                {error}
-                            </p>
-                            <Input
-                                name={"username"}
-                                type={"text"}
-                                errorMessage={errors.username}
-                                onChange={handleChange}
-                                placeholder={"Имайл хаяг эсвэл Утасны дугаар"}
-                                className={"border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"}
-                            />
-                            <div className="flex items-center">
+                        <form onSubmit={(e) => e.preventDefault()}>
+                            <div className="px-c8 ph:px-c28">
+                                <p className="error">
+                                    {error}
+                                </p>
+                                <Input
+                                    name={"username"}
+                                    type={"text"}
+                                    errorMessage={errors.username}
+                                    onChange={handleChange}
+                                    placeholder={"Имайл хаяг эсвэл Утасны дугаар"}
+                                    className={"border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"}
+                                />
                                 <Input
                                     name={"password"}
                                     type={"password"}
@@ -98,19 +99,19 @@ export default function Login() {
                                     className={"border border-caak-titaniumwhite w-ci ph:w-full h-c9 bg-caak-liquidnitrogen"}
                                 />
                             </div>
-                        </div>
-                        <div className="flex px-c8 ph:px-c2 justify-between items-center text-caak-generalblack text-14px mt-5">
-                                <Button
-                                    loading={loading}
-                                    onClick={() => handleSubmit(doSignIn)}
-                                    className={
-                                        "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
-                                    }
-                                >   
-                                    Нэвтрэх
-                                </Button>
-                                <p className="cursor-pointer ml-">Нууц үгээ мартсан уу?</p>
+                            <div className="flex px-c8 ph:px-c2 justify-between items-center text-caak-generalblack text-14px mt-5">
+                                    <Button
+                                        loading={loading}
+                                        onClick={() => handleSubmit(doSignIn)}
+                                        className={
+                                            "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
+                                        }
+                                    >   
+                                        Нэвтрэх
+                                    </Button>
+                                    <p className="cursor-pointer ml-">Нууц үгээ мартсан уу?</p>
                             </div>
+                        </form>
                 {/*Footer*/}
                 <div
                     className={
@@ -133,6 +134,6 @@ export default function Login() {
                     <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
             </div>
         </div>
-        </Backdrop> : null
+        </Backdrop>
     )
 }

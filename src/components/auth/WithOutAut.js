@@ -1,12 +1,13 @@
 import { useEffect } from "react"
-import { useQuery } from "../../Utility/Util"
+import { useHistory, useLocation } from "react-router"
 
 function WithOutAuth(){
+   
+   const history = useHistory()
+   const location = useLocation()
 
-   const {addQuery} = useQuery()
-    
     useEffect(() => {
-       addQuery("signInUp","signIn")
+      history.push({pathname: "/login", state: {background: location}})
        //eslint-disable-next-line
     },[])
 

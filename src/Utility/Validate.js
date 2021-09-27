@@ -48,9 +48,16 @@ const Validation = (values) => {
                 break
             case Consts.typeDate:
                 if(!value) {
-                    errors[key] = "Та мэйл хаяг эсвэл утасны дугаар оруулна уу"
+                    errors[key] = "Та огноо оруулна уу"
                 }else if(!Consts.regexDate.test(value)){
                     errors[key] = "Он сар өдөрөө сонгоно уу"
+                }
+                break
+            case Consts.typeConfirmationCode:
+                if(!value) {
+                    errors[key] = "Та баталгаажуулах кодоо оруулна уу"
+                }else if(value.length < 6){
+                    errors[key] = "Та баталгаажуулах кодоо дутуу оруулсан байна"
                 }
                 break
             default: 
@@ -107,7 +114,7 @@ const Validate = (variables) => {
         setErrors(retErrors)
     }
 
-    return { handleChange, handleSubmit, errors , isValid}
+    return { handleChange, handleSubmit, errors , setErrors, isValid}
 }
 
 export default Validate

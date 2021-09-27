@@ -5,8 +5,8 @@ import Logout from "../pages/Logout";
 import AddPost from "../pages/Blog/AddPost";
 import Confirmation from "../pages/Register/Confirmation"
 import Group from "../pages/Group/index"
-import PendingPost from "../pages/Group/PendingPostAdmin";
-import Check from "../pages/Group/Check";
+import Completed from "../pages/Register/Completed";
+import FederatedLogin from "../pages/Login/FederatedLogin";
 
 const Routes = [
   {
@@ -42,31 +42,61 @@ const Routes = [
     path: "/login",
     exact: true,
     background: true,
+    unAuth: true,
     page: () => <LoginRegsiter type="signIn"/>,
   },
   {
     path: "/register",
     exact: true,
     background: true,
+    unAuth: true,
     page: () => <LoginRegsiter type="signUp"/>,
   },
   {
     path: "/login/main",
     exact: true,
     background: true,
+    unAuth: true,
     page: () => <Login />,
   },
   {
     path: "/register/main",
     exact: true,
     background: true,
+    unAuth: true,
     page: () => <Register />,
   },
   {
     path: "/register/confirmation/",
     exact: true,
     background: true,
+    unAuth: true,
     page: () => <Confirmation />,
+  },
+  {
+    path: "/register/completed/",
+    exact: true,
+    background: true,
+    unAuth: true,
+    page: () => <Completed />,
+  },
+  {
+    path: "/federated/login/:type",
+    exact: true,
+    unAuth: true,
+    page: () => <FederatedLogin />,
+  },
+  {
+    path: "/federated/login/",
+    exact: true,
+    page: () => <FederatedLogin />,
+  },
+  {
+    path: "/post/add/:postId",
+    exact: true,
+    background: true,
+    auth: true,
+    page: () => <AddPost />,
   },
   {
     path: "/group",

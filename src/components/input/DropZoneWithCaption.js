@@ -1,6 +1,11 @@
 import DropZone from "./DropZone";
 
-const DropZoneWithCaption = ({ onChangeText, textCount, onSelected }) => {
+const DropZoneWithCaption = ({
+  onChangeText,
+  textCount,
+  onChangeFiles,
+  uploadedFiles,
+}) => {
   return (
     <div>
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
@@ -28,7 +33,8 @@ const DropZoneWithCaption = ({ onChangeText, textCount, onSelected }) => {
           }
           subTitle={"эсвэл шууд чирэн оруулна уу"}
           className={"flex items-center w-full h-64"}
-          onSelected={onSelected}
+          onSelected={onChangeFiles}
+          uploadedFiles={uploadedFiles}
         />
       </div>
     </div>

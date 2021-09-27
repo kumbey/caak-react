@@ -29,7 +29,7 @@ function UserProvider(props) {
                   setUser(null)
                   break
               case 'signIn':
-                signIn(setUser)
+                  signIn(setUser)
                 break
               default:
                 break
@@ -47,7 +47,6 @@ function UserProvider(props) {
       }
       // eslint-disable-next-line
     },[user])
-
 
     const value = useMemo(() => ({ user, setUser}), [user])
     return <UserContext.Provider value={value} {...props} />

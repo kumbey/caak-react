@@ -12,20 +12,21 @@ type File @model
     level: String!
     ext: String!
     url: String
+    type: String
 }
 
-type User @model
+type User @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ]){
   id: ID!
   username: [Username]! @connection(keyName:"byUser", fields:["id"])
-  firstname: String!
+  firstname: String
   lastname: String
   nickname: String
   birthdate: String
-  gender: String!
+  gender: String
   pic_id: ID
   pic: File @connection(fields:["pic_id"])
   cover_pic_id: ID
@@ -35,6 +36,28 @@ type User @model
   is_public: Boolean
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
+}
+
+type UserPostTotals @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  user_id: ID!
+  pending: Int
+  confirmed: Int
+  archived: Int
+  reported: Int
+}
+
+type GroupPostTotals @model(mutations: null)
+@auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  group_id: ID!
+  pending: Int
+  confirmed: Int
 }
 
 type Username @model
@@ -48,7 +71,7 @@ type Username @model
      user: User @connection(fields:["user_id"])
 }
 
-type Aura @model
+type Aura @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -256,6 +279,6 @@ input CreateUserInputCustom{
   id: ID
 	firstname: String
 	lastname: String
+  nickname: String
 	birthdate: String
-	gender: String
 }

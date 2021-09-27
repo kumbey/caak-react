@@ -103,7 +103,6 @@
     height: 9px;
     margin-left: 2px;
     margin-right: 2px;
-    background-color: #fff;
     border-radius: 100%;
     display: inline-block;
     -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
@@ -144,15 +143,21 @@
     display: -webkit-box; /* Not needed if autoprefixing */
     display: -ms-flexbox; /* Not needed if autoprefixing */
     display: flex;
-    margin-left: -4px; /* gutter size offset */
     width: auto;
 }
+
 .my-masonry-grid_column {
-    padding-left: 4px; /* gutter size */
+    /*padding-left: 4px; !* gutter size *!*/
     background-clip: padding-box;
+    margin-right: 4px;
 }
 
 /* Style your items */
 .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
     @apply max-h-80;
+
+}
+
+.fullscreen_header_size {
+    height: calc(100vh - 72px)
 }

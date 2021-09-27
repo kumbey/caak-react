@@ -5,6 +5,9 @@ module.exports = {
   theme: {
     extend: {
       appearance: ['hover', 'focus'],
+      maxHeight: {
+        half: "50vh",
+      },
       letterSpacing: {
         "17px": "17px",
         "18px": "18px",
@@ -55,11 +58,17 @@ module.exports = {
           bleudefrance: "#367CE6",
           generalblack: "#21293C",
           secondprimary: "#F54000",
+          mortargrey: "#9E9E9E",
           twitter: "#1DA1F2",
           facebook: "#1877F2",
           shit: "#AFAFAF",
           red: "#E60033",
+<<<<<<< HEAD
           darkgray: "#A7A9AB"
+=======
+          whitesmoke: "#f5f5f5",
+          peachbreeze: "#FEECE5",
+>>>>>>> f066b52fa543b2dfd5b5c99d5f39d71c6891e7bc
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -91,7 +100,7 @@ module.exports = {
         "28px": "28px",
         "40px": "40px",
         "44px": "44px",
-        "56px": "56px"
+        "56px": "56px",
       },
       fontFamily: {
         roboto: ["Roboto"],
@@ -126,6 +135,7 @@ module.exports = {
         c28: "52px",
         c15: "55px",
         c20: "68px",
+        c60: "60px",
         c7: "70px",
         c33: "72px",
         c29: "78px",
@@ -149,11 +159,11 @@ module.exports = {
         cb: "400px",
         cc: "450px",
         cg: "854px",
-      }
-    }
+      },
+    },
   },
   variants: {
-    extend: { placeholderColor: ["hover"] },
+    extend: { placeholderColor: ["hover"], opacity: ["group-hover"] },
   },
   plugins: [require("@tailwindcss/forms")],
 };

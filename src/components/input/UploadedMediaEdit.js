@@ -2,21 +2,52 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
+import Button from "../button";
 
-const Card = ({ video, onClick, stateFiles, ...data }) => {
-  const popItem = (index1) => {
-    const filteredArray = stateFiles.filter(function (item, index) {
-      return index !== index1;
+const Card = ({
+  video,
+  onClick,
+  uploadedFiles,
+  setIsEditing,
+  setCurrentEditingIndex,
+  error,
+  ...data
+}) => {
+  const popItem = (index_arg) => {
+    const filteredArray = uploadedFiles.filter(function (item, index) {
+      return index !== index_arg;
     });
     onClick(filteredArray);
   };
+
+  const editHandler = (index) => {
+    setIsEditing(true);
+    setCurrentEditingIndex(index);
+  };
+
   return (
-    <div key={data.index} className={"relative mb-1 w-full"}>
+    <div key={data.index} className={"relative mb-1 w-full group"}>
+      <span
+        onClick={() => editHandler(data.index)}
+        className={
+          "absolute z-10 transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+        }
+      >
+        Засварлах
+      </span>
+      {error && (
+        <span
+          className={
+            "icon-fi-rs-close absolute bg-white w-full h-full flex justify-center items-center bg-opacity-70 text-caak-primary"
+          }
+        />
+      )}
+
       {video ? (
         <CardVideoContainer data={data.data} />
       ) : (
         <img
-          src={data.data.preview}
+          src={data.data.url}
           className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
@@ -36,7 +67,9 @@ const UploadedMediaEdit = ({
   onChangeText,
   onChangeFiles,
   textCount,
-  files,
+  uploadedFiles,
+  setIsEditing,
+  setCurrentEditingIndex,
 }) => {
   return (
     <div>
@@ -62,9 +95,13 @@ const UploadedMediaEdit = ({
           onChange={(e) => onChangeText(e.target.value.length)}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
-          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
+          className="pr-12 mb-2 w-full rounded border-transparent resize placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary"
         />
-        <span className={"absolute right-8 text-14px text-caak-generalblack"}>
+        <span
+          className={
+            "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
+          }
+        >
           {textCount}/60
         </span>
       </div>
@@ -73,15 +110,15 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="max-h-96 editor-selection overflow-y-scroll">
+        <div className="overflow-y-scroll max-h-96 editor-selection">
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {files.map((item, index) => {
+            {uploadedFiles.map((item, index) => {
               let video;
-              if (item.type && item.type.startsWith("video")) {
+              if (item && item && item.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";
@@ -90,14 +127,22 @@ const UploadedMediaEdit = ({
                 <Card
                   key={index}
                   data={item}
+                  // error
                   index={index}
                   onClick={onChangeFiles}
-                  stateFiles={files}
+                  uploadedFiles={uploadedFiles}
                   video={video}
+                  setIsEditing={setIsEditing}
+                  setCurrentEditingIndex={setCurrentEditingIndex}
                 />
               );
             })}
-            {files.length < 10 && <AddPostCardSmall files={files} onChangeFile={onChangeFiles}/>}
+            {uploadedFiles.length < 10 && (
+              <AddPostCardSmall
+                uploadedFiles={uploadedFiles}
+                onChangeFile={onChangeFiles}
+              />
+            )}
           </Masonry>
         </div>
       </div>
@@ -107,10 +152,46 @@ const UploadedMediaEdit = ({
         }
       >
         <span className={"icon-fi-rs-desc  cursor-pointer"} />
-        <span className={"font-medium text-15px ml-2  cursor-pointer"}>
+        <span
+          onClick={() => setIsEditing(true)}
+          className={"font-medium text-15px ml-2  cursor-pointer"}
+        >
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
+        <div className={"flex flex-row px-4"}>
+            <Button
+                icon={
+                    <span
+                        className={
+                            "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
+                        }
+                    />
+                }
+                iconPosition={"left"}
+                className={
+                    "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+                }
+            >
+                Ноорог
+            </Button>
+            <Button
+                icon={
+                    <span
+                        className={
+                            "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+                        }
+                    />
+                }
+                iconPosition={"left"}
+                className={
+                    "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+                }
+            >
+                Хугацаа оруулах
+            </Button>
+            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+        </div>
     </div>
   );
 };
