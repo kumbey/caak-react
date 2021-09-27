@@ -18,7 +18,7 @@ const Routes = [
     path: "/sanjaa",
     exact: true,
     background: true,
-    page: () => <ViewPost />,
+    page: () => <AddPost />,
   },
   {
     path: "/purwee",
