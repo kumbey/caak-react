@@ -58,6 +58,7 @@ module.exports = {
           shit: "#AFAFAF",
           red: "#E60033",
           whitesmoke: "#f5f5f5",
+          peachbreeze: "#FEECE5",
         },
         darkblue: {
           DEFAULT: "#6C7392",

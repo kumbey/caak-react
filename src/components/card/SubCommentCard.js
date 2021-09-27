@@ -48,9 +48,19 @@ const SubCommentCard = ({ name, comment }) => {
               "flex flex row justify-between text-blue-primary text-14px py-3"
             }
           >
-            <div className={"flex flex-row items-start justify-start"}>
-              <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
-                <i className={"icon-fr-rs-caak text-18px mr-1.5"} />
+            <div className={"flex flex-row justify-center items-center"}>
+              <div
+                className={
+                  "flex flex-row items-center justify-center mr-4 cursor-pointer hover:text-caak-primary group"
+                }
+              >
+                <div
+                  className={
+                    "flex items-center group-hover:bg-caak-peachbreeze rounded-full p-2 h-8 w-8"
+                  }
+                >
+                  <span className={"icon-fr-rs-caak text-18px"} />
+                </div>
                 <span className={"text-14px"}>4.5k</span>
               </div>
               <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
