@@ -12,10 +12,9 @@ import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
 
 const AddPost = () => {
-
-  const history = useHistory()
-  const { state } = useLocation()
-  const { postid } = useParams()
+  const history = useHistory();
+  const { state } = useLocation();
+  const { postid } = useParams();
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentEditingIndex, setCurrentEditingIndex] = useState();
@@ -33,8 +32,8 @@ const AddPost = () => {
 
   useEffect(() => {
     // console.log(uploadedFiles)
-  }, [uploadedFiles])
-  
+  }, [uploadedFiles]);
+
   return (
     <Backdrop>
       <div className={`flex justify-center items-center mt-10`}>
@@ -98,6 +97,7 @@ const AddPost = () => {
                 hideDivider
                 iconRight={
                   <span
+                    onClick={() => closeModal(history, state)}
                     className={
                       "icon-fi-rs-close absolute text-12px right-3 top-1/4 cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
                     }
@@ -122,21 +122,21 @@ const AddPost = () => {
           )}
 
           <div className={"flex flex-row pb-4 px-4"}>
-            <Button
-              icon={
-                <span
-                  className={
-                    "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
-                  }
-                />
-              }
-              iconPosition={"left"}
-              className={
-                "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
-              }
-            >
-              Ноорог
-            </Button>
+            {/*<Button*/}
+            {/*  icon={*/}
+            {/*    <span*/}
+            {/*      className={*/}
+            {/*        "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"*/}
+            {/*      }*/}
+            {/*    />*/}
+            {/*  }*/}
+            {/*  iconPosition={"left"}*/}
+            {/*  className={*/}
+            {/*    "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"*/}
+            {/*  }*/}
+            {/*>*/}
+            {/*  Ноорог*/}
+            {/*</Button>*/}
             {/* <Button
               icon={
                 <span
@@ -152,7 +152,7 @@ const AddPost = () => {
             >
               Хугацаа оруулах
             </Button> */}
-            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+            {/*<Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>*/}
           </div>
         </div>
       </div>
