@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
+import Button from "../button";
 
 const EditNewPostCaption = ({
   onChangeFiles,
@@ -10,10 +11,17 @@ const EditNewPostCaption = ({
   const [textCount, setTextCount] = useState(0);
   const [post, setPost] = useState();
   const [sortedArray, setSortedArray] = useState();
-  const [featuredPost, setFeaturedPost] = useState();
-  const featuredPostHandler = (e, item) => {
+  const featuredPostHandler = (e, index) => {
     e.stopPropagation();
-    featuredPost ? setFeaturedPost(null) : setFeaturedPost(item);
+    // eslint-disable-next-line no-extend-native
+    function arrayMove(arr, fromIndex, toIndex) {
+      let element = arr[fromIndex];
+      arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, element);
+    }
+
+    arrayMove(uploadedFiles, index, 0);
+    setCurrentEditingIndex(index)
   };
   const captionHandler = (e) => {
     setTextCount(e.target.value.length);
@@ -91,9 +99,9 @@ const EditNewPostCaption = ({
               }`}
             >
               <span
-                onClick={(e) => featuredPostHandler(e, item)}
-                className={`icon-fi-rs-rec absolute right-2 top-2 cursor-pointer transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 ${
-                  item === featuredPost && "text-caak-primary opacity-100"
+                onClick={(e) => featuredPostHandler(e, index)}
+                className={`icon-fi-rs-rec absolute text-14px text-white bg-gray-50 rounded-full p-1 bg-opacity-40 right-2 top-2 cursor-pointer transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 ${
+                  uploadedFiles[0] === item && "text-caak-primary opacity-100"
                 }`}
               />
               {item.type.startsWith("video") ? (
@@ -118,6 +126,9 @@ const EditNewPostCaption = ({
           );
         })}
       </ReactSortable>
+      <div className={"flex flex-row pb-4 px-4"}>
+        <Button className={"mr-2 mt-4 w-full text-17px"}>Хадгалах</Button>
+      </div>
     </div>
   );
 };

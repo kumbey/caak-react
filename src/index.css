@@ -157,3 +157,7 @@
     @apply max-h-80;
 
 }
+
+.fullscreen_header_size {
+    height: calc(100vh - 72px)
+}

@@ -4,6 +4,9 @@ module.exports = {
   important: true,
   theme: {
     extend: {
+      maxHeight: {
+        half: "50vh",
+      },
       letterSpacing: {
         "17px": "17px",
         "18px": "18px",
@@ -58,6 +61,8 @@ module.exports = {
           facebook: "#1877F2",
           shit: "#AFAFAF",
           red: "#E60033",
+          whitesmoke: "#f5f5f5",
+          peachbreeze: "#FEECE5",
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -122,6 +127,7 @@ module.exports = {
         c28: "52px",
         c15: "55px",
         c20: "68px",
+        c60: "60px",
         c7: "70px",
         c29: "78px",
         c19: "90px",

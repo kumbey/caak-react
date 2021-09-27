@@ -2,6 +2,7 @@ import React from "react";
 import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
+import Button from "../button";
 
 const Card = ({
   video,
@@ -158,6 +159,39 @@ const UploadedMediaEdit = ({
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
+        <div className={"flex flex-row pb-4 px-4"}>
+            <Button
+                icon={
+                    <span
+                        className={
+                            "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
+                        }
+                    />
+                }
+                iconPosition={"left"}
+                className={
+                    "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+                }
+            >
+                Ноорог
+            </Button>
+            <Button
+                icon={
+                    <span
+                        className={
+                            "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+                        }
+                    />
+                }
+                iconPosition={"left"}
+                className={
+                    "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+                }
+            >
+                Хугацаа оруулах
+            </Button>
+            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+        </div>
     </div>
   );
 };
