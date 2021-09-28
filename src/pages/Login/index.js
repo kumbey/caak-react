@@ -3,7 +3,7 @@ import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { closeModal } from "../../Utility/Util";
+import {checkUsername, closeModal} from "../../Utility/Util";
 import Backdrop from "../../components/Backdrop";
 import { isLogged } from "../../Utility/Authenty";
 import { useUser } from "../../context/userContext";
@@ -137,7 +137,10 @@ export default function Login({ type, ...props }) {
             <div className=" text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
-                onClick={() => {}}
+                  onClick={() => history.replace({
+                    pathname: "/login/",
+                    state
+                  })}
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 {" "}
@@ -148,7 +151,10 @@ export default function Login({ type, ...props }) {
             <div className=" text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
-                onClick={() => {}}
+                onClick={() => history.replace({
+                  pathname: "/register/",
+                 state
+                })}
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 {" "}
