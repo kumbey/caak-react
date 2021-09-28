@@ -1,23 +1,25 @@
-import React from "react";
 import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import Button from "../button";
+import { generateFileUrl } from "../../Utility/Util";
 
 const Card = ({
   video,
-  onClick,
-  uploadedFiles,
   setIsEditing,
   setCurrentEditingIndex,
   error,
-  ...data
+  index,
+  post,
+  setPost,
+  data,
 }) => {
   const popItem = (index_arg) => {
-    const filteredArray = uploadedFiles.filter(function (item, index) {
+    const filteredArray = post.items.filter(function (item, index) {
       return index !== index_arg;
     });
-    onClick(filteredArray);
+    
+    setPost({...post, items: filteredArray})
   };
 
   const editHandler = (index) => {
@@ -26,9 +28,9 @@ const Card = ({
   };
 
   return (
-    <div key={data.index} className={"relative mb-1 w-full group"}>
+    <div key={index} className={"relative mb-1 w-full group"}>
       <span
-        onClick={() => editHandler(data.index)}
+        onClick={() => editHandler(index)}
         className={
           "absolute z-10 transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
         }
@@ -44,10 +46,10 @@ const Card = ({
       )}
 
       {video ? (
-        <CardVideoContainer data={data.data} />
+        <CardVideoContainer data={data} />
       ) : (
         <img
-          src={data.data.url}
+          src={data.file.url ? data.file.url : generateFileUrl(data.file)}
           className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
@@ -64,35 +66,42 @@ const Card = ({
 };
 
 const UploadedMediaEdit = ({
-  onChangeText,
-  onChangeFiles,
-  textCount,
-  uploadedFiles,
+  setPost,
+  post,
   setIsEditing,
   setCurrentEditingIndex,
+  errors
 }) => {
+
+  const onChangeText = (e) => {
+      setPost({...post, title: e.target.value})
+  }
+
   return (
     <div>
-      <div
-        className={
-          "flex flex-row justify-between bg-caak-red bg-opacity-70 w-full p-3.5 px-6 my-4"
-        }
-      >
-        <span className={"text-15px text-white font-normal"}>
-          Зураг болон Видео хуулахад алдаа гарлаа.
-        </span>
-        <span
+      { errors &&
+        <div
           className={
-            "cursor-pointer text-14px font-medium text-white underline tracking-wider"
+            "flex flex-row justify-between bg-caak-red bg-opacity-70 w-full p-3.5 px-6 my-4"
           }
         >
-          Дэлгэрэнгүй унших..
-        </span>
-      </div>
+          <span className={"text-15px text-white font-normal"}>
+            Зураг болон Видео хуулахад алдаа гарлаа.
+          </span>
+          <span
+            className={
+              "cursor-pointer text-14px font-medium text-white underline tracking-wider"
+            }
+          >
+            Дэлгэрэнгүй унших..
+          </span>
+        </div>
+      }
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
         <textarea
           rows={1}
-          onChange={(e) => onChangeText(e.target.value.length)}
+          onChange={onChangeText}
+          value={post.title}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
           className="pr-12 mb-2 w-full rounded border-transparent resize placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary"
@@ -102,7 +111,7 @@ const UploadedMediaEdit = ({
             "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
           }
         >
-          {textCount}/60
+          {post.title.length}/60
         </span>
       </div>
       <div
@@ -116,9 +125,9 @@ const UploadedMediaEdit = ({
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {uploadedFiles.map((item, index) => {
+            {post.items.map((item, index) => {
               let video;
-              if (item && item && item.type.startsWith("video")) {
+              if (item && item.file.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";
@@ -129,18 +138,18 @@ const UploadedMediaEdit = ({
                   data={item}
                   // error
                   index={index}
-                  onClick={onChangeFiles}
-                  uploadedFiles={uploadedFiles}
+                  post={post}
+                  setPost={setPost}
                   video={video}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
                 />
               );
             })}
-            {uploadedFiles.length < 10 && (
+            {post.items.length < 10 && (
               <AddPostCardSmall
-                uploadedFiles={uploadedFiles}
-                onChangeFile={onChangeFiles}
+                post={post}
+                setPost={setPost}
               />
             )}
           </Masonry>

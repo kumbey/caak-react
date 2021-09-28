@@ -1,48 +1,52 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
+import { useEffect } from "react/cjs/react.development";
+import { removeItemByIndex } from "../../Utility/ArrayUtil";
 import Button from "../button";
 
 const EditNewPostCaption = ({
-  onChangeFiles,
-  uploadedFiles,
+  setPost,
+  post,
   setCurrentEditingIndex,
   currentEditingIndex,
+  setIsEditing
 }) => {
-  const [textCount, setTextCount] = useState(0);
-  const [post, setPost] = useState();
-  const [sortedArray, setSortedArray] = useState();
+
+  const videoRef = useRef();
+
+  const [sortedArray, setSortedArray] = useState()
+  const [data, setData] = useState([...post.items])
+  const [current, setCurrent] = useState(currentEditingIndex)
+  const [maxTextLength] = useState(60)
+
   const featuredPostHandler = (e, index) => {
     e.stopPropagation();
-    // eslint-disable-next-line no-extend-native
-    function arrayMove(arr, fromIndex, toIndex) {
-      let element = arr[fromIndex];
-      arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, element);
-    }
+    
+    let featured = data[index]
+    let arr = [...data]
+    removeItemByIndex(arr, index)
+    setData([featured, ...arr])
+    setCurrent(0)
+  };
 
-    arrayMove(uploadedFiles, index, 0);
-    setCurrentEditingIndex(index)
-  };
   const captionHandler = (e) => {
-    setTextCount(e.target.value.length);
-    Object.assign(uploadedFiles[currentEditingIndex], {
-      caption: e.target.value,
-    });
+    let arr = [...data]
+    let cur = arr[current]
+    arr[current] = {...cur, title: e.target.value}
+    setData([...arr])
   };
-  useEffect(() => {
-    uploadedFiles[currentEditingIndex] &&
-      setPost(uploadedFiles[currentEditingIndex]);
-  }, [uploadedFiles, currentEditingIndex]);
-  const videoRef = useRef();
-  useEffect(() => {
-    videoRef.current && videoRef.current.load();
-  }, [post]);
+
+  const handleSave = () => {
+      setCurrentEditingIndex(current)
+      setPost({...post, items: data})
+      setIsEditing(false)
+  }
 
   return (
     <div>
-      {post && (
+      {data[current] && (
         <div>
-          {post.type.startsWith("video") ? (
+          {data[current].file.type.startsWith("video") ? (
             <video
               ref={videoRef}
               disablePictureInPicture
@@ -52,12 +56,12 @@ const EditNewPostCaption = ({
                 "videoPlayer w-full max-h-80 block object-contain  bg-black"
               }
             >
-              <source src={post.url} type="video/mp4" />
+              <source src={data[current].file.url} type="video/mp4" />
             </video>
           ) : (
             <img
               className={"max-h-80 w-full object-contain bg-black"}
-              src={post.url}
+              src={data[current].file.url}
               alt={"sdd"}
             />
           )}
@@ -65,8 +69,8 @@ const EditNewPostCaption = ({
           <div className={"relative flex flex-row mt-2 items-center px-4"}>
             <textarea
               rows={2}
-              value={uploadedFiles[currentEditingIndex].caption}
-              onChange={(e) => captionHandler(e)}
+              value={data[current].title}
+              onChange={captionHandler}
               maxLength={"60"}
               placeholder={"Нийтлэлийн тайлбар оруулах..."}
               className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
@@ -76,35 +80,35 @@ const EditNewPostCaption = ({
                 "absolute right-8 bottom-4 text-14px font-medium text-caak-darkBlue"
               }
             >
-              {textCount}/60
+              {data[current].title.length}/{maxTextLength}
             </span>
           </div>
         </div>
       )}
       <ReactSortable
         animation={150}
-        list={uploadedFiles}
+        list={data}
         setList={(e) => setSortedArray(e)}
-        onEnd={() => onChangeFiles(sortedArray)}
+        onEnd={() => setData(sortedArray)}
         className={"flex flex-row flex-wrap px-4"}
       >
-        {uploadedFiles.map((item, index) => {
+        {data.map((item, index) => {
           return (
             <div
               key={index}
-              onClick={() => setCurrentEditingIndex(index)}
+              onClick={() => setCurrent(index)}
               className={`relative flex justify-center items-center group border-2 border-transparent w-20 h-20 mr-1 mt-2 p-1 rounded-square ${
-                currentEditingIndex === index &&
+                current === index &&
                 "border-2 border-caak-mortargrey"
               }`}
             >
               <span
                 onClick={(e) => featuredPostHandler(e, index)}
                 className={`icon-fi-rs-rec absolute text-14px text-white bg-gray-50 rounded-full p-1 bg-opacity-40 right-2 top-2 cursor-pointer transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 ${
-                  uploadedFiles[0] === item && "text-caak-primary opacity-100"
+                  data[0] === item && "text-caak-primary opacity-100"
                 }`}
               />
-              {item.type.startsWith("video") ? (
+              {item.file.type.startsWith("video") ? (
                 <video
                   height={"20rem"}
                   disablePictureInPicture
@@ -113,12 +117,12 @@ const EditNewPostCaption = ({
                     "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
                   }
                 >
-                  <source src={item.url} type="video/mp4" />
+                  <source src={item.file.url} type="video/mp4" />
                 </video>
               ) : (
                 <img
                   className={"w-full h-full rounded-square object-cover"}
-                  src={item.url}
+                  src={item.file.url}
                   alt={""}
                 />
               )}
@@ -127,7 +131,9 @@ const EditNewPostCaption = ({
         })}
       </ReactSortable>
       <div className={"flex flex-row px-4"}>
-        <Button className={"mr-2 mt-4 w-full text-17px"}>Хадгалах</Button>
+        <Button
+          onClick={handleSave}
+          className={"mr-2 mt-4 w-full text-17px"}>Хадгалах</Button>
       </div>
     </div>
   );

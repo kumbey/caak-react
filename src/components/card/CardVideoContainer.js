@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { generateFileUrl } from "../../Utility/Util";
 
-const CardVideoContainer = ({ ...data }) => {
+const CardVideoContainer = ({ data }) => {
   const videoRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
@@ -42,14 +43,17 @@ const CardVideoContainer = ({ ...data }) => {
   }
 
   useEffect(() => {
-    // if(videoRef){
       videoRef.current.ontimeupdate = (e) => {
         setCurrentTime(e.currentTarget.currentTime);
       };
       videoRef.current.onloadeddata = (e) => {
         setVideoDuration(e.currentTarget.duration);
       };
-    // }
+
+      return () => {
+        
+      }
+
   }, []);
   return (
     <div className={"relative"}>
@@ -81,7 +85,9 @@ const CardVideoContainer = ({ ...data }) => {
           "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
         }
       >
-        <source src={data.data.url} type="video/mp4" />
+        <source src={
+          data.file.url ? data.file.url : generateFileUrl(data.file)
+        } type="video/mp4" />
       </video>
 
       {/*<div className={"absolute bottom-0"}>*/}

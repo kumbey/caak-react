@@ -7,7 +7,7 @@ type File @aws_iam @aws_cognito_user_pools {
   region: String!
   level: String!
   ext: String!
-  url: String
+  type: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -139,6 +139,15 @@ type Comment @aws_iam @aws_cognito_user_pools {
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
 }
 
+type Reactions @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  user_id: ID!
+  type: String!
+  on_to: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
 type ReportedPost @aws_iam @aws_cognito_user_pools {
   id: ID!
   reason: String!
@@ -230,6 +239,8 @@ type Query {
   listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
   getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
   listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  getReactions(id: ID!, user_id: ID!): Reactions @aws_iam @aws_cognito_user_pools
+  listReactions(id: ID, user_id: ModelIDKeyConditionInput, filter: ModelReactionsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelReactionsConnection @aws_iam @aws_cognito_user_pools
   getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
   listReportedPosts(filter: ModelReportedPostFilterInput, limit: Int, nextToken: String): ModelReportedPostConnection @aws_iam @aws_cognito_user_pools
   getReportType(id: ID!): ReportType @aws_iam @aws_cognito_user_pools
@@ -269,6 +280,9 @@ type Mutation {
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
+  createReactions(input: CreateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
+  updateReactions(input: UpdateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
+  deleteReactions(input: DeleteReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   createReportedPost(input: CreateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   updateReportedPost(input: UpdateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   deleteReportedPost(input: DeleteReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
@@ -386,7 +400,7 @@ input ModelFileFilterInput {
   region: ModelStringInput
   level: ModelStringInput
   ext: ModelStringInput
-  url: ModelStringInput
+  type: ModelStringInput
   and: [ModelFileFilterInput]
   or: [ModelFileFilterInput]
   not: ModelFileFilterInput
@@ -414,7 +428,7 @@ input CreateFileInput {
   region: String!
   level: String!
   ext: String!
-  url: String
+  type: String
 }
 
 input UpdateFileInput {
@@ -426,7 +440,7 @@ input UpdateFileInput {
   region: String
   level: String
   ext: String
-  url: String
+  type: String
 }
 
 input DeleteFileInput {
@@ -441,7 +455,7 @@ input ModelFileConditionInput {
   region: ModelStringInput
   level: ModelStringInput
   ext: ModelStringInput
-  url: ModelStringInput
+  type: ModelStringInput
   and: [ModelFileConditionInput]
   or: [ModelFileConditionInput]
   not: ModelFileConditionInput
@@ -472,6 +486,9 @@ type Subscription {
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
+  onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
   onCreateReportedPost: ReportedPost @aws_subscribe(mutations: ["createReportedPost"]) @aws_iam @aws_cognito_user_pools
   onUpdateReportedPost: ReportedPost @aws_subscribe(mutations: ["updateReportedPost"]) @aws_iam @aws_cognito_user_pools
   onDeleteReportedPost: ReportedPost @aws_subscribe(mutations: ["deleteReportedPost"]) @aws_iam @aws_cognito_user_pools
@@ -861,6 +878,48 @@ input ModelCommentConditionInput {
   and: [ModelCommentConditionInput]
   or: [ModelCommentConditionInput]
   not: ModelCommentConditionInput
+}
+
+type ModelReactionsConnection @aws_iam @aws_cognito_user_pools {
+  items: [Reactions]
+  nextToken: String
+}
+
+input ModelReactionsFilterInput {
+  id: ModelIDInput
+  user_id: ModelIDInput
+  type: ModelStringInput
+  on_to: ModelStringInput
+  and: [ModelReactionsFilterInput]
+  or: [ModelReactionsFilterInput]
+  not: ModelReactionsFilterInput
+}
+
+input CreateReactionsInput {
+  id: ID
+  user_id: ID!
+  type: String!
+  on_to: String!
+}
+
+input UpdateReactionsInput {
+  id: ID!
+  user_id: ID!
+  type: String
+  on_to: String
+}
+
+input DeleteReactionsInput {
+  id: ID!
+  user_id: ID!
+}
+
+input ModelReactionsConditionInput {
+  type: ModelStringInput
+  on_to: ModelStringInput
+  and: [ModelReactionsConditionInput]
+  or: [ModelReactionsConditionInput]
+  not: ModelReactionsConditionInput
 }
 
 type ModelReportedPostConnection @aws_iam @aws_cognito_user_pools {

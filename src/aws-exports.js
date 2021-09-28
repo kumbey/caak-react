@@ -16,7 +16,7 @@ const awsmobile = {
             "phone",
             "profile"
         ],
-        "redirectSignIn": "https://localhost:3000/popupsignin/,https://prod.d3cv0kq0oa3k6b.amplifyapp.com/popupsignin/",
+        "redirectSignIn": "https://localhost:3000/federated/login/,https://prod.d3cv0kq0oa3k6b.amplifyapp.com/federated/login/",
         "redirectSignOut": "https://localhost:3000/,https://prod.d3cv0kq0oa3k6b.amplifyapp.com/",
         "responseType": "code"
     },

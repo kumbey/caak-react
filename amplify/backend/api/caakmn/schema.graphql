@@ -11,7 +11,6 @@ type File @model
     region: String!
     level: String!
     ext: String!
-    url: String
     type: String
 }
 
@@ -129,7 +128,6 @@ type Post @model
   title: String!
   commentType: Boolean!
   status: String!
-  type: String!
   user_id: ID!
   user: User @connection(fields:["user_id"])
   group_id: ID!
@@ -178,18 +176,18 @@ type Comment @model
   replyTo: User @connection(fields:["replyUserID"])
 }
 
-# type Reactions @model
-#   @auth(rules: [
-#     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
-#     { allow: public, provider: iam, operations: [read]}
-#   ])
-#   @key(fields:["id","user_id"])
-#   @key(name:"byUser", fields:["user_id"]){
-#   id: ID!
-#   user_id: ID!
-#   type: String!
-#   on: String!
-# }
+type Reactions @model
+   @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["id","user_id"])
+  @key(name:"byUser", fields:["user_id"]){
+  id: ID!
+  user_id: ID!
+  type: String!
+  on_to: String!
+}
 
 type ReportedPost @model
    @auth(rules: [
