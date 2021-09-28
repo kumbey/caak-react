@@ -22,7 +22,7 @@ const AddPost = () => {
   const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const [post, setPost] = useState({
     id: postId,
@@ -47,28 +47,28 @@ const AddPost = () => {
   }, [post]);
 
   const uploadPost = async () => {
-      try{
-        setLoading(true)
+    try {
+      setLoading(true);
 
-        let postData = {...post}
+      let postData = { ...post };
 
-        for(let i=0; i < postData.items.length; i++){
-            let item = post.items[i]
+      for (let i = 0; i < postData.items.length; i++) {
+        let item = post.items[i];
 
-            if(!item.id){
-              let resp = await ApiFileUpload(item.file)
-              item.file = resp
-            }
+        if (!item.id) {
+          let resp = await ApiFileUpload(item.file);
+          item.file = resp;
         }
-
-        setPost(postData)
-
-        setLoading(false)
-      }catch(ex){
-        setLoading(false)
-        console.log(ex)
       }
-  }
+
+      setPost(postData);
+
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+      console.log(ex);
+    }
+  };
 
   return (
     <Backdrop>
@@ -102,7 +102,7 @@ const AddPost = () => {
                   post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
-                  loading={loading}
+                  loading={false}
                   uploadPost={uploadPost}
                 />
               </Fragment>
