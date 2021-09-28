@@ -18,8 +18,8 @@ const Card = ({
     const filteredArray = post.items.filter(function (item, index) {
       return index !== index_arg;
     });
-    
-    setPost({...post, items: filteredArray})
+
+    setPost({ ...post, items: filteredArray });
   };
 
   const editHandler = (index) => {
@@ -32,7 +32,7 @@ const Card = ({
       <span
         onClick={() => editHandler(index)}
         className={
-          "absolute z-10 transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+          "absolute transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
         }
       >
         Засварлах
@@ -70,16 +70,16 @@ const UploadedMediaEdit = ({
   post,
   setIsEditing,
   setCurrentEditingIndex,
-  errors
+  errors,
+  loading,
 }) => {
-
   const onChangeText = (e) => {
-      setPost({...post, title: e.target.value})
-  }
+    setPost({ ...post, title: e.target.value });
+  };
 
   return (
     <div>
-      { errors &&
+      {errors && (
         <div
           className={
             "flex flex-row justify-between bg-caak-red bg-opacity-70 w-full p-3.5 px-6 my-4"
@@ -96,7 +96,7 @@ const UploadedMediaEdit = ({
             Дэлгэрэнгүй унших..
           </span>
         </div>
-      }
+      )}
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
         <textarea
           rows={1}
@@ -119,7 +119,16 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="overflow-y-scroll max-h-96 editor-selection">
+        <div className="overflow-y-scroll relative max-h-96 editor-selection">
+          {loading && (
+            <div
+              className={
+                "cursor-not-allowed text-center pt-20 absolute w-full h-screen max-h-screen top-0 left-0 z-10 rounded-square bg-white bg-opacity-90"
+              }
+            >
+              Loading
+            </div>
+          )}
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
@@ -147,10 +156,7 @@ const UploadedMediaEdit = ({
               );
             })}
             {post.items.length < 10 && (
-              <AddPostCardSmall
-                post={post}
-                setPost={setPost}
-              />
+              <AddPostCardSmall post={post} setPost={setPost} />
             )}
           </Masonry>
         </div>
@@ -168,39 +174,39 @@ const UploadedMediaEdit = ({
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
-        <div className={"flex flex-row px-4"}>
-            <Button
-                icon={
-                    <span
-                        className={
-                            "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
-                        }
-                    />
-                }
-                iconPosition={"left"}
-                className={
-                    "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
-                }
-            >
-                Ноорог
-            </Button>
-            <Button
-                icon={
-                    <span
-                        className={
-                            "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
-                        }
-                    />
-                }
-                iconPosition={"left"}
-                className={
-                    "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
-                }
-            >
-                Хугацаа оруулах
-            </Button>
-            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
-        </div>
+      <div className={"flex flex-row px-4"}>
+        <Button
+          icon={
+            <span
+              className={
+                "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
+              }
+            />
+          }
+          iconPosition={"left"}
+          className={
+            "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+          }
+        >
+          Ноорог
+        </Button>
+        <Button
+          icon={
+            <span
+              className={
+                "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+              }
+            />
+          }
+          iconPosition={"left"}
+          className={
+            "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+          }
+        >
+          Хугацаа оруулах
+        </Button>
+        <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+      </div>
     </div>
   );
 };

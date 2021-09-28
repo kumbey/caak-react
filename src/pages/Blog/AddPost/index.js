@@ -9,14 +9,13 @@ import SelectGroup from "./SelectGroup";
 import { closeModal } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
-import { useUser } from "../../../context/userContext"
+import { useUser } from "../../../context/userContext";
 
 const AddPost = () => {
-
   const history = useHistory();
   const { state } = useLocation();
   const { postId } = useParams();
-  const { user } = useUser()
+  const { user } = useUser();
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
@@ -24,16 +23,15 @@ const AddPost = () => {
   const [selectedGroup, setSelectedGroup] = useState();
 
   const [post, setPost] = useState({
-      id: postId,
-      title: "",
-      commentType: true,
-      status: "PENDING",
-      user_id: user.sysUser.id,
-      group_id: "",
-      category_id: "",
-      items: []
-  })
-  
+    id: postId,
+    title: "",
+    commentType: true,
+    status: "PENDING",
+    user_id: user.sysUser.id,
+    group_id: "",
+    category_id: "",
+    items: [],
+  });
 
   const groupData = [
     { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
@@ -43,7 +41,7 @@ const AddPost = () => {
   ];
 
   useEffect(() => {
-    console.log(post)
+    console.log(post);
   }, [post]);
 
   return (
@@ -78,6 +76,7 @@ const AddPost = () => {
                   post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
+                  // loading
                 />
               </Fragment>
             ) : (
@@ -123,10 +122,7 @@ const AddPost = () => {
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
               />
-              <DropZoneWithCaption
-                post={post}
-                setPost={setPost}
-              />
+              <DropZoneWithCaption post={post} setPost={setPost} />
             </Fragment>
           )}
 
