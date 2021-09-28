@@ -5,13 +5,13 @@ import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { faFire } from "@fortawesome/free-solid-svg-icons";
 
 import Dummy from "dummyjs";
 import { useUser } from "../../context/userContext";
 import { checkUser } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
+import NotificationDropDown from "./NotificationDropDown";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +24,8 @@ export default function NavBar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const [isNotificationMenu, setIsNotificationMenu] = useState(false);
 
   //TODO Change Icon
   return (
@@ -83,7 +85,7 @@ export default function NavBar() {
             }
           >
             {checkUser(user) ? (
-              <div className={"flex flex-row items-center"}>
+              <div className={"flex flex-row items-center justify-center"}>
                 <div className={"mr-6"}>
                   <Button
                     roundedSquare
@@ -113,11 +115,14 @@ export default function NavBar() {
                     }
                   />
                 </div>
-                <div className={"relative inline-block mr-6"}>
-                  <FontAwesomeIcon
-                    size={"lg"}
-                    className={"text-generalblack"}
-                    icon={faBell}
+                <div
+                  onClick={() => setIsNotificationMenu(!isNotificationMenu)}
+                  className={"relative mr-6 cursor-pointer"}
+                >
+                  <span
+                    className={
+                      "icon-fi-rs-notification text-22px text-caak-generalblack"
+                    }
                   />
                   <span
                     className={
@@ -126,15 +131,24 @@ export default function NavBar() {
                   >
                     3
                   </span>
+                  <NotificationDropDown
+                    isOpen={isNotificationMenu}
+                    onToggle={() =>
+                      setIsNotificationMenu(!setIsNotificationMenu)
+                    }
+                  />
                 </div>
                 <div className={"relative flex flex-row mr-6"}>
                   <DropDown
-                      open={isMenuOpen}
-                      onToggle={toggleMenu}
-                      items={menu_data}
-                      className={"top-10 right-10"}
+                    open={isMenuOpen}
+                    onToggle={toggleMenu}
+                    items={menu_data}
+                    className={"top-10 right-10"}
                   />
-                  <div onClick={() => setIsMenuOpen(!isMenuOpen)} className={"w-45px h-45px mr-2 cursor-pointer"}>
+                  <div
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className={"w-45px h-45px mr-2 cursor-pointer"}
+                  >
                     <img
                       alt={user.sysUser.nickname}
                       data-dummy="200x200"

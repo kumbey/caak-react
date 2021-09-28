@@ -21,8 +21,8 @@ module.exports = {
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
       },
       screens: {
-        'ph': {'min': '200px', 'max': '499px'},
-        'btn': {'min': '400px', 'max': '751px'},
+        ph: { min: "200px", max: "499px" },
+        btn: { min: "400px", max: "751px" },
       },
       colors: {
         caak: {
@@ -63,6 +63,8 @@ module.exports = {
           red: "#E60033",
           whitesmoke: "#f5f5f5",
           peachbreeze: "#FEECE5",
+          washme: "#fafafc",
+          absoluteapricot: "#ff963c",
         },
         darkblue: {
           DEFAULT: "#6C7392",
