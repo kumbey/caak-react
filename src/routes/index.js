@@ -10,7 +10,6 @@ import FederatedLogin from "../pages/Login/FederatedLogin";
 import PendingPostAdmin from "../pages/Group/PendingPostAdmin";
 import Check from "../pages/Group/Check";
 
-
 const Routes = [
   {
     path: "/",
@@ -27,7 +26,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <Group />,
+    page: () => <PendingPostAdmin />,
   },
   {
     path: "/profile/userconfig",

@@ -49,7 +49,7 @@ export default function Check() {
                 if (activeIndex === index)
                     return (
                         <img
-                            className={`2xl:h-full 2xl:w-full 2xl:max-h-half xl:w-full md:w-full md:w-ch sm:w-ch`}
+                            className={`2xl:h-full 2xl:w-full 2xl:max-h-half xl:w-full md:w-full md:w-full sm:w-full btn:w-full ph:w-full`}
                             key={index}
                             src={item.src}
                             alt={""}

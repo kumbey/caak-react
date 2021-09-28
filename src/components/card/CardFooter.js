@@ -1,6 +1,6 @@
 import React from "react";
 
-const CardFooter = ({ data }) => {
+const CardFooter = ({ ...data }) => {
   return (
     <div className="px-4 py-2 pb-4">
       <h1 className="text-generalblack text-17px font-bold leading-5">
