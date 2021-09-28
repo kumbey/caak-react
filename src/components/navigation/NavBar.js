@@ -230,7 +230,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <div
+      <div  
         className={`bg-gray-100 h-screen w-4/5 ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}

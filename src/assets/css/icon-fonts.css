@@ -24,7 +24,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-fi-rs-world:before {
+    content: "\e93c";
+  }
+  .icon-fi-rs-add:before {
+    content: "\e93d";
+  }
+  .icon-fi-rs-star:before {
+    content: "\e93b";
+  }
 .icon-fi-rs-scheduled:before {
     content: "\e939";
 }
