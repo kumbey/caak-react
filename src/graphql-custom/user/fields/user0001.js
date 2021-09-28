@@ -21,7 +21,6 @@ const user0001 = /* GraphQL */ `{
       region
       level
       ext
-      url
       createdAt
       updatedAt
     }
@@ -34,7 +33,6 @@ const user0001 = /* GraphQL */ `{
       region
       level
       ext
-      url
       createdAt
       updatedAt
     }

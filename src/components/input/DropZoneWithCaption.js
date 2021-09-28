@@ -1,17 +1,21 @@
 import DropZone from "./DropZone";
 
 const DropZoneWithCaption = ({
-  onChangeText,
   textCount,
-  onChangeFiles,
-  uploadedFiles,
+  setPost,
+  post,
 }) => {
+
+  const onChangeText = (e) => {
+
+  }
+
   return (
     <div>
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
         <textarea
           rows={1}
-          onChange={(e) => onChangeText(e.target.value.length)}
+          onChange={onChangeText}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
           className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
@@ -33,8 +37,8 @@ const DropZoneWithCaption = ({
           }
           subTitle={"эсвэл шууд чирэн оруулна уу"}
           className={"flex items-center w-full h-64"}
-          onSelected={onChangeFiles}
-          uploadedFiles={uploadedFiles}
+          setPost={setPost}
+          post={post}
         />
       </div>
     </div>

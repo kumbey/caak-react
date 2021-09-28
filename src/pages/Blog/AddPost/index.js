@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import Backdrop from "../../../components/Backdrop";
 import Dummy from "dummyjs";
-import Button from "../../../components/button";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
@@ -10,18 +9,31 @@ import SelectGroup from "./SelectGroup";
 import { closeModal } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
+import { useUser } from "../../../context/userContext"
 
 const AddPost = () => {
+
   const history = useHistory();
   const { state } = useLocation();
-  const { postid } = useParams();
+  const { postId } = useParams();
+  const { user } = useUser()
 
   const [isEditing, setIsEditing] = useState(false);
-  const [currentEditingIndex, setCurrentEditingIndex] = useState();
-  const [textCount, setTextCount] = useState(0);
+  const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
-  const [uploadedFiles, setUploadedFiles] = useState([]);
+
+  const [post, setPost] = useState({
+      id: postId,
+      title: "",
+      commentType: true,
+      status: "PENDING",
+      user_id: user.sysUser.id,
+      group_id: "",
+      category_id: "",
+      items: []
+  })
+  
 
   const groupData = [
     { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
@@ -31,8 +43,8 @@ const AddPost = () => {
   ];
 
   useEffect(() => {
-    // console.log(uploadedFiles)
-  }, [uploadedFiles]);
+    console.log(post)
+  }, [post]);
 
   return (
     <Backdrop>
@@ -40,7 +52,7 @@ const AddPost = () => {
         <div
           className={`flex flex-col w-full max-w-xl bg-white mx-auto rounded-square shadow-card `}
         >
-          {uploadedFiles.length !== 0 ? (
+          {post.items.length !== 0 ? (
             !isEditing ? (
               <Fragment>
                 <Header
@@ -62,10 +74,8 @@ const AddPost = () => {
                   setSelectedGroup={setSelectedGroup}
                 />
                 <UploadedMediaEdit
-                  uploadedFiles={uploadedFiles}
-                  onChangeText={setTextCount}
-                  textCount={textCount}
-                  onChangeFiles={setUploadedFiles}
+                  setPost={setPost}
+                  post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
                 />
@@ -84,10 +94,11 @@ const AddPost = () => {
                   title={"Зураг/Видеоний тайлбар"}
                 />
                 <EditNewPostCaption
-                  onChangeFiles={setUploadedFiles}
-                  uploadedFiles={uploadedFiles}
+                  setPost={setPost}
+                  post={post}
                   setCurrentEditingIndex={setCurrentEditingIndex}
                   currentEditingIndex={currentEditingIndex}
+                  setIsEditing={setIsEditing}
                 />
               </Fragment>
             )
@@ -113,10 +124,8 @@ const AddPost = () => {
                 setSelectedGroup={setSelectedGroup}
               />
               <DropZoneWithCaption
-                onChange={setTextCount}
-                textCount={textCount}
-                onChangeFiles={setUploadedFiles}
-                uploadedFiles={uploadedFiles}
+                post={post}
+                setPost={setPost}
               />
             </Fragment>
           )}
