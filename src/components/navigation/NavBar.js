@@ -13,18 +13,17 @@ import { useUser } from "../../context/userContext";
 import { checkUser } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
 
-export default function NavBar( ) {
+export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const {user} = useUser()
-  const history = useHistory()
-  const location = useLocation()
+  const { user } = useUser();
+  const history = useHistory();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
 
   //TODO Change Icon
   return (
@@ -106,7 +105,12 @@ export default function NavBar( ) {
                         />
                       </svg>
                     }
-                    onClick={() => history.push({pathname: "/post/add/new", state: {background: location}})}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/post/add/new",
+                        state: { background: location },
+                      })
+                    }
                   />
                 </div>
                 <div className={"relative inline-block mr-6"}>
@@ -123,8 +127,14 @@ export default function NavBar( ) {
                     3
                   </span>
                 </div>
-                <div className={"flex flex-row mr-6"}>
-                  <div className={"w-45px h-45px mr-2"}>
+                <div className={"relative flex flex-row mr-6"}>
+                  <DropDown
+                      open={isMenuOpen}
+                      onToggle={toggleMenu}
+                      items={menu_data}
+                      className={"top-10 right-10"}
+                  />
+                  <div onClick={() => setIsMenuOpen(!isMenuOpen)} className={"w-45px h-45px mr-2 cursor-pointer"}>
                     <img
                       alt={user.sysUser.nickname}
                       data-dummy="200x200"
@@ -136,7 +146,11 @@ export default function NavBar( ) {
                     <span className={"text-generalblack text-14px font-bold"}>
                       {user.sysUser.nickname}
                     </span>
-                    <div className={"flex flex-row items-center"}>
+                    <div
+                      className={
+                        "flex flex-row items-center justify-center self-start"
+                      }
+                    >
                       <FontAwesomeIcon
                         size={"sm"}
                         className={"text-generalblack mr-1"}
@@ -157,7 +171,12 @@ export default function NavBar( ) {
                   round
                   skin={"secondary"}
                   className={"mr-2"}
-                  onClick={() => history.push({pathname: "/login", state: {background: location}})}
+                  onClick={() =>
+                    history.push({
+                      pathname: "/login",
+                      state: { background: location },
+                    })
+                  }
                   // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.com"}})}
                 >
                   Нэвтрэх
@@ -166,41 +185,48 @@ export default function NavBar( ) {
                   round
                   skin={"primary"}
                   className={"mr-2"}
-                  onClick={() => history.push({pathname: "/register", state: {background: location}})}
+                  onClick={() =>
+                    history.push({
+                      pathname: "/register",
+                      state: { background: location },
+                    })
+                  }
                 >
                   Бүртгэл үүсгэх
                 </Button>
               </div>
             )}
-            <div className={"relative"}>
-              <Button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                skin="secondary"
-                icon={
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                    />
-                  </svg>
-                }
-                circular
-                className={"p-1"}
-              />
-              <DropDown
-                open={isMenuOpen}
-                onToggle={toggleMenu}
-                items={menu_data}
-              />
-            </div>
+            {!checkUser(user) && (
+              <div className={"relative"}>
+                <Button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  skin="secondary"
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                      />
+                    </svg>
+                  }
+                  circular
+                  className={"p-1"}
+                />
+                <DropDown
+                  open={isMenuOpen}
+                  onToggle={toggleMenu}
+                  items={menu_data}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -216,7 +242,12 @@ export default function NavBar( ) {
               round
               className={"ml-2"}
               skin={"secondary"}
-              onClick={() => history.push({pathname: "/login", state: {background: location}})}
+              onClick={() =>
+                history.push({
+                  pathname: "/login",
+                  state: { background: location },
+                })
+              }
             >
               Нэвтрэх
             </Button>
@@ -224,7 +255,12 @@ export default function NavBar( ) {
               round
               className={"ml-2"}
               skin={"primary"}
-              onClick={() => history.push({pathname: "/register", state: {background: location}})}
+              onClick={() =>
+                history.push({
+                  pathname: "/register",
+                  state: { background: location },
+                })
+              }
             >
               Бүртгэл үүсгэх
             </Button>
