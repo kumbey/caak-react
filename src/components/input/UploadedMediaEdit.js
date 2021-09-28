@@ -72,6 +72,7 @@ const UploadedMediaEdit = ({
   setCurrentEditingIndex,
   errors,
   loading,
+  uploadPost
 }) => {
   const onChangeText = (e) => {
     setPost({ ...post, title: e.target.value });
@@ -205,7 +206,7 @@ const UploadedMediaEdit = ({
         >
           Хугацаа оруулах
         </Button>
-        <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+        <Button onClick={uploadPost} loading={loading} className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
       </div>
     </div>
   );

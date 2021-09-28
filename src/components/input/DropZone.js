@@ -39,6 +39,7 @@ const DropZone = ({
                   bucket: awsExports.aws_user_files_s3_bucket,
                   region: awsExports.aws_user_files_s3_bucket_region,
                   level: 'public',
+                  obj: file
                 }
             }
 

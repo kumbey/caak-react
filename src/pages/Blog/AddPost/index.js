@@ -10,6 +10,7 @@ import { closeModal } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
 import { useUser } from "../../../context/userContext";
+import { ApiFileUpload } from "../../../Utility/ApiHelper";
 
 const AddPost = () => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const AddPost = () => {
   const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
+  const [loading, setLoading] = useState(true)
 
   const [post, setPost] = useState({
     id: postId,
@@ -43,6 +45,30 @@ const AddPost = () => {
   useEffect(() => {
     console.log(post);
   }, [post]);
+
+  const uploadPost = async () => {
+      try{
+        setLoading(true)
+
+        let postData = {...post}
+
+        for(let i=0; i < postData.items.length; i++){
+            let item = post.items[i]
+
+            if(!item.id){
+              let resp = await ApiFileUpload(item.file)
+              item.file = resp
+            }
+        }
+
+        setPost(postData)
+
+        setLoading(false)
+      }catch(ex){
+        setLoading(false)
+        console.log(ex)
+      }
+  }
 
   return (
     <Backdrop>
@@ -76,7 +102,8 @@ const AddPost = () => {
                   post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
-                  // loading
+                  loading={loading}
+                  uploadPost={uploadPost}
                 />
               </Fragment>
             ) : (
