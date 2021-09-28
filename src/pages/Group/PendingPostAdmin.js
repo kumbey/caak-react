@@ -25,7 +25,7 @@ export default function PendingPostAdmin() {
                                 </div>
                                 <div className="flex items-center  btn:grid">
                                     <div className="flex items-center">
-                                        <span className="icon-fi-rs-megaphone text-16px text-caak-darkBlue flex"/>
+                                        <span className="icon-fi-rs-world text-16px text-caak-darkBlue flex"/>
                                         <p className="text-15px ml-a1 text-caak-darkBlue">Нээлттэй бүлэг</p>
                                     </div>
                                     <p className="mx-a1">·</p> 
@@ -80,7 +80,7 @@ export default function PendingPostAdmin() {
                                 Нэгдсэн
                             </Button>
                             <Button className="h-c13 text-15px rounded rounded-lg bg-caak-generalblack ml-b1"> 
-                                <span className="icon-fi-rs-link text-15px mr-a1"/>
+                                <span className="icon-fi-rs-add text-15px mr-a1"/>
                                 Найзаа урих
                             </Button>
                             <div className="flex btn:justify-end">

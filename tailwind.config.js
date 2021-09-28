@@ -4,7 +4,6 @@ module.exports = {
   important: true,
   theme: {
     extend: {
-      appearance: ['hover', 'focus'],
       maxHeight: {
         half: "50vh",
       },
@@ -63,12 +62,9 @@ module.exports = {
           facebook: "#1877F2",
           shit: "#AFAFAF",
           red: "#E60033",
-<<<<<<< HEAD
-          darkgray: "#A7A9AB"
-=======
+          darkgray: "#A7A9AB",
           whitesmoke: "#f5f5f5",
           peachbreeze: "#FEECE5",
->>>>>>> f066b52fa543b2dfd5b5c99d5f39d71c6891e7bc
         },
         darkblue: {
           DEFAULT: "#6C7392",
@@ -98,6 +94,7 @@ module.exports = {
         "24px": "24px",
         "26px": "26px",
         "28px": "28px",
+        "30px": "30px",
         "40px": "40px",
         "44px": "44px",
         "56px": "56px",
@@ -143,6 +140,7 @@ module.exports = {
         c31: "92px",
         c35: "97px",
         c14: "118px",
+        c132: "132px",
         c36: "146px",
         c10: "155px",
         c12: "181px",
@@ -158,6 +156,7 @@ module.exports = {
         ca: "390px",
         cb: "400px",
         cc: "450px",
+        ck: "740px",
         cg: "854px",
       },
     },

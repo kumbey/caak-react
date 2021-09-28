@@ -7,6 +7,9 @@ import Confirmation from "../pages/Register/Confirmation"
 import Group from "../pages/Group/index"
 import Completed from "../pages/Register/Completed";
 import FederatedLogin from "../pages/Login/FederatedLogin";
+import PendingPostAdmin from "../pages/Group/PendingPostAdmin";
+import Check from "../pages/Group/Check";
+
 
 const Routes = [
   {
@@ -24,7 +27,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <PendingPost />,
+    page: () => <Group />,
   },
   {
     path: "/profile/userconfig",
