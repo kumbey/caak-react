@@ -21,6 +21,13 @@ const Input = ({
           {label}
         </label>
       )}
+      {type === "password" ? (
+        <span
+          onClick={() => setShowPassword(!showPassword)}
+          className="icon-fi-rs-view text-caak-darkBlue right-2 absolute cursor-pointer"
+          style={{ top: "10px" }}
+        />
+      ) : null}
       <input
         type={showPassword ? "text" : type}
         {...props}
@@ -28,13 +35,7 @@ const Input = ({
           errorMessage ? `border border-caak-red` : ``
         }`}
       />
-      {type === "password" ? (
-        <span
-          onClick={() => setShowPassword(!showPassword)}
-          className="icon-fi-rs-view right-c6 text-caak-darkBlue absolute cursor-pointer"
-          style={{ top: "14px" }}
-        />
-      ) : null}
+
       {!hideError && (
         <p className="error" id="email-error">
           {errorMessage}
