@@ -3,6 +3,7 @@ import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import Button from "../button";
 import { generateFileUrl } from "../../Utility/Util";
+import Loader from "../loader";
 
 const Card = ({
   video,
@@ -72,7 +73,7 @@ const UploadedMediaEdit = ({
   setCurrentEditingIndex,
   errors,
   loading,
-  uploadPost
+  uploadPost,
 }) => {
   const onChangeText = (e) => {
     setPost({ ...post, title: e.target.value });
@@ -105,7 +106,7 @@ const UploadedMediaEdit = ({
           value={post.title}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
-          className="pr-12 mb-2 w-full rounded border-transparent resize placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary"
+          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
         />
         <span
           className={
@@ -120,14 +121,18 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="overflow-y-scroll relative max-h-96 editor-selection">
+        <div
+          className={`${
+            loading ? "overflow-hidden" : "overflow-y-scroll"
+          } relative max-h-96 editor-selection`}
+        >
           {loading && (
             <div
               className={
-                "cursor-not-allowed text-center pt-20 absolute w-full h-screen max-h-screen top-0 left-0 z-10 rounded-square bg-white bg-opacity-90"
+                "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-10 bg-white bg-opacity-90"
               }
             >
-              Loading
+              <Loader className={"bg-caak-primary"}/>
             </div>
           )}
           <Masonry
@@ -206,7 +211,13 @@ const UploadedMediaEdit = ({
         >
           Хугацаа оруулах
         </Button>
-        <Button onClick={uploadPost} loading={loading} className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
+        <Button
+          onClick={uploadPost}
+          loading={loading}
+          className={"mr-2 mt-4 w-full text-17px"}
+        >
+          Нийтлэх
+        </Button>
       </div>
     </div>
   );
