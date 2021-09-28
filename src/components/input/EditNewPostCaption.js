@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { useEffect } from "react/cjs/react.development";
 import { removeItemByIndex } from "../../Utility/ArrayUtil";
 import Button from "../button";
 
