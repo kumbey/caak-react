@@ -109,11 +109,11 @@ const EditNewPostCaption = ({
               />
               {item.file.type.startsWith("video") ? (
                 <video
-                  height={"20rem"}
+                  // height={"20rem"}
                   disablePictureInPicture
                   controlsList="nodownload noremoteplayback noplaybackrate"
                   className={
-                    "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
+                    "videoPlayer w-full max-h-full block object-cover cursor-pointer rounded-square"
                   }
                 >
                   <source src={item.file.url} type="video/mp4" />

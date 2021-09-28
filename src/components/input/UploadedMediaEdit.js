@@ -33,7 +33,7 @@ const Card = ({
       <span
         onClick={() => editHandler(index)}
         className={
-          "absolute transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+          "absolute transition duration-300 ease-in-out z-10 opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
         }
       >
         Засварлах

@@ -136,13 +136,18 @@ export default function Login() {
         >
           <div className="text-caak-blue text-15px">
             <span>Шинэ хэрэглэгч бол </span>
-            <a
-              href="/register"
+            <span
+              onClick={() =>
+                history.replace({
+                  pathname: "/register/",
+                  state,
+                })
+              }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
               {" "}
               Бүртгүүлэх
-            </a>
+            </span>
           </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
         </div>
