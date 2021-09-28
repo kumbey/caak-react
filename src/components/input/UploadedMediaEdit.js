@@ -1,23 +1,26 @@
-import React from "react";
 import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import Button from "../button";
+import { generateFileUrl } from "../../Utility/Util";
+import Loader from "../loader";
 
 const Card = ({
   video,
-  onClick,
-  uploadedFiles,
   setIsEditing,
   setCurrentEditingIndex,
   error,
-  ...data
+  index,
+  post,
+  setPost,
+  data,
 }) => {
   const popItem = (index_arg) => {
-    const filteredArray = uploadedFiles.filter(function (item, index) {
+    const filteredArray = post.items.filter(function (item, index) {
       return index !== index_arg;
     });
-    onClick(filteredArray);
+
+    setPost({ ...post, items: filteredArray });
   };
 
   const editHandler = (index) => {
@@ -26,11 +29,11 @@ const Card = ({
   };
 
   return (
-    <div key={data.index} className={"relative mb-1 w-full group"}>
+    <div key={index} className={"relative mb-1 w-full group"}>
       <span
-        onClick={() => editHandler(data.index)}
+        onClick={() => editHandler(index)}
         className={
-          "absolute z-10 transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
+          "absolute transition duration-300 ease-in-out opacity-0 group-hover:opacity-100 bottom-2 left-2 motion-safe:hover:animate-spin font-medium cursor-pointer leading-none text-14px text-white bg-black bg-opacity-50 py-2 px-3 rounded-full"
         }
       >
         Засварлах
@@ -44,10 +47,10 @@ const Card = ({
       )}
 
       {video ? (
-        <CardVideoContainer data={data.data} />
+        <CardVideoContainer data={data} />
       ) : (
         <img
-          src={data.data.url}
+          src={data.file.url ? data.file.url : generateFileUrl(data.file)}
           className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
@@ -64,45 +67,53 @@ const Card = ({
 };
 
 const UploadedMediaEdit = ({
-  onChangeText,
-  onChangeFiles,
-  textCount,
-  uploadedFiles,
+  setPost,
+  post,
   setIsEditing,
   setCurrentEditingIndex,
+  errors,
+  loading,
+  uploadPost,
 }) => {
+  const onChangeText = (e) => {
+    setPost({ ...post, title: e.target.value });
+  };
+
   return (
     <div>
-      <div
-        className={
-          "flex flex-row justify-between bg-caak-red bg-opacity-70 w-full p-3.5 px-6 my-4"
-        }
-      >
-        <span className={"text-15px text-white font-normal"}>
-          Зураг болон Видео хуулахад алдаа гарлаа.
-        </span>
-        <span
+      {errors && (
+        <div
           className={
-            "cursor-pointer text-14px font-medium text-white underline tracking-wider"
+            "flex flex-row justify-between bg-caak-red bg-opacity-70 w-full p-3.5 px-6 my-4"
           }
         >
-          Дэлгэрэнгүй унших..
-        </span>
-      </div>
+          <span className={"text-15px text-white font-normal"}>
+            Зураг болон Видео хуулахад алдаа гарлаа.
+          </span>
+          <span
+            className={
+              "cursor-pointer text-14px font-medium text-white underline tracking-wider"
+            }
+          >
+            Дэлгэрэнгүй унших..
+          </span>
+        </div>
+      )}
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
         <textarea
           rows={1}
-          onChange={(e) => onChangeText(e.target.value.length)}
+          onChange={onChangeText}
+          value={post.title}
           maxLength={"60"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
-          className="pr-12 mb-2 w-full rounded border-transparent resize placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary"
+          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
         />
         <span
           className={
             "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
           }
         >
-          {textCount}/60
+          {post.title.length}/60
         </span>
       </div>
       <div
@@ -110,15 +121,28 @@ const UploadedMediaEdit = ({
           "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
-        <div className="overflow-y-scroll max-h-96 editor-selection">
+        <div
+          className={`${
+            loading ? "overflow-hidden" : "overflow-y-scroll"
+          } relative max-h-96 editor-selection`}
+        >
+          {loading && (
+            <div
+              className={
+                "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-10 bg-white bg-opacity-90"
+              }
+            >
+              <Loader className={"bg-caak-primary"}/>
+            </div>
+          )}
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
             columnClassName="my-masonry-grid_column"
           >
-            {uploadedFiles.map((item, index) => {
+            {post.items.map((item, index) => {
               let video;
-              if (item && item && item.type.startsWith("video")) {
+              if (item && item.file.type.startsWith("video")) {
                 video = "video";
               } else {
                 video = "";
@@ -129,19 +153,16 @@ const UploadedMediaEdit = ({
                   data={item}
                   // error
                   index={index}
-                  onClick={onChangeFiles}
-                  uploadedFiles={uploadedFiles}
+                  post={post}
+                  setPost={setPost}
                   video={video}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
                 />
               );
             })}
-            {uploadedFiles.length < 10 && (
-              <AddPostCardSmall
-                uploadedFiles={uploadedFiles}
-                onChangeFile={onChangeFiles}
-              />
+            {post.items.length < 10 && (
+              <AddPostCardSmall post={post} setPost={setPost} />
             )}
           </Masonry>
         </div>
@@ -159,39 +180,45 @@ const UploadedMediaEdit = ({
           Зураг тус бүрт тайлбар оруулах
         </span>
       </div>
-        <div className={"flex flex-row px-4"}>
-            <Button
-                icon={
-                    <span
-                        className={
-                            "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
-                        }
-                    />
-                }
-                iconPosition={"left"}
-                className={
-                    "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
-                }
-            >
-                Ноорог
-            </Button>
-            <Button
-                icon={
-                    <span
-                        className={
-                            "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
-                        }
-                    />
-                }
-                iconPosition={"left"}
-                className={
-                    "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
-                }
-            >
-                Хугацаа оруулах
-            </Button>
-            <Button className={"mr-2 mt-4 w-full text-17px"}>Нийтлэх</Button>
-        </div>
+      <div className={"flex flex-row px-4"}>
+        <Button
+          icon={
+            <span
+              className={
+                "icon-fi-rs-draft mr-1.5 text-caak-generalblack text-20px"
+              }
+            />
+          }
+          iconPosition={"left"}
+          className={
+            "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+          }
+        >
+          Ноорог
+        </Button>
+        <Button
+          icon={
+            <span
+              className={
+                "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
+              }
+            />
+          }
+          iconPosition={"left"}
+          className={
+            "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
+          }
+        >
+          Хугацаа оруулах
+        </Button>
+        <Button
+          onClick={uploadPost}
+          loading={loading}
+          className={"mr-2 mt-4 w-full text-17px"}
+        >
+          Нийтлэх
+        </Button>
+      </div>
     </div>
   );
 };

@@ -1,13 +1,14 @@
 import DropZone from "../input/DropZone";
 
-const AddPostCardSmall = ({ onChangeFile, uploadedFiles }) => {
+const AddPostCardSmall = ({ post, setPost }) => {
   return (
     <div className={"h-full w-full max-h-44"}>
       <DropZone
         title={"Нэмж оруулах"}
         subTitle={"Дээд хэмжээ 4мб"}
         className={"h-full w-full"}
-        onSelected={(e)=> onChangeFile([...uploadedFiles, ...e])}
+        post={post}
+        setPost={setPost}
         subTitleStyle={"text-caak-aleutian text-12px"}
         titleStyle={"items-center text-caak-generalblack font-medium text-16px"}
         icon={

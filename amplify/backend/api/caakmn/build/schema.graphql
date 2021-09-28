@@ -7,7 +7,7 @@ type File @aws_iam @aws_cognito_user_pools {
   region: String!
   level: String!
   ext: String!
-  url: String
+  type: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -97,7 +97,6 @@ type Post @aws_iam @aws_cognito_user_pools {
   title: String!
   commentType: Boolean!
   status: String!
-  type: String!
   user_id: ID!
   group_id: ID!
   category_id: ID!
@@ -137,6 +136,15 @@ type Comment @aws_iam @aws_cognito_user_pools {
   replyTo: User @aws_iam @aws_cognito_user_pools
   post: Post! @aws_iam @aws_cognito_user_pools
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+}
+
+type Reactions @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  user_id: ID!
+  type: String!
+  on_to: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type ReportedPost @aws_iam @aws_cognito_user_pools {
@@ -230,6 +238,8 @@ type Query {
   listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
   getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
   listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  getReactions(id: ID!, user_id: ID!): Reactions @aws_iam @aws_cognito_user_pools
+  listReactions(id: ID, user_id: ModelIDKeyConditionInput, filter: ModelReactionsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelReactionsConnection @aws_iam @aws_cognito_user_pools
   getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
   listReportedPosts(filter: ModelReportedPostFilterInput, limit: Int, nextToken: String): ModelReportedPostConnection @aws_iam @aws_cognito_user_pools
   getReportType(id: ID!): ReportType @aws_iam @aws_cognito_user_pools
@@ -244,13 +254,11 @@ type Query {
 }
 
 type Mutation {
-  createUserCustom(input: CreateUserInputCustom!): User @aws_iam @aws_cognito_user_pools
+  createUserCustom(input: CreateUserInputCustom!): User
+  createPost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
-  createUsername(input: CreateUsernameInput!, condition: ModelUsernameConditionInput): Username
-  updateUsername(input: UpdateUsernameInput!, condition: ModelUsernameConditionInput): Username
-  deleteUsername(input: DeleteUsernameInput!, condition: ModelUsernameConditionInput): Username
   createFollowedUsers(input: CreateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   updateFollowedUsers(input: UpdateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   deleteFollowedUsers(input: DeleteFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
@@ -260,15 +268,12 @@ type Mutation {
   createCategory(input: CreateCategoryInput!, condition: ModelCategoryConditionInput): Category
   updateCategory(input: UpdateCategoryInput!, condition: ModelCategoryConditionInput): Category
   deleteCategory(input: DeleteCategoryInput!, condition: ModelCategoryConditionInput): Category
-  createPost(input: CreatePostInput!, condition: ModelPostConditionInput): Post
-  updatePost(input: UpdatePostInput!, condition: ModelPostConditionInput): Post
-  deletePost(input: DeletePostInput!, condition: ModelPostConditionInput): Post
-  createPostItems(input: CreatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
-  updatePostItems(input: UpdatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
-  deletePostItems(input: DeletePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
+  createReactions(input: CreateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
+  updateReactions(input: UpdateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
+  deleteReactions(input: DeleteReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   createReportedPost(input: CreateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   updateReportedPost(input: UpdateReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
   deleteReportedPost(input: DeleteReportedPostInput!, condition: ModelReportedPostConditionInput): ReportedPost
@@ -284,6 +289,26 @@ type Mutation {
   createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
+}
+
+input CreatePostInput {
+  id: ID!
+  title: String!
+  commentType: Boolean!
+  status: String!
+  user_id: ID!
+  group_id: ID!
+  category_id: ID!
+  items: [CreatePostItemsInput]
+}
+
+input CreatePostItemsInput {
+  id: ID!
+  title: String
+  post_id: ID!
+  file_id: ID!
+  user_id: ID!
+  order: Int!
 }
 
 input CreateUserInputCustom {
@@ -386,7 +411,7 @@ input ModelFileFilterInput {
   region: ModelStringInput
   level: ModelStringInput
   ext: ModelStringInput
-  url: ModelStringInput
+  type: ModelStringInput
   and: [ModelFileFilterInput]
   or: [ModelFileFilterInput]
   not: ModelFileFilterInput
@@ -414,7 +439,7 @@ input CreateFileInput {
   region: String!
   level: String!
   ext: String!
-  url: String
+  type: String
 }
 
 input UpdateFileInput {
@@ -426,7 +451,7 @@ input UpdateFileInput {
   region: String
   level: String
   ext: String
-  url: String
+  type: String
 }
 
 input DeleteFileInput {
@@ -441,7 +466,7 @@ input ModelFileConditionInput {
   region: ModelStringInput
   level: ModelStringInput
   ext: ModelStringInput
-  url: ModelStringInput
+  type: ModelStringInput
   and: [ModelFileConditionInput]
   or: [ModelFileConditionInput]
   not: ModelFileConditionInput
@@ -451,9 +476,6 @@ type Subscription {
   onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
   onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
   onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
-  onCreateUsername: Username @aws_subscribe(mutations: ["createUsername"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUsername: Username @aws_subscribe(mutations: ["updateUsername"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUsername: Username @aws_subscribe(mutations: ["deleteUsername"]) @aws_iam @aws_cognito_user_pools
   onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
@@ -463,15 +485,12 @@ type Subscription {
   onCreateCategory: Category @aws_subscribe(mutations: ["createCategory"]) @aws_iam @aws_cognito_user_pools
   onUpdateCategory: Category @aws_subscribe(mutations: ["updateCategory"]) @aws_iam @aws_cognito_user_pools
   onDeleteCategory: Category @aws_subscribe(mutations: ["deleteCategory"]) @aws_iam @aws_cognito_user_pools
-  onCreatePost: Post @aws_subscribe(mutations: ["createPost"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePost: Post @aws_subscribe(mutations: ["updatePost"]) @aws_iam @aws_cognito_user_pools
-  onDeletePost: Post @aws_subscribe(mutations: ["deletePost"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostItems: PostItems @aws_subscribe(mutations: ["createPostItems"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostItems: PostItems @aws_subscribe(mutations: ["updatePostItems"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostItems: PostItems @aws_subscribe(mutations: ["deletePostItems"]) @aws_iam @aws_cognito_user_pools
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
+  onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
   onCreateReportedPost: ReportedPost @aws_subscribe(mutations: ["createReportedPost"]) @aws_iam @aws_cognito_user_pools
   onUpdateReportedPost: ReportedPost @aws_subscribe(mutations: ["updateReportedPost"]) @aws_iam @aws_cognito_user_pools
   onDeleteReportedPost: ReportedPost @aws_subscribe(mutations: ["deleteReportedPost"]) @aws_iam @aws_cognito_user_pools
@@ -552,27 +571,6 @@ input ModelUsernameFilterInput {
   and: [ModelUsernameFilterInput]
   or: [ModelUsernameFilterInput]
   not: ModelUsernameFilterInput
-}
-
-input CreateUsernameInput {
-  id: ID
-  user_id: ID!
-}
-
-input UpdateUsernameInput {
-  id: ID!
-  user_id: ID
-}
-
-input DeleteUsernameInput {
-  id: ID!
-}
-
-input ModelUsernameConditionInput {
-  user_id: ModelIDInput
-  and: [ModelUsernameConditionInput]
-  or: [ModelUsernameConditionInput]
-  not: ModelUsernameConditionInput
 }
 
 type ModelAuraConnection @aws_iam @aws_cognito_user_pools {
@@ -707,7 +705,6 @@ input ModelPostFilterInput {
   title: ModelStringInput
   commentType: ModelBooleanInput
   status: ModelStringInput
-  type: ModelStringInput
   user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
@@ -715,48 +712,6 @@ input ModelPostFilterInput {
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]
   not: ModelPostFilterInput
-}
-
-input CreatePostInput {
-  id: ID
-  title: String!
-  commentType: Boolean!
-  status: String!
-  type: String!
-  user_id: ID!
-  group_id: ID!
-  category_id: ID!
-  updatedAt: AWSDateTime
-}
-
-input UpdatePostInput {
-  id: ID!
-  title: String
-  commentType: Boolean
-  status: String
-  type: String
-  user_id: ID
-  group_id: ID
-  category_id: ID
-  updatedAt: AWSDateTime
-}
-
-input DeletePostInput {
-  id: ID!
-}
-
-input ModelPostConditionInput {
-  title: ModelStringInput
-  commentType: ModelBooleanInput
-  status: ModelStringInput
-  type: ModelStringInput
-  user_id: ModelIDInput
-  group_id: ModelIDInput
-  category_id: ModelIDInput
-  updatedAt: ModelStringInput
-  and: [ModelPostConditionInput]
-  or: [ModelPostConditionInput]
-  not: ModelPostConditionInput
 }
 
 type ModelPostItemsConnection @aws_iam @aws_cognito_user_pools {
@@ -773,36 +728,6 @@ input ModelPostItemsFilterInput {
   and: [ModelPostItemsFilterInput]
   or: [ModelPostItemsFilterInput]
   not: ModelPostItemsFilterInput
-}
-
-input CreatePostItemsInput {
-  id: ID
-  post_id: ID!
-  file_id: ID!
-  title: String
-  order: Int
-}
-
-input UpdatePostItemsInput {
-  id: ID!
-  post_id: ID
-  file_id: ID
-  title: String
-  order: Int
-}
-
-input DeletePostItemsInput {
-  id: ID!
-}
-
-input ModelPostItemsConditionInput {
-  post_id: ModelIDInput
-  file_id: ModelIDInput
-  title: ModelStringInput
-  order: ModelIntInput
-  and: [ModelPostItemsConditionInput]
-  or: [ModelPostItemsConditionInput]
-  not: ModelPostItemsConditionInput
 }
 
 type ModelCommentConnection @aws_iam @aws_cognito_user_pools {
@@ -861,6 +786,48 @@ input ModelCommentConditionInput {
   and: [ModelCommentConditionInput]
   or: [ModelCommentConditionInput]
   not: ModelCommentConditionInput
+}
+
+type ModelReactionsConnection @aws_iam @aws_cognito_user_pools {
+  items: [Reactions]
+  nextToken: String
+}
+
+input ModelReactionsFilterInput {
+  id: ModelIDInput
+  user_id: ModelIDInput
+  type: ModelStringInput
+  on_to: ModelStringInput
+  and: [ModelReactionsFilterInput]
+  or: [ModelReactionsFilterInput]
+  not: ModelReactionsFilterInput
+}
+
+input CreateReactionsInput {
+  id: ID
+  user_id: ID!
+  type: String!
+  on_to: String!
+}
+
+input UpdateReactionsInput {
+  id: ID!
+  user_id: ID!
+  type: String
+  on_to: String
+}
+
+input DeleteReactionsInput {
+  id: ID!
+  user_id: ID!
+}
+
+input ModelReactionsConditionInput {
+  type: ModelStringInput
+  on_to: ModelStringInput
+  and: [ModelReactionsConditionInput]
+  or: [ModelReactionsConditionInput]
+  not: ModelReactionsConditionInput
 }
 
 type ModelReportedPostConnection @aws_iam @aws_cognito_user_pools {

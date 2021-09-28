@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import awsExports from "../../aws-exports"
 
 const DropZone = ({
-  onSelected,
+  setPost,
+  post,
   className,
   title,
   subTitle,
@@ -12,7 +13,6 @@ const DropZone = ({
   icon,
 }) => {
   const [dropZoneFiles, setDropZoneFiles] = useState([]);
-  const [data, setData] = useState([])
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: setDropZoneFiles,
     accept: "image/*, video/*",
@@ -22,39 +22,40 @@ const DropZone = ({
   });
 
   useEffect(() => {
-    if((data.length + dropZoneFiles.length) > 10){
+    if((post.items.length + dropZoneFiles.length) > 10){
       alert("maxFiles 10 files")
     }else{
         let files = []
 
         dropZoneFiles.map((file, index) => {
             let fileData = {
-                    ext: getFileExt(file.name),
-                    name: getFileName(file.name),
-                    key: file.name,
-                    type: file.type,
-                    url: URL.createObjectURL(file),
-                    bucket: awsExports.aws_user_files_s3_bucket,
-                    region: awsExports.aws_user_files_s3_bucket_region,
-                    level: 'public',
+                title: "",
+                file: {
+                  ext: getFileExt(file.name),
+                  name: getFileName(file.name),
+                  key: file.name,
+                  type: file.type,
+                  url: URL.createObjectURL(file),
+                  bucket: awsExports.aws_user_files_s3_bucket,
+                  region: awsExports.aws_user_files_s3_bucket_region,
+                  level: 'public',
+                  obj: file
+                }
             }
 
             // if(post.length <= 0 && index === 0){
             //     postData.featured = true
             // }
             files.push(fileData)
-            return true
+            return false
         })
-
-        setData(files)
+        
+        if(files.length > 0){
+          setPost({...post, items: files})
+        }
     }
     // eslint-disable-next-line
   }, [dropZoneFiles]);
-
-  useEffect(() => {
-    onSelected(data)
-    // eslint-disable-next-line
-  },[data])
 
   const getFileExt = (fileName) => {
     return fileName.substring(fileName.lastIndexOf('.') + 1)

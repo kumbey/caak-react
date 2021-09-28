@@ -32,7 +32,7 @@ const DateSelect = ({value, errorMessage, onChange, ...props}) => {
                     value={year}
                     name={"year"} 
                     onChange={(e) => setYear(e.target.value)}
-                    containerStyle={"flex-1"} 
+                    containerStyle={"flex-1 mr-2"}
                     className=" h-c9 bg-caak-titaniumwhite"
                 >
                     <option value="placeholder">
@@ -47,7 +47,7 @@ const DateSelect = ({value, errorMessage, onChange, ...props}) => {
                     value={month}
                     name={"month"} 
                     onChange={(e) => setMonth(e.target.value)}
-                    containerStyle={"flex-1"}  
+                    containerStyle={"flex-1 mr-2"}
                     className=" h-c9 w-c14 bg-caak-titaniumwhite"
                 >
                     <option value="placeholder">

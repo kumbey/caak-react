@@ -11,7 +11,6 @@ type File @model
     region: String!
     level: String!
     ext: String!
-    url: String
     type: String
 }
 
@@ -60,7 +59,7 @@ type GroupPostTotals @model(mutations: null)
   confirmed: Int
 }
 
-type Username @model
+type Username @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -117,7 +116,7 @@ type Category @model
   icon: String!
 }
 
-type Post @model
+type Post @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -129,7 +128,6 @@ type Post @model
   title: String!
   commentType: Boolean!
   status: String!
-  type: String!
   user_id: ID!
   user: User @connection(fields:["user_id"])
   group_id: ID!
@@ -141,7 +139,7 @@ type Post @model
   updatedAt: AWSDateTime!
 }
 
-type PostItems @model
+type PostItems @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -178,18 +176,18 @@ type Comment @model
   replyTo: User @connection(fields:["replyUserID"])
 }
 
-# type Reactions @model
-#   @auth(rules: [
-#     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
-#     { allow: public, provider: iam, operations: [read]}
-#   ])
-#   @key(fields:["id","user_id"])
-#   @key(name:"byUser", fields:["user_id"]){
-#   id: ID!
-#   user_id: ID!
-#   type: String!
-#   on: String!
-# }
+type Reactions @model
+   @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields: ["id","user_id"])
+  @key(name:"byUser", fields:["user_id"]){
+  id: ID!
+  user_id: ID!
+  type: String!
+  on_to: String!
+}
 
 type ReportedPost @model
    @auth(rules: [
@@ -271,9 +269,30 @@ type Query {
 
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
+  # createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
+
+# input CreatePostInput{
+#   id: ID!
+# 	title: String!
+# 	commentType: Boolean!
+#   status: String!
+# 	user_id: ID!
+#   group_id: ID!
+#   category_id: ID!
+#   items: [CreatePostItemsInput]
+# }
+
+# input CreatePostItemsInput{
+#   id: ID!
+# 	title: String
+# 	post_id: ID!
+#   file_id: ID!
+# 	user_id: ID!
+#   order: Int!
+# }
 
 input CreateUserInputCustom{
   id: ID
