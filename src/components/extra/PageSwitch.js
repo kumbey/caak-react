@@ -70,6 +70,14 @@ const PageSwitch = (props) => {
                     isAuth={props.isAuth}
                   />
                 )
+              }else if(route.unAuth){
+                return (<UnAuthRoute
+                  key={index}
+                  path={route.path}
+                  exact={route.exact}
+                  component={route.page}
+                  isAuth={props.isAuth}
+                />)
               }else{
                 return ( background && 
                   <Route
