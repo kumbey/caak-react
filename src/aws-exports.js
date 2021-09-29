@@ -21,6 +21,15 @@ const awsmobile = {
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_POOLS",
+    "aws_cognito_login_mechanisms": [
+        "PREFERRED_USERNAME"
+    ],
+    "aws_cognito_signup_attributes": [],
+    "aws_cognito_mfa_types": [],
+    "aws_cognito_password_protection_settings": {
+        "passwordPolicyCharacters": []
+    },
+    "aws_cognito_verification_mechanisms": [],
     "aws_appsync_graphqlEndpoint": "https://6gnxf22onnbhthhwytct62iesi.appsync-api.ap-southeast-1.amazonaws.com/graphql",
     "aws_appsync_region": "ap-southeast-1",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
