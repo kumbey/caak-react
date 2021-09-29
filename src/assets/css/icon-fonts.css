@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'caakmoon';
-    src: url('../fonts/caakmoon.eot?61paaq');
-    src: url('../fonts/caakmoon.eot?61paaq#iefix') format('embedded-opentype'),
-    url('../fonts/caakmoon.ttf?61paaq') format('truetype'),
-    url('../fonts/caakmoon.woff?61paaq') format('woff'),
-    url('../fonts/caakmoon.svg?61paaq#caakmoon') format('svg');
+    src: url('../fonts/caakmoon.eot?xnslc5');
+    src: url('../fonts/caakmoon.eot?xnslc5#iefix') format('embedded-opentype'),
+    url('../fonts/caakmoon.ttf?xnslc5') format('truetype'),
+    url('../fonts/caakmoon.woff?xnslc5') format('woff'),
+    url('../fonts/caakmoon.svg?xnslc5#caakmoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -23,6 +23,74 @@
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fi-rs-tiktok:before {
+    content: "\e93e";
+}
+
+.icon-fi-rs-fb:before {
+    content: "\e93f";
+}
+
+.icon-fi-rs-ig:before {
+    content: "\e940";
+}
+
+.icon-fi-rs-comment-active:before {
+    content: "\e941";
+}
+
+.icon-fi-rs-tw:before {
+    content: "\e942";
+}
+
+.icon-fi-rs-lock:before {
+    content: "\e943";
+}
+
+.icon-fi-rs-dots:before {
+    content: "\e944";
+}
+
+.icon-fi-rs-pie-chart:before {
+    content: "\e945";
+}
+
+.icon-fi-rs-histogram:before {
+    content: "\e946";
+}
+
+.icon-fi-rs-add-friend:before {
+    content: "\e947";
+}
+
+.icon-fi-rs-thick-add-friend:before {
+    content: "\e948";
+}
+
+.icon-fi-rs-thick-check:before {
+    content: "\e949";
+}
+
+.icon-fi-rs-thick-add:before {
+    content: "\e94a";
+}
+
+.icon-fi-rs-pencil:before {
+    content: "\e94b";
+}
+
+.icon-fi-rs-world:before {
+    content: "\e93c";
+}
+
+.icon-fi-rs-add:before {
+    content: "\e93d";
+}
+
+.icon-fi-rs-star:before {
+    content: "\e93b";
 }
 
 .icon-fi-rs-scheduled:before {
