@@ -5,7 +5,7 @@ const NotificationDropDown = ({ onToggle, isOpen }) => {
   return (
     <div
       onClick={onToggle}
-      className={`dropdown flex flex-col bg-white shadow-dropdown w-96 cursor-auto ${
+      className={`dropdown flex flex-col bg-white shadow-dropdown w-96 cursor-auto top-10 -right-4 ${
         isOpen && "hidden"
       }`}
     >
@@ -27,7 +27,7 @@ const NotificationDropDown = ({ onToggle, isOpen }) => {
         >
           Шинэ
         </span>
-        <Notification newPost type={"success"} />
+        <Notification newPost type={"plus"} />
         <Notification newPost type={"success"} />
         <Notification newPost type={"success"} />
         <span

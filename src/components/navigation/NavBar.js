@@ -4,8 +4,6 @@ import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFire } from "@fortawesome/free-solid-svg-icons";
 
 import Dummy from "dummyjs";
 import { useUser } from "../../context/userContext";
@@ -91,22 +89,7 @@ export default function NavBar() {
                     roundedSquare
                     skin={"primary"}
                     className={"w-36px h-36px px-0 py-0"}
-                    icon={
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                    }
+                    icon={<span className={"icon-fi-rs-add text-15px"} />}
                     onClick={() =>
                       history.push({
                         pathname: "/post/add/new",
@@ -117,16 +100,16 @@ export default function NavBar() {
                 </div>
                 <div
                   onClick={() => setIsNotificationMenu(!isNotificationMenu)}
-                  className={"relative mr-6 cursor-pointer"}
+                  className={"relative flex items-center mr-6 cursor-pointer"}
                 >
                   <span
                     className={
-                      "icon-fi-rs-notification text-22px text-caak-generalblack"
+                      "icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite"
                     }
                   />
                   <span
                     className={
-                      "absolute text-center -top-2 w-18px h-18px border-1 rounded-full border-white font-medium -right-2 bg-caak-bleudefrance text-white text-12px"
+                      "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
                     }
                   >
                     3
@@ -138,17 +121,17 @@ export default function NavBar() {
                     }
                   />
                 </div>
-                <div className={"relative flex flex-row mr-6"}>
+                <div
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className={"relative flex flex-row mr-6"}
+                >
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
                     items={menu_data}
                     className={"top-10 right-10"}
                   />
-                  <div
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className={"w-45px h-45px mr-2 cursor-pointer"}
-                  >
+                  <div className={"w-45px h-45px mr-2 cursor-pointer"}>
                     <img
                       alt={user.sysUser.nickname}
                       data-dummy="200x200"
@@ -160,16 +143,8 @@ export default function NavBar() {
                     <span className={"text-generalblack text-14px font-bold"}>
                       {user.sysUser.nickname}
                     </span>
-                    <div
-                      className={
-                        "flex flex-row items-center justify-center self-start"
-                      }
-                    >
-                      <FontAwesomeIcon
-                        size={"sm"}
-                        className={"text-generalblack mr-1"}
-                        icon={faFire}
-                      />
+                    <div className={"flex flex-row items-center self-start"}>
+                      <span className={"icon-fi-rs-auro auroGradient mr-1"} />
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
                       >

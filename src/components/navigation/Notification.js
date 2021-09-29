@@ -6,12 +6,25 @@ const Notification = ({ newPost, type }) => {
       return (
         <div
           className={
+            "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5 p-1 bg-caak-algalfuel rounded-full"
+          }
+        >
+          <span
+            style={{ fontSize: "8px" }}
+            className={"icon-fi-rs-thick-check text-white "}
+          />
+        </div>
+      );
+    } else if (type === "plus") {
+      return (
+        <div
+          className={
             "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-absoluteapricot rounded-full"
           }
         >
           <span
-            style={{ fontSize: "6px" }}
-            className={"icon-fi-rs-check text-white "}
+            style={{ fontSize: "10px" }}
+            className={"icon-fi-rs-add text-white "}
           />
         </div>
       );
@@ -85,11 +98,11 @@ const Notification = ({ newPost, type }) => {
           {/*    "flex items-center justify-center absolute -right-2 border border-white -bottom-0.5 w-5 h-5  p-1 bg-caak-absoluteapricot rounded-full"*/}
           {/*  }*/}
           {/*>*/}
-            {button()}
-            {/*  <span*/}
-            {/*    style={{ fontSize: "6px" }}*/}
-            {/*    className={"icon-fi-rs-check text-white "}*/}
-            {/*  />*/}
+          {button()}
+          {/*  <span*/}
+          {/*    style={{ fontSize: "6px" }}*/}
+          {/*    className={"icon-fi-rs-check text-white "}*/}
+          {/*  />*/}
           {/*</div>*/}
         </div>
         <div className={"flex flex-row flex-wrap items-center ml-3"}>
