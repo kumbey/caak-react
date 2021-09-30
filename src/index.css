@@ -162,3 +162,10 @@
 .fullscreen_header_size {
     height: calc(100vh - 72px)
 }
+
+.auroGradient {
+    background: transparent conic-gradient(from 264deg at 50% 50%, rgba(244, 173, 87, 1) 0.00%, rgba(247, 88, 49, 1) 30.32%, rgba(108, 65, 228, 1) 50.32%, rgba(80, 121, 241, 1) 66.97%, rgba(45, 235, 217, 1) 80.51%, rgba(244, 173, 87, 1) 100.00%) 0 0 no-repeat padding-box;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
