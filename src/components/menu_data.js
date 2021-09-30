@@ -55,7 +55,7 @@ export const menu_data = [
   },
   {
     name: "Гарах",
-    href: "#",
+    href: "/logout",
     image: <span className={"icon-fi-rs-exit text-18px w-5 h-5 mr-2"} />,
   },
 ];
