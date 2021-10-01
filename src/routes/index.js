@@ -9,6 +9,9 @@ import Completed from "../pages/Register/Completed";
 import FederatedLogin from "../pages/Login/FederatedLogin";
 import PendingPostAdmin from "../pages/Group/PendingPostAdmin";
 import Check from "../pages/Group/Check";
+import Profile from '../pages/Profile/index'
+import Activities from "../pages/Profile/Activities";
+import Infromation from "../pages/Group/Infromation";
 
 const Routes = [
   {
@@ -107,10 +110,28 @@ const Routes = [
     page: () => <Group />,
   },
   {
+    path: "/group/information",
+    exact: true,
+    background: true,
+    page: () => <Infromation />,
+  },
+  {
     path: "/check",
     exact: true,
     background: true,
     page: () => <Check />,
+  },
+  {
+    path: "/profile/view",
+    exact: true,
+    background: true,
+    page: () => <Profile />,
+  },
+  {
+    path: "/profile/active",
+    exact: true,
+    background: true,
+    page: () => <Activities />,
   },
 ];
 

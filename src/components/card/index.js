@@ -12,7 +12,6 @@ const Card = ({ video, verifiedUser, ...data }) => {
       ) : (
         <CardImageContainer data={["1", "2"]} />
       )}
-
       <CardFooter data={data.data}/>
     </div>
   );

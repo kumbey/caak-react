@@ -256,10 +256,6 @@ export default function NavBar() {
           </div>
 
           <div className={`relative`}>
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="relative flex flex-col self-start w-full py-2 align-baseline"
-            >
               {menu_data.map((item) => (
                 <a
                   key={item.name}
@@ -273,7 +269,6 @@ export default function NavBar() {
                   </p>
                 </a>
               ))}
-            </div>
           </div>
         </div>
       </div>
