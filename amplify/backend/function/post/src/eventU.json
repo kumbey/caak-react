@@ -1,15 +1,16 @@
 {
   "typeName": "Mutation",
-  "fieldName": "createPost",
+  "fieldName": "updatePost",
   "arguments": {
     "input": {
-      "title": "1",
+      "id": "314cbcec-9ec7-44a4-80d9-906d927f92ba",
+      "title": "updated post title",
       "commentType": true,
       "group_id": "1",
       "category_id": "1",
       "items": [
-        {"title": "item 1", "file_id": "1", "order": 10},
-        {"title": "item 2","file_id": "1", "order": 10}
+        {"title": "item 0", "file_id": "1", "order": 10},
+        {"title": "item here","file_id": "1", "order": 10}
       ]
     }
   },

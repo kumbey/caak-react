@@ -154,6 +154,17 @@ type PostItems @model(mutations: null)
   order: Int
 }
 
+type PostHistory @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name: "byPost", fields:["post_id"]){
+  id: ID!
+  post_id: ID!
+  post: Post
+}
+
 
 type Comment @model
   @auth(rules: [
@@ -238,12 +249,24 @@ type Group @model
   name: String!
   category_id: ID!
   category: Category! @connection(fields: ["category_id"])
+  profile: File @connection
   cover: File @connection
   about: String
   founder_id: ID!
   founder: User @connection(fields:["founder_id"])
   rating: Float
   members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
+}
+
+type GroupID @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(name:"byGroup" fields: ["group_id"], queryField:"groupByID"){
+     id: ID!
+     group_id: ID!
+     group: Group @connection(fields:["group_id"])
 }
 
 type Notification @model

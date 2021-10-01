@@ -3,7 +3,7 @@ import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import {checkUsername, closeModal} from "../../Utility/Util";
+import { closeModal } from "../../Utility/Util";
 import Backdrop from "../../components/Backdrop";
 import { isLogged } from "../../Utility/Authenty";
 import { useUser } from "../../context/userContext";

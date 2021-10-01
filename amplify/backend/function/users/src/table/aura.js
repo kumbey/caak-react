@@ -12,7 +12,7 @@ async function createAura(data){
         point: 0
       },
       ConditionExpression: "attribute_not_exists(user_id)",
-      "ReturnValues" : "ALL_OLD"
+      ReturnValues : "ALL_OLD"
     }
     
     const result = await docClient.put(params).promise()

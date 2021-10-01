@@ -22,7 +22,7 @@ const AddPost = () => {
   const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [post, setPost] = useState({
     id: postId,
@@ -52,14 +52,15 @@ const AddPost = () => {
 
       let postData = { ...post };
 
-      for (let i = 0; i < postData.items.length; i++) {
-        let item = post.items[i];
+      // for (let i = 0; i < postData.items.length; i++) {
+      //   let item = post.items[i];
 
-        if (!item.id) {
-          let resp = await ApiFileUpload(item.file);
-          item.file = resp;
-        }
-      }
+      //   if (!item.id) {
+      //     let resp = await ApiFileUpload(item.file);
+      //     item.file = resp;
+      //   }
+      // }
+
 
       setPost(postData);
 
@@ -102,7 +103,7 @@ const AddPost = () => {
                   post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
-                  loading={false}
+                  loading={loading}
                   uploadPost={uploadPost}
                 />
               </Fragment>
