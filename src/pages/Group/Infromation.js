@@ -1,18 +1,12 @@
 import {group_data} from './groupData'
 import { useState } from 'react';
 import Settings from './Settings';
-import DropTest from '../../components/PendingPost/DropTest';
 import { useHistory } from 'react-router';
 
 export default function Infromation() {
 
-    const [isGroupEdit, setIsGroupEdit] = useState(false);
-
     const history = useHistory();
 
-    const toggleGroupEdit = () => {
-        setIsGroupEdit(!isGroupEdit);
-    };
 
     const [selected, setSelected] = useState();
 
@@ -41,12 +35,7 @@ export default function Infromation() {
                             ))}
                 </div>
                 <div style={{ width: "608px", marginInlineStart: "19px"}} className="bg-white rounded-lg">
-                    <DropTest
-                        className="relative w-full"
-                        shadow
-                        content={<Settings/>}
-                        open={setIsGroupEdit}
-                    />
+                    <Settings/>
                 </div>
             </div>
         </div>

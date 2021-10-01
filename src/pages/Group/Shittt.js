@@ -1,4 +1,4 @@
-import DropTest from "../../components/PendingPost/DropTest"
+import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop"
 import { useState } from "react";
 
 export default function Shittt({deletePost}) {
@@ -11,7 +11,7 @@ export default function Shittt({deletePost}) {
     return (
         <div>
             <span onClick={toggleMenu} className="ml-c11 cursor-pointer mr-b5 icon-fi-rs-dots text-4px py-c6 px-a1 cursor-pointer"/>
-            <DropTest
+            <GroupInformationDrop
                 remove={deletePost}
                 className="block"
                 open={isMenuOpen}
