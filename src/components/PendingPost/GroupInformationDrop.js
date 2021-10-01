@@ -1,7 +1,7 @@
 import React from "react";
 import Shitt from "./shitt";
 
-const DropTest = ({ open, onToggle, className, content, shadow,remove}) => {
+const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remove}) => {
   return (
     <div
       onClick={onToggle}
@@ -15,5 +15,5 @@ const DropTest = ({ open, onToggle, className, content, shadow,remove}) => {
     </div>
   );
 };
-export default DropTest;
+export default GroupInformationDrop;
 

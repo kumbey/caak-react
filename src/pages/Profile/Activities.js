@@ -3,8 +3,11 @@ import ProfileBack from '../../components/Sidebar/ProfileBack'
 import PostPending from '../Group/PostPending'
 import { useState } from 'react';
 import {types} from './data'
+import { useHistory } from 'react-router';
 
 export default function Activities() {
+
+    const history = useHistory();
 
     const [selected, setSelected] = useState();
 
@@ -52,7 +55,7 @@ export default function Activities() {
                 <div className="mt-b5 ml-c3 2xl:w-c22 md:w-c17">
 
                     {/*profile*/}
-                    <ProfileBack title={"Профайл руу буцах"}/>
+                    <ProfileBack onClick={() => history.goBack()} title={"Профайл руу буцах"}/>
 
                     {/*my rate*/}
                     <div style={{marginTop: "23px"}}>

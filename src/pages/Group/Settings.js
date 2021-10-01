@@ -1,4 +1,4 @@
-import DropTest from "../../components/PendingPost/DropTest"
+import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop"
 import { useState } from "react";
 import EditGroup from "./EditGroup";
 
@@ -17,7 +17,7 @@ export default function Settings() {
                     <span onClick={toggleMenu} className="icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"/>
                     
                 </div>
-                <DropTest
+                <GroupInformationDrop
                     className="relative"
                     shadow
                     content={<EditGroup/>}
