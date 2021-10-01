@@ -1,6 +1,6 @@
 import Checkbox from "../../components/checkbox/Checkbox"
 import Button from "../../components/button"
-import MyDropDown from "../../components/PendingPost/MyDropDown"
+import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop"
 import { useState, useEffect } from "react";
 import Post from "../../components/PendingPost/Post";
 
@@ -99,7 +99,7 @@ export default function Shitttt({settt}) {
                         }
                         <span onClick={toggleMenu} className="ml-c11 cursor-pointer mr-b5 icon-fi-rs-dots text-4px py-c6 px-a1 cursor-pointer"/>
                     </div>
-                    <MyDropDown
+                    <GroupInformationDrop
                         open={isMenuOpen}
                         onToggle={toggleMenu}
                     /> 

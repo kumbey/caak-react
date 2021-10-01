@@ -1,7 +1,7 @@
 import React from "react";
 import Shitt from "./shitt";
 
-const MyDropDown = ({ open, onToggle, className, content, shadow,remove}) => {
+const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remove}) => {
   return (
     <div
       onClick={onToggle}
@@ -15,5 +15,5 @@ const MyDropDown = ({ open, onToggle, className, content, shadow,remove}) => {
     </div>
   );
 };
-export default MyDropDown;
+export default GroupInformationDrop;
 
