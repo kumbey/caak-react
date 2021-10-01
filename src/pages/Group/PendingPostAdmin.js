@@ -12,7 +12,7 @@ export default function PendingPostAdmin() {
     return (
         <div>
             <div className="bg-white relative justify-center h-c18">
-                <img alt="  " className="w-full  h-c17 bg-caak-blue"/>
+                <img alt="" className="w-full  h-c17 bg-caak-blue"/>
 
                 {/* menu */}
                 <div className="absolute  bottom-b3 2xl:left-cf 2xl:right-cf xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
@@ -88,7 +88,7 @@ export default function PendingPostAdmin() {
                                     <span className="icon-fi-rs-notification text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
                                 </div>
                                 <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
-                                    <span className="icon-fi-rs-settings text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
+                                    <span className="icon-fi-rs-dots text-caak-generalblack shadow h-full items-center text-4px rounded rounded-lg px-b4 py-b1 flex"/>
                                 </div>
                             </div>
                         </div>
@@ -98,13 +98,13 @@ export default function PendingPostAdmin() {
             </div>
 
             {/* body */}
-            <div className="2xl:flex sm:flex md:flex lg:flex xl:flex md:flex">
+            <div className="2xl:flex sm:grid md:flex lg:flex xl:flex">
 
                 {/* sideBar */}
-                <div className="mt-c24 ml-c3 2xl:w-c22 md:w-c17">
+                <div className="mt-c24 ml-c3 2xl:w-c22 md:w-c17 grid justify-center">
                     <div style={{marginBlockEnd: "23px"}}>
                         <p className="text-17px font-bold text-caak-generalblack">Бүлэг руу буцах</p>
-                        <div onClick={() => history.goBack()} className="flex items-center mt-b5 cursor-pointer">
+                        <div onClick={() => history.push({pathname: "/group"})} className="flex items-center mt-b5 cursor-pointer">
                             <img alt="" className="bg-caak-red h-c37 w-c37 rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-medium ml-a2">Монгол өв уламжлал</p>
                         </div>

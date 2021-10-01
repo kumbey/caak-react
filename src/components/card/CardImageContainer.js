@@ -17,9 +17,9 @@ const CardImageContainer = ({ data }) => {
         ""
       )}
       <img
-        data-dummy="400,100x100,800"
-        src={Dummy.img("400,100x100,800")}
-        className={"w-full max-h-96 block object-cover"}
+        data-dummy="400,800"
+        src={Dummy.img("400,800")}
+        className={"w-full h-96 block object-cover"}
         alt={""}
       />
     </div>
