@@ -90,7 +90,32 @@ async function updatePost(ctx){
     }
 }
 
+async function updatePostStatus(ctx){
+    try{
+
+        const { id, status } = ctx.arguments.input
+        const post = {
+            id: id,
+            status: status
+        }
+
+        let result = {
+            data: null,
+            erros: null
+        }
+
+        let resp = await Post.update(post)
+        result = resp
+
+        return result
+    }catch(ex){
+        console.log(ex)
+        return ex
+    }
+}
+
 module.exports = {
     createPost: createPost,
-    updatePost: updatePost
+    updatePost: updatePost,
+    updatePostStatus: updatePostStatus
 }

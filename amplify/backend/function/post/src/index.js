@@ -10,12 +10,13 @@
 	REGION
 Amplify Params - DO NOT EDIT */
 
-const { createPost, updatePost } = require('./resolvers/Post')
+const { createPost, updatePost, updatePostStatus } = require('./resolvers/Post')
 
 const Resolver = {
     Mutation: {
         createPost: createPost,
-        updatePost: updatePost
+        updatePost: updatePost,
+        updatePostStatus: updatePostStatus
     }
 }
 

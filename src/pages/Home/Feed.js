@@ -55,7 +55,7 @@ const Feed = () => {
   return (
     <main className={"flex justify-center items-center"}>
       <div className={"py-10 flex justify-center w-full px-7"}>
-        {/*<Card verifiedUser video/>*/}
+        {/* <Card verifiedUser video/> */}
         <div className={"h-full w-3/12"}>
           <div className={"flex flex-col items-start"}>
             {feedType.map(({ icon, active, type, id }) => {
@@ -88,7 +88,7 @@ const Feed = () => {
         <div
           className={"flex flex-row justify-center items-center w-9/12 px-4"}
         >
-          {/*<CardRecommend/>*/}
+          {/* <CardRecommend/> */}
           {/*TODO useMasonry to fix attribute warnings*/}
           <Masonry
             // className={"flex flex-row justify-center items-center w-8/12"}

@@ -294,6 +294,7 @@ type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
   createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
   updatePost(input: CreatePostInput!): Post @function(name:"post-${env}")
+  updatePostStatus(input: {id: ID!, status: String!}): Post @function(name:"post-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }

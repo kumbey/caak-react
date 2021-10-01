@@ -12,12 +12,13 @@ import Check from "../pages/Group/Check";
 import Profile from '../pages/Profile/index'
 import Activities from "../pages/Profile/Activities";
 import Infromation from "../pages/Group/Infromation";
+import Feed from "../pages/Home/Feed";
 
 const Routes = [
   {
     path: "/",
     exact: true,
-    page: () => <h3>asd</h3>,
+    page: () => <Feed/>,
   },
   {
     path: "/sanjaa",
