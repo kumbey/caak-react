@@ -24,6 +24,25 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.icon-fi-rs-invite-grid:before {
+    content: "\e958";
+}
+
+.icon-fi-rs-grid-f:before {
+    content: "\e957";
+}
+
+.icon-fi-rs-post-f:before {
+    content: "\e956";
+}
+
+.icon-fi-rs-arrow-f:before {
+    content: "\e954";
+}
+
+.icon-fi-rs-single:before {
+    content: "\e955";
+}
 
 .icon-fi-rs-tiktok:before {
     content: "\e93e";
