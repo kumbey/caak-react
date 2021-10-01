@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { removeItemByIndex } from "../../Utility/ArrayUtil";
+import { getFileUrl } from "../../Utility/Util";
 import Button from "../button";
 
 const EditNewPostCaption = ({
@@ -55,12 +56,12 @@ const EditNewPostCaption = ({
                 "videoPlayer w-full max-h-80 block object-contain  bg-black"
               }
             >
-              <source src={data[current].file.url} type="video/mp4" />
+              <source src={getFileUrl(data[current].file)} type="video/mp4" />
             </video>
           ) : (
             <img
               className={"max-h-80 w-full object-contain bg-black"}
-              src={data[current].file.url}
+              src={getFileUrl(data[current].file)}
               alt={"sdd"}
             />
           )}
@@ -116,12 +117,12 @@ const EditNewPostCaption = ({
                     "videoPlayer w-full max-h-full block object-cover cursor-pointer rounded-square"
                   }
                 >
-                  <source src={item.file.url} type="video/mp4" />
+                  <source src={getFileUrl(item.file)} type="video/mp4" />
                 </video>
               ) : (
                 <img
                   className={"w-full h-full rounded-square object-cover"}
-                  src={item.file.url}
+                  src={getFileUrl(item.file)}
                   alt={""}
                 />
               )}

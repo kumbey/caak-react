@@ -277,7 +277,8 @@ type Query {
 
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User
-  createPost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
+  createPost(input: CreatePostInput!): Post
+  updatePost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -314,23 +315,23 @@ type Mutation {
 }
 
 input CreatePostInput {
-  id: ID!
-  title: String!
-  commentType: Boolean!
-  status: String!
-  user_id: ID!
+  id: ID
+  title: String
+  commentType: Boolean
+  status: String
+  user_id: ID
   group_id: ID!
   category_id: ID!
   items: [CreatePostItemsInput]
 }
 
 input CreatePostItemsInput {
-  id: ID!
+  id: ID
   title: String
-  post_id: ID!
+  post_id: ID
   file_id: ID!
-  user_id: ID!
-  order: Int!
+  user_id: ID
+  order: Int
 }
 
 input CreateUserInputCustom {

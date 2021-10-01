@@ -3,13 +3,28 @@
   "fieldName": "createPost",
   "arguments": {
     "input": {
-      "title": "1",
+      "title": "",
       "commentType": true,
-      "group_id": "1",
-      "category_id": "1",
+      "status": "PENDING",
+      "user_id": "055c2701-f4d5-4b34-8cba-f7a7324c5d58",
+      "group_id": "dadc3f09-0c25-4016-a7f2-ecc2bc4d9213",
+      "category_id": "d22a1a45-7116-45ff-a5ac-470c0883361a",
       "items": [
-        {"title": "item 1", "file_id": "1", "order": 10},
-        {"title": "item 2","file_id": "1", "order": 10}
+        {
+          "title": "",
+          "file_id": "58a9257c-0baa-4e4d-84f8-9683f0b83e90",
+          "order": 0
+        },
+        {
+          "title": "",
+          "file_id": "6b0df2ad-be4d-4e23-b4dc-3e8b64868e48",
+          "order": 1
+        },
+        {
+          "title": "",
+          "file_id": "1d8937d4-476b-4663-bf7c-701c8880d3d0",
+          "order": 2
+        }
       ]
     }
   },

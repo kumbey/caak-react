@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { generateFileUrl } from "../../Utility/Util";
+import { getFileUrl } from "../../Utility/Util";
 
 const CardVideoContainer = ({ data }) => {
   const videoRef = useRef();
@@ -85,9 +85,7 @@ const CardVideoContainer = ({ data }) => {
           "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
         }
       >
-        <source src={
-          data.file.url ? data.file.url : generateFileUrl(data.file)
-        } type="video/mp4" />
+        <source src={getFileUrl(data.file)} type="video/mp4" />
       </video>
 
       {/*<div className={"absolute bottom-0"}>*/}

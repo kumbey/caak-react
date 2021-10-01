@@ -293,28 +293,29 @@ type Query {
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
   createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
+  updatePost(input: CreatePostInput!): Post @function(name:"post-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
 
 input CreatePostInput{
-  id: ID!
-	title: String!
-	commentType: Boolean!
-  status: String!
-	user_id: ID!
+  id: ID
+	title: String
+	commentType: Boolean
+  status: String
+	user_id: ID
   group_id: ID!
   category_id: ID!
   items: [CreatePostItemsInput]
 }
 
 input CreatePostItemsInput{
-  id: ID!
+  id: ID
 	title: String
-	post_id: ID!
+	post_id: ID
   file_id: ID!
-	user_id: ID!
-  order: Int!
+	user_id: ID
+  order: Int
 }
 
 input CreateUserInputCustom{

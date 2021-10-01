@@ -1,3 +1,5 @@
+import file0001 from "../../file/fields/file0001"
+
 const user0001 = /* GraphQL */ `{
     id
     firstname
@@ -12,30 +14,8 @@ const user0001 = /* GraphQL */ `{
     status
     createdAt
     updatedAt
-    pic {
-      id
-      key
-      name
-      owner
-      bucket
-      region
-      level
-      ext
-      createdAt
-      updatedAt
-    }
-    cover_pic {
-      id
-      key
-      name
-      owner
-      bucket
-      region
-      level
-      ext
-      createdAt
-      updatedAt
-    }
+    pic ${file0001}
+    cover_pic ${file0001}
     username {
       items {
         id

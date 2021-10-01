@@ -26,7 +26,7 @@ async function createPost(ctx){
             respItems.push(await PostItems.create(item))
         }
 
-        result.data = {...resp,  items: respItems}
+        result = {...resp,  items: respItems}
 
         return result
     }catch(ex){
@@ -81,7 +81,7 @@ async function updatePost(ctx){
             }
         }
 
-        result.data = {...resp,  items: respItems}
+        result = {...resp,  items: respItems}
 
         return result
     }catch(ex){

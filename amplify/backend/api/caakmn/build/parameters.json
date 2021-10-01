@@ -16,5 +16,5 @@
         "Ref": "UnauthRoleName"
     },
     "S3DeploymentBucket": "amplify-caakmn-devs-100650-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/3fd8d807a315a88d70b6532e28749bf2ff75371d"
+    "S3DeploymentRootKey": "amplify-appsync-files/c31a098a54286a652f93724322df40c2dc495bad"
 }

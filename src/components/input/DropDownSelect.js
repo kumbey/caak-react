@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
+import { generateFileUrl } from "../../Utility/Util";
 
 const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
   return (
@@ -49,7 +50,7 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
                 >
                   <img
                     data-dummy="100x100"
-                    src={item.image}
+                    src={generateFileUrl(item.profile)}
                     className={"w-8 h-8 rounded-md object-cover mr-2"}
                     alt={""}
                   />
