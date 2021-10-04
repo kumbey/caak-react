@@ -118,23 +118,23 @@ const UploadedMediaEdit = ({
       </div>
       <div
         className={
-          "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
+          "relative border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
+        {loading && (
+          <div
+            className={
+              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-50 bg-white bg-opacity-90"
+            }
+          >
+            <Loader className={"bg-caak-primary"} />
+          </div>
+        )}
         <div
           className={`${
             loading ? "overflow-hidden" : "overflow-y-scroll"
-          } relative max-h-96 editor-selection`}
+          } max-h-96 editor-selection`}
         >
-          {loading && (
-            <div
-              className={
-                "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-10 bg-white bg-opacity-90"
-              }
-            >
-              <Loader className={"bg-caak-primary"}/>
-            </div>
-          )}
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"

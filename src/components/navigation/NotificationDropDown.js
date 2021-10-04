@@ -6,7 +6,7 @@ const NotificationDropDown = ({ onToggle, isOpen }) => {
     <div
       onClick={onToggle}
       className={`dropdown flex flex-col bg-white shadow-dropdown w-96 cursor-auto top-10 -right-4 ${
-        isOpen && "hidden"
+        !isOpen && "hidden"
       }`}
     >
       <div

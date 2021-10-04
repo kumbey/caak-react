@@ -102,7 +102,7 @@ const AddPost = () => {
                   post={post}
                   setIsEditing={setIsEditing}
                   setCurrentEditingIndex={setCurrentEditingIndex}
-                  loading={false}
+                  loading={loading}
                   uploadPost={uploadPost}
                 />
               </Fragment>
