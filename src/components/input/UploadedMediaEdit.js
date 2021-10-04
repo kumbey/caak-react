@@ -118,23 +118,23 @@ const UploadedMediaEdit = ({
       </div>
       <div
         className={
-          "border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
+          "relative border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
         }
       >
+        {loading && (
+          <div
+            className={
+              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-30 bg-white bg-opacity-90"
+            }
+          >
+            <Loader className={"bg-caak-primary"} />
+          </div>
+        )}
         <div
           className={`${
             loading ? "overflow-hidden" : "overflow-y-scroll"
-          } relative max-h-96 editor-selection`}
+          } max-h-96 editor-selection`}
         >
-          {loading && (
-            <div
-              className={
-                "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-10 bg-white bg-opacity-90"
-              }
-            >
-              <Loader className={"bg-caak-primary"}/>
-            </div>
-          )}
           <Masonry
             breakpointCols={2}
             className="my-masonry-grid"
@@ -191,25 +191,10 @@ const UploadedMediaEdit = ({
           }
           iconPosition={"left"}
           className={
-            "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+            "white text-caak-generalblack py-3 w-3/6 ml-1 mt-4 justify-center text-15px mr-2"
           }
         >
           Ноорог
-        </Button>
-        <Button
-          icon={
-            <span
-              className={
-                "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
-              }
-            />
-          }
-          iconPosition={"left"}
-          className={
-            "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
-          }
-        >
-          Хугацаа оруулах
         </Button>
         <Button
           onClick={uploadPost}
