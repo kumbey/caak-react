@@ -69,6 +69,13 @@
       "service": "Lambda",
       "dependsOn": [
         {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
           "category": "api",
           "resourceName": "caakmn",
           "attributes": [
@@ -90,6 +97,11 @@
           ]
         }
       ]
+    },
+    "caakmnlayerAPI": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
     }
   }
 }

@@ -47,6 +47,7 @@ const Feed = () => {
   ];
   const [activeIndex, setActiveIndex] = useState();
 
+  // eslint-disable-next-line
   const CardWithClick = useCallback(
     (props) => <Card {...props} verifiedUser />,
     []

@@ -1,12 +1,11 @@
-const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
 const { updateAttributes } = require('../util/Generate')
 
 
-const db = (table) => {
+const db = (table , client) => {
 
     const tableName = table
+    const docClient = client
 
     async function get(id){
 

@@ -142,7 +142,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1633678423
+                        1633935657
                     ]
                 }
             },
@@ -321,7 +321,7 @@
                                                     "ApiId"
                                                 ]
                                             },
-                                            "typeName": "UserPostTotals"
+                                            "typeName": "UserTotals"
                                         }
                                     ]
                                 },
@@ -336,7 +336,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getUserPostTotals"
+                                            "fieldName": "getUserTotals"
                                         }
                                     ]
                                 },
@@ -351,7 +351,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "listUserPostTotals"
+                                            "fieldName": "listUserTotals"
                                         }
                                     ]
                                 },
@@ -365,7 +365,7 @@
                                                     "ApiId"
                                                 ]
                                             },
-                                            "typeName": "GroupPostTotals"
+                                            "typeName": "GroupTotals"
                                         }
                                     ]
                                 },
@@ -380,7 +380,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getGroupPostTotals"
+                                            "fieldName": "getGroupTotals"
                                         }
                                     ]
                                 },
@@ -395,7 +395,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "listGroupPostTotals"
+                                            "fieldName": "listGroupTotals"
                                         }
                                     ]
                                 },
@@ -1885,7 +1885,7 @@
                                                     "ApiId"
                                                 ]
                                             },
-                                            "typeName": "UserPostTotals"
+                                            "typeName": "UserTotals"
                                         }
                                     ]
                                 },
@@ -1900,7 +1900,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getUserPostTotals"
+                                            "fieldName": "getUserTotals"
                                         }
                                     ]
                                 },
@@ -1915,7 +1915,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "listUserPostTotals"
+                                            "fieldName": "listUserTotals"
                                         }
                                     ]
                                 },
@@ -1929,7 +1929,7 @@
                                                     "ApiId"
                                                 ]
                                             },
-                                            "typeName": "GroupPostTotals"
+                                            "typeName": "GroupTotals"
                                         }
                                     ]
                                 },
@@ -1944,7 +1944,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "getGroupPostTotals"
+                                            "fieldName": "getGroupTotals"
                                         }
                                     ]
                                 },
@@ -1959,7 +1959,7 @@
                                                 ]
                                             },
                                             "typeName": "Query",
-                                            "fieldName": "listGroupPostTotals"
+                                            "fieldName": "listGroupTotals"
                                         }
                                     ]
                                 },
@@ -3475,7 +3475,7 @@
                 "NoneDataSource"
             ]
         },
-        "UserPostTotals": {
+        "UserTotals": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "Parameters": {
@@ -3546,7 +3546,7 @@
                                 "Ref": "S3DeploymentRootKey"
                             },
                             "stacks",
-                            "UserPostTotals.json"
+                            "UserTotals.json"
                         ]
                     ]
                 }
@@ -3556,7 +3556,7 @@
                 "NoneDataSource"
             ]
         },
-        "GroupPostTotals": {
+        "GroupTotals": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "Parameters": {
@@ -3627,7 +3627,7 @@
                                 "Ref": "S3DeploymentRootKey"
                             },
                             "stacks",
-                            "GroupPostTotals.json"
+                            "GroupTotals.json"
                         ]
                     ]
                 }
@@ -5152,8 +5152,8 @@
                 "GraphQLSchema",
                 "File",
                 "User",
-                "UserPostTotals",
-                "GroupPostTotals",
+                "UserTotals",
+                "GroupTotals",
                 "Username",
                 "Aura",
                 "FollowedUsers",

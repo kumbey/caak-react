@@ -37,7 +37,7 @@ type User @model(mutations: null)
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
 }
 
-type UserPostTotals @model(mutations: null)
+type UserTotals @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -47,16 +47,24 @@ type UserPostTotals @model(mutations: null)
   confirmed: Int
   archived: Int
   reported: Int
+  drafted: Int
+  reactions: Int
+  comments: Int
+  following: Int
+  followers: Int
 }
 
-type GroupPostTotals @model(mutations: null)
-@auth(rules: [
+type GroupTotals @model(mutations: null)
+  @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ]){
   group_id: ID!
   pending: Int
   confirmed: Int
+  members: Int
+  admins: Int
+  moderators: Int
 }
 
 type Username @model(mutations: null)
@@ -294,6 +302,7 @@ type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
   createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
   updatePost(input: CreatePostInput!): Post @function(name:"post-${env}")
+  updatePostStatus(input: UpdatePostStatusInput!): Post @function(name:"post-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
@@ -316,6 +325,11 @@ input CreatePostItemsInput{
   file_id: ID!
 	user_id: ID
   order: Int
+}
+
+input UpdatePostStatusInput{
+  id: ID!
+  status: String!
 }
 
 input CreateUserInputCustom{

@@ -1,7 +1,9 @@
-const DB = require("../tables/DB")
-const Post = DB(process.env.API_CAAKMN_POSTTABLE_NAME)
-const PostHistory = DB(process.env.API_CAAKMN_POSTHISTORYTABLE_NAME)
-const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME)
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient();
+const DB = require("/opt/tables/DB")
+const Post = DB(process.env.API_CAAKMN_POSTTABLE_NAME, docClient)
+const PostHistory = DB(process.env.API_CAAKMN_POSTHISTORYTABLE_NAME, docClient)
+const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME ,docClient)
 
 async function createPost(ctx){
     try{

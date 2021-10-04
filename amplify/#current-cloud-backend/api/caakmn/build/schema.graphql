@@ -33,22 +33,30 @@ type User @aws_iam @aws_cognito_user_pools {
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
 }
 
-type UserPostTotals @aws_iam @aws_cognito_user_pools {
+type UserTotals @aws_iam @aws_cognito_user_pools {
   id: ID!
   user_id: ID!
   pending: Int
   confirmed: Int
   archived: Int
   reported: Int
+  drafted: Int
+  reactions: Int
+  comments: Int
+  following: Int
+  followers: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
 
-type GroupPostTotals @aws_iam @aws_cognito_user_pools {
+type GroupTotals @aws_iam @aws_cognito_user_pools {
   id: ID!
   group_id: ID!
   pending: Int
   confirmed: Int
+  members: Int
+  admins: Int
+  moderators: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -229,10 +237,10 @@ type Query {
   listFiles(filter: ModelFileFilterInput, limit: Int, nextToken: String): ModelFileConnection @aws_iam @aws_cognito_user_pools
   getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
-  getUserPostTotals(id: ID!): UserPostTotals @aws_iam @aws_cognito_user_pools
-  listUserPostTotals(filter: ModelUserPostTotalsFilterInput, limit: Int, nextToken: String): ModelUserPostTotalsConnection @aws_iam @aws_cognito_user_pools
-  getGroupPostTotals(id: ID!): GroupPostTotals @aws_iam @aws_cognito_user_pools
-  listGroupPostTotals(filter: ModelGroupPostTotalsFilterInput, limit: Int, nextToken: String): ModelGroupPostTotalsConnection @aws_iam @aws_cognito_user_pools
+  getUserTotals(id: ID!): UserTotals @aws_iam @aws_cognito_user_pools
+  listUserTotals(filter: ModelUserTotalsFilterInput, limit: Int, nextToken: String): ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools
+  getGroupTotals(id: ID!): GroupTotals @aws_iam @aws_cognito_user_pools
+  listGroupTotals(filter: ModelGroupTotalsFilterInput, limit: Int, nextToken: String): ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools
   getUsername(id: ID!): Username @aws_iam @aws_cognito_user_pools
   listUsernames(filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   usernameByUser(user_id: ID, sortDirection: ModelSortDirection, filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
@@ -278,7 +286,8 @@ type Query {
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User
   createPost(input: CreatePostInput!): Post
-  updatePost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
+  updatePost(input: CreatePostInput!): Post
+  updatePostStatus(input: UpdatePostStatusInput!): Post @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -332,6 +341,11 @@ input CreatePostItemsInput {
   file_id: ID!
   user_id: ID
   order: Int
+}
+
+input UpdatePostStatusInput {
+  id: ID!
+  status: String!
 }
 
 input CreateUserInputCustom {
@@ -553,34 +567,42 @@ input ModelUserFilterInput {
   not: ModelUserFilterInput
 }
 
-type ModelUserPostTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [UserPostTotals]
+type ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [UserTotals]
   nextToken: String
 }
 
-input ModelUserPostTotalsFilterInput {
+input ModelUserTotalsFilterInput {
   user_id: ModelIDInput
   pending: ModelIntInput
   confirmed: ModelIntInput
   archived: ModelIntInput
   reported: ModelIntInput
-  and: [ModelUserPostTotalsFilterInput]
-  or: [ModelUserPostTotalsFilterInput]
-  not: ModelUserPostTotalsFilterInput
+  drafted: ModelIntInput
+  reactions: ModelIntInput
+  comments: ModelIntInput
+  following: ModelIntInput
+  followers: ModelIntInput
+  and: [ModelUserTotalsFilterInput]
+  or: [ModelUserTotalsFilterInput]
+  not: ModelUserTotalsFilterInput
 }
 
-type ModelGroupPostTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupPostTotals]
+type ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupTotals]
   nextToken: String
 }
 
-input ModelGroupPostTotalsFilterInput {
+input ModelGroupTotalsFilterInput {
   group_id: ModelIDInput
   pending: ModelIntInput
   confirmed: ModelIntInput
-  and: [ModelGroupPostTotalsFilterInput]
-  or: [ModelGroupPostTotalsFilterInput]
-  not: ModelGroupPostTotalsFilterInput
+  members: ModelIntInput
+  admins: ModelIntInput
+  moderators: ModelIntInput
+  and: [ModelGroupTotalsFilterInput]
+  or: [ModelGroupTotalsFilterInput]
+  not: ModelGroupTotalsFilterInput
 }
 
 type ModelUsernameConnection @aws_iam @aws_cognito_user_pools {

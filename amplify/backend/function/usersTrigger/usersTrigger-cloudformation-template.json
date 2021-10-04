@@ -74,12 +74,15 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_USERPOSTTOTALSTABLE_NAME": {
+            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apicaakmnGraphQLAPIIdOutput"
+            },
+            "API_CAAKMN_USERTOTALSTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserPostTotalsTable:Name"
+                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
               }
             },
-            "API_CAAKMN_USERPOSTTOTALSTABLE_ARN": {
+            "API_CAAKMN_USERTOTALSTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -94,14 +97,11 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserPostTotalsTable:Name"
+                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
                     }
                   }
                 ]
               ]
-            },
-            "API_CAAKMN_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apicaakmnGraphQLAPIIdOutput"
             }
           }
         },
@@ -245,7 +245,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserPostTotalsTable:Name"
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
                         }
                       }
                     ]
@@ -266,7 +266,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserPostTotalsTable:Name"
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
                         }
                       },
                       "/index/*"
