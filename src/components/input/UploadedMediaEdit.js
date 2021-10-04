@@ -191,25 +191,10 @@ const UploadedMediaEdit = ({
           }
           iconPosition={"left"}
           className={
-            "white text-caak-generalblack py-3 w-1/6 ml-1 mt-4 justify-center text-15px mr-2"
+            "white text-caak-generalblack py-3 w-3/6 ml-1 mt-4 justify-center text-15px mr-2"
           }
         >
           Ноорог
-        </Button>
-        <Button
-          icon={
-            <span
-              className={
-                "icon-fi-rs-scheduled mr-1.5 text-caak-generalblack text-20px "
-              }
-            />
-          }
-          iconPosition={"left"}
-          className={
-            "white  text-caak-generalblack py-3 w-4/5 ml-1 mt-4 justify-center text-15px mr-2"
-          }
-        >
-          Хугацаа оруулах
         </Button>
         <Button
           onClick={uploadPost}
