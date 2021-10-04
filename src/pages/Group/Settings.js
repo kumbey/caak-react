@@ -1,10 +1,6 @@
-<<<<<<< Updated upstream
-import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop"
-=======
-import DropTest from "../../components/PendingPost/DropTest"
->>>>>>> Stashed changes
 import { useState } from "react";
 import EditGroup from "./EditGroup";
+import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
 
 export default function Settings() {
     const toggleMenu = () => {
@@ -21,11 +17,7 @@ export default function Settings() {
                     <span onClick={toggleMenu} className="icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"/>
                     
                 </div>
-<<<<<<< Updated upstream
                 <GroupInformationDrop
-=======
-                <DropTest
->>>>>>> Stashed changes
                     className="relative"
                     shadow
                     content={<EditGroup/>}

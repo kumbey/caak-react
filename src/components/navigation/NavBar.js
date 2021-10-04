@@ -220,19 +220,11 @@ export default function NavBar() {
         </div>
       </div>
       <div  
-<<<<<<< Updated upstream
-        className={`bg-gray-100 h-screen w-4/5 ${
-=======
         className={`bg-gray-100 flex justify-end ${
->>>>>>> Stashed changes
           isMobileMenuOpen ? "block" : "hidden"
         }`}
         id="mobile-menu"
       >
-<<<<<<< Updated upstream
-        <div className="w-max flex flex-col px-2 pt-2 pb-3 space-y-1">
-          <div className={"flex flex-row"}>
-=======
         <div className="flex flex-col px-2 pb-3 h-screen">
           <div>
               {menu_data.map((item) => (
@@ -250,7 +242,6 @@ export default function NavBar() {
               ))}
           </div>
           <div className={"flex flex-col"}>
->>>>>>> Stashed changes
             <Button
               round
               className={"ml-2"}
@@ -278,25 +269,6 @@ export default function NavBar() {
               Бүртгэл үүсгэх
             </Button>
           </div>
-<<<<<<< Updated upstream
-
-          <div className={`relative`}>
-              {menu_data.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="hover:bg-gray-50 flex flex-row items-center px-4 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
-                >
-                  {item.image}
-
-                  <p className="text-base font-medium text-gray-900">
-                    {item.name}
-                  </p>
-                </a>
-              ))}
-          </div>
-=======
->>>>>>> Stashed changes
         </div>
       </div>
     </nav>

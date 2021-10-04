@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
-export default function ProfileBack({title, className, onClick}) {
-    return (
-        <div onClick={onClick} className="mt-c27">
-=======
 export default function ProfileBack({title, className}) {
     return (
         <div className="mt-c27">
->>>>>>> Stashed changes
                         <p className={`${className ? className : "text-17px font-bold text-caak-generalblack" }`}>{title}</p>
                         <div className="flex mt-c6 items-center">
                             <img alt="" className="h-c13 w-c13 bg-caak-red rounded-full" src={"https://d238m8ukn6hkhb.cloudfront.net/file/brand/305/blackpink-jisoo-profile-image.jpeg"}/>

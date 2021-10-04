@@ -28,11 +28,7 @@ export default function Profile() {
                     </div>
                 </div>
                 <div style={{marginTop: "10px"}}>
-<<<<<<< Updated upstream
-                    <div className="flex">  
-=======
                     <div className="flex">
->>>>>>> Stashed changes
                         <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
                         <span style={{width: "49px", marginInlineStart: "10px"}} className="h-c13 text-4px shadow icon-fi-rs-dots text-caak-generalblack items-center flex justify-center rounded-lg cursor-pointer"/>
                     </div>
@@ -68,11 +64,7 @@ export default function Profile() {
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
                         <div className="flex">
-<<<<<<< Updated upstream
-                            <Button onClick className="bg-white text-15px font-bold h-c32 text-caak-primary flex justify-center items-center mr-a1 rounded-lg shadow hover:bg-caak-titaniumwhite"><span className="icon-fi-rs-drag text-20px mr-a1"/>Миний фостууд</Button>
-=======
                             <Button className="bg-white text-15px font-bold h-c32 text-caak-primary flex justify-center items-center mr-a1 rounded-lg shadow hover:bg-caak-titaniumwhite"><span className="icon-fi-rs-drag text-20px mr-a1"/>Миний фостууд</Button>
->>>>>>> Stashed changes
                             <Button className="text-15px font-bold h-c32 text-caak-generalblack flex justify-center items-center mr-a1 rounded-lg bg-transparent hover:bg-caak-titaniumwhite"><span className="icon-fi-rs-bookmark text-20px mr-a1"/>Хадгалсан фостууд</Button>
                         </div>
                         <select className="text-15px w-c132 text-caak-generalblack font-semibold cursor-pointer border-0 bg-transparent">
