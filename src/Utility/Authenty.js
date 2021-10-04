@@ -22,7 +22,9 @@ export async function isLogged(user, setUser){
         setUser(null)
       }
   }catch(ex){
-    return
+    setUser(null)
+    console.log(ex)
+    return false
   }
 }
 

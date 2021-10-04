@@ -26,8 +26,8 @@ export default function Group() {
                                 <div>
                                     <p className="text-26px font-bold text-caak-generalblack">Монгол өв уламжлал</p>
                                 </div>
-                                <div className="flex items-center  btn:grid">
-                                    <div>
+                                <div className="flex items-center btn:grid">
+                                    <div className="flex items-center">
                                         <span className="icon-fi-rs-world text-16px text-caak-darkBlue flex"/>
                                         <p className="text-15px ml-a1 text-caak-darkBlue">Нээлттэй бүлэг</p>
                                     </div>
@@ -155,9 +155,9 @@ export default function Group() {
                     {/* contents */}
                     <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
                         {
-                            data.map((data, index) => {
+                            data.map(( index) => {
                                 return(
-                                    <Card key={index}/>
+                                    <Card key={index} />
                                 )
                             })
                         }

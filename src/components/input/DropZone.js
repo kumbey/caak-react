@@ -51,7 +51,8 @@ const DropZone = ({
         })
         
         if(files.length > 0){
-          setPost({...post, items: files})
+          let items = [...post.items , ...files]
+          setPost({...post, items: items})
         }
     }
     // eslint-disable-next-line

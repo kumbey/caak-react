@@ -3,6 +3,7 @@ import Dummy from "dummyjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import DropDownSelect from "../../../components/input/DropDownSelect";
+import { generateFileUrl } from "../../../Utility/Util";
 
 const SelectGroup = ({
   setIsGroupVisible,
@@ -38,7 +39,7 @@ const SelectGroup = ({
           {selectedGroup ? (
             <div className={"flex flex-row items-center"}>
               <img
-                src={selectedGroup.image}
+                src={generateFileUrl(selectedGroup.profile)}
                 className={"w-8 h-8 rounded-md object-cover mr-2"}
                 alt={""}
               />

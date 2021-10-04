@@ -18,7 +18,7 @@ export default function Admin() {
                             <span className="icon-fi-rs-stats text-16px flex mr-a2 bg-caak-titaniumwhite p-b2 rounded rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-bold">Статистик</p>
                         </div>
-                        <div className="flex items-center mt-b2 cursor-pointer">
+                        <div onClick={() => history.push({pathname: "/group/information"})} className="flex items-center mt-b2 cursor-pointer">
                             <span className="icon-fi-rs-settings-f text-16px flex mr-a2 bg-caak-titaniumwhite p-b2 rounded rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-bold">Тохиргоо</p>
                         </div>

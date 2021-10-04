@@ -9,10 +9,14 @@ export const ApiFileUpload = async (file) => {
         const fileObj = fileData.obj
         delete fileData["obj"]
         delete fileData["url"]
-        let resp = await API.graphql(graphqlOperation(createFile, {input: fileData}))
-        resp = resp.data.createFile
-        await Storage.put(resp.id +"."+ resp.ext, fileObj)
-        return resp
+        if(!fileData.id){
+            let resp = await API.graphql(graphqlOperation(createFile, {input: fileData}))
+            resp = resp.data.createFile
+            await Storage.put(resp.id +"."+ resp.ext, fileObj)
+            return resp
+        }else{
+            return fileData
+        }
     }catch(ex){
         console.log(ex)
     }

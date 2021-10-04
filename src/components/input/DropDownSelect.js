@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
+import { generateFileUrl } from "../../Utility/Util";
 
 const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
   return (
@@ -55,10 +56,14 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
                   onClick={() => onSelect(item)}
                   className={"flex flex-col"}
                 >
-                  <div
-                    className={
-                      "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                    }
+                  <img
+                    data-dummy="100x100"
+                    src={generateFileUrl(item.profile)}
+                    className={"w-8 h-8 rounded-md object-cover mr-2"}
+                    alt={""}
+                  />
+                  <span
+                    className={"text-caak-generalblack font-medium text-16px"}
                   >
                     <img
                       src={item.image}

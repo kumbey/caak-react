@@ -2,7 +2,7 @@ import Masonry from "react-masonry-css";
 import CardVideoContainer from "../card/CardVideoContainer";
 import AddPostCardSmall from "../card/AddPostCardSmall";
 import Button from "../button";
-import { generateFileUrl } from "../../Utility/Util";
+import { getFileUrl } from "../../Utility/Util";
 import Loader from "../loader";
 
 const Card = ({
@@ -50,14 +50,14 @@ const Card = ({
         <CardVideoContainer data={data} />
       ) : (
         <img
-          src={data.file.url ? data.file.url : generateFileUrl(data.file)}
+          src={getFileUrl(data.file)}
           className={"rounded-md w-full h-full max-h-80  object-cover"}
           alt={""}
         />
       )}
 
       <span
-        onClick={() => popItem(data.index)}
+        onClick={() => popItem(index)}
         className={
           "cursor-pointer bg-black bg-opacity-50 text-12px p-2 rounded-full text-white icon-fi-rs-close absolute top-2 right-3"
         }

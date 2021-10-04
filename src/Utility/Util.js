@@ -205,6 +205,26 @@ export function checkUsername(username){
     return usrname
 }
 
+export function getFileUrl(file){
+
+    let retUrl = ""
+
+    if(file.url){
+        retUrl = file.url
+    }else{
+        retUrl = generateFileUrl(file)
+    }
+
+    return retUrl
+}
+
+export function removeKeyFromObj(obj, removeKeys){
+    removeKeys.map((key) => {
+        delete obj[key]
+        return true
+    })
+}
+
 var object = {
                 useQuery, 
                 mailNumber, 
@@ -217,7 +237,8 @@ var object = {
                 getRandomInt,
                 generateFileUrl,
                 checkUser,
-                closeModal
+                closeModal,
+                getFileUrl
             }
 export default object
 

@@ -1,7 +1,7 @@
-export default function Suggest() {
+export default function Suggest({title, className}) {
     return (
         <div className="mt-c27">
-                        <p className="text-17px font-bold text-caak-generalblack">Танд санал болгох бүлгүүд</p>
+                        <p className={`${className ? className : "text-17px font-bold text-caak-generalblack" }`}>{title}</p>
                         <div className="flex mt-c6 items-center">
                             <img alt="" className="h-c13 w-c13 bg-caak-red rounded rounded-lg"/>
                             <div className="ml-a3">

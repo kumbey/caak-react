@@ -1,16 +1,20 @@
 import { Fragment, useState } from "react";
 import Backdrop from "../../../components/Backdrop";
-import Dummy from "dummyjs";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import { closeModal } from "../../../Utility/Util";
+import { closeModal, removeKeyFromObj } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
 import { useUser } from "../../../context/userContext";
 import { ApiFileUpload } from "../../../Utility/ApiHelper";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql"
+import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
+import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
+import { getPost } from "../../../graphql-custom/post/queries";
 
 const AddPost = () => {
   const history = useHistory();
@@ -22,7 +26,9 @@ const AddPost = () => {
   const [currentEditingIndex, setCurrentEditingIndex] = useState(0);
   const [isGroupVisible, setIsGroupVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState();
-  const [loading, setLoading] = useState(true);
+  const [selectedGroupId, setSelectedGroupId] = useState();
+  const [loading, setLoading] = useState(false);
+  const [groupData, setGroupData] = useState([])
 
   const [post, setPost] = useState({
     id: postId,
@@ -35,24 +41,65 @@ const AddPost = () => {
     items: [],
   });
 
-  const groupData = [
-    { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
-    { name: "UX/UI дизайнерууд", id: 2, image: Dummy.img("100x100") },
-    { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
-    { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
-  ];
+  // const groupData = [
+  //   { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
+  //   { name: "UX/UI дизайнерууд", id: 2, image: Dummy.img("100x100") },
+  //   { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
+  //   { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
+  // ];
+
+  useEffect(() => {
+    getGroups()
+    if(postId !== "new"){
+      loadPost(postId)
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     console.log(post);
   }, [post]);
 
+  useEffect(() => {
+    if(groupData && selectedGroupId){
+      setSelectedGroup(groupData.find(item => item.id === selectedGroupId))
+    }
+    // eslint-disable-next-line
+  }, [selectedGroupId]);
+
+  useEffect(() => {
+    if(groupData && selectedGroupId){
+      setSelectedGroup(groupData.find(item => item.id === selectedGroupId))
+    }
+    // eslint-disable-next-line
+  }, [groupData]);
+
+  const getGroups = async () => {
+    try{
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost))
+      setGroupData(resp.data.listGroups.items)
+    }catch(ex){
+      console.log(ex)
+    }
+  }
+
+  const loadPost = async (id) => {
+    try{
+      let resp = await API.graphql(graphqlOperation(getPost, {id: id}))
+      let { items, ...data } = resp.data.getPost
+      setSelectedGroupId(data.group_id)
+      setPost({...data, items: items.items})
+    }catch(ex){
+      console.log(ex)
+    }
+  }
+
   const uploadPost = async () => {
     try {
+
       setLoading(true);
 
-      let postData = { ...post };
-
-      for (let i = 0; i < postData.items.length; i++) {
+      for (let i = 0; i < post.items.length; i++) {
         let item = post.items[i];
 
         if (!item.id) {
@@ -61,9 +108,30 @@ const AddPost = () => {
         }
       }
 
-      setPost(postData);
+      let postData = { ...post };
+      postData.group_id = selectedGroup.id
+      postData.category_id = selectedGroup.category_id
 
+      let postItems = []
+      for (let i = 0; i < postData.items.length; i++) {
+        let item = postData.items[i];
+
+        postItems.push({
+          title: item.title,
+          file_id: item.file.id,
+          order: i
+        })
+      }
+
+      postData.items = postItems
+      if(postData.id === "new"){
+        removeKeyFromObj(postData, ["id"])
+        await API.graphql(graphqlOperation(createPost, {input: postData}))
+      }else{
+        await API.graphql(graphqlOperation(updatePost, {input: postData}))
+      }
       setLoading(false);
+      closeModal(history, state)
     } catch (ex) {
       setLoading(false);
       console.log(ex);
