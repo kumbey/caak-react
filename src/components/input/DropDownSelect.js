@@ -56,17 +56,13 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
                   onClick={() => onSelect(item)}
                   className={"flex flex-col"}
                 >
-                  <img
-                    data-dummy="100x100"
-                    src={generateFileUrl(item.profile)}
-                    className={"w-8 h-8 rounded-md object-cover mr-2"}
-                    alt={""}
-                  />
-                  <span
-                    className={"text-caak-generalblack font-medium text-16px"}
+                  <div
+                    className={
+                      "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                    }
                   >
                     <img
-                      src={item.image}
+                      src={generateFileUrl(item.profile)}
                       className={"w-8 h-8 rounded-md object-cover mr-2"}
                       alt={""}
                     />
@@ -104,7 +100,7 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
                     }
                   >
                     <img
-                      src={item.image}
+                      src={generateFileUrl(item.profile)}
                       className={"w-8 h-8 rounded-md object-cover mr-2"}
                       alt={""}
                     />
