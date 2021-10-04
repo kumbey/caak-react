@@ -3,12 +3,18 @@ import ProfileBack from '../../components/Sidebar/ProfileBack'
 import PostPending from '../Group/PostPending'
 import { useState } from 'react';
 import {types} from './data'
+<<<<<<< Updated upstream
 import { useHistory } from 'react-router';
 
 export default function Activities() {
 
     const history = useHistory();
 
+=======
+
+export default function Activities() {
+
+>>>>>>> Stashed changes
     const [selected, setSelected] = useState();
 
     const handleColor = (row) => {
@@ -55,7 +61,11 @@ export default function Activities() {
                 <div className="mt-b5 ml-c3 2xl:w-c22 md:w-c17">
 
                     {/*profile*/}
+<<<<<<< Updated upstream
                     <ProfileBack onClick={() => history.goBack()} title={"Профайл руу буцах"}/>
+=======
+                    <ProfileBack title={"Профайл руу буцах"}/>
+>>>>>>> Stashed changes
 
                     {/*my rate*/}
                     <div style={{marginTop: "23px"}}>

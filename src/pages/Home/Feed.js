@@ -85,6 +85,18 @@ const Feed = () => {
               );
             })}
           </div>
+<<<<<<< Updated upstream
+=======
+          <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+            {
+              data.map((data, index) => {
+                return(
+                  <Card key={index} className="ph:mb-4 sm:mb-4 btn:mb-4"/>
+                )
+              })
+            }
+          </div>
+>>>>>>> Stashed changes
         </div>
         <div
           className={"flex flex-row justify-center items-center w-9/12 px-4"}

@@ -123,7 +123,11 @@ const Routes = [
     page: () => <Check />,
   },
   {
+<<<<<<< Updated upstream
     path: "/profile",
+=======
+    path: "/profile/view",
+>>>>>>> Stashed changes
     exact: true,
     background: true,
     page: () => <Profile />,
