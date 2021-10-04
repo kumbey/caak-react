@@ -124,7 +124,7 @@ const UploadedMediaEdit = ({
         {loading && (
           <div
             className={
-              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-50 bg-white bg-opacity-90"
+              "flex items-center justify-center cursor-not-allowed text-center absolute w-full h-screen max-h-full top-0 left-0 z-30 bg-white bg-opacity-90"
             }
           >
             <Loader className={"bg-caak-primary"} />

@@ -38,30 +38,81 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
           />
           <span />
         </div>
-        <div className={"p-2"}>
-          {items.map((item,index) => {
-            return (
-              <div key={index} onClick={() => onSelect(item)} className={"flex flex-col"}>
+        <div className={"z-50"}>
+          <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+            <span className={"text-15px text-caak-darkBlue"}>
+              Миний үүсгэсэн бүлгүүд
+            </span>
+            <span className={"text-15px font-medium text-caak-primary"}>
+              Шинэ бүлэг үүсгэх
+            </span>
+          </div>
+          <div className={"px-2"}>
+            {items.map((item, index) => {
+              return (
                 <div
-                  className={
-                    "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                  }
+                  key={index}
+                  onClick={() => onSelect(item)}
+                  className={"flex flex-col"}
                 >
-                  <img
-                    data-dummy="100x100"
-                    src={item.image}
-                    className={"w-8 h-8 rounded-md object-cover mr-2"}
-                    alt={""}
-                  />
-                  <span
-                    className={"text-caak-generalblack font-medium text-16px"}
+                  <div
+                    className={
+                      "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                    }
                   >
-                    {item.name}
-                  </span>
+                    <img
+                      src={item.image}
+                      className={"w-8 h-8 rounded-md object-cover mr-2"}
+                      alt={""}
+                    />
+                    <span
+                      className={"text-caak-generalblack font-medium text-16px"}
+                    >
+                      {item.name}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          <div
+            className={
+              "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
+            }
+          >
+            <span className={"text-15px text-caak-darkBlue pt-2"}>
+              Миний дагасан бүлгүүд
+            </span>
+          </div>
+          <div className={"px-2"}>
+            {items.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => onSelect(item)}
+                  className={"flex flex-col"}
+                >
+                  <div
+                    className={
+                      "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                    }
+                  >
+                    <img
+                      src={item.image}
+                      className={"w-8 h-8 rounded-md object-cover mr-2"}
+                      alt={""}
+                    />
+                    <span
+                      className={"text-caak-generalblack font-medium text-16px"}
+                    >
+                      {item.name}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
