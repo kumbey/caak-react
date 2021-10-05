@@ -7,6 +7,8 @@ import { closeModal } from "../../Utility/Util";
 import Backdrop from "../../components/Backdrop";
 import { isLogged } from "../../Utility/Authenty";
 import { useUser } from "../../context/userContext";
+import { useEffect } from "react";
+import useScrollBlock from "../../Utility/useScrollBlock";
 
 export default function Login({ type, ...props }) {
   const history = useHistory();
@@ -26,6 +28,11 @@ export default function Login({ type, ...props }) {
       }
     }, 100);
   };
+  const [blockScroll, allowScroll] = useScrollBlock();
+  useEffect(() => {
+    blockScroll();
+    return () => allowScroll();
+  }, [allowScroll, blockScroll]);
 
   return (
     <Backdrop className={"flex justify-center"}>
@@ -137,10 +144,12 @@ export default function Login({ type, ...props }) {
             <div className=" text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
-                  onClick={() => history.replace({
+                onClick={() =>
+                  history.replace({
                     pathname: "/login/",
-                    state
-                  })}
+                    state,
+                  })
+                }
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 {" "}
@@ -151,10 +160,12 @@ export default function Login({ type, ...props }) {
             <div className=" text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
-                onClick={() => history.replace({
-                  pathname: "/register/",
-                 state
-                })}
+                onClick={() =>
+                  history.replace({
+                    pathname: "/register/",
+                    state,
+                  })
+                }
                 className="text-caak-primary text-15px font-bold cursor-pointer"
               >
                 {" "}
