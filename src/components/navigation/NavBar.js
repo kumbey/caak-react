@@ -28,6 +28,10 @@ export default function NavBar() {
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
 
   return (
     <nav className="bg-white">
@@ -126,6 +130,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div
+                    ref={menuRef}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={"relative flex flex-row mr-6"}
                 >
@@ -190,7 +195,7 @@ export default function NavBar() {
               </div>
             )}
             {!checkUser(user) && (
-              <div className={"relative"}>
+              <div ref={menuRef} className={"relative"}>
                 <Button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   skin="secondary"
