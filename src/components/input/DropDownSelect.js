@@ -71,7 +71,7 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
                     >
                       {item.name}
                     </span>
-                  </span>
+                  </div>
                 </div>
               );
             })}
