@@ -1,5 +1,6 @@
 import React from "react";
-import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
+import { generateTimeAgo, getFileUrl } from "../../Utility/Util";
+import Dummy from "dummyjs";
 
 const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   return (
@@ -8,12 +9,14 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
         <div className={"relative"}>
           <img
             className="w-34px m-34px rounded-square"
-            src={user.pic && getFileUrl(user?.pic)}
+            src={
+              group.profile ? getFileUrl(group?.profile) : Dummy.img("100x100")
+            }
             alt="Alex"
           />
           <img
             className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
-            src={group.profile && getFileUrl(group?.profile)}
+            src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
             alt="John"
           />
         </div>
@@ -39,7 +42,9 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
               @{user.nickname}
             </p>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
-            <span className={"text-darkblue text-12px"}>{generateTimeAgo(updatedAt)}</span>
+            <span className={"text-darkblue text-12px"}>
+              {generateTimeAgo(updatedAt)}
+            </span>
           </div>
         </div>
       </div>
