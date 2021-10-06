@@ -1,6 +1,6 @@
-import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop"
 import { useState } from "react";
 import EditGroup from "./EditGroup";
+import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
 
 export default function Settings() {
     const toggleMenu = () => {

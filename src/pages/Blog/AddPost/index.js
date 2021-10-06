@@ -11,10 +11,11 @@ import { useEffect } from "react/cjs/react.development";
 import { useUser } from "../../../context/userContext";
 import { ApiFileUpload } from "../../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql"
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
 import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
+import useScrollBlock from "../../../Utility/useScrollBlock";
 
 const AddPost = () => {
   const history = useHistory();
@@ -28,7 +29,7 @@ const AddPost = () => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
-  const [groupData, setGroupData] = useState([])
+  const [groupData, setGroupData] = useState([]);
 
   const [post, setPost] = useState({
     id: postId,
@@ -47,12 +48,16 @@ const AddPost = () => {
   //   { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
   //   { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
   // ];
-
+  const [blockScroll, allowScroll] = useScrollBlock();
   useEffect(() => {
-    getGroups()
-    if(postId !== "new"){
-      loadPost(postId)
+    getGroups();
+    if (postId !== "new") {
+      loadPost(postId);
     }
+    blockScroll();
+    return () => {
+      allowScroll();
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -61,42 +66,41 @@ const AddPost = () => {
   }, [post]);
 
   useEffect(() => {
-    if(groupData && selectedGroupId){
-      setSelectedGroup(groupData.find(item => item.id === selectedGroupId))
+    if (groupData && selectedGroupId) {
+      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
     }
     // eslint-disable-next-line
   }, [selectedGroupId]);
 
   useEffect(() => {
-    if(groupData && selectedGroupId){
-      setSelectedGroup(groupData.find(item => item.id === selectedGroupId))
+    if (groupData && selectedGroupId) {
+      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
     }
     // eslint-disable-next-line
   }, [groupData]);
 
   const getGroups = async () => {
-    try{
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost))
-      setGroupData(resp.data.listGroups.items)
-    }catch(ex){
-      console.log(ex)
+    try {
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+      setGroupData(resp.data.listGroups.items);
+    } catch (ex) {
+      console.log(ex);
     }
-  }
+  };
 
   const loadPost = async (id) => {
-    try{
-      let resp = await API.graphql(graphqlOperation(getPost, {id: id}))
-      let { items, ...data } = resp.data.getPost
-      setSelectedGroupId(data.group_id)
-      setPost({...data, items: items.items})
-    }catch(ex){
-      console.log(ex)
+    try {
+      let resp = await API.graphql(graphqlOperation(getPost, { id: id }));
+      let { items, ...data } = resp.data.getPost;
+      setSelectedGroupId(data.group_id);
+      setPost({ ...data, items: items.items });
+    } catch (ex) {
+      console.log(ex);
     }
-  }
+  };
 
   const uploadPost = async () => {
     try {
-
       setLoading(true);
 
       for (let i = 0; i < post.items.length; i++) {
@@ -109,29 +113,29 @@ const AddPost = () => {
       }
 
       let postData = { ...post };
-      postData.group_id = selectedGroup.id
-      postData.category_id = selectedGroup.category_id
+      postData.group_id = selectedGroup.id;
+      postData.category_id = selectedGroup.category_id;
 
-      let postItems = []
+      let postItems = [];
       for (let i = 0; i < postData.items.length; i++) {
         let item = postData.items[i];
 
         postItems.push({
           title: item.title,
           file_id: item.file.id,
-          order: i
-        })
+          order: i,
+        });
       }
 
-      postData.items = postItems
-      if(postData.id === "new"){
-        removeKeyFromObj(postData, ["id"])
-        await API.graphql(graphqlOperation(createPost, {input: postData}))
-      }else{
-        await API.graphql(graphqlOperation(updatePost, {input: postData}))
+      postData.items = postItems;
+      if (postData.id === "new") {
+        removeKeyFromObj(postData, ["id"]);
+        await API.graphql(graphqlOperation(createPost, { input: postData }));
+      } else {
+        await API.graphql(graphqlOperation(updatePost, { input: postData }));
       }
       setLoading(false);
-      closeModal(history, state)
+      closeModal(history, state);
     } catch (ex) {
       setLoading(false);
       console.log(ex);

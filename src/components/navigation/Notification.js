@@ -72,7 +72,7 @@ const Notification = ({ newPost, type }) => {
   return (
     <div
       className={
-        "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2"
+        "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
       }
     >
       <div className={"flex flex-row"}>
@@ -80,7 +80,7 @@ const Notification = ({ newPost, type }) => {
           {newPost && (
             <div
               className={
-                "absolute -left-2 top-0 w-2 h-2  p-1 bg-caak-bleudefrance rounded-full"
+                "absolute -left-2 top-0 w-2 h-2 bg-caak-bleudefrance rounded-full"
               }
             />
           )}

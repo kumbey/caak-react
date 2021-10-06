@@ -123,7 +123,7 @@ const Routes = [
     page: () => <Check />,
   },
   {
-    path: "/profile",
+    path: "/profile/view",
     exact: true,
     background: true,
     page: () => <Profile />,

@@ -24,6 +24,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+<<<<<<< Updated upstream
 .icon-fi-rs-invite-grid:before {
     content: "\e958";
 }
@@ -100,6 +101,20 @@
     content: "\e94b";
 }
 
+=======
+.icon-fi-fi-sp-hamburger-menu:before {
+    content: "\e959";
+  }
+  .icon-fi-sp-hamburger-menu:before {
+    content: "\e95a";
+  }
+  .icon-fi-sp-home-f:before {
+    content: "\e95b";
+  }
+  .icon-fi-sp-home:before {
+    content: "\e95c";
+  }
+>>>>>>> Stashed changes
 .icon-fi-rs-add-group-f:before {
     content: "\e94c";
   }
