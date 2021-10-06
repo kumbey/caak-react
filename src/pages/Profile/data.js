@@ -16,15 +16,15 @@ export const types = [
         title: "Бичсэн сэтгэгдлүүд"
     },
     {
-        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-group-f text-14px"/>,
+        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-add-group-f text-16px"/>,
         title: "Үүсгэсэн группууд"
     },
     {
-        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-add-group-f text-18px"/>,
+        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-group-f text-12px"/>,
         title: "Элссэн группууд"
     },
     {
-        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-thick-add-friend text-14px"/>,
+        icon: <span style={{padding: "12px", marginInline: "8px"}} className="bg-caak-titaniumwhite rounded-full icon-fi-rs-thick-add-friend text-12px"/>,
         title: "Дагасан хэрэглэгчид"
     },
     {

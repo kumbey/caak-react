@@ -33,6 +33,10 @@ export default function NavBar() {
   });
 
 
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
@@ -195,7 +199,7 @@ export default function NavBar() {
               </div>
             )}
             {!checkUser(user) && (
-              <div ref={menuRef} className={"relative"}>
+              <div ref={menuRef} className={"relative"} >
                 <Button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   skin="secondary"

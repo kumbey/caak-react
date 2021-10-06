@@ -3,8 +3,11 @@ import ProfileBack from '../../components/Sidebar/ProfileBack'
 import PostPending from '../Group/PostPending'
 import { useState } from 'react';
 import {types} from './data'
+import { useHistory } from 'react-router';
 
 export default function Activities() {
+
+    const history = useHistory();
 
     const [selected, setSelected] = useState();
 
@@ -32,7 +35,7 @@ export default function Activities() {
                 </div>
                 <div style={{marginTop: "10px"}}>
                     <div className="flex">
-                        <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
+                        <div onClick={() => history.push({pathname: "/profile/settings"})} className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
                         <span style={{width: "49px", marginInlineStart: "10px"}} className="h-c13 text-4px shadow icon-fi-rs-dots text-caak-generalblack items-center flex justify-center rounded-lg cursor-pointer"/>
                     </div>
                     <div style={{marginTop: "40px"}} className="flex justify-end">
@@ -76,7 +79,6 @@ export default function Activities() {
                 {/* post */}
                 <div className="border  rounded-lg mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18 bg-white lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
                     <p style={{margin: "28px"}} className="text-18px font-medium text-caak-generalblack">Нийтэд оруулсан фостууд</p>
-                    
                     <PostPending settt/>
                 </div>
             </div>
