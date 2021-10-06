@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const CardFooter = ({ ...data }) => {
+const CardFooter = ({ title, reactions, comments }) => {
+  const [totalComments, setTotalComments] = useState(0);
+  useEffect(() => {
+    let total = 0;
+    for (let i = 0; i < comments.length; i++) {
+      console.log(comments[i]);
+      total += comments[i].totals && comments[i].totals.comments;
+    }
+    setTotalComments(total);
+  }, [comments]);
+
   return (
-    <div className="px-4 py-2 pb-4">
-      <h1 className="text-generalblack text-17px font-bold leading-5">
-        {data.title}
-      </h1>
+    <div className="w-96 max-w-8xl flex flex-col justify-between px-4 py-2 pb-4">
+      <p className="text-generalblack text-17px font-bold leading-5 break-words">
+        {title}
+      </p>
       <div
         className={
           "flex flex row justify-between text-blue-primary text-14px mt-3"
@@ -14,11 +24,11 @@ const CardFooter = ({ ...data }) => {
         <div className={"flex flex-row"}>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fr-rs-caak text-16px mr-1.5"} />
-            <span>{data.likes}</span>
+            <span>{reactions}</span>
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-16px mr-1.5"} />
-            <span>{data.comments}</span>
+            <span>{totalComments}</span>
           </div>
         </div>
         <div className={"flex flex-row items-center cursor-pointer"}>
