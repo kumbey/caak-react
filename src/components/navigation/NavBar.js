@@ -32,11 +32,6 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-
-  const menuRef = useClickOutSide(() => {
-    setIsMenuOpen(false);
-  });
-
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">

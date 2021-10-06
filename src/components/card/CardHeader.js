@@ -1,7 +1,18 @@
 import React from "react";
+import { useState } from "react";
 import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
+import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
+import { useClickOutSide } from "../../Utility/Util";
+import PostMore from "./PostMore";
 
 const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+};
+const menuRef = useClickOutSide(() => {
+  setIsMenuOpen(false);
+});
+const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="h-14 flex items-center justify-between px-4">
       <div className="flex items-center justify-between py-4">
@@ -43,21 +54,14 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
           </div>
         </div>
       </div>
-      <div className={"cursor-pointer"}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-          />
-        </svg>
+      <div ref={menuRef} onClick={toggleMenu} className={"cursor-pointer relative"}>
+        <span className="icon-fi-rs-dots text-4px"/>
+        <GroupInformationDrop 
+          className="absolute"
+          shadow
+          content={<PostMore/>}
+          open={isMenuOpen}
+        />
       </div>
     </div>
   );

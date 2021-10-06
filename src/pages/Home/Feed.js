@@ -37,10 +37,9 @@ const Feed = () => {
                                                                       icon: "icon-fi-rs-following",
                                                                     },*/
   ];
-  const [activeIndex, setActiveIndex] = useState();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const { user } = useUser();
-  const [data] = useState(new Array(9).fill(""));
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
 
