@@ -18,6 +18,7 @@ async function createPost(ctx){
 
         post.status = "PENDING"
         post.user_id = user_id
+        post.updated_user_id = user_id
 
         let resp = await Post.create(post)
         let respItems = []
@@ -49,7 +50,7 @@ async function updatePost(ctx){
         }
 
         post.status = "PENDING"
-        post.user_id = user_id
+        post.updated_user_id = user_id
 
         let oldPost = await Post.get(post.id)
         let resp = await Post.update(post)

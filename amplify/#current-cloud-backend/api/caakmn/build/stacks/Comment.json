@@ -139,11 +139,15 @@
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "post_id",
+                        "AttributeName": "post_item_id",
                         "AttributeType": "S"
                     },
                     {
                         "AttributeName": "parent_id",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "type",
                         "AttributeType": "S"
                     }
                 ],
@@ -197,10 +201,10 @@
                 },
                 "GlobalSecondaryIndexes": [
                     {
-                        "IndexName": "byPost",
+                        "IndexName": "byPostItem",
                         "KeySchema": [
                             {
-                                "AttributeName": "post_id",
+                                "AttributeName": "post_item_id",
                                 "KeyType": "HASH"
                             }
                         ],
@@ -229,6 +233,34 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "parent_id",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "Fn::If": [
+                                "ShouldUsePayPerRequestBilling",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "ReadCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableReadIOPS"
+                                    },
+                                    "WriteCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableWriteIOPS"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IndexName": "byType",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "type",
                                 "KeyType": "HASH"
                             }
                         ],

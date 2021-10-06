@@ -38,15 +38,47 @@
         },
         "post": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/post-6e2b5535773957392f46-build.zip"
+          "s3Key": "amplify-builds/post-3671676d33726f446832-build.zip"
         },
         "usersTrigger": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/usersTrigger-463534626533746a6163-build.zip"
+          "s3Key": "amplify-builds/usersTrigger-5639706e6d7a6c54462f-build.zip"
         },
         "caakmnlayerAPI": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion55189aef-build.zip"
+          "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion1926d0c6-build.zip"
+        },
+        "postTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/postTrigger-6a44704a504f62363649-build.zip"
+        },
+        "groupTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/groupTrigger-6e53612f6c6e434b672b-build.zip"
+        },
+        "triggerComment": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/triggerComment-707338476f596b4a6963-build.zip"
+        },
+        "triggerPostViews": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/triggerPostViews-676d6f4b55736a4c774b-build.zip"
+        },
+        "reactionsTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/reactionsTrigger-306c7a6763706574684e-build.zip"
+        },
+        "groupUsersTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/groupUsersTrigger-4149484b476d6d414363-build.zip"
+        },
+        "triggerPostShares": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/triggerPostShares-4c4e31786367352b2f4c-build.zip"
+        },
+        "followedUsersTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/followedUsersTrigger-4e516331396c79476265-build.zip"
         }
       }
     }

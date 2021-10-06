@@ -22,6 +22,26 @@ function genUpdateAttributes(data, pass){
     return {expression, values, names}
 }
 
+function genCountUpdateAttributes(data){
+
+    let expression = "set"
+    let values = {}
+    let names = {}
+    let condition = null
+
+    expression += ` #${data.field} = if_not_exists(#${data.field}, :defaultCount) ${
+        data.increase ? "+" : "-"
+    } :${data.field}`
+    condition = `${data.increase ? null : `(#${data.field} > :defaultCount)`}`
+    names[`#${data.field}`] = data.field
+    values[`:${data.field}`] = data.count
+
+    values[":defaultCount"] = data.defaultCount ? data.defaultCount : 0
+
+    return {expression, values, names, condition}
+}
+
 module.exports = {
-    updateAttributes: genUpdateAttributes
+    updateAttributes: genUpdateAttributes,
+    countUpdateAttributes: genCountUpdateAttributes
 }

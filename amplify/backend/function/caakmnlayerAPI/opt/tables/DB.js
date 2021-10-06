@@ -53,22 +53,28 @@ const db = (table , client) => {
         try {
 
             const now = new Date().toISOString()
-    
-            data.id = uuidv4()
-    
-            if(!data.createdAt){
-                data.createdAt = now
+            
+            if(data.disableGenId){
+                delete data.disableGenId
+            }else{
+                data.id = uuidv4()
+                delete data.disableGenId
+            }
+
+            let pkey = "id"
+
+            if(data.pkey){
+                pkey = data.pkey
+                delete data.pkey
             }
     
-            if(!data.updateAt){
-                data.updatedAt = now
-            }
-    
+            data.createdAt = now
+            data.updatedAt = now
     
             const params = {
                 TableName: tableName,
                 Item: data,
-                ConditionExpression: "attribute_not_exists(id)",
+                ConditionExpression: `attribute_not_exists(${pkey})`,
                 ReturnValues : "NONE"
             }
     
