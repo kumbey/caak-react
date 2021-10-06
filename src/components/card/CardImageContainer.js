@@ -1,25 +1,23 @@
 import React from "react";
-import Dummy from "dummyjs";
+import { getFileUrl } from "../../Utility/Util";
 
-const CardImageContainer = ({ data }) => {
+const CardImageContainer = ({ files }) => {
   return (
-    <div className={"relative"}>
-      {data.length > 1 ? (
+    <div className={"relative max-w-8xl"}>
+      {files.length > 1 ? (
         <div
           className={
-            "flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 left-3 text-white text-11px bg-black bg-opacity-20 rounded px-2 py-1"
+            "flex flex-row tracking-wide items-center text-center align-middle absolute font-bold h-5 top-3 left-3 text-white text-11px bg-black bg-opacity-20 rounded px-2 py-1"
           }
         >
-          <span className={"icon-fi-rs-album mr-1"} />
-          +2
+          <span className={"icon-fi-rs-album mr-1 text-9px"} />+{files?.length}
         </div>
       ) : (
         ""
       )}
       <img
-        data-dummy="400,800"
-        src={Dummy.img("400,800")}
-        className={"w-full h-96 block object-cover"}
+        src={getFileUrl(files[0].file)}
+        className={"w-96 h-100 block object-cover"}
         alt={""}
       />
     </div>

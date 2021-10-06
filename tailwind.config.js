@@ -4,8 +4,14 @@ module.exports = {
   important: true,
   theme: {
     extend: {
+      maxWidth: {
+        "8xl": "96rem",
+      },
       maxHeight: {
         half: "50vh",
+      },
+      height: {
+        100: "26.25rem",
       },
       letterSpacing: {
         "17px": "17px",
@@ -85,6 +91,8 @@ module.exports = {
       },
       fontSize: {
         "4px": "4px",
+        "9px": "9px",
+        "11px": "11px",
         "12px": "12px",
         "13px": "13px",
         "14px": "14px",

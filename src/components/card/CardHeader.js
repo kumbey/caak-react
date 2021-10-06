@@ -1,18 +1,19 @@
 import React from "react";
+import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
 
-const CardHeader = ({ verifiedUser }) => {
+const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   return (
     <div className="h-14 flex items-center justify-between px-4">
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
           <img
             className="w-34px m-34px rounded-square"
-            src="https://i.pravatar.cc/100"
+            src={user.pic && getFileUrl(user?.pic)}
             alt="Alex"
           />
           <img
             className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
-            src="https://i.pravatar.cc/100?img=3"
+            src={group.profile && getFileUrl(group?.profile)}
             alt="John"
           />
         </div>
@@ -20,10 +21,14 @@ const CardHeader = ({ verifiedUser }) => {
         <div className="ml-3">
           <div className={"flex flex-row  items-center"}>
             <span className="text-generalblack text-14px mr-1 font-bold cursor-pointer">
-              Developers
+              {group.name}
             </span>
             {verifiedUser ? (
-              <i className={"icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"} />
+              <i
+                className={
+                  "icon-fi-rs-verified text-caak-buttonblue text-13px mr-1.5"
+                }
+              />
             ) : (
               ""
             )}
@@ -31,10 +36,10 @@ const CardHeader = ({ verifiedUser }) => {
 
           <div className={"flex flex-row items-center"}>
             <p className="hover:underline text-generalblack text-12px cursor-pointer">
-              @Tulgaa
+              @{user.nickname}
             </p>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
-            <span className={"text-darkblue text-12px"}>30мин өмнө</span>
+            <span className={"text-darkblue text-12px"}>{generateTimeAgo(updatedAt)}</span>
           </div>
         </div>
       </div>

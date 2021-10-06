@@ -3,16 +3,24 @@ import CardHeader from "./CardHeader";
 import CardFooter from "./CardFooter";
 import CardImageContainer from "./CardImageContainer"; // es6
 
-const Card = ({ video, verifiedUser, ...data }) => {
+const Card = ({ video, verifiedUser, post }) => {
   return (
-    <div className="rounded-xl shadow-card mx-auto transition bg-white">
-      <CardHeader verifiedUser />
+    <div className="rounded-xl shadow-card max-w-8xl mx-auto transition bg-white">
+      <CardHeader
+        user={post.user}
+        group={post.group}
+        updatedAt={post.updatedAt}
+      />
       {video ? (
-        <CardVideoContainer data={["1", "2"]} />
+        <CardVideoContainer files={post.items.items} />
       ) : (
-        <CardImageContainer data={["1", "2"]} />
+        <CardImageContainer files={post.items.items} />
       )}
-      <CardFooter data={data.data}/>
+      <CardFooter
+        title={post.title}
+        reactions={post.totals.reactions}
+        comments={post.items.items}
+      />
     </div>
   );
 };

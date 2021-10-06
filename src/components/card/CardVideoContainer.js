@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getFileUrl } from "../../Utility/Util";
 
-const CardVideoContainer = ({ data }) => {
+const CardVideoContainer = ({ files }) => {
+  console.log(files);
   const videoRef = useRef();
   const [currentTime, setCurrentTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(0);
@@ -43,17 +44,14 @@ const CardVideoContainer = ({ data }) => {
   }
 
   useEffect(() => {
-      videoRef.current.ontimeupdate = (e) => {
-        setCurrentTime(e.currentTarget.currentTime);
-      };
-      videoRef.current.onloadeddata = (e) => {
-        setVideoDuration(e.currentTarget.duration);
-      };
+    videoRef.current.ontimeupdate = (e) => {
+      setCurrentTime(e.currentTarget.currentTime);
+    };
+    videoRef.current.onloadedfiles = (e) => {
+      setVideoDuration(e.currentTarget.duration);
+    };
 
-      return () => {
-        
-      }
-
+    return () => {};
   }, []);
   return (
     <div className={"relative"}>
@@ -62,15 +60,14 @@ const CardVideoContainer = ({ data }) => {
           "flex flex-row tracking-wide items-center leading-none text-center align-middle absolute font-bold top-3 left-3 text-white text-11px bg-black bg-opacity-20 rounded px-2 py-1"
         }
       >
-        <span className={"icon-fi-rs-rec mr-1"} />
+        <span className={"icon-fi-rs-rec mr-1 text-9px"} />
         {totalDuration()}
       </div>
-      {data.length > 1 ? (
+      {files.length > 1 ? (
         <div
           className={`flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 left-20 text-white text-11px bg-black bg-opacity-20 rounded px-2 py-1`}
         >
-          <span className={"icon-fi-rs-album mr-1"} />
-          +2
+          <span className={"icon-fi-rs-album mr-1 text-"} />+{files.length}
         </div>
       ) : (
         ""
@@ -82,10 +79,10 @@ const CardVideoContainer = ({ data }) => {
         disablePictureInPicture
         controlsList="nodownload noremoteplayback noplaybackrate"
         className={
-          "videoPlayer w-full max-h-80 block object-cover cursor-pointer rounded-square"
+          "videoPlayer max-w-8xl w-96 max-h-100 h-100 block object-cover cursor-pointer"
         }
       >
-        <source src={getFileUrl(data.file)} type="video/mp4" />
+        <source src={getFileUrl(files[0].file)} type="video/mp4" />
       </video>
 
       {/*<div className={"absolute bottom-0"}>*/}
