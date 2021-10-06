@@ -34,29 +34,27 @@ type User @aws_iam @aws_cognito_user_pools {
 }
 
 type UserTotals @aws_iam @aws_cognito_user_pools {
-  id: ID!
   user_id: ID!
   pending: Int
   confirmed: Int
   archived: Int
   reported: Int
   drafted: Int
-  reactions: Int
-  comments: Int
   following: Int
   followers: Int
+  unseen: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
 
 type GroupTotals @aws_iam @aws_cognito_user_pools {
-  id: ID!
   group_id: ID!
   pending: Int
   confirmed: Int
-  members: Int
-  admins: Int
-  moderators: Int
+  member: Int
+  admin: Int
+  moderator: Int
+  unseen: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -106,14 +104,15 @@ type Post @aws_iam @aws_cognito_user_pools {
   commentType: Boolean!
   status: String!
   user_id: ID!
+  updated_user_id: ID!
   group_id: ID!
   category_id: ID!
   updatedAt: AWSDateTime!
   createdAt: AWSDateTime!
   user: User @aws_iam @aws_cognito_user_pools
+  updated_user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
   items(order: ModelIntKeyConditionInput, filter: ModelPostItemsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
-  comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
 }
 
@@ -127,6 +126,24 @@ type PostItems @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   file: File @aws_iam @aws_cognito_user_pools
   post: Post! @aws_iam @aws_cognito_user_pools
+  comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+}
+
+type PostTotals @aws_iam @aws_cognito_user_pools {
+  post_id: ID!
+  reactions: Int!
+  views: Int!
+  shares: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PostItemsTotals @aws_iam @aws_cognito_user_pools {
+  post_item_id: ID!
+  reactions: Int!
+  comments: Int!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type PostHistory @aws_iam @aws_cognito_user_pools {
@@ -137,10 +154,28 @@ type PostHistory @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
 }
 
+type PostViews @aws_iam @aws_cognito_user_pools {
+  post_id: ID!
+  user_id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PostShares @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  post_id: ID!
+  user_id: ID!
+  description: String
+  source: String
+  link: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
 type Comment @aws_iam @aws_cognito_user_pools {
   id: ID!
   user_id: ID!
-  post_id: ID!
+  post_item_id: ID!
   comment: String!
   status: String!
   type: String!
@@ -150,8 +185,16 @@ type Comment @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   user: User @aws_iam @aws_cognito_user_pools
   replyTo: User @aws_iam @aws_cognito_user_pools
-  post: Post! @aws_iam @aws_cognito_user_pools
+  post_item: PostItems! @aws_iam @aws_cognito_user_pools
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+}
+
+type CommentTotals @aws_iam @aws_cognito_user_pools {
+  comment_id: ID!
+  reactions: Int
+  subs: Int
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type Reactions @aws_iam @aws_cognito_user_pools {
@@ -225,9 +268,11 @@ type Notification @aws_iam @aws_cognito_user_pools {
   to: ID!
   group_id: ID
   post_id: ID
+  comment_id: ID
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   post: Post @aws_iam @aws_cognito_user_pools
+  comment: Comment @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
 }
 
@@ -237,10 +282,10 @@ type Query {
   listFiles(filter: ModelFileFilterInput, limit: Int, nextToken: String): ModelFileConnection @aws_iam @aws_cognito_user_pools
   getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
-  getUserTotals(id: ID!): UserTotals @aws_iam @aws_cognito_user_pools
-  listUserTotals(filter: ModelUserTotalsFilterInput, limit: Int, nextToken: String): ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools
-  getGroupTotals(id: ID!): GroupTotals @aws_iam @aws_cognito_user_pools
-  listGroupTotals(filter: ModelGroupTotalsFilterInput, limit: Int, nextToken: String): ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools
+  getUserTotals(user_id: ID!): UserTotals @aws_iam @aws_cognito_user_pools
+  listUserTotals(user_id: ID, filter: ModelUserTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools
+  getGroupTotals(group_id: ID!): GroupTotals @aws_iam @aws_cognito_user_pools
+  listGroupTotals(group_id: ID, filter: ModelGroupTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools
   getUsername(id: ID!): Username @aws_iam @aws_cognito_user_pools
   listUsernames(filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   usernameByUser(user_id: ID, sortDirection: ModelSortDirection, filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
@@ -261,10 +306,20 @@ type Query {
   getPostByUser(user_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
   getPostItems(id: ID!): PostItems @aws_iam @aws_cognito_user_pools
   listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
+  getPostTotals(post_id: ID!): PostTotals @aws_iam @aws_cognito_user_pools
+  listPostTotals(post_id: ID, filter: ModelPostTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostTotalsConnection @aws_iam @aws_cognito_user_pools
+  getPostItemsTotals(post_item_id: ID!): PostItemsTotals @aws_iam @aws_cognito_user_pools
+  listPostItemsTotals(post_item_id: ID, filter: ModelPostItemsTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostItemsTotalsConnection @aws_iam @aws_cognito_user_pools
   getPostHistory(id: ID!): PostHistory @aws_iam @aws_cognito_user_pools
   listPostHistories(filter: ModelPostHistoryFilterInput, limit: Int, nextToken: String): ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools
+  getPostViews(post_id: ID!, user_id: ID!): PostViews @aws_iam @aws_cognito_user_pools
+  listPostViews(post_id: ID, user_id: ModelIDKeyConditionInput, filter: ModelPostViewsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostViewsConnection @aws_iam @aws_cognito_user_pools
+  getPostShares(id: ID!): PostShares @aws_iam @aws_cognito_user_pools
+  listPostShares(filter: ModelPostSharesFilterInput, limit: Int, nextToken: String): ModelPostSharesConnection @aws_iam @aws_cognito_user_pools
   getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
   listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  getCommentTotals(comment_id: ID!): CommentTotals @aws_iam @aws_cognito_user_pools
+  listCommentTotals(comment_id: ID, filter: ModelCommentTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentTotalsConnection @aws_iam @aws_cognito_user_pools
   getReactions(id: ID!, user_id: ID!): Reactions @aws_iam @aws_cognito_user_pools
   listReactions(id: ID, user_id: ModelIDKeyConditionInput, filter: ModelReactionsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelReactionsConnection @aws_iam @aws_cognito_user_pools
   getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
@@ -300,9 +355,18 @@ type Mutation {
   createCategory(input: CreateCategoryInput!, condition: ModelCategoryConditionInput): Category
   updateCategory(input: UpdateCategoryInput!, condition: ModelCategoryConditionInput): Category
   deleteCategory(input: DeleteCategoryInput!, condition: ModelCategoryConditionInput): Category
+  createPostViews(input: CreatePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
+  updatePostViews(input: UpdatePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
+  deletePostViews(input: DeletePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
+  createPostShares(input: CreatePostSharesInput!, condition: ModelPostSharesConditionInput): PostShares
+  updatePostShares(input: UpdatePostSharesInput!, condition: ModelPostSharesConditionInput): PostShares
+  deletePostShares(input: DeletePostSharesInput!, condition: ModelPostSharesConditionInput): PostShares
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
+  createCommentTotals(input: CreateCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
+  updateCommentTotals(input: UpdateCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
+  deleteCommentTotals(input: DeleteCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
   createReactions(input: CreateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   updateReactions(input: UpdateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   deleteReactions(input: DeleteReactionsInput!, condition: ModelReactionsConditionInput): Reactions
@@ -329,6 +393,7 @@ input CreatePostInput {
   commentType: Boolean
   status: String
   user_id: ID
+  updated_user_id: ID
   group_id: ID!
   category_id: ID!
   items: [CreatePostItemsInput]
@@ -522,9 +587,18 @@ type Subscription {
   onCreateCategory: Category @aws_subscribe(mutations: ["createCategory"]) @aws_iam @aws_cognito_user_pools
   onUpdateCategory: Category @aws_subscribe(mutations: ["updateCategory"]) @aws_iam @aws_cognito_user_pools
   onDeleteCategory: Category @aws_subscribe(mutations: ["deleteCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostViews: PostViews @aws_subscribe(mutations: ["createPostViews"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostViews: PostViews @aws_subscribe(mutations: ["updatePostViews"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostViews: PostViews @aws_subscribe(mutations: ["deletePostViews"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostShares: PostShares @aws_subscribe(mutations: ["createPostShares"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostShares: PostShares @aws_subscribe(mutations: ["updatePostShares"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostShares: PostShares @aws_subscribe(mutations: ["deletePostShares"]) @aws_iam @aws_cognito_user_pools
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
+  onCreateCommentTotals: CommentTotals @aws_subscribe(mutations: ["createCommentTotals"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCommentTotals: CommentTotals @aws_subscribe(mutations: ["updateCommentTotals"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCommentTotals: CommentTotals @aws_subscribe(mutations: ["deleteCommentTotals"]) @aws_iam @aws_cognito_user_pools
   onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
   onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
   onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
@@ -579,10 +653,9 @@ input ModelUserTotalsFilterInput {
   archived: ModelIntInput
   reported: ModelIntInput
   drafted: ModelIntInput
-  reactions: ModelIntInput
-  comments: ModelIntInput
   following: ModelIntInput
   followers: ModelIntInput
+  unseen: ModelIntInput
   and: [ModelUserTotalsFilterInput]
   or: [ModelUserTotalsFilterInput]
   not: ModelUserTotalsFilterInput
@@ -597,9 +670,10 @@ input ModelGroupTotalsFilterInput {
   group_id: ModelIDInput
   pending: ModelIntInput
   confirmed: ModelIntInput
-  members: ModelIntInput
-  admins: ModelIntInput
-  moderators: ModelIntInput
+  member: ModelIntInput
+  admin: ModelIntInput
+  moderator: ModelIntInput
+  unseen: ModelIntInput
   and: [ModelGroupTotalsFilterInput]
   or: [ModelGroupTotalsFilterInput]
   not: ModelGroupTotalsFilterInput
@@ -751,6 +825,7 @@ input ModelPostFilterInput {
   commentType: ModelBooleanInput
   status: ModelStringInput
   user_id: ModelIDInput
+  updated_user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
   updatedAt: ModelStringInput
@@ -775,6 +850,35 @@ input ModelPostItemsFilterInput {
   not: ModelPostItemsFilterInput
 }
 
+type ModelPostTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostTotals]
+  nextToken: String
+}
+
+input ModelPostTotalsFilterInput {
+  post_id: ModelIDInput
+  reactions: ModelIntInput
+  views: ModelIntInput
+  shares: ModelIntInput
+  and: [ModelPostTotalsFilterInput]
+  or: [ModelPostTotalsFilterInput]
+  not: ModelPostTotalsFilterInput
+}
+
+type ModelPostItemsTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostItemsTotals]
+  nextToken: String
+}
+
+input ModelPostItemsTotalsFilterInput {
+  post_item_id: ModelIDInput
+  reactions: ModelIntInput
+  comments: ModelIntInput
+  and: [ModelPostItemsTotalsFilterInput]
+  or: [ModelPostItemsTotalsFilterInput]
+  not: ModelPostItemsTotalsFilterInput
+}
+
 type ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools {
   items: [PostHistory]
   nextToken: String
@@ -788,6 +892,90 @@ input ModelPostHistoryFilterInput {
   not: ModelPostHistoryFilterInput
 }
 
+type ModelPostViewsConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostViews]
+  nextToken: String
+}
+
+input ModelPostViewsFilterInput {
+  post_id: ModelIDInput
+  user_id: ModelIDInput
+  and: [ModelPostViewsFilterInput]
+  or: [ModelPostViewsFilterInput]
+  not: ModelPostViewsFilterInput
+}
+
+input CreatePostViewsInput {
+  post_id: ID!
+  user_id: ID!
+}
+
+input UpdatePostViewsInput {
+  post_id: ID!
+  user_id: ID!
+}
+
+input DeletePostViewsInput {
+  post_id: ID!
+  user_id: ID!
+}
+
+input ModelPostViewsConditionInput {
+  and: [ModelPostViewsConditionInput]
+  or: [ModelPostViewsConditionInput]
+  not: ModelPostViewsConditionInput
+}
+
+type ModelPostSharesConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostShares]
+  nextToken: String
+}
+
+input ModelPostSharesFilterInput {
+  id: ModelIDInput
+  post_id: ModelIDInput
+  user_id: ModelIDInput
+  description: ModelStringInput
+  source: ModelStringInput
+  link: ModelStringInput
+  and: [ModelPostSharesFilterInput]
+  or: [ModelPostSharesFilterInput]
+  not: ModelPostSharesFilterInput
+}
+
+input CreatePostSharesInput {
+  id: ID
+  post_id: ID!
+  user_id: ID!
+  description: String
+  source: String
+  link: String
+}
+
+input UpdatePostSharesInput {
+  id: ID!
+  post_id: ID
+  user_id: ID
+  description: String
+  source: String
+  link: String
+}
+
+input DeletePostSharesInput {
+  id: ID!
+}
+
+input ModelPostSharesConditionInput {
+  post_id: ModelIDInput
+  user_id: ModelIDInput
+  description: ModelStringInput
+  source: ModelStringInput
+  link: ModelStringInput
+  and: [ModelPostSharesConditionInput]
+  or: [ModelPostSharesConditionInput]
+  not: ModelPostSharesConditionInput
+}
+
 type ModelCommentConnection @aws_iam @aws_cognito_user_pools {
   items: [Comment]
   nextToken: String
@@ -796,7 +984,7 @@ type ModelCommentConnection @aws_iam @aws_cognito_user_pools {
 input ModelCommentFilterInput {
   id: ModelIDInput
   user_id: ModelIDInput
-  post_id: ModelIDInput
+  post_item_id: ModelIDInput
   comment: ModelStringInput
   status: ModelStringInput
   type: ModelStringInput
@@ -810,7 +998,7 @@ input ModelCommentFilterInput {
 input CreateCommentInput {
   id: ID
   user_id: ID!
-  post_id: ID!
+  post_item_id: ID!
   comment: String!
   status: String!
   type: String!
@@ -821,7 +1009,7 @@ input CreateCommentInput {
 input UpdateCommentInput {
   id: ID!
   user_id: ID
-  post_id: ID
+  post_item_id: ID
   comment: String
   status: String
   type: String
@@ -835,7 +1023,7 @@ input DeleteCommentInput {
 
 input ModelCommentConditionInput {
   user_id: ModelIDInput
-  post_id: ModelIDInput
+  post_item_id: ModelIDInput
   comment: ModelStringInput
   status: ModelStringInput
   type: ModelStringInput
@@ -844,6 +1032,44 @@ input ModelCommentConditionInput {
   and: [ModelCommentConditionInput]
   or: [ModelCommentConditionInput]
   not: ModelCommentConditionInput
+}
+
+type ModelCommentTotalsConnection @aws_iam @aws_cognito_user_pools {
+  items: [CommentTotals]
+  nextToken: String
+}
+
+input ModelCommentTotalsFilterInput {
+  comment_id: ModelIDInput
+  reactions: ModelIntInput
+  subs: ModelIntInput
+  and: [ModelCommentTotalsFilterInput]
+  or: [ModelCommentTotalsFilterInput]
+  not: ModelCommentTotalsFilterInput
+}
+
+input CreateCommentTotalsInput {
+  comment_id: ID!
+  reactions: Int
+  subs: Int
+}
+
+input UpdateCommentTotalsInput {
+  comment_id: ID!
+  reactions: Int
+  subs: Int
+}
+
+input DeleteCommentTotalsInput {
+  comment_id: ID!
+}
+
+input ModelCommentTotalsConditionInput {
+  reactions: ModelIntInput
+  subs: ModelIntInput
+  and: [ModelCommentTotalsConditionInput]
+  or: [ModelCommentTotalsConditionInput]
+  not: ModelCommentTotalsConditionInput
 }
 
 type ModelReactionsConnection @aws_iam @aws_cognito_user_pools {
@@ -1094,6 +1320,7 @@ input ModelNotificationFilterInput {
   to: ModelIDInput
   group_id: ModelIDInput
   post_id: ModelIDInput
+  comment_id: ModelIDInput
   and: [ModelNotificationFilterInput]
   or: [ModelNotificationFilterInput]
   not: ModelNotificationFilterInput
@@ -1106,6 +1333,7 @@ input CreateNotificationInput {
   to: ID!
   group_id: ID
   post_id: ID
+  comment_id: ID
 }
 
 input UpdateNotificationInput {
@@ -1115,6 +1343,7 @@ input UpdateNotificationInput {
   to: ID
   group_id: ID
   post_id: ID
+  comment_id: ID
 }
 
 input DeleteNotificationInput {
@@ -1127,6 +1356,7 @@ input ModelNotificationConditionInput {
   to: ModelIDInput
   group_id: ModelIDInput
   post_id: ModelIDInput
+  comment_id: ModelIDInput
   and: [ModelNotificationConditionInput]
   or: [ModelNotificationConditionInput]
   not: ModelNotificationConditionInput
