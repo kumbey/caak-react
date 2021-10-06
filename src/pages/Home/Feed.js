@@ -40,7 +40,6 @@ const Feed = () => {
   const [activeIndex, setActiveIndex] = useState();
 
   const { user } = useUser();
-  const [data] = useState(new Array(9).fill(""));
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
 
@@ -57,7 +56,6 @@ const Feed = () => {
     try {
       let resp = await API.graphql(graphqlOperation(getPostByStatus));
       setPosts(resp.data.getPostByStatus.items);
-      console.log(posts);
     } catch (ex) {
       console.log(ex);
     }
