@@ -35,36 +35,39 @@ type User @model(mutations: null)
   is_public: Boolean
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
+  totals: UserTotals @connection(fields:["id"])
 }
 
 type UserTotals @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(fields:["user_id"]){
   user_id: ID!
   pending: Int
   confirmed: Int
   archived: Int
   reported: Int
   drafted: Int
-  reactions: Int
-  comments: Int
   following: Int
   followers: Int
+  unseen: Int
 }
 
 type GroupTotals @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(fields:["group_id"]){
   group_id: ID!
   pending: Int
   confirmed: Int
-  members: Int
-  admins: Int
-  moderators: Int
+  member: Int
+  admin: Int
+  moderator: Int
+  unseen: Int
 }
 
 type Username @model(mutations: null)
@@ -138,12 +141,14 @@ type Post @model(mutations: null)
   status: String!
   user_id: ID!
   user: User @connection(fields:["user_id"])
+  updated_user_id: ID!
+  updated_user: User @connection(fields:["user_id"])
   group_id: ID!
   group: Group @connection(fields:["group_id"])
   category_id: ID!
   category: Category @connection(fields:["category_id"])
-  comments: [Comment] @connection(keyName:"byPost", fields:["id"])
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
+  totals: PostTotals @connection(fields:["id"])
   updatedAt: AWSDateTime!
 }
 
@@ -160,6 +165,31 @@ type PostItems @model(mutations: null)
   file: File @connection(fields:["file_id"])
   title: String
   order: Int
+  comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
+  totals: PostItemsTotals @connection(fields:["id"])
+}
+
+type PostTotals @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_id"]){
+  post_id: ID!
+  reactions: Int!
+  views: Int!
+  shares: Int!
+}
+
+type PostItemsTotals @model(mutations: null)
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_item_id"]){
+  post_item_id: ID!
+  reactions: Int!
+  comments: Int!
 }
 
 type PostHistory @model(mutations: null)
@@ -173,19 +203,42 @@ type PostHistory @model(mutations: null)
   post: Post
 }
 
+type PostViews @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["post_id","user_id"]){
+  post_id: ID!
+  user_id: ID!
+}
+
+type PostShares @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ]){
+  id: ID!
+  post_id: ID!
+  user_id: ID!
+  description: String,
+  source: String,
+  link: String
+}
 
 type Comment @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byPost", fields: ["post_id"])
-  @key(name: "byParent", fields: ["parent_id"]){
+  @key(name: "byPostItem", fields: ["post_item_id"])
+  @key(name: "byParent", fields: ["parent_id"])
+  @key(name: "byType", fields: ["type"]){
   id: ID!,
   user_id:ID!
   user: User @connection(fields:["user_id"])
-  post_id: ID!
-  post: Post! @connection(fields:["post_id"])
+  post_item_id: ID!
+  post_item: PostItems! @connection(fields:["post_item_id"])
   comment: String!
   status: String!
   type: String!
@@ -193,6 +246,18 @@ type Comment @model
   sub: [Comment] @connection(keyName:"byParent" fields:["id"])
   replyUserID: ID
   replyTo: User @connection(fields:["replyUserID"])
+  totals: CommentTotals @connection(fields:["id"])
+}
+
+type CommentTotals @model
+  @auth(rules: [
+    { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
+    { allow: public, provider: iam, operations: [read]}
+  ])
+  @key(fields:["comment_id"]){
+  comment_id: ID!
+  reactions: Int
+  subs: Int
 }
 
 type Reactions @model
@@ -201,7 +266,8 @@ type Reactions @model
     { allow: public, provider: iam, operations: [read]}
   ])
   @key(fields: ["id","user_id"])
-  @key(name:"byUser", fields:["user_id"]){
+  @key(name:"byUser", fields:["user_id"])
+  @key(name:"byId", fields:["id"]){
   id: ID!
   user_id: ID!
   type: String!
@@ -264,6 +330,7 @@ type Group @model
   founder: User @connection(fields:["founder_id"])
   rating: Float
   members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
+  totals: GroupTotals @connection(fields:["id"])
 }
 
 type GroupID @model(mutations: null)
@@ -288,8 +355,10 @@ type Notification @model
     to: ID!
     group_id: ID
     post_id: ID
+    comment_id: ID
     group: Group @connection(fields:["group_id"])
     post: Post @connection(fields:["post_id"])
+    comment: Comment @connection(fields:["comment_id"])
 }
 
 type Query {
@@ -313,6 +382,7 @@ input CreatePostInput{
 	commentType: Boolean
   status: String
 	user_id: ID
+  updated_user_id: ID
   group_id: ID!
   category_id: ID!
   items: [CreatePostItemsInput]

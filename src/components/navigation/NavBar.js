@@ -28,6 +28,10 @@ export default function NavBar() {
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
 
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
@@ -130,6 +134,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div
+                    ref={menuRef}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={"relative flex flex-row mr-6"}
                 >
@@ -227,8 +232,8 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <div
-        className={`bg-gray-100 h-screen w-4/5 ${
+      <div  
+        className={`bg-gray-100 flex justify-end ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}
         id="mobile-menu"
