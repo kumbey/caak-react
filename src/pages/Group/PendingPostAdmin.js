@@ -3,6 +3,7 @@ import Admin from '../../components/Sidebar/Admin'
 import Button from '../../components/button'
 import PostPending from './PostPending';
 import { useHistory } from 'react-router';
+import { generateFileUrl } from '../../Utility/Util';
 
 export default function PendingPostAdmin() {
     const history = useHistory();
@@ -105,7 +106,7 @@ export default function PendingPostAdmin() {
                     <div style={{marginBlockEnd: "23px"}}>
                         <p className="text-17px font-bold text-caak-generalblack">Бүлэг руу буцах</p>
                         <div onClick={() => history.push({pathname: "/group"})} className="flex items-center mt-b5 cursor-pointer">
-                            <img alt="" className="bg-caak-red h-c37 w-c37 rounded-full"/>
+                            <img alt="" src={generateFileUrl()} className="bg-caak-red h-c37 w-c37 rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-medium ml-a2">Монгол өв уламжлал</p>
                         </div>
                     </div>

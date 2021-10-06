@@ -1,15 +1,34 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import Admin from '../../components/Sidebar/Admin'
 import Button from '../../components/button'
 import Card from '../../components/card'
 import Description from '../../components/Sidebar/Description'
 import TopMembers from '../../components/Sidebar/TopMembers'
 import Suggest from '../../components/Sidebar/Suggest'
+import API from '@aws-amplify/api'
+import { graphqlOperation } from '@aws-amplify/api-graphql'
+import {getPostByStatus} from '../../graphql-custom/post/queries'
+import { useEffect } from 'react'
 
 export default function Group() {
-    const [data] = useState(new Array(9).fill(""))
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [posts, setPosts] = useState([]);
+
+  const fetchPosts = async () => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getPostByStatus));
+      setPosts(resp.data.getPostByStatus.items);
+      console.log(posts);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+    // eslint-disable-next-line
+  }, []);
 
 
     return (
@@ -116,7 +135,7 @@ export default function Group() {
                     <TopMembers/>
 
                     {/* suggested */}
-                    <Suggest/>
+                    <Suggest className="text-15px font-medium text-caak-darkBlue" title={"Танд санал болгох группууд"}/>
                 </div>
 
                 {/* post */}
@@ -154,13 +173,16 @@ export default function Group() {
 
                     {/* contents */}
                     <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
-                        {
-                            data.map(( index) => {
-                                return(
-                                    <Card key={index} />
-                                )
-                            })
-                        }
+                    {posts.map((data, index) => {
+                return (
+                  <Card
+                    video={data.items.items[0].file.type.startsWith('video')}
+                    post={data}
+                    key={index}
+                    className="ph:mb-4 sm:mb-4 btn:mb-4"
+                  />
+                );
+              })}
                     </div>
                 </div>
             </div>
