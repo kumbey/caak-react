@@ -7,10 +7,10 @@ const CardImageContainer = ({ files }) => {
       {files.length > 1 ? (
         <div
           className={
-            "flex flex-row tracking-wide items-center text-center align-middle absolute font-bold h-5 top-3 left-3 text-white text-11px bg-black bg-opacity-20 rounded px-2 py-1"
+            "flex flex-row tracking-wide items-center text-center align-middle absolute font-bold h-5 top-3 right-3 text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1"
           }
         >
-          <span className={"icon-fi-rs-album mr-1 text-9px"} />+{files?.length}
+          <span className={"icon-fi-rs-album mr-1 text-11px"} />+{files?.length}
         </div>
       ) : (
         ""
