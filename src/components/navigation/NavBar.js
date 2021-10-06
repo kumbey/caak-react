@@ -28,14 +28,11 @@ export default function NavBar() {
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
+  
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
 
-
-  const menuRef = useClickOutSide(() => {
-    setIsMenuOpen(false);
-  });
 
   return (
     <nav className="bg-white">

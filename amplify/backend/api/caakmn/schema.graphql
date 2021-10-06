@@ -149,6 +149,7 @@ type Post @model(mutations: null)
   category: Category @connection(fields:["category_id"])
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
   totals: PostTotals @connection(fields:["id"])
+  reacted: Boolean
   updatedAt: AWSDateTime!
 }
 

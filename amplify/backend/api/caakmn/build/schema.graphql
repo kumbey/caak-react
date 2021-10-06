@@ -108,6 +108,7 @@ type Post @aws_iam @aws_cognito_user_pools {
   updated_user_id: ID!
   group_id: ID!
   category_id: ID!
+  reacted: Boolean
   updatedAt: AWSDateTime!
   createdAt: AWSDateTime!
   user: User @aws_iam @aws_cognito_user_pools
@@ -833,6 +834,7 @@ input ModelPostFilterInput {
   updated_user_id: ModelIDInput
   group_id: ModelIDInput
   category_id: ModelIDInput
+  reacted: ModelBooleanInput
   updatedAt: ModelStringInput
   and: [ModelPostFilterInput]
   or: [ModelPostFilterInput]

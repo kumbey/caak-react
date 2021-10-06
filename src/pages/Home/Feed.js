@@ -6,7 +6,7 @@ import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
-import { generateFileUrl } from "../../Utility/Util";
+import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 
 const Feed = () => {
@@ -55,7 +55,17 @@ const Feed = () => {
 
   const fetchPosts = async () => {
     try {
-      let resp = await API.graphql(graphqlOperation(getPostByStatus));
+
+      let resp = []
+      if(checkUser(user)){
+        resp = await API.graphql(graphqlOperation(getPostByStatus));
+      }else{
+        resp = await API.graphql({ 
+          query: getPostByStatus,
+          authMode: 'AWS_IAM'
+        });
+      }
+
       setPosts(resp.data.getPostByStatus.items);
       console.log(posts);
     } catch (ex) {
@@ -64,7 +74,9 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    getGroups();
+    if(checkUser(user)){
+      getGroups();
+    }
     fetchPosts();
     // eslint-disable-next-line
   }, []);
