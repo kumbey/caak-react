@@ -6,12 +6,12 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const UserTotals = Counter(process.env.API_CAAKMN_USERTOTALSTABLE_NAME, docClient)
 const GroupTotals = Counter(process.env.API_CAAKMN_GROUPTOTALSTABLE_NAME, docClient)
 const PostTotals = DB(process.env.API_CAAKMN_POSTTOTALSTABLE_NAME, docClient)
-const PostItemsTotals = DB(process.env.API_CAAKMN_POSTITEMSTOTALSTABLE_NAME, docClient)
 
 async function create(record){
     try{
 
-        const { Keys } = record
+        const { NewImage, Keys } = record
+        const newImg = getValuesFromRecord(NewImage)
 
         let data = {
             disableGenId: true,
@@ -22,20 +22,35 @@ async function create(record){
             shares: 0
         }
 
+        let resp = {}
+
         let respPost = await PostTotals.create(data)
 
-        data = {
-            disableGenId: true,
-            pkey: "post_item_id",
-            post_item_id: Keys.id.S,
-            reactions: 0,
-            comments: 0,
-            views: 0
-        }
+        resp.userTotal = await UserTotals.update({
+            key: "user_id",
+            keyVal: newImg.user_id,
+            items:[
+                {
+                    field: newImg.status.toLowerCase(),
+                    increase: true,
+                    count: 1
+                }
+            ]
+        })
 
-        let respPostItems = await PostItemsTotals.create(data)
+        resp.groupTotal = await GroupTotals.update({
+            key: "group_id",
+            keyVal: newImg.group_id,
+            items:[
+                {
+                    field: newImg.status.toLowerCase(),
+                    increase: true,
+                    count: 1
+                }
+            ]
+        })
 
-        return {post: respPost, postItems: respPostItems}
+        return {post: respPost}
     }catch(ex){
         console.log(ex)
         return ex
@@ -99,7 +114,7 @@ async function remove(record){
 
         const { Keys } = record
 
-        let resp = await PostTotals.remove(Keys.id.S)
+        let resp = await PostTotals.remove(Keys.id.S, "post_id")
 
         return resp
     }catch(ex){

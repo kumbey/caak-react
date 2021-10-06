@@ -122,14 +122,14 @@ const db = (table , client) => {
         }
     }
 
-    async function remove(id){
+    async function remove(id, key){
         try {
             const params = {
                 TableName: tableName,
                 Key:{
-                    id: id,
+                    [key]: id,
                 },
-                ConditionExpression: "attribute_exists(id)"
+                ConditionExpression: `attribute_exists(${key})`
             }
     
             let result = await docClient.delete(params).promise();

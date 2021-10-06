@@ -142,7 +142,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1634101726
+                        1634106923
                     ]
                 }
             },
@@ -6212,14 +6212,19 @@
                 "File",
                 "Aura",
                 "UserCategory",
+                "UserTotals",
                 "User",
                 "Category",
                 "Group",
                 "PostItems",
+                "PostTotals",
                 "Post",
                 "Comment",
+                "PostItemsTotals",
+                "CommentTotals",
                 "ReportType",
-                "GroupUsers"
+                "GroupUsers",
+                "GroupTotals"
             ]
         },
         "CustomResourcesjson": {

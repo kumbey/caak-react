@@ -8,7 +8,6 @@ const counter = (table , client) => {
     
     async function update(data){
         try {
-
             let retData = []
 
             for(let i=0; i < data.items.length; i++){
@@ -39,9 +38,12 @@ const counter = (table , client) => {
                     retData.push(result.Attributes)
                 }
             }
+
+            return retData
  
         } catch (err) {
-            throw err;
+            console.log(err)
+            return true
         }
     }
     

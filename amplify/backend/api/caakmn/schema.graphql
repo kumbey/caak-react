@@ -35,6 +35,7 @@ type User @model(mutations: null)
   is_public: Boolean
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
+  totals: UserTotals @connection(fields:["id"])
 }
 
 type UserTotals @model(mutations: null)
@@ -147,6 +148,7 @@ type Post @model(mutations: null)
   category_id: ID!
   category: Category @connection(fields:["category_id"])
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
+  totals: PostTotals @connection(fields:["id"])
   updatedAt: AWSDateTime!
 }
 
@@ -164,6 +166,7 @@ type PostItems @model(mutations: null)
   title: String
   order: Int
   comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
+  totals: PostItemsTotals @connection(fields:["id"])
 }
 
 type PostTotals @model(mutations: null)
@@ -243,6 +246,7 @@ type Comment @model
   sub: [Comment] @connection(keyName:"byParent" fields:["id"])
   replyUserID: ID
   replyTo: User @connection(fields:["replyUserID"])
+  totals: CommentTotals @connection(fields:["id"])
 }
 
 type CommentTotals @model
@@ -326,6 +330,7 @@ type Group @model
   founder: User @connection(fields:["founder_id"])
   rating: Float
   members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
+  totals: GroupTotals @connection(fields:["id"])
 }
 
 type GroupID @model(mutations: null)

@@ -28,6 +28,7 @@ type User @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   pic: File @aws_iam @aws_cognito_user_pools
   cover_pic: File @aws_iam @aws_cognito_user_pools
+  totals: UserTotals @aws_iam @aws_cognito_user_pools
   username(filter: ModelUsernameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
   aura: Aura! @aws_iam @aws_cognito_user_pools
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
@@ -113,6 +114,7 @@ type Post @aws_iam @aws_cognito_user_pools {
   updated_user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
   items(order: ModelIntKeyConditionInput, filter: ModelPostItemsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
+  totals: PostTotals @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
 }
 
@@ -126,6 +128,7 @@ type PostItems @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   file: File @aws_iam @aws_cognito_user_pools
   post: Post! @aws_iam @aws_cognito_user_pools
+  totals: PostItemsTotals @aws_iam @aws_cognito_user_pools
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
 }
 
@@ -187,6 +190,7 @@ type Comment @aws_iam @aws_cognito_user_pools {
   replyTo: User @aws_iam @aws_cognito_user_pools
   post_item: PostItems! @aws_iam @aws_cognito_user_pools
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  totals: CommentTotals @aws_iam @aws_cognito_user_pools
 }
 
 type CommentTotals @aws_iam @aws_cognito_user_pools {
@@ -249,6 +253,7 @@ type Group @aws_iam @aws_cognito_user_pools {
   profile: File @aws_iam @aws_cognito_user_pools
   cover: File @aws_iam @aws_cognito_user_pools
   founder: User @aws_iam @aws_cognito_user_pools
+  totals: GroupTotals @aws_iam @aws_cognito_user_pools
   category: Category! @aws_iam @aws_cognito_user_pools
   members(filter: ModelGroupUsersFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
 }

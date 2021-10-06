@@ -29,6 +29,21 @@ async function create(record){
     }
 }
 
+async function remove(record){
+    try{
+
+        const { Keys } = record
+
+        let resp = await GroupTotals.remove(Keys.id.S, "id")
+
+        return resp
+    }catch(ex){
+        console.log(ex)
+        return ex
+    }
+}
+
 module.exports = {
     createGroupTotals: create,
+    removeGroupTotals: remove
 }
