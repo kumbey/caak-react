@@ -5,15 +5,14 @@ const CardFooter = ({ title, reactions, comments }) => {
   useEffect(() => {
     let total = 0;
     for (let i = 0; i < comments.length; i++) {
-      console.log(comments[i]);
       total += comments[i].totals && comments[i].totals.comments;
     }
     setTotalComments(total);
   }, [comments]);
 
   return (
-    <div className="w-96 max-w-8xl flex flex-col justify-between px-4 py-2 pb-4">
-      <p className="text-generalblack text-17px font-bold leading-5 break-words">
+    <div className="flex flex-col justify-between px-4 py-2 pb-4 w-96 h-full max-w-8xl">
+      <p className="font-bold leading-5 break-words text-generalblack text-17px">
         {title}
       </p>
       <div
