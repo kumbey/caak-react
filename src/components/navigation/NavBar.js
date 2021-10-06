@@ -7,7 +7,7 @@ import DropDown from "./DropDown";
 
 import Dummy from "dummyjs";
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, useClickOutSide } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
 import NotificationDropDown from "./NotificationDropDown";
 
@@ -25,7 +25,14 @@ export default function NavBar() {
 
   const [isNotificationMenu, setIsNotificationMenu] = useState(false);
 
-  //TODO Change Icon
+  const notificationRef = useClickOutSide(() => {
+    setIsNotificationMenu(false);
+  });
+
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
@@ -99,13 +106,16 @@ export default function NavBar() {
                   />
                 </div>
                 <div
-                  onClick={() => setIsNotificationMenu(!isNotificationMenu)}
+                  ref={notificationRef}
+                  onClick={() => {
+                    setIsNotificationMenu((oldState) => !oldState);
+                  }}
                   className={"relative flex items-center mr-6 cursor-pointer"}
                 >
                   <span
-                    className={
-                      "icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite"
-                    }
+                    className={`${
+                      isNotificationMenu && "bg-caak-titaniumwhite"
+                    } icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite`}
                   />
                   <span
                     className={
@@ -116,9 +126,7 @@ export default function NavBar() {
                   </span>
                   <NotificationDropDown
                     isOpen={isNotificationMenu}
-                    onToggle={() =>
-                      setIsNotificationMenu(!setIsNotificationMenu)
-                    }
+                    setIsOpen={setIsNotificationMenu}
                   />
                 </div>
                 <div
@@ -186,7 +194,7 @@ export default function NavBar() {
               </div>
             )}
             {!checkUser(user) && (
-              <div className={"relative"}>
+              <div ref={menuRef} className={"relative"} >
                 <Button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   skin="secondary"
@@ -219,8 +227,8 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <div  
-        className={`bg-gray-100 flex justify-end ${
+      <div
+        className={`bg-gray-100 h-screen w-4/5 ${
           isMobileMenuOpen ? "block" : "hidden"
         }`}
         id="mobile-menu"
@@ -268,6 +276,22 @@ export default function NavBar() {
             >
               Бүртгэл үүсгэх
             </Button>
+          </div>
+
+          <div className={`relative`}>
+            {menu_data.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="hover:bg-gray-50 flex flex-row items-center px-4 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
+              >
+                {item.image}
+
+                <p className="text-base font-medium text-gray-900">
+                  {item.name}
+                </p>
+              </a>
+            ))}
           </div>
         </div>
       </div>

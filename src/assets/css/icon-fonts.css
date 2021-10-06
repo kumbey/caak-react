@@ -24,84 +24,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-<<<<<<< Updated upstream
-.icon-fi-rs-invite-grid:before {
-    content: "\e958";
-}
-
-.icon-fi-rs-grid-f:before {
-    content: "\e957";
-}
-
-.icon-fi-rs-post-f:before {
-    content: "\e956";
-}
-
-.icon-fi-rs-arrow-f:before {
-    content: "\e954";
-}
-
-.icon-fi-rs-single:before {
-    content: "\e955";
-}
-
-.icon-fi-rs-tiktok:before {
-    content: "\e93e";
-}
-
-.icon-fi-rs-fb:before {
-    content: "\e93f";
-}
-
-.icon-fi-rs-ig:before {
-    content: "\e940";
-}
-
-.icon-fi-rs-comment-active:before {
-    content: "\e941";
-}
-
-.icon-fi-rs-tw:before {
-    content: "\e942";
-}
-
-.icon-fi-rs-lock:before {
-    content: "\e943";
-}
-
-.icon-fi-rs-dots:before {
-    content: "\e944";
-}
-
-.icon-fi-rs-pie-chart:before {
-    content: "\e945";
-}
-
-.icon-fi-rs-histogram:before {
-    content: "\e946";
-}
-
-.icon-fi-rs-add-friend:before {
-    content: "\e947";
-}
-
-.icon-fi-rs-thick-add-friend:before {
-    content: "\e948";
-}
-
-.icon-fi-rs-thick-check:before {
-    content: "\e949";
-}
-
-.icon-fi-rs-thick-add:before {
-    content: "\e94a";
-}
-
-.icon-fi-rs-pencil:before {
-    content: "\e94b";
-}
-
-=======
 .icon-fi-fi-sp-hamburger-menu:before {
     content: "\e959";
   }
@@ -114,7 +36,6 @@
   .icon-fi-sp-home:before {
     content: "\e95c";
   }
->>>>>>> Stashed changes
 .icon-fi-rs-add-group-f:before {
     content: "\e94c";
   }

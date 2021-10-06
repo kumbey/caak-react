@@ -3,8 +3,11 @@ import Button from '../../components/button'
 import Card from '../../components/card'
 import TopMembers from '../../components/Sidebar/TopMembers'
 import Suggest from '../../components/Sidebar/Suggest'
+import { useHistory } from 'react-router'
 
 export default function Profile() {
+
+    const history = useHistory();
 
     const [data] = useState(new Array(9).fill(""))
 
@@ -29,7 +32,7 @@ export default function Profile() {
                 </div>
                 <div style={{marginTop: "10px"}}>
                     <div className="flex">
-                        <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
+                        <div onClick={() => history.push({pathname: "/profile/settings"})} className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
                         <span style={{width: "49px", marginInlineStart: "10px"}} className="h-c13 text-4px shadow icon-fi-rs-dots text-caak-generalblack items-center flex justify-center rounded-lg cursor-pointer"/>
                     </div>
                     <div style={{marginTop: "40px"}} className="flex justify-end">

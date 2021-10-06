@@ -13,6 +13,7 @@ import Profile from '../pages/Profile/index'
 import Activities from "../pages/Profile/Activities";
 import Infromation from "../pages/Group/Infromation";
 import Feed from "../pages/Home/Feed";
+import SettingsProfile from "../pages/Profile/Settings";
 
 const Routes = [
   {
@@ -123,7 +124,7 @@ const Routes = [
     page: () => <Check />,
   },
   {
-    path: "/profile/view",
+    path: "/profile",
     exact: true,
     background: true,
     page: () => <Profile />,
@@ -133,6 +134,12 @@ const Routes = [
     exact: true,
     background: true,
     page: () => <Activities />,
+  },
+  {
+    path: "/profile/settings",
+    exact: true,
+    background: true,
+    page: () => <SettingsProfile />,
   },
 ];
 
