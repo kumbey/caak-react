@@ -1,9 +1,11 @@
 import React from "react";
+
 import { useState } from "react";
 import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
 import { useClickOutSide } from "../../Utility/Util";
 import PostMore from "./PostMore";
+import Dummy from "dummyjs";
 
 const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   const toggleMenu = () => {
@@ -19,12 +21,14 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
         <div className={"relative"}>
           <img
             className="w-34px m-34px rounded-square"
-            src={user.pic && getFileUrl(user?.pic)}
+            src={
+              group.profile ? getFileUrl(group?.profile) : Dummy.img("100x100")
+            }
             alt="Alex"
           />
           <img
             className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
-            src={group.profile && getFileUrl(group?.profile)}
+            src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
             alt="John"
           />
         </div>
@@ -50,7 +54,9 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
               @{user.nickname}
             </p>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
-            <span className={"text-darkblue text-12px"}>{generateTimeAgo(updatedAt)}</span>
+            <span className={"text-darkblue text-12px"}>
+              {generateTimeAgo(updatedAt)}
+            </span>
           </div>
         </div>
       </div>
