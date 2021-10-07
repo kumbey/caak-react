@@ -1,6 +1,51 @@
 import Button from "../button";
+import {
+  createFollowedUsers,
+  deleteFollowedUsers,
+} from "../../graphql-custom/user/mutation";
+import API from "@aws-amplify/api";
+import { useUser } from "../../context/userContext";
+import { useEffect } from "react";
 
 export default function ProfileHoverCard({ setHover, user }) {
+  const loggedUser = useUser().user.username;
+  const groupCreatorUser = user.id;
+
+  useEffect(() => {
+    console.log("FOLLOW: ", user.followed);
+  }, [user.followed]);
+
+  const createFollowUser = async () => {
+    let resp = await API.graphql({
+      query: createFollowedUsers,
+      variables: {
+        input: { followed_user_id: loggedUser, user_id: groupCreatorUser },
+      },
+    });
+    console.log(resp);
+  };
+
+  const deleteFollowUser = async () => {
+    let resp = await API.graphql({
+      query: deleteFollowedUsers,
+      variables: {
+        input: {
+          followed_user_id: loggedUser,
+          user_id: groupCreatorUser,
+        },
+      },
+    });
+    console.log(resp);
+  };
+
+  const handleClick = () => {
+    if (!user.followed) {
+      createFollowUser();
+    } else if (user.followed) {
+      deleteFollowUser();
+    }
+    console.log("clikced");
+  };
   return (
     <div
       onMouseLeave={setHover}
@@ -15,9 +60,10 @@ export default function ProfileHoverCard({ setHover, user }) {
         />
         <Button
           className="text-15px w-c19 h-c24 font-bold"
-          disabled={user.followed}
+          // disabled={user.followed}
+          onClick={handleClick}
         >
-          Дагах
+          {`${user.followed}` ? "Дагасан" : "Дагах"}
         </Button>
       </div>
       <div className="mb-b1">
