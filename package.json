@@ -28,6 +28,7 @@
     "react-scripts": "4.0.3",
     "react-sortablejs": "^6.0.0",
     "sortablejs": "^1.14.0",
+    "video.js": "^7.15.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
