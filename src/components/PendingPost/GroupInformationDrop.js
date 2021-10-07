@@ -1,5 +1,5 @@
 import React from "react";
-import Shitt from "./Shitt";
+import Shitt from "./shitt"
 
 const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remove,onMouseEnter}) => {
   return (

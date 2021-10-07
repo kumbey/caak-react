@@ -1,6 +1,10 @@
 import { useHistory, useLocation } from "react-router";
 import { useState } from "react";
+<<<<<<< Updated upstream
 import Shitt from "./Shitt";
+=======
+import Shitt from "./shitt";
+>>>>>>> Stashed changes
 
 export default function Post() {
     const history = useHistory();
