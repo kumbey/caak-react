@@ -47,7 +47,7 @@ const Card = ({
       )}
 
       {video ? (
-        <CardVideoContainer data={data} />
+        <CardVideoContainer addPost={true} files={data} />
       ) : (
         <img
           src={getFileUrl(data.file)}
@@ -150,6 +150,7 @@ const UploadedMediaEdit = ({
               return (
                 <Card
                   key={index}
+                  addPost
                   data={item}
                   // error
                   index={index}

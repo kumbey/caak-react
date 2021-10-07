@@ -1,5 +1,12 @@
+import useScrollBlock from "../../Utility/useScrollBlock";
+import {useEffect} from "react";
+
 const Backdrop = ({children, onClick, className}) => {
-    // Log state
+    const [blockScroll, allowScroll] = useScrollBlock();
+    useEffect(() => {
+        blockScroll();
+        return () => allowScroll();
+    }, [allowScroll, blockScroll]);
     return (
         <div
             className={`backdrop ${className}`}

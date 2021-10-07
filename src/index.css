@@ -84,11 +84,12 @@
 }
 
 .backdrop {
-    position: absolute;
+    position: fixed;
+    overflow: scroll;
     top: 0;
     left: 0;
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
     min-width: max-content;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
