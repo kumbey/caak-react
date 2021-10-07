@@ -20,7 +20,7 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion80c94b0a": {
+    "LambdaLayerVersion5794ce4b": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": {
@@ -51,13 +51,50 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate80c94b0a": {
+    "LambdaLayerPermissionPrivate5794ce4b": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
         "LayerVersionArn": {
-          "Ref": "LambdaLayerVersion80c94b0a"
+          "Ref": "LambdaLayerVersion5794ce4b"
         },
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerVersion80c94b0a": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "CompatibleRuntimes": [
+          "nodejs14.x"
+        ],
+        "Content": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion80c94b0a-build.zip"
+        },
+        "Description": "Updated layer version 2021-10-06T08:31:24.124Z",
+        "LayerName": {
+          "Fn::Sub": [
+            "caakmnlayerAPI-${env}",
+            {
+              "env": {
+                "Ref": "env"
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "LambdaLayerPermissionPrivate80c94b0a": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:27",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -918,7 +955,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion80c94b0a"
+        "Ref": "LambdaLayerVersion5794ce4b"
       }
     }
   }

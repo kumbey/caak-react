@@ -3,7 +3,7 @@ import {useHistory, useLocation} from "react-router";
 import Input from "../../components/input";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
-import {checkUsernameType, closeModal} from "../../Utility/Util";
+import {checkUser, checkUsernameType, closeModal} from "../../Utility/Util";
 import {useEffect, useState} from "react/cjs/react.development";
 import Consts from "../../Utility/Consts";
 import Validate from "../../Utility/Validate";
@@ -13,6 +13,7 @@ import API from "@aws-amplify/api";
 import {createUserCustom} from "../../graphql-custom/user/mutation";
 import {useUser} from "../../context/userContext";
 import {isLogged} from "../../Utility/Authenty";
+import Select from "../../components/input/Select";
 
 
 const UserInformation = () => {
@@ -24,6 +25,7 @@ const UserInformation = () => {
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [nickname, setNickname] = useState("")
+    const [gender, setGender] = useState("")
     const [birthdate, setBirthdate] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -45,6 +47,11 @@ const UserInformation = () => {
             value: nickname,
             type: Consts.typeRequired,
             onChange: setNickname
+        },
+        gender: {
+            value: gender,
+            type: Consts.typeRequired,
+            onChange: setGender
         },
         birthdate: {
             value: birthdate,
@@ -102,6 +109,7 @@ const UserInformation = () => {
             usrData.lastname = lastname
             usrData.nickname = nickname
             usrData.birthdate = birthdate
+            usrData.gender = gender
 
             //do not sign up when its federated sign in
             if (!state.onlyInfo) {
@@ -146,7 +154,7 @@ const UserInformation = () => {
     }
 
 
-    return (
+    return ( !checkUser(user) ?
         <Backdrop className="flex justify-center items-center">
             <div className="ph:w-full w-cc bg-white rounded-lg shadow-xl ph:h-full">
                 <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
@@ -196,6 +204,21 @@ const UserInformation = () => {
                             placeholder={"Нийтэд харагдах нэр"}
                             className={"py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"}
                         />
+
+                        <Select
+                                value={gender}
+                                name={"gender"} 
+                                onChange={(e) => setGender(e.target.value)}
+                                errorMessage={errors.gender}
+                                containerStyle={"flex-1 mr-2"}
+                                className="py-3 border border-caak-titaniumwhite h-c9 bg-caak-titaniumwhite"
+                            >
+                                <option value="placeholder">
+                                    {"Хүйс"}
+                                </option>
+                                <option value="MALE">Эрэгтэй</option>
+                                <option value="FEMALE">Эмэгтэй</option>
+                            </Select>
 
                         <DateSelect
                             value={birthdate}
@@ -281,7 +304,7 @@ const UserInformation = () => {
                     <span className="icon-fi-rs-help text-18px text-caak-darkBlue "/>
                 </div>
             </div>
-        </Backdrop>
+        </Backdrop> : null
     );
 };
 

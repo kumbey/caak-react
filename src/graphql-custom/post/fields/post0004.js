@@ -5,6 +5,15 @@ const post0004 = /* GraphQL */ `
     status
     updatedAt
     user {
+      id
+      followed
+      aura {
+        point
+      }
+      about
+      totals {
+        followers
+      }
       nickname
       pic {
         bucket

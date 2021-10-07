@@ -1,22 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
-import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
+import { generateTimeAgo, getFileUrl } from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
 import { useClickOutSide } from "../../Utility/Util";
 import PostMore from "./PostMore";
 import Dummy from "dummyjs";
+import ProfileHoverCard from "./ProfileHoverCard";
 
-const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
+const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
+  const [hover, setHover] = useState(false);
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-};
-const menuRef = useClickOutSide(() => {
-  setIsMenuOpen(false);
-});
-const [isMenuOpen, setIsMenuOpen] = useState(false);
+  };
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <div className="h-14 flex items-center justify-between px-4">
+    <div className="h-14 relative flex items-center justify-between px-4">
+      {hover && (
+        <ProfileHoverCard
+          setHover={() => setHover(false)}
+          postUser={postUser}
+        />
+      )}
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
           <img
@@ -28,7 +39,9 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
           />
           <img
             className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
-            src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
+            src={
+              postUser.pic ? getFileUrl(postUser?.pic) : Dummy.img("100x100")
+            }
             alt="John"
           />
         </div>
@@ -49,10 +62,14 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
             )}
           </div>
 
-          <div className={"flex flex-row items-center"}>
-            <p className="hover:underline text-generalblack text-12px cursor-pointer">
-              @{user.nickname}
+          <div className={"flex flex-row   items-center"}>
+            <p
+              onMouseEnter={(e) => setHover(true)}
+              className="hover:underline text-generalblack text-12px cursor-pointer"
+            >
+              @{postUser.nickname}
             </p>
+
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
               {generateTimeAgo(updatedAt)}
@@ -60,12 +77,16 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
           </div>
         </div>
       </div>
-      <div ref={menuRef} onClick={toggleMenu} className={"cursor-pointer relative"}>
-        <span className="icon-fi-rs-dots text-4px"/>
-        <GroupInformationDrop 
+      <div
+        ref={menuRef}
+        onClick={toggleMenu}
+        className={"cursor-pointer relative"}
+      >
+        <span className="icon-fi-rs-dots text-4px" />
+        <GroupInformationDrop
           className="absolute"
           shadow
-          content={<PostMore/>}
+          content={<PostMore />}
           open={isMenuOpen}
         />
       </div>

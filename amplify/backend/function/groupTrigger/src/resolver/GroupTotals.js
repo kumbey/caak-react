@@ -34,7 +34,7 @@ async function remove(record){
 
         const { Keys } = record
 
-        let resp = await GroupTotals.remove(Keys.id.S, "id")
+        let resp = await GroupTotals.remove(Keys.id.S, "group_id")
 
         return resp
     }catch(ex){

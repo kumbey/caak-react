@@ -4,7 +4,7 @@ const DropDown = ({ items, open, onToggle, className }) => {
   return (
     <div
       onClick={onToggle}
-      className={`dropdown shadow-dropdown ${open ? "" : "hidden"} ${
+      className={`dropdown py-2 shadow-dropdown ${open ? "" : "hidden"} ${
         className && className
       }`}
     >
