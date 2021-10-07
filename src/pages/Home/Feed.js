@@ -49,7 +49,7 @@ const Feed = () => {
   const [nextToken, setNextToken] = useState();
   const location = useLocation();
 
-  const listGroups = async () => {
+  const getGroups = async () => {
     try {
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
       setGroupData(resp.data.listGroups.items);
@@ -112,12 +112,12 @@ const Feed = () => {
 
   useEffect(() => {
     if (checkUser(user)) {
-      listGroups();
+      getGroups();
     }
     fetchPosts();
     // eslint-disable-next-line
   }, []);
-  
+
   return (
     <div>
       <div className={`pt-4 px-10 w-full`}>
