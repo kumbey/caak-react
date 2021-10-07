@@ -84,6 +84,7 @@
 }
 
 .backdrop {
+    z-index: 2;
     position: fixed;
     overflow: scroll;
     top: 0;

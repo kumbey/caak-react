@@ -7,6 +7,12 @@ export const getPost = /* GraphQL */ `
     }
 `;
 
+export const getPostView = /* GraphQL */ `
+    query GetPost($id: ID!) {
+        getPost(id: $id) ${post0004}
+    }
+`;
+
 export const getPostByStatus = /* GraphQL */ `
     query getPostByStatus($status: String,
         $updatedAt: ModelStringKeyConditionInput,

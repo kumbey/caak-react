@@ -10,6 +10,7 @@ import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
+import { Link, useHistory, useLocation } from "react-router-dom";
 
 const Feed = () => {
   const feedType = [
@@ -29,15 +30,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                          id: 3,
-                                                                          type: "Бүлгүүд",
-                                                                          icon: "icon-fi-rs-group",
-                                                                        },
-                                                                        {
-                                                                          id: 4,
-                                                                          type: "Дагасан найзууд",
-                                                                          icon: "icon-fi-rs-following",
-                                                                        },*/
+                                                                                          id: 3,
+                                                                                          type: "Бүлгүүд",
+                                                                                          icon: "icon-fi-rs-group",
+                                                                                        },
+                                                                                        {
+                                                                                          id: 4,
+                                                                                          type: "Дагасан найзууд",
+                                                                                          icon: "icon-fi-rs-following",
+                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -45,6 +46,8 @@ const Feed = () => {
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nextToken, setNextToken] = useState();
+  const history = useHistory();
+  const location = useLocation();
 
   const getGroups = async () => {
     try {
@@ -242,16 +245,27 @@ const Feed = () => {
             <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
               {posts.map((data, index) => {
                 return (
-                  <Card
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
+                  <Link
                     key={index}
-                    className="ph:mb-4 sm:mb-4 btn:mb-4"
-                  />
+                    to={{
+                      pathname: `/post/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <Card
+                      video={data.items.items[0].file.type.startsWith("video")}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4 btn:mb-4"
+                    />
+                  </Link>
                 );
               })}
             </div>
-            <Loader className={`bg-caak-primary ${isFetching ? "opacity-100" : "opacity-0"}`}/>
+            <Loader
+              className={`bg-caak-primary ${
+                isFetching ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
         </div>
       </div>
