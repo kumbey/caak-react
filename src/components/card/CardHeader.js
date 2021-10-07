@@ -23,10 +23,7 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   return (
     <div className="h-14 relative flex items-center justify-between px-4">
       {hover && (
-        <ProfileHoverCard
-          setHover={() => setHover(false)}
-          userNick={user.nickname}
-        />
+        <ProfileHoverCard setHover={() => setHover(false)} user={user} />
       )}
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
