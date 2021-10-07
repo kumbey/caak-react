@@ -36,6 +36,7 @@ type User @model(mutations: null)
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
   totals: UserTotals @connection(fields:["id"])
+  followed: Boolean @function(name:"resolverBoolean-${env}")
 }
 
 type UserTotals @model(mutations: null)
@@ -149,7 +150,7 @@ type Post @model(mutations: null)
   category: Category @connection(fields:["category_id"])
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
   totals: PostTotals @connection(fields:["id"])
-  reacted: Boolean
+  reacted: Boolean @function(name:"resolverBoolean-${env}")
   updatedAt: AWSDateTime!
 }
 
@@ -168,6 +169,7 @@ type PostItems @model(mutations: null)
   order: Int
   comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
   totals: PostItemsTotals @connection(fields:["id"])
+  reacted: Boolean @function(name:"resolverBoolean-${env}")
 }
 
 type PostTotals @model(mutations: null)
@@ -332,6 +334,7 @@ type Group @model
   rating: Float
   members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
   totals: GroupTotals @connection(fields:["id"])
+  followed: Boolean @function(name:"resolverBoolean-${env}")
 }
 
 type GroupID @model(mutations: null)

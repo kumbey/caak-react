@@ -9,11 +9,19 @@ const db = (table , client) => {
 
     async function get(id){
 
+        let key = {}
+
+        if((typeof id) === "object"){
+            Object.keys(id).map((k) => {
+                key[k] = id[k]
+            })
+        }else{
+            key.id = id
+        }
+
         const params = {
             TableName: tableName,
-            Key: {
-                id: id
-            }
+            Key: key
         }
     
         try {
