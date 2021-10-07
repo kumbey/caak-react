@@ -8,17 +8,15 @@ const Card = ({ video, verifiedUser, post, onClick }) => {
     <div className="rounded-xl shadow-card max-w-8xl flex flex-col justify-between mx-auto bg-white">
       <div className={"flex flex-col"}>
         <CardHeader
-          user={post.user}
+          postUser={post.user}
           group={post.group}
           updatedAt={post.updatedAt}
         />
-        <div onClick={onClick}>
-          {video ? (
-            <CardVideoContainer files={post.items.items} />
-          ) : (
-            <CardImageContainer files={post.items.items} />
-          )}
-        </div>
+        {video ? (
+          <CardVideoContainer files={post.items.items} />
+        ) : (
+          <CardImageContainer files={post.items.items} />
+        )}
       </div>
 
       <CardFooter

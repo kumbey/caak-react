@@ -1,4 +1,4 @@
-import file0001 from "../../file/fields/file0001"
+import file0001 from "../../file/fields/file0001";
 
 const user0001 = /* GraphQL */ `{
     id
@@ -29,6 +29,6 @@ const user0001 = /* GraphQL */ `{
         id
       }
     }
-  }`
+  }`;
 
-  export default user0001
+export default user0001;
