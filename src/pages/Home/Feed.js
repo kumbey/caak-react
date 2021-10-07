@@ -9,6 +9,7 @@ import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
 import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
+import Loader from "../../components/loader";
 
 const Feed = () => {
   const feedType = [
@@ -235,10 +236,10 @@ const Feed = () => {
           </aside>
           <div
             className={
-              "flex w-full sm:justify-center md:justify-center xl:justify-start"
+              "flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start"
             }
           >
-            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-1 gap-c11 mt-b4 ph:mt-0 mb-b4">
+            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
               {posts.map((data, index) => {
                 return (
                   <Card
@@ -250,6 +251,7 @@ const Feed = () => {
                 );
               })}
             </div>
+            <Loader className={`bg-caak-primary ${isFetching ? "opacity-100" : "opacity-0"}`}/>
           </div>
         </div>
       </div>
