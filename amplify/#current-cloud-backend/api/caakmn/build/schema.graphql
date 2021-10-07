@@ -348,9 +348,9 @@ type Query {
 }
 
 type Mutation {
-  createUserCustom(input: CreateUserInputCustom!): User
-  createPost(input: CreatePostInput!): Post
-  updatePost(input: CreatePostInput!): Post
+  createUserCustom(input: CreateUserInputCustom!): User @aws_iam @aws_cognito_user_pools
+  createPost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
+  updatePost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
   updatePostStatus(input: UpdatePostStatusInput!): Post @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
@@ -428,6 +428,7 @@ input CreateUserInputCustom {
   lastname: String
   nickname: String
   birthdate: String
+  gender: String
 }
 
 enum ModelSortDirection {

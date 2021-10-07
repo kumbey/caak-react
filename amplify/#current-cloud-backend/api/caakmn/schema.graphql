@@ -17,7 +17,7 @@ type File @model
 type User @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
-    { allow: public, provider: iam, operations: [read]}
+    { allow: public, provider: iam, operations: [read, create]}
   ]){
   id: ID!
   username: [Username]! @connection(keyName:"byUser", fields:["id"])
@@ -373,10 +373,13 @@ type Query {
 
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
-  createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
-  updatePost(input: CreatePostInput!): Post @function(name:"post-${env}")
-  updatePostStatus(input: UpdatePostStatusInput!): Post @function(name:"post-${env}")
   @aws_iam
+  @aws_cognito_user_pools
+  createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
+  @aws_cognito_user_pools
+  updatePost(input: CreatePostInput!): Post @function(name:"post-${env}")
+  @aws_cognito_user_pools
+  updatePostStatus(input: UpdatePostStatusInput!): Post @function(name:"post-${env}")
   @aws_cognito_user_pools
 }
 
@@ -412,4 +415,5 @@ input CreateUserInputCustom{
 	lastname: String
   nickname: String
 	birthdate: String
+  gender: String
 }

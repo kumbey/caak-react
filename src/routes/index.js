@@ -70,7 +70,7 @@ const Routes = [
     path: "/register/main",
     exact: true,
     background: true,
-    unAuth: true,
+    unAuth: false,
     page: () => <Register />,
   },
   {
