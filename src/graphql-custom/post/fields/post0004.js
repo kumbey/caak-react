@@ -51,6 +51,7 @@ const post0004 = /* GraphQL */ `
 
     items {
       items {
+        title
         file {
           bucket
           createdAt

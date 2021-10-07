@@ -14,6 +14,7 @@ import Activities from "../pages/Profile/Activities";
 import Infromation from "../pages/Group/Infromation";
 import Feed from "../pages/Home/Feed";
 import SettingsProfile from "../pages/Profile/Settings";
+import ViewPost from "../pages/Blog/ViewPost";
 
 const Routes = [
   {
@@ -70,7 +71,7 @@ const Routes = [
     path: "/register/main",
     exact: true,
     background: true,
-    unAuth: true,
+    unAuth: false,
     page: () => <Register />,
   },
   {
@@ -104,6 +105,13 @@ const Routes = [
     background: true,
     auth: true,
     page: () => <AddPost />,
+  },
+  {
+    path: "/post/view/:postId",
+    exact: true,
+    background: true,
+    auth: true,
+    page: () => <ViewPost />,
   },
   {
     path: "/group",

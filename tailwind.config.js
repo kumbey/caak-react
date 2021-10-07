@@ -12,6 +12,7 @@ module.exports = {
       },
       height: {
         100: "26.25rem",
+        half: "50vh",
       },
       letterSpacing: {
         "17px": "17px",
@@ -29,6 +30,10 @@ module.exports = {
       screens: {
         ph: { min: "200px", max: "499px" },
         btn: { min: "400px", max: "751px" },
+      },
+      zIndex: {
+        1: "1",
+        2: "2",
       },
       colors: {
         caak: {
