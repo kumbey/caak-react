@@ -1,72 +1,64 @@
 import { useState, useEffect } from "react";
 import Checkbox from "../../components/checkbox/Checkbox";
-import Post from "../../components/PendingPost/Post";
 import Button from "../../components/button";
 import Shittt from "./Shittt";
-
-const Posts = [
-    {
-        id: "1",
-        content: <Post/>
-    },
-    {
-        id: "2",
-        content: <Post/>
-    },
-    {
-        id: "3",
-        content: <Post/>
-    },
-    {
-        id: "4",
-        content: <Post/>
-    }
-]
+import { checkUser } from "../../Utility/Util";
+import { useUser } from "../../context/userContext";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import {getPostByStatus} from '../../graphql-custom/post/queries'
+import Bilyat from "../../components/PendingPost/Bilyat";
 
 export default function PostPending({settt}) {
-    const [array, setArray] = useState(Posts);
-
-    useEffect(() => {
-        if (array) {
-            console.log(array.length);
-        }
-    }, [array]);
     
-    const deleteKey = item => {
-        let shallowCopy = [...array];
-        const index = shallowCopy.indexOf(item);
-        if (index > -1) {
-            shallowCopy.splice(index, 1);
-        }
-        setArray(shallowCopy);
-        return
-    };
 
     const [isCheckAll, setIsCheckAll] = useState(false);
     const [isCheck, setIsCheck] = useState([]);
-    const [list, setList] = useState([]);
-
-    useEffect(() => {
-        setList(Posts);
-    }, [list]);
 
     const handleSelectAll = e => {
         setIsCheckAll(!isCheckAll);
         if (isCheckAll) {
             setIsCheck([]);
         }else{
-            setIsCheck(list.map(li => li.id));
+            setIsCheck();
         }
     };
     
     const handleClick = e => {
         const { id, checked } = e.target;
         if (!checked) {
-            setIsCheck(isCheck.filter(item => item !== id));
+            setIsCheck(isCheck.filter(Bilyat => Bilyat !== id));
         }else{
             setIsCheck([...isCheck, id]);
         }
     }
+
+    const [posts, setPosts] = useState([]);
+    const { user } = useUser();
+
+    const fetchPosts = async () => {
+        try {
+    
+          let resp = []
+          if(checkUser(user)){
+            resp = await API.graphql(graphqlOperation(getPostByStatus));
+          }else{
+            resp = await API.graphql({ 
+              query: getPostByStatus,
+              authMode: 'AWS_IAM'
+            });
+          }
+    
+          setPosts(resp.data.getPostByStatus.items);
+        } catch (ex) {
+          console.log(ex);
+        }
+      };
+
+      useEffect(() => {
+        fetchPosts();
+        // eslint-disable-next-line
+      }, []);
 
     return (
         <div>
@@ -104,7 +96,40 @@ export default function PostPending({settt}) {
                     </div>
                 </div>}
             </div>
-            {(array || []).map(item => {
+            {posts.map((data, index) => {
+                return (
+                    <div className="flex items-center w-full bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen" key={index}>
+                        <div className="w-full flex items-center">
+                        <Checkbox
+                            key={data.id}
+                            id={data.id}
+                            handleClick={handleClick}
+                            isChecked={isCheck.includes(data.id)}
+                            className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
+                        />
+                        <Bilyat
+                            post={data}
+                            key={data.id}
+                            className="ph:mb-4 sm:mb-4 btn:mb-4"
+                        />
+                        </div>
+                        <div className="flex  justify-end relative 2xl:flex sm:block md:block lg:block hidden xl:mr-c24 lg:mr-c24 md:mr-c1 sm:mr-b1 justify-end items-center">
+                            {
+                                settt 
+                                ? 
+                                "" 
+                                :
+                                <div className="flex">
+                                    <Button className="bg-caak-bleudefrance text-15px text-white w-c132">Зөвшөөрөх</Button>
+                                    <Button className="bg-white text-caak-generalblack text-15px ml-b1 border w-c14">Татгалзах</Button>
+                                </div>
+                            }
+                            <Shittt/>
+                        </div>
+                    </div>
+                );
+            })}
+            {/*{(array || []).map(item => {
                 return (
                     <div className="flex items-center bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen" key={item.id}>
                         <Checkbox
@@ -131,7 +156,7 @@ export default function PostPending({settt}) {
                         
                     </div>
                 );
-            })}
+            })}*/}
         </div>
     )
 }

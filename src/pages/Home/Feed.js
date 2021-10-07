@@ -85,11 +85,11 @@ const Feed = () => {
         <div className={`pt-4 px-10 w-full`}>
           {/*<Card verifiedUser video/> */}
           <div
-            className={`h-full flex ${
+            className={`h-full lg:flex md:grid grid ${
               user ? "flex-row items-start" : "flex-col items-center"
             } `}
           >
-            <div className={"flex flex-col w-1/5"}>
+            <div className={"grid w-1/5 "}>
               <div
                 className={`flex ${
                   user ? "flex-col" : "flex-row w-full"
@@ -199,7 +199,7 @@ const Feed = () => {
                 </div>
               </div>
             </div>
-            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+            <div className=" grid gap-5 2xl:grid-cols-3 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 ph:mt-0 mb-b4">
               {posts.map((data, index) => {
                 return (
                   <Card

@@ -1,10 +1,11 @@
 import React from "react";
-import Shitt from "./shitt";
+import Shitt from "./Shitt";
 
-const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remove}) => {
+const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remove,onMouseEnter}) => {
   return (
     <div
       onClick={onToggle}
+      onMouseEnter={onMouseEnter}
       className={`dropdown bg-white ${shadow ? "" : "shadow-dropdown"} ${open ? "" : "hidden"} ${
         className && className
       }`}

@@ -10,10 +10,10 @@ export default function Admin() {
                             <p className="text-15px text-caak-generalblack font-bold mr-c6">Хүлээгдэж буй фостууд</p>
                             <p className="text-13px text-caak-bleudefrance bg-caak-bleudefrance px-b3 rounded-lg bg-opacity-20 font-bold">4</p>
                         </div>
-                        <div className="flex items-center mt-b2 cursor-pointer">
+                        {/*<div className="flex items-center mt-b2 cursor-pointer">
                             <span className="icon-fi-rs-archive text-16px flex mr-a2 bg-caak-titaniumwhite p-b2 rounded rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-bold">Архивлагдсан фостууд</p>
-                        </div>
+                        </div>*/}
                         <div className="flex items-center mt-b2 cursor-pointer">
                             <span className="icon-fi-rs-stats text-16px flex mr-a2 bg-caak-titaniumwhite p-b2 rounded rounded-full"/>
                             <p className="text-15px text-caak-generalblack font-bold">Статистик</p>

@@ -24,32 +24,32 @@ export default function Suggest({title, className}) {
                         <p className={`${className ? className : "text-17px font-bold text-caak-generalblack" }`}>{title}</p>
                         {groupData.map((item, index) => {
                     return (
-                      <div
-                        key={index}
-                        // onClick={() => onSelect(item)}
-                        className={"flex flex-col cursor-pointer w-max"}
-                      >
                         <div
-                          className={
-                            "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                          }
+                            key={index}
+                            // onClick={() => onSelect(item)}
+                            className={"flex flex-col cursor-pointer w-max"}
                         >
-                          <img
-                            src={generateFileUrl(item.profile)}
-                            className={"w-8 h-8 rounded-md object-cover mr-2"}
-                            alt={""}
-                          />
-                          <span
-                            className={
-                              "text-caak-generalblack font-medium text-15px"
-                            }
-                          >
-                            {item.name}
-                          </span>
+                            <div
+                                className={
+                                    "flex flex-row items-center p-1.5 my-px rounded-square"
+                                }
+                            >
+                                <img
+                                    src={generateFileUrl(item.profile)}
+                                    className={"w-8 h-8 rounded-md object-cover mr-2"}
+                                    alt={""}
+                                />
+                                <span
+                                    className={
+                                        "text-caak-generalblack font-medium text-15px"
+                                    }
+                                >
+                                    {item.name}
+                                </span>
+                            </div>
                         </div>
-                      </div>
                     );
-                  })}
+                })}
                     </div>
     )
 }

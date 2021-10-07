@@ -1,6 +1,6 @@
 import { useHistory, useLocation } from "react-router";
 import { useState } from "react";
-import Shitt from "./shitt";
+import Shitt from "./Shitt";
 
 export default function Post() {
     const history = useHistory();

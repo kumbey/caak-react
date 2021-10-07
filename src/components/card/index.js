@@ -18,7 +18,6 @@ const Card = ({ video, verifiedUser, post }) => {
                 <CardImageContainer files={post.items.items} />
             )}
         </div>
-
       <CardFooter
         title={post.title}
         reactions={post.totals.reactions}
