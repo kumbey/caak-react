@@ -13,7 +13,10 @@ export default function ProfileHoverCard({ setHover, user }) {
           alt=""
           src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
         />
-        <Button className="text-15px w-c19 font-bold" disabled={user.followed}>
+        <Button
+          className="text-15px w-c19 h-c24 font-bold"
+          disabled={user.followed}
+        >
           Дагах
         </Button>
       </div>
