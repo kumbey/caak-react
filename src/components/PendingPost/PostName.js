@@ -1,7 +1,7 @@
 import { getFileUrl } from "../../Utility/Util"
-export default function PostName({title,files}) {
+export default function PostName({title,files, onClick}) {
     return (
-        <div className='flex items-center'>
+        <div onClick={onClick} className='flex items-center cursor-pointer'>
             <img
                 style={{marginRight: "15px"}}
                 src={getFileUrl(files[0].file)}

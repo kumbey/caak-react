@@ -8,10 +8,12 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import {getPostByStatus} from '../../graphql-custom/post/queries'
 import Bilyat from "../../components/PendingPost/Bilyat";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router";
 
 export default function PostPending({settt}) {
     
-
+    const location  = useLocation();
     const [isCheckAll, setIsCheckAll] = useState(false);
     const [isCheck, setIsCheck] = useState([]);
 
@@ -41,7 +43,7 @@ export default function PostPending({settt}) {
     
           let resp = []
           if(checkUser(user)){
-            resp = await API.graphql(graphqlOperation(getPostByStatus));
+            resp = await API.graphql(graphqlOperation(getPostByStatus, {status: "PENDING"}));
           }else{
             resp = await API.graphql({ 
               query: getPostByStatus,
@@ -98,10 +100,17 @@ export default function PostPending({settt}) {
             </div>
             {posts.map((data, index) => {
                 return (
-                    <div className="flex items-center w-full bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen" key={index}>
+                    <Link
+                    key={index}
+                    to={{
+                      pathname: `/pending/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <div className="flex items-center w-full bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen">
                         <div className="w-full flex items-center">
                         <Checkbox
-                            key={data.id}
+                            key={index}
                             id={data.id}
                             handleClick={handleClick}
                             isChecked={isCheck.includes(data.id)}
@@ -127,6 +136,7 @@ export default function PostPending({settt}) {
                             <Shittt/>
                         </div>
                     </div>
+                    </Link>
                 );
             })}
             {/*{(array || []).map(item => {

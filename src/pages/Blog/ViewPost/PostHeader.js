@@ -1,17 +1,21 @@
 import React from "react";
+import { extractDate, generateTimeAgo } from "../../../Utility/Util";
+import useCountComments from "../../../Utility/useCountComments";
 
-const PostHeader = () => {
+const PostHeader = ({ title, updatedAt, reactions, comments, itemTitle }) => {
+  const totalComments = useCountComments(comments);
+  const date = extractDate(updatedAt);
   return (
     <div className={"flex flex-col"}>
       <div className={"font-bold text-20px text-caak-generalblack pt-2 px-7"}>
-        Өнөөдрийн зурвас: Найз минь надад шүлэг бичсэн!
+        {title}
       </div>
       <div className={"text-caak-darkBlue text-14px pt-2 px-7"}>
-        30мин өмнө · 2021/09/20
+        {generateTimeAgo(updatedAt)} ·{" "}
+        {`${date.year}/${date.month}/${date.day}`}
       </div>
       <div className={"text-15px text-caak-generalblack pt-2 px-7"}>
-        Зураг түс бүрийн тайлбар энэ хэсэгт орох бөгөөд өгүүлбэрийн үсгийн тоо
-        хязгаартай байна
+        {itemTitle}
       </div>
       <div
         className={
@@ -31,11 +35,11 @@ const PostHeader = () => {
             >
               <i className={"icon-fr-rs-caak text-22px"} />
             </div>
-            <span className={"text-15px"}>4.5k</span>
+            <span className={"text-15px"}>{reactions.totals.reactions}</span>
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-18px mr-1.5"} />
-            <span className={"text-15px"}>90 сэтгэгдэлтэй</span>
+            <span className={"text-15px"}>{totalComments} сэтгэгдэлтэй</span>
           </div>
         </div>
         <div className={"flex flex-row items-center cursor-pointer"}>
