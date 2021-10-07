@@ -171,3 +171,37 @@
     -webkit-background-clip: text;
     color: transparent;
 }
+
+.vjs-default-skin.vjs-paused .vjs-big-play-button {
+    display: none !important;
+}
+
+.video-js .vjs-big-play-button {
+    display: none !important;
+}
+
+.vjs-afterglow-skin .vjs-big-play-button:before {
+    content: "" !important;
+}
+
+:not(.vjs-has-started) .vjs-control-bar {
+    display: flex;
+}
+
+.backBlur {
+    background: rgba(0, 0, 0, 0.9);
+}
+.backBlur::before {
+    background: rgba(0, 0, 0, 0.8);
+    content: '';
+    filter: blur(20px);
+    z-index: -1;
+}
+
+.nonBlur {
+    -webkit-filter: blur(0);
+    -moz-filter: blur(0);
+    -o-filter: blur(0);
+    -ms-filter: blur(0);
+    filter: blur(0);
+}
