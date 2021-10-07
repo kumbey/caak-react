@@ -183,6 +183,11 @@ export function encodeURL(string) {
   );
 }
 
+export const extractDate = (date) => {
+  const { year, month, day } = DateTime.fromISO(date);
+  return {year,month, day}
+};
+
 // Postiin uussen ognoog ni stringeer avch heden second/minute/tsagiin/odriin omno uussniig stringeer butsaadag funkts
 export function generateTimeAgo(date) {
   const postdate = DateTime.fromISO(date);

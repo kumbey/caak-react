@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import useCountComments from "../../Utility/useCountComments";
 
 const CardFooter = ({ title, reactions, comments }) => {
-  const [totalComments, setTotalComments] = useState(0);
-  useEffect(() => {
-    let total = 0;
-    for (let i = 0; i < comments.length; i++) {
-      total += comments[i].totals && comments[i].totals.comments;
-    }
-    setTotalComments(total);
-  }, [comments]);
+  const totalComments = useCountComments(comments);
 
   return (
-    <div className="flex flex-col justify-between px-4 py-2 pb-4 w-96 h-full max-w-8xl">
-      <p className="font-bold leading-5 break-words text-generalblack text-17px">
+    <div className="w-96 max-w-8xl flex flex-col justify-between h-full px-4 py-2 pb-4">
+      <p className="text-generalblack text-17px font-bold leading-5 break-words">
         {title}
       </p>
       <div
