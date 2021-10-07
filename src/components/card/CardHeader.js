@@ -8,7 +8,7 @@ import PostMore from "./PostMore";
 import Dummy from "dummyjs";
 import ProfileHoverCard from "./ProfileHoverCard";
 
-const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
+const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
   const [hover, setHover] = useState(false);
 
   const toggleMenu = () => {
@@ -23,7 +23,10 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   return (
     <div className="h-14 relative flex items-center justify-between px-4">
       {hover && (
-        <ProfileHoverCard setHover={() => setHover(false)} user={user} />
+        <ProfileHoverCard
+          setHover={() => setHover(false)}
+          postUser={postUser}
+        />
       )}
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
@@ -36,7 +39,9 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
           />
           <img
             className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
-            src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
+            src={
+              postUser.pic ? getFileUrl(postUser?.pic) : Dummy.img("100x100")
+            }
             alt="John"
           />
         </div>
@@ -62,7 +67,7 @@ const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
               onMouseEnter={(e) => setHover(true)}
               className="hover:underline text-generalblack text-12px cursor-pointer"
             >
-              @{user.nickname}
+              @{postUser.nickname}
             </p>
 
             <span className={"text-darkblue text-12px mx-1"}>•</span>
