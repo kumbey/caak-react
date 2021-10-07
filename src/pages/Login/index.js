@@ -7,8 +7,6 @@ import { closeModal } from "../../Utility/Util";
 import Backdrop from "../../components/Backdrop";
 import { isLogged } from "../../Utility/Authenty";
 import { useUser } from "../../context/userContext";
-import { useEffect } from "react";
-import useScrollBlock from "../../Utility/useScrollBlock";
 
 export default function Login({ type, ...props }) {
   const history = useHistory();
@@ -28,11 +26,6 @@ export default function Login({ type, ...props }) {
       }
     }, 100);
   };
-  const [blockScroll, allowScroll] = useScrollBlock();
-  useEffect(() => {
-    blockScroll();
-    return () => allowScroll();
-  }, [allowScroll, blockScroll]);
 
   return (
     <Backdrop className={"flex justify-center"}>

@@ -24,6 +24,7 @@ type User @aws_iam @aws_cognito_user_pools {
   about: String
   is_public: Boolean
   status: String!
+  followed: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   pic: File @aws_iam @aws_cognito_user_pools
@@ -125,6 +126,7 @@ type PostItems @aws_iam @aws_cognito_user_pools {
   file_id: ID!
   title: String
   order: Int
+  reacted: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   file: File @aws_iam @aws_cognito_user_pools
@@ -249,6 +251,7 @@ type Group @aws_iam @aws_cognito_user_pools {
   about: String
   founder_id: ID!
   rating: Float
+  followed: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   profile: File @aws_iam @aws_cognito_user_pools
@@ -345,9 +348,9 @@ type Query {
 }
 
 type Mutation {
-  createUserCustom(input: CreateUserInputCustom!): User
-  createPost(input: CreatePostInput!): Post
-  updatePost(input: CreatePostInput!): Post
+  createUserCustom(input: CreateUserInputCustom!): User @aws_iam @aws_cognito_user_pools
+  createPost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
+  updatePost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
   updatePostStatus(input: UpdatePostStatusInput!): Post @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
@@ -425,6 +428,7 @@ input CreateUserInputCustom {
   lastname: String
   nickname: String
   birthdate: String
+  gender: String
 }
 
 enum ModelSortDirection {
@@ -642,6 +646,7 @@ input ModelUserFilterInput {
   about: ModelStringInput
   is_public: ModelBooleanInput
   status: ModelStringInput
+  followed: ModelBooleanInput
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
@@ -852,6 +857,7 @@ input ModelPostItemsFilterInput {
   file_id: ModelIDInput
   title: ModelStringInput
   order: ModelIntInput
+  reacted: ModelBooleanInput
   and: [ModelPostItemsFilterInput]
   or: [ModelPostItemsFilterInput]
   not: ModelPostItemsFilterInput
@@ -1260,6 +1266,7 @@ input ModelGroupFilterInput {
   about: ModelStringInput
   founder_id: ModelIDInput
   rating: ModelFloatInput
+  followed: ModelBooleanInput
   and: [ModelGroupFilterInput]
   or: [ModelGroupFilterInput]
   not: ModelGroupFilterInput
@@ -1272,6 +1279,7 @@ input CreateGroupInput {
   about: String
   founder_id: ID!
   rating: Float
+  followed: Boolean
   groupProfileId: ID
   groupCoverId: ID
 }
@@ -1283,6 +1291,7 @@ input UpdateGroupInput {
   about: String
   founder_id: ID
   rating: Float
+  followed: Boolean
   groupProfileId: ID
   groupCoverId: ID
 }
@@ -1297,6 +1306,7 @@ input ModelGroupConditionInput {
   about: ModelStringInput
   founder_id: ModelIDInput
   rating: ModelFloatInput
+  followed: ModelBooleanInput
   and: [ModelGroupConditionInput]
   or: [ModelGroupConditionInput]
   not: ModelGroupConditionInput

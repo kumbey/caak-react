@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useLayoutEffect, useRef, useState } from "react";
 import Backdrop from "../../../components/Backdrop";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
@@ -15,7 +15,6 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
 import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
-import useScrollBlock from "../../../Utility/useScrollBlock";
 
 const AddPost = () => {
   const history = useHistory();
@@ -42,22 +41,12 @@ const AddPost = () => {
     items: [],
   });
 
-  // const groupData = [
-  //   { name: "Ном сонирхогчид", id: 1, image: Dummy.img("100x100") },
-  //   { name: "UX/UI дизайнерууд", id: 2, image: Dummy.img("100x100") },
-  //   { name: "Ууланд гарцгаая", id: 3, image: Dummy.img("100x100") },
-  //   { name: "Машин хурд шалгагчид", id: 4, image: Dummy.img("100x100") },
-  // ];
-  const [blockScroll, allowScroll] = useScrollBlock();
   useEffect(() => {
     getGroups();
     if (postId !== "new") {
       loadPost(postId);
     }
-    blockScroll();
-    return () => {
-      allowScroll();
-    };
+
     // eslint-disable-next-line
   }, []);
 

@@ -3,7 +3,7 @@ import { getFileUrl } from "../../Utility/Util";
 
 const CardImageContainer = ({ files }) => {
   return (
-    <div className={"relative max-w-8xl"}>
+    <div className={"relative max-w-8xl w-96 h-100"}>
       {files.length > 1 ? (
         <div
           className={

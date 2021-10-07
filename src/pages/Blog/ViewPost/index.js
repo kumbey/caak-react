@@ -1,11 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import Button from "../../../components/button";
 import CommentCard from "../../../components/card/CommentCard";
 import SubCommentCard from "../../../components/card/SubCommentCard";
 import PostHeader from "./PostHeader";
+import { useParams } from "react-router-dom";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { getPost } from "../../../graphql-custom/post/queries";
 
 const ViewPost = () => {
+  const { postId } = useParams();
+
+  const [post, setPost] = useState({});
+  useEffect(() => {
+    const getPostById = async (id) => {
+      const resp = await API.graphql(graphqlOperation(getPost, { id }));
+      setPost(resp.data.getPost);
+    };
+    try {
+      getPostById(postId);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }, [postId]);
+  console.log(post);
   let i = 0;
   // const items = Array.from(Array(20), () => ({ id: i++ }));
   const [items] = useState(() =>
@@ -145,7 +164,7 @@ const ViewPost = () => {
             <span className={"text-caak-generalblack text-15px"}>@Tulgaa</span>
           </div>
         </div>
-        <PostHeader />
+        <PostHeader updatedAt={post.updatedAt} title={post.title} />
 
         <div
           className={

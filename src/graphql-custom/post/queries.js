@@ -8,9 +8,22 @@ export const getPost = /* GraphQL */ `
 `;
 
 export const getPostByStatus = /* GraphQL */ `
-    query getPostByStatus {
-        getPostByStatus(status: "PENDING") {
+    query getPostByStatus($status: String,
+        $updatedAt: ModelStringKeyConditionInput,
+        $sortDirection: ModelSortDirection,
+        $filter: ModelPostFilterInput,
+        $limit: Int,
+        $nextToken: String)
+    {
+        getPostByStatus(
+            status: $status,
+            updatedAt: $updatedAt,
+            sortDirection: $sortDirection,
+            filter: $filter,
+            limit: $limit,
+            nextToken: $nextToken) {
             items ${post0004}
+            nextToken
         }
     }
 `;
