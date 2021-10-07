@@ -1,15 +1,12 @@
 .dropdown {
-    @apply z-50 absolute w-max rounded-square overflow-hidden -right-2 mt-3
+  @apply w-max rounded-square -right-2 absolute z-50 mt-3 overflow-hidden;
 }
-
 .dropdown > div {
-    @apply relative flex flex-col self-start w-full py-2 align-baseline bg-white
+  @apply relative flex flex-col self-start w-full align-baseline bg-white;
 }
-
 .dropdown a {
-    @apply hover:bg-caak-liquidnitrogen flex flex-row items-center px-4 py-2 pr-5 text-left
+  @apply hover:bg-caak-liquidnitrogen flex flex-row items-center px-4 py-2 pr-5 text-left;
 }
-
 .dropdown p {
-    @apply text-14px text-caak-extraBlack font-medium
+  @apply text-14px text-caak-extraBlack font-medium;
 }

@@ -10,11 +10,8 @@ const GroupInformationDrop = ({ open, onToggle, className, content, shadow, remo
         className && className
       }`}
     >
-      <div>
-        {content || <Shitt remove={remove}/>}
-      </div>
+      <div>{content || <Shitt remove={remove} />}</div>
     </div>
   );
 };
 export default GroupInformationDrop;
-

@@ -1,13 +1,23 @@
 import useCountComments from "../../Utility/useCountComments";
+import { Link, useLocation } from "react-router-dom";
 
-const CardFooter = ({ title, reactions, comments }) => {
+const CardFooter = ({ title, reactions, comments, postId }) => {
   const totalComments = useCountComments(comments);
+  const location = useLocation();
 
   return (
     <div className="w-96 max-w-8xl flex flex-col justify-between h-full px-4 py-2 pb-4">
-      <p className="text-generalblack text-17px font-bold leading-5 break-words">
-        {title}
-      </p>
+      <Link
+        to={{
+          pathname: `/post/view/${postId}`,
+          state: { background: location },
+        }}
+      >
+        <p className="text-generalblack text-17px font-bold leading-5 break-words">
+          {title}
+        </p>
+      </Link>
+
       <div
         className={
           "flex flex row justify-between text-blue-primary text-14px mt-3"

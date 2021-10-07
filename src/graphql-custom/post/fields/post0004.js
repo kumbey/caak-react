@@ -5,7 +5,19 @@ const post0004 = /* GraphQL */ `
     status
     updatedAt
     user {
+<<<<<<< HEAD
       firstname
+=======
+      id
+      followed
+      aura {
+        point
+      }
+      about
+      totals {
+        followers
+      }
+>>>>>>> 9fa8b79b60753acc9437b32d55f141d237357b55
       nickname
       pic {
         bucket
