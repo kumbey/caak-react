@@ -10,6 +10,7 @@ import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
+import { onPostUpdate } from "../../graphql-custom/post/subscription";
 
 const Feed = () => {
   const feedType = [
@@ -97,6 +98,11 @@ const Feed = () => {
         setNextToken(resp.data.getPostByStatus.nextToken);
       } else {
         resp = await API.graphql({
+          query: getPostByStatus,
+          variables: {
+            sortDirection: "DESC",
+            status: "PENDING"
+          },
           authMode: "AWS_IAM",
         });
       }
@@ -106,9 +112,21 @@ const Feed = () => {
     }
   };
 
+  const subscriptions = () => {
+    API.graphql({
+      query: onPostUpdate,
+    })
+    .subscribe({
+      next: data => {
+        console.log('data: ', data)
+      }
+    })
+  }
+
   useEffect(() => {
     fetchPosts();
-    // eslint-disable-next-line
+    subscriptions();
+    // eslint-disable-next-line 
   }, []);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ async function create(record){
 
         resp.postItemsTotals = await PostItemsTotals.update(data)
 
-        let data = {
+        data = {
             disableGenId: true,
             pkey: "comment_id",
             comment_id: Keys.id.S,
