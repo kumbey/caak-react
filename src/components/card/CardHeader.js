@@ -17,9 +17,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <div className="h-14 relative flex items-center justify-between px-4">
       {hover && (
