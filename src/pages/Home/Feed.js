@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
 import BottomTabs from "./BottomTabs";
-import { useUser } from "../../context/userContext";
+import {useUser} from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
@@ -45,7 +45,7 @@ const Feed = () => {
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { user } = useUser();
+  const {user} = useUser();
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nextToken, setNextToken] = useState();
@@ -65,11 +65,11 @@ const Feed = () => {
       setIsFetching(true);
       if (nextToken !== null) {
         let resp = await API.graphql(
-          graphqlOperation(getPostByStatus, {
-            limit: 2,
-            nextToken,
-            status: "PENDING",
-          })
+            graphqlOperation(getPostByStatus, {
+              limit: 2,
+              nextToken,
+              status: "PENDING",
+            })
         );
         setNextToken(resp.data.getPostByStatus.nextToken);
         setPosts([...posts, ...resp.data.getPostByStatus.items]);
@@ -93,11 +93,11 @@ const Feed = () => {
       let resp = [];
       if (checkUser(user)) {
         resp = await API.graphql(
-          graphqlOperation(getPostByStatus, {
-            sortDirection: "DESC",
-            status: "PENDING",
-            limit: 6,
-          })
+            graphqlOperation(getPostByStatus, {
+              sortDirection: "DESC",
+              status: "PENDING",
+              limit: 6,
+            })
         );
         setNextToken(resp.data.getPostByStatus.nextToken);
       } else {
@@ -143,47 +143,47 @@ const Feed = () => {
     }, []);
 
   return (
-    <div>
-      <div className={`pt-4 px-10 w-full`}>
-        <div
-          className={`h-full flex ${
-            user ? "flex-row items-start" : "flex-col items-center"
-          } sm:justify-between`}
-        >
-          <aside className={"hidden md:flex flex flex-col w-2/6 sticky top-0"}>
-            <div
-              className={`flex ${
-                user ? "flex-col" : "flex-row w-full"
-              } justify-center mt-b4 pb-4 pr-6`}
-            >
-              {feedType.map(({ icon, active, type, id }) => {
-                return (
-                  <Button
-                    key={id}
-                    onClick={() => setActiveIndex(id)}
-                    className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
-                      id === activeIndex
-                        ? "white shadow-button mb-2"
-                        : "transparent mb-2"
-                    }`}
-                    iconPosition={"left"}
-                    icon={
-                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
-                        <i
-                          className={`${icon}${
-                            id === activeIndex ? "" : "-o"
-                          } text-19px ph:text-15px`}
-                        />
-                      </div>
-                    }
-                  >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
-                  </Button>
-                );
-              })}
-            </div>
-            <div className={`${!user && "hidden"}`}>
-              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+      <div>
+        <div className={`pt-4 px-10 w-full`}>
+          <div
+              className={`h-full flex ${
+                  user ? "flex-row items-start" : "flex-col items-center"
+              } sm:justify-between`}
+          >
+            <aside className={"hidden md:flex flex flex-col w-2/6 sticky top-0"}>
+              <div
+                  className={`flex ${
+                      user ? "flex-col" : "flex-row w-full"
+                  } justify-center mt-b4 pb-4 pr-6`}
+              >
+                {feedType.map(({icon, active, type, id}) => {
+                  return (
+                      <Button
+                          key={id}
+                          onClick={() => setActiveIndex(id)}
+                          className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
+                              id === activeIndex
+                                  ? "white shadow-button mb-2"
+                                  : "transparent mb-2"
+                          }`}
+                          iconPosition={"left"}
+                          icon={
+                            <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                              <i
+                                  className={`${icon}${
+                                      id === activeIndex ? "" : "-o"
+                                  } text-19px ph:text-15px`}
+                              />
+                            </div>
+                          }
+                      >
+                        <p className="text-16px ph:text-15px font-bold">{type}</p>
+                      </Button>
+                  );
+                })}
+              </div>
+              <div className={`${!user && "hidden"}`}>
+                <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний үүсгэсэн бүлгүүд
                 </span>
@@ -211,6 +211,21 @@ const Feed = () => {
                             "text-caak-generalblack font-medium text-15px"
                           }
                         >
+                          <div
+                              className={
+                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                              }
+                          >
+                            <img
+                                src={generateFileUrl(item.profile)}
+                                className={"w-8 h-8 rounded-md object-cover mr-2"}
+                                alt={""}
+                            />
+                            <span
+                                className={
+                                  "text-caak-generalblack font-medium text-15px"
+                                }
+                            >
                           {item.name}
                         </span>
                       </div>
@@ -242,6 +257,11 @@ const Feed = () => {
                   })
                 }
               </div>
+              <Loader
+                  className={`bg-caak-primary ${
+                      isFetching ? "opacity-100" : "opacity-0"
+                  }`}
+              />
             </div>
           </aside>
           <div
@@ -275,11 +295,10 @@ const Feed = () => {
             />
           </div>
         </div>
+        <footer className={`block md:hidden sticky bottom-0`}>
+          <BottomTabs/>
+        </footer>
       </div>
-      <footer className={`block md:hidden sticky bottom-0`}>
-        <BottomTabs />
-      </footer>
-    </div>
   );
 };
 export default Feed;
