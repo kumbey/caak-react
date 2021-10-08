@@ -18,7 +18,7 @@ export default function Infromation() {
                 <p className="text-24px font-medium text-caak-generalblack">Монгол өв уламжлал</p>
             </div>
             <div style={{marginTop: "34px"}} className="flex">
-            <div style={{height: "170px"}} className="bg-white rounded-lg pr-c13">
+                <div style={{height: "170px"}} className="bg-white rounded-lg pr-c13">
                             {group_data.map((list) => (
                                 <div
                                     className={`flex items-center cursor-pointer py-a1 rounded-lg ${list.title === selected ? "text-caak-primary" : "text-caak-generalblack"}`}
@@ -29,7 +29,7 @@ export default function Infromation() {
                                     <p className="text-17px font-medium">{list.title}</p>
                                 </div>
                             ))}
-                        </div>
+                </div>
                 <div style={{ width: "608px", marginInlineStart: "19px"}} className="bg-white rounded-lg">
                     <Settings/>
                 </div>

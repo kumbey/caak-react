@@ -24,6 +24,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+<<<<<<< Updated upstream
 .icon-fi-fi-sp-hamburger-menu:before {
     content: "\e959";
   }
@@ -36,6 +37,8 @@
   .icon-fi-sp-home:before {
     content: "\e95c";
   }
+=======
+>>>>>>> Stashed changes
 .icon-fi-rs-add-group-f:before {
     content: "\e94c";
   }
