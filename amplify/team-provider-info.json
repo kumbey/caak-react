@@ -38,7 +38,7 @@
         },
         "post": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/post-3671676d33726f446832-build.zip"
+          "s3Key": "amplify-builds/post-6b6d6d4b497a6e41765a-build.zip"
         },
         "usersTrigger": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -58,7 +58,7 @@
         },
         "triggerComment": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerComment-6f6d315833742b396358-build.zip"
+          "s3Key": "amplify-builds/triggerComment-47684a4437343374616d-build.zip"
         },
         "triggerPostViews": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",

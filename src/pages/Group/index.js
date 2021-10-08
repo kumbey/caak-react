@@ -16,16 +16,20 @@ import useInfiniteScroll from '../Home/useFetch'
 import Loader from '../../components/loader'
 import { listGroupsForAddPost, getGroupView } from '../../graphql-custom/group/queries'
 import GroupHeader from './GroupHeader'
+import Dummy from "dummyjs"
 
 export default function Group() {
-
+    
+    const { user } = useUser();
     const { groupId } = useParams();
+
     const [group, setGroup] = useState();
     const [posts, setPosts] = useState([]);
     const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
-    const { user } = useUser();
+
+    console.log("posts",posts);
 
     useEffect(() => {
       try {
@@ -48,26 +52,26 @@ export default function Group() {
       }
     };
 
-    const fetchMoreListItems = async () => {
-      try {
-        setIsFetching(true);
-        if (nextToken !== null) {
-          let resp = await API.graphql(
-            graphqlOperation(getPostByStatus, {
-              limit: 2,
-              nextToken,
-              status: "PENDING",
-            })
-          );
-          setNextToken(resp.data.getPostByStatus.nextToken);
-          setPosts([...posts, ...resp.data.getPostByStatus.items]);
-          setIsFetching(false);
-        }
+   const fetchMoreListItems = async () => {
+    try {
+      setIsFetching(true);
+      if (nextToken !== null) {
+        let resp = await API.graphql(
+          graphqlOperation(getPostByStatus, {
+            limit: 2,
+            nextToken,
+            status: "PENDING",
+          })
+        );
+        setNextToken(resp.data.getPostByStatus.nextToken);
+        setPosts([...posts, ...resp.data.getPostByStatus.items]);
         setIsFetching(false);
-      } catch (ex) {
-        console.log(ex);
       }
-    };
+      setIsFetching(false);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
     const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   
@@ -83,6 +87,7 @@ export default function Group() {
         if (checkUser(user)) {
           resp = await API.graphql(
             graphqlOperation(getPostByStatus, {
+              sortDirection: "DESC",
               status: "PENDING",
               limit: 6,
             })
@@ -91,11 +96,15 @@ export default function Group() {
         } else {
           resp = await API.graphql({
             query: getPostByStatus,
+            variables: {
+              sortDirection: "DESC",
+              status: "PENDING"
+            },
             authMode: "AWS_IAM",
           });
         }
-  
         setPosts(resp.data.getPostByStatus.items);
+        console.log(posts)
       } catch (ex) {
         console.log(ex);
       }
@@ -109,7 +118,7 @@ export default function Group() {
       // eslint-disable-next-line
     }, []);
 
-    return (
+    return ( group ?
         <div>
             <div className="bg-white relative justify-center h-c18">
                 <GroupHeader title={group.name} profile={group.profile} cover={group.cover}/>
@@ -125,7 +134,7 @@ export default function Group() {
                     <Admin/>
 
                     {/* description */}
-                    <Description/>
+                    <Description about={group.about}/>
 
                     {/* top members */}
                     <TopMembers/>
@@ -155,7 +164,11 @@ export default function Group() {
 
                     {/* header */}
                     <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
-                        <img alt="" className="h-c28 w-c28 bg-caak-red rounded rounded-full ml-c3"/>
+                    <img
+                      alt={user.sysUser.nickname}
+                      src={Dummy.img("200x200")}
+                      className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
+                    />
                         <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
                             <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
                         </div>
@@ -210,6 +223,8 @@ export default function Group() {
             />
                 </div>
             </div>
-        </div>
+        </div> 
+          : 
+        null
     )
 }

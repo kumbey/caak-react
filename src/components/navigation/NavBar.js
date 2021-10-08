@@ -158,7 +158,7 @@ export default function NavBar() {
                       <span
                         className={"text-14px text-caak-darkBlue font-medium"}
                       >
-                        {user.sysUser.aura.point}
+                        {user.sysUser.aura}
                       </span>
                     </div>
                   </div>

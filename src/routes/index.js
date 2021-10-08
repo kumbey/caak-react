@@ -125,6 +125,13 @@ const Routes = [
     background: true,
     page: () => <Infromation />,
   },
+  
+  {
+    path: "/group/pending",
+    exact: true,
+    background: true,
+    page: () => <PendingPostAdmin />,
+  },
   {
     path: "/pending/view/:postId",
     exact: true,

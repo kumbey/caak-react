@@ -13,6 +13,7 @@ import Loader from "../../components/loader";
 import { Link, useLocation } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
 import { generateFileUrl } from "../../Utility/Util";
+import { onPostUpdate } from "../../graphql-custom/post/subscription";
 
 const Feed = () => {
   const feedType = [
@@ -101,6 +102,11 @@ const Feed = () => {
         setNextToken(resp.data.getPostByStatus.nextToken);
       } else {
         resp = await API.graphql({
+          query: getPostByStatus,
+          variables: {
+            sortDirection: "DESC",
+            status: "PENDING"
+          },
           authMode: "AWS_IAM",
         });
       }
@@ -110,6 +116,23 @@ const Feed = () => {
       console.log(ex);
     }
   };
+
+  const subscriptions = () => {
+    API.graphql({
+      query: onPostUpdate,
+    })
+    .subscribe({
+      next: data => {
+        console.log('data: ', data)
+      }
+    })
+  }
+
+  useEffect(() => {
+    fetchPosts();
+    subscriptions();
+    // eslint-disable-next-line 
+  }, []);
 
   useEffect(() => {
     if (checkUser(user)) {

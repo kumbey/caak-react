@@ -102,15 +102,10 @@ async function updatePostStatus(ctx){
             status: status
         }
 
-        let result = {
-            data: null,
-            erros: null
-        }
+        post = await Post.update(post)
+        let items = await PostItems.list("post_id", post.id, "byPost")
 
-        let resp = await Post.update(post)
-        result = resp
-
-        return result
+        return {...post, items: items}
     }catch(ex){
         console.log(ex)
         return ex
