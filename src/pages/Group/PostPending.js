@@ -1,19 +1,15 @@
 import { useState, useEffect } from "react";
 import Checkbox from "../../components/checkbox/Checkbox";
 import Button from "../../components/button";
-import Shittt from "./Shittt";
+import PendingPostMenuDrop from "./PendingPostMenuDrop";
 import { checkUser } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import {getPostByStatus} from '../../graphql-custom/post/queries'
-import Bilyat from "../../components/PendingPost/Bilyat";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
+import PendingPostItem from "../../components/PendingPost/PendingPostItem";
 
 export default function PostPending({settt}) {
-    
-    const location  = useLocation();
     const [isCheckAll, setIsCheckAll] = useState(false);
     const [isCheck, setIsCheck] = useState([]);
 
@@ -100,28 +96,20 @@ export default function PostPending({settt}) {
             </div>
             {posts.map((data, index) => {
                 return (
-                    
-                    <div className="flex items-center w-full bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen">
+                    <div className="flex items-center  bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen">
                         <div className="w-full flex items-center">
-                        <Checkbox
-                            key={data.id}
-                            id={data.id}
-                            handleClick={handleClick}
-                            isChecked={isCheck.includes(data.id)}
-                            className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
-                        />
-                        <Link
-                            key={index}
-                            to={{
-                                pathname: `/pending/view/${data.id}`,
-                                state: { background: location },
-                            }}
-                        >
-                            <Bilyat
-                                post={data}
-                                className="ph:mb-4 sm:mb-4 btn:mb-4"
+                            <Checkbox
+                                key={data.id}
+                                id={data.id}
+                                handleClick={handleClick}
+                                isChecked={isCheck.includes(data.id)}
+                                className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
                             />
-                        </Link>
+                                <PendingPostItem
+                                    key={index}
+                                    post={data}
+                                    className="ph:mb-4 sm:mb-4 btn:mb-4 "
+                                />
                         </div>
                         <div className="flex  justify-end relative 2xl:flex sm:block md:block lg:block hidden xl:mr-c24 lg:mr-c24 md:mr-c1 sm:mr-b1 justify-end items-center">
                             {
@@ -129,12 +117,12 @@ export default function PostPending({settt}) {
                                 ? 
                                 "" 
                                 :
-                                <div className="flex">
+                                <div className="2xl:block 2xl:flex xl:block hidden ">
                                     <Button className="bg-caak-bleudefrance text-15px text-white w-c132">Зөвшөөрөх</Button>
                                     <Button className="bg-white text-caak-generalblack text-15px ml-b1 border w-c14">Татгалзах</Button>
                                 </div>
                             }
-                            <Shittt/>
+                            <PendingPostMenuDrop/>
                         </div>
                     </div>
                     

@@ -39,7 +39,9 @@ async function create(record){
 
         resp.commentTotals = await CommentTotalsDB.create(data)
 
-
+        //WRITE NOTIFICATION
+        await writeToNotification(newImg)
+        
         return resp
     }catch(ex){
         console.log(ex)
@@ -137,6 +139,25 @@ async function remove(record){
     }catch(ex){
         console.log(ex)
         return ex
+    }
+}
+
+async function writeToNotification(comment){
+
+    const data = {
+        section: "USER",
+        type: "COMMENT",
+        item_id: comment.id,
+        action: `COMMENT_${comment.type}`,
+        from: comment.user_id,
+        to: comment.replyUserID,
+        seen: false
+    }
+
+    try{
+        await NotificationDB.create(data)
+    }catch(ex){
+        console.log(ex)
     }
 }
 

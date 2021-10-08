@@ -93,6 +93,7 @@ const Feed = () => {
       if (checkUser(user)) {
         resp = await API.graphql(
           graphqlOperation(getPostByStatus, {
+            sortDirection: "DESC",
             status: "PENDING",
             limit: 6,
           })
@@ -100,7 +101,6 @@ const Feed = () => {
         setNextToken(resp.data.getPostByStatus.nextToken);
       } else {
         resp = await API.graphql({
-          query: getPostByStatus,
           authMode: "AWS_IAM",
         });
       }
@@ -122,13 +122,12 @@ const Feed = () => {
   return (
     <div>
       <div className={`pt-4 px-10 w-full`}>
-        {/*<Card verifiedUser video/> */}
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between`}
         >
-          <aside className={"flex flex-col w-2/5 sticky top-0"}>
+          <aside className={"hidden md:flex flex flex-col w-2/6 sticky top-0"}>
             <div
               className={`flex ${
                 user ? "flex-col" : "flex-row w-full"
@@ -249,7 +248,7 @@ const Feed = () => {
           </div>
         </div>
       </div>
-      <footer className={`hidden ph:block sticky bottom-0`}>
+      <footer className={`block md:hidden sticky bottom-0`}>
         <BottomTabs />
       </footer>
     </div>

@@ -145,7 +145,6 @@ export default function Check() {
                 </div>
                 <span onClick={() => closeModal(history, state)} className="icon-fi-rs-close text-white text-30px mt-c3 ml-c3 cursor-pointer btn:flex btn:justify-center"/>
             </div>
-            
         </Backdrop>
     ) : null
 }

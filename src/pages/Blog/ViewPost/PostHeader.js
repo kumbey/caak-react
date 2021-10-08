@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { extractDate, generateTimeAgo } from "../../../Utility/Util";
-import useCountComments from "../../../Utility/useCountComments";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import {
+  createReaction,
+  deleteReaction,
+} from "../../../graphql-custom/post/mutation";
+import { useUser } from "../../../context/userContext";
 
-const PostHeader = ({ title, updatedAt, reactions, comments, itemTitle }) => {
-  const totalComments = useCountComments(comments);
+const PostHeader = ({ title, updatedAt, item }) => {
   const date = extractDate(updatedAt);
+  const { user } = useUser();
+  const [isReacted, setIsReacted] = useState(false);
+  useEffect(() => {
+    setIsReacted(item.reacted);
+  }, [item]);
+  // console.log(resp);
+
+  const updateReaction = async (type) => {
+    if (type) {
+      item.totals.reactions += 1;
+    } else {
+      item.totals.reactions -= 1;
+    }
+    setIsReacted(!isReacted);
+    if (type) {
+      await API.graphql(
+        graphqlOperation(createReaction, {
+          input: {
+            id: item.id,
+            on_to: "POST_ITEM",
+            type: "CAAK",
+            user_id: user.sysUser.id,
+          },
+        })
+      );
+    } else {
+      await API.graphql(
+        graphqlOperation(deleteReaction, {
+          input: {
+            id: item.id,
+            user_id: user.sysUser.id,
+          },
+        })
+      );
+    }
+  };
   return (
     <div className={"flex flex-col"}>
       <div className={"font-bold text-20px text-caak-generalblack pt-2 px-7"}>
@@ -15,7 +56,7 @@ const PostHeader = ({ title, updatedAt, reactions, comments, itemTitle }) => {
         {`${date.year}/${date.month}/${date.day}`}
       </div>
       <div className={"text-15px text-caak-generalblack pt-2 px-7"}>
-        {itemTitle}
+        {item.title}
       </div>
       <div
         className={
@@ -24,22 +65,31 @@ const PostHeader = ({ title, updatedAt, reactions, comments, itemTitle }) => {
       >
         <div className={"flex flex-row "}>
           <div
-            className={
-              "flex flex-row items-center mr-4 cursor-pointer hover:text-caak-primary group"
-            }
+            className={"flex flex-row items-center mr-4 cursor-pointer group"}
           >
             <div
+              onClick={() => updateReaction(!isReacted)}
               className={
-                "flex justify-center items-center group-hover:bg-caak-peachbreeze rounded-full p-2 h-8 w-8"
+                "flex justify-center items-center group-hover:bg-caak-peachbreeze group-hover:text-caak-primary rounded-full p-2 h-8 w-8"
               }
             >
-              <i className={"icon-fr-rs-caak text-22px"} />
+              <i
+                className={`${
+                  isReacted
+                    ? "text-caak-primary icon-fr-rs-caak-active"
+                    : "icon-fr-rs-caak"
+                } group-hover:text-caak-primary  text-22px`}
+              />
             </div>
-            <span className={"text-15px"}>{reactions.totals.reactions}</span>
+            <span className={"text-15px group-hover:text-caak-primary"}>
+              {item.totals?.reactions}
+            </span>
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-18px mr-1.5"} />
-            <span className={"text-15px"}>{totalComments} сэтгэгдэлтэй</span>
+            <span className={"text-15px"}>
+              {item.totals?.comments} сэтгэгдэлтэй
+            </span>
           </div>
         </div>
         <div className={"flex flex-row items-center cursor-pointer"}>
@@ -50,5 +100,4 @@ const PostHeader = ({ title, updatedAt, reactions, comments, itemTitle }) => {
     </div>
   );
 };
-
 export default PostHeader;

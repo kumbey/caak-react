@@ -92,7 +92,7 @@ async function remove(record){
 }
 
 module.exports = {
-    createPostTotals: create,
-    updatePostTotals: update,
-    removePostTotals: remove
+    createUserTotals: create,
+    updateUserTotals: update,
+    removeUserTotals: remove
 }

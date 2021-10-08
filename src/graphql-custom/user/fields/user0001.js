@@ -14,15 +14,13 @@ const user0001 = /* GraphQL */ `{
     status
     createdAt
     updatedAt
+    aura
     pic ${file0001}
     cover_pic ${file0001}
     username {
       items {
         id
       }
-    }
-    aura {
-      point
     }
     category{
       items{

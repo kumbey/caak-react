@@ -20,9 +20,10 @@ const Card = ({ video, verifiedUser, post }) => {
       </div>
 
       <CardFooter
+        reacted={post.reacted}
         postId={post.id}
         title={post.title}
-        reactions={post.totals.reactions}
+        totals={post.totals}
         comments={post.items.items}
       />
     </div>

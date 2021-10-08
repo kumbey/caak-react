@@ -6,6 +6,7 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const UserTotals = Counter(process.env.API_CAAKMN_USERTOTALSTABLE_NAME, docClient)
 const GroupTotals = Counter(process.env.API_CAAKMN_GROUPTOTALSTABLE_NAME, docClient)
 const PostTotals = DB(process.env.API_CAAKMN_POSTTOTALSTABLE_NAME, docClient)
+const NotificationDB = DB(process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME, docClient)
 
 async function create(record){
     try{
@@ -24,7 +25,7 @@ async function create(record){
 
         let resp = {}
 
-        let respPost = await PostTotals.create(data)
+        resp.respPost = await PostTotals.create(data)
 
         resp.userTotal = await UserTotals.update({
             key: "user_id",
@@ -50,7 +51,9 @@ async function create(record){
             ]
         })
 
-        return {post: respPost}
+        resp.Notification = await writeToNotification(newImg)
+
+        return resp
     }catch(ex){
         console.log(ex)
         return ex
@@ -100,6 +103,8 @@ async function update(record){
                     }
                 ]
             })
+
+            resp.Notification = await writeToNotification(newImg)
         }
 
         return resp
@@ -116,10 +121,40 @@ async function remove(record){
 
         let resp = await PostTotals.remove(Keys.id.S, "post_id")
 
+        // resp.Notification = writeToNotification(newImg)
+
         return resp
     }catch(ex){
         console.log(ex)
         return ex
+    }
+}
+
+async function writeToNotification(post){
+
+    const data = {
+        section: "USER",
+        type: "POST",
+        item_id: post.id,
+        action: `POST_${post.status}`,
+        from: post.user_id,
+        to: post.user_id,
+        seen: false
+    }
+
+    try{
+        await NotificationDB.create(data)
+
+        if(post.status === "PENDING" || post.status === "CONFIRMED"){
+            data.section = "GROUP"
+            data.type = "POST"
+            data.to = post.group_id
+            await NotificationDB.create(data)
+        }
+        
+        return "NOTIFICATION_ADDED"
+    }catch(ex){
+        console.log(ex)
     }
 }
 

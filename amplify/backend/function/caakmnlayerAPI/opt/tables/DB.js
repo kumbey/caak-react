@@ -9,19 +9,19 @@ const db = (table , client) => {
 
     async function get(id){
 
-        let key = {}
+        let keyData = {}
 
         if((typeof id) === "object"){
             Object.keys(id).map((k) => {
-                key[k] = id[k]
+                keyData[k] = id[k]
             })
         }else{
-            key.id = id
+            keyData.id = id
         }
 
         const params = {
             TableName: tableName,
-            Key: key
+            Key: keyData
         }
     
         try {
@@ -31,7 +31,8 @@ const db = (table , client) => {
             }
             return result.Item
         } catch (err) {
-            throw err
+            console.log(err)
+            return err
         }
     }
 

@@ -1,4 +1,4 @@
-export default function Shitt({edit, remove}) {
+export default function PendingPostMenu({edit, remove}) {
     return (
         <div className="bg-white">
             <div style={{paddingInlineEnd: "21px"}} onClick={edit} className="flex hover:bg-caak-liquidnitrogen h-c25 items-center cursor-pointer">

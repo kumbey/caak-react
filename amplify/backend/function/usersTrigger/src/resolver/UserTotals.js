@@ -19,6 +19,9 @@ async function create(record){
             drafted: 0,
             following: 0,
             followers: 0,
+            post_reactions: 0,
+            post_items_reactions: 0,
+            comment_reactions: 0,
             unseen: 0
         }
 

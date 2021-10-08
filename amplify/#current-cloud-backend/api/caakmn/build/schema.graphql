@@ -22,16 +22,17 @@ type User @aws_iam @aws_cognito_user_pools {
   pic_id: ID
   cover_pic_id: ID
   about: String
+  aura: Int
   is_public: Boolean
   status: String!
   followed: Boolean
+  verified: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   pic: File @aws_iam @aws_cognito_user_pools
   cover_pic: File @aws_iam @aws_cognito_user_pools
   totals: UserTotals @aws_iam @aws_cognito_user_pools
   username(filter: ModelUsernameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
-  aura: Aura! @aws_iam @aws_cognito_user_pools
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
 }
 
@@ -44,6 +45,9 @@ type UserTotals @aws_iam @aws_cognito_user_pools {
   drafted: Int
   following: Int
   followers: Int
+  post_reactions: Int
+  post_items_reactions: Int
+  comment_reactions: Int
   unseen: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -272,17 +276,16 @@ type GroupID @aws_iam @aws_cognito_user_pools {
 
 type Notification @aws_iam @aws_cognito_user_pools {
   id: ID!
+  section: String!
   type: String!
+  item_id: String
+  action: String!
   from: ID!
   to: ID!
-  group_id: ID
-  post_id: ID
-  comment_id: ID
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  post: Post @aws_iam @aws_cognito_user_pools
-  comment: Comment @aws_iam @aws_cognito_user_pools
-  group: Group @aws_iam @aws_cognito_user_pools
+  seen: Boolean!
+  updatedAt: AWSDateTime
+  createdAt: AWSDateTime
+  from_user: User @aws_iam @aws_cognito_user_pools
 }
 
 type Query {
@@ -349,9 +352,10 @@ type Query {
 
 type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @aws_iam @aws_cognito_user_pools
-  createPost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
-  updatePost(input: CreatePostInput!): Post @aws_iam @aws_cognito_user_pools
-  updatePostStatus(input: UpdatePostStatusInput!): Post @aws_iam @aws_cognito_user_pools
+  createPost(input: CreatePostInput!): Post @aws_cognito_user_pools
+  updatePost(input: CreatePostInput!): Post @aws_cognito_user_pools
+  updatePostStatus(input: UpdatePostStatusInput!): Post @aws_cognito_user_pools
+  changedTotals(type: String!, id: ID!): ChangedTotalsType @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -394,6 +398,11 @@ type Mutation {
   createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
+}
+
+type ChangedTotalsType {
+  type: String!
+  totals: String!
 }
 
 input CreatePostInput {
@@ -644,9 +653,11 @@ input ModelUserFilterInput {
   pic_id: ModelIDInput
   cover_pic_id: ModelIDInput
   about: ModelStringInput
+  aura: ModelIntInput
   is_public: ModelBooleanInput
   status: ModelStringInput
   followed: ModelBooleanInput
+  verified: ModelBooleanInput
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
@@ -666,6 +677,9 @@ input ModelUserTotalsFilterInput {
   drafted: ModelIntInput
   following: ModelIntInput
   followers: ModelIntInput
+  post_reactions: ModelIntInput
+  post_items_reactions: ModelIntInput
+  comment_reactions: ModelIntInput
   unseen: ModelIntInput
   and: [ModelUserTotalsFilterInput]
   or: [ModelUserTotalsFilterInput]
@@ -1332,12 +1346,15 @@ type ModelNotificationConnection @aws_iam @aws_cognito_user_pools {
 
 input ModelNotificationFilterInput {
   id: ModelIDInput
+  section: ModelStringInput
   type: ModelStringInput
+  item_id: ModelStringInput
+  action: ModelStringInput
   from: ModelIDInput
   to: ModelIDInput
-  group_id: ModelIDInput
-  post_id: ModelIDInput
-  comment_id: ModelIDInput
+  seen: ModelBooleanInput
+  updatedAt: ModelStringInput
+  createdAt: ModelStringInput
   and: [ModelNotificationFilterInput]
   or: [ModelNotificationFilterInput]
   not: ModelNotificationFilterInput
@@ -1345,22 +1362,28 @@ input ModelNotificationFilterInput {
 
 input CreateNotificationInput {
   id: ID
+  section: String!
   type: String!
+  item_id: String
+  action: String!
   from: ID!
   to: ID!
-  group_id: ID
-  post_id: ID
-  comment_id: ID
+  seen: Boolean!
+  updatedAt: AWSDateTime
+  createdAt: AWSDateTime
 }
 
 input UpdateNotificationInput {
   id: ID!
+  section: String
   type: String
+  item_id: String
+  action: String
   from: ID
   to: ID
-  group_id: ID
-  post_id: ID
-  comment_id: ID
+  seen: Boolean
+  updatedAt: AWSDateTime
+  createdAt: AWSDateTime
 }
 
 input DeleteNotificationInput {
@@ -1368,12 +1391,15 @@ input DeleteNotificationInput {
 }
 
 input ModelNotificationConditionInput {
+  section: ModelStringInput
   type: ModelStringInput
+  item_id: ModelStringInput
+  action: ModelStringInput
   from: ModelIDInput
   to: ModelIDInput
-  group_id: ModelIDInput
-  post_id: ModelIDInput
-  comment_id: ModelIDInput
+  seen: ModelBooleanInput
+  updatedAt: ModelStringInput
+  createdAt: ModelStringInput
   and: [ModelNotificationConditionInput]
   or: [ModelNotificationConditionInput]
   not: ModelNotificationConditionInput

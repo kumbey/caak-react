@@ -142,7 +142,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1634195324
+                        1634267946
                     ]
                 }
             },
@@ -6208,9 +6208,9 @@
             "DependsOn": [
                 "GraphQLSchema",
                 "NoneDataSource",
+                "FunctionDirectiveStack",
                 "Username",
                 "File",
-                "Aura",
                 "UserCategory",
                 "UserTotals",
                 "User",
