@@ -53,8 +53,8 @@ const Feed = () => {
 
   const listGroups = async () => {
     try {
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-      setGroupData(resp.data.listGroups.items);
+        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+        setGroupData(resp.data.listGroups.items);
     } catch (ex) {
       console.log(ex);
     }
@@ -218,7 +218,12 @@ const Feed = () => {
                   );
                 })}
               </div>
-              <div className={"px-2"}>
+              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                <span className={"text-15px text-caak-darkBlue"}>
+                  Миний дагасан бүлгүүд
+                </span>
+              </div>
+              <div className={"px-2 pb-5"}>
                 {
                   groupData.map((data, index) => {
                     return(

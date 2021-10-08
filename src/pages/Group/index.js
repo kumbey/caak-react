@@ -163,12 +163,12 @@ export default function Group() {
                 <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
 
                     {/* header */}
-                    <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
-                    <img
-                      alt={user.sysUser.nickname}
-                      src={Dummy.img("200x200")}
-                      className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
-                    />
+                    {/* <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
+                      <img
+                        alt={user.sysUser.nickname}
+                        src={Dummy.img("200x200")}
+                        className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
+                      />
                         <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
                             <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
                         </div>
@@ -176,11 +176,11 @@ export default function Group() {
                             <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
                             <p className="text-15px text-caak-blue">Зураг/Видео</p>
                         </div>
-                        {/*<div className="flex items-center  ml-b5 cursor-pointer">
+                        <div className="flex items-center  ml-b5 cursor-pointer">
                             <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
                             <p className="text-15px text-caak-blue">Линк</p>
-                        </div>*/}
-                    </div>
+                        </div>
+                    </div> */}
 
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
@@ -198,23 +198,23 @@ export default function Group() {
 
                     {/* contents */}
                     <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
-                    {posts.map((data, index) => {
-                return (
-                  <Link
-                    key={index}
-                    to={{
-                      pathname: `/post/view/${data.id}`,
-                      state: { background: location },
-                    }}
-                  >
-                    <Card
-                      video={data.items.items[0].file.type.startsWith("video")}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    />
-                  </Link>
-                );
-              })}
+                      {posts.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/post/view/${data.id}`,
+                              state: { background: location },
+                            }}
+                          >
+                            <Card
+                              video={data.items.items[0].file.type.startsWith("video")}
+                              post={data}
+                              className="ph:mb-4 sm:mb-4 btn:mb-4"
+                            />
+                          </Link>
+                        );
+                      })}
                     </div>
                     <Loader
               className={`bg-caak-primary ${

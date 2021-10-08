@@ -7,7 +7,6 @@ export const listGroupsForAddPost = /* GraphQL */ `
             items ${group0002}
         }
     }
-  }
 `;
 
 export const getGroupView = /* GraphQL */ `
