@@ -132,7 +132,7 @@ export default function PendingPostAdmin() {
                         </select>
                     </div>
 
-                    {/* contents */}
+                    {/* pending posts */}
                     <div>
                         <PostPending/>
                     </div>
