@@ -97,20 +97,16 @@ async function updatePostStatus(ctx){
     try{
 
         const { id, status } = ctx.arguments.input
-        const post = {
+        let post = {
             id: id,
             status: status
         }
 
-        let result = {
-            data: null,
-            erros: null
-        }
-
-        let resp = await Post.update(post)
-        result = resp
-
-        return result
+        post = await Post.update(post)
+        post = await Post.get(post.id)
+        // let items = await PostItems.list("post_id", post.id, "byPost")
+        console.log(post)
+        return post
     }catch(ex){
         console.log(ex)
         return ex

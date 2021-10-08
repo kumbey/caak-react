@@ -4,12 +4,16 @@ import Button from "../../components/button";
 import BottomTabs from "./BottomTabs";
 import {useUser} from "../../context/userContext";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {listGroupsForAddPost} from "../../graphql-custom/group/queries";
-import {checkUser, generateFileUrl} from "../../Utility/Util";
-import {getPostByStatus} from "../../graphql-custom/post/queries";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
+import { checkUser } from "../../Utility/Util";
+import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
+import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
+import { Link, useLocation } from "react-router-dom";
+import Suggest from "../../components/Sidebar/Suggest";
+import { generateFileUrl } from "../../Utility/Util";
 
 const Feed = () => {
   const feedType = [
@@ -29,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                id: 3,
-                type: "Бүлгүүд",
-                icon: "icon-fi-rs-group",
-              },
-              {
-                id: 4,
-                type: "Дагасан найзууд",
-                icon: "icon-fi-rs-following",
-              },*/
+                                                                                          id: 3,
+                                                                                          type: "Бүлгүүд",
+                                                                                          icon: "icon-fi-rs-group",
+                                                                                        },
+                                                                                        {
+                                                                                          id: 4,
+                                                                                          type: "Дагасан найзууд",
+                                                                                          icon: "icon-fi-rs-following",
+                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -45,11 +49,12 @@ const Feed = () => {
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nextToken, setNextToken] = useState();
+  const location = useLocation();
 
-  const getGroups = async () => {
+  const listGroups = async () => {
     try {
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-      setGroupData(resp.data.listGroups.items);
+        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+        setGroupData(resp.data.listGroups.items);
     } catch (ex) {
       console.log(ex);
     }
@@ -98,26 +103,44 @@ const Feed = () => {
       } else {
         resp = await API.graphql({
           query: getPostByStatus,
-          variables: {sortDirection: "DESC", status: "PENDING", limit: 6},
+          variables: {
+            sortDirection: "DESC",
+            status: "PENDING"
+          },
           authMode: "AWS_IAM",
         });
       }
       setPosts(resp.data.getPostByStatus.items);
+      console.log(posts)
     } catch (ex) {
       console.log(ex);
     }
   };
 
+  const subscriptions = () => {
+    API.graphql({
+      query: onPostStatusUpdate,
+    })
+    .subscribe({
+      next: data => {
+        console.log('data: ', data)
+      }
+    })
+  }
+
   useEffect(() => {
     fetchPosts();
-    // eslint-disable-next-line
+    subscriptions();
+    // eslint-disable-next-line 
   }, []);
 
   useEffect(() => {
     if (checkUser(user)) {
-      getGroups();
+      listGroups();
     }
-  }, [user]);
+      fetchPosts();
+      // eslint-disable-next-line
+    }, []);
 
   return (
       <div>
@@ -164,96 +187,75 @@ const Feed = () => {
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний үүсгэсэн бүлгүүд
                 </span>
-                </div>
-                <div className={"px-2 pb-5"}>
-                  {groupData.map((item, index) => {
-                    return (
-                        <div
-                            key={index}
-                            // onClick={() => onSelect(item)}
-                            className={"flex flex-col cursor-pointer w-max"}
-                        >
-                          <div
-                              className={
-                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                              }
-                          >
-                            <img
-                                src={generateFileUrl(item.profile)}
-                                className={"w-8 h-8 rounded-md object-cover mr-2"}
-                                alt={""}
-                            />
-                            <span
-                                className={
-                                  "text-caak-generalblack font-medium text-15px"
-                                }
-                            >
-                          {item.name}
-                        </span>
-                          </div>
-                        </div>
-                    );
-                  })}
-                </div>
-
-                <div
-                    className={
-                      "flex flex-row justify-between border-t border-caak-liquidnitrogen px-3.5"
-                    }
-                >
-                <span className={"text-15px text-caak-darkBlue pt-2"}>
-                  Миний дагасан бүлгүүд
-                </span>
-                </div>
-                <div className={"px-2"}>
-                  {groupData.map((item, index) => {
-                    return (
-                        <div
-                            key={index}
-                            // onClick={() => onSelect(item)}
-                            className={"flex flex-col cursor-pointer w-max"}
-                        >
-                          <div
-                              className={
-                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                              }
-                          >
-                            <img
-                                src={generateFileUrl(item.profile)}
-                                className={"w-8 h-8 rounded-md object-cover mr-2"}
-                                alt={""}
-                            />
-                            <span
-                                className={
-                                  "text-caak-generalblack font-medium text-15px"
-                                }
-                            >
-                          {item.name}
-                        </span>
-                          </div>
-                        </div>
-                    );
-                  })}
-                </div>
               </div>
-            </aside>
-            <div
-                className={
-                  "flex flex-col w-full items-center sm:justify-center md:justify-start xl:justify-start xl:items-start xl:content-start"
-                }
-            >
-              <div
-                  className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-1 gap-c11 mt-b4 ph:mt-0 mb-b4">
-                {posts.map((data, index) => {
+              <div className={"px-2 pb-5"}>
+                {groupData.map((item, index) => {
                   return (
-                      <Card
-                          key={index}
-                          video={data.items.items[0].file.type.startsWith("video")}
-                          post={data}
-                          className="ph:mb-4 sm:mb-4 btn:mb-4"
-                      />
+                    <div
+                      key={index}
+                      // onClick={() => onSelect(item)}
+                      className={"flex flex-col cursor-pointer w-max cursor-pointer"}
+                    >
+                      <div
+                        className={
+                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                        }
+                      >
+                        <img
+                          src={generateFileUrl(item.profile)}
+                          className={"w-8 h-8 rounded-md object-cover mr-2"}
+                          alt={""}
+                        />
+                        <span
+                          className={
+                            "text-caak-generalblack font-medium text-15px"
+                          }
+                        >
+                          <div
+                              className={
+                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                              }
+                          >
+                            <img
+                                src={generateFileUrl(item.profile)}
+                                className={"w-8 h-8 rounded-md object-cover mr-2"}
+                                alt={""}
+                            />
+                            <span
+                                className={
+                                  "text-caak-generalblack font-medium text-15px"
+                                }
+                            >
+                          {item.name}
+                        </span>
+                      </div>
+                    </div>
                   );
                 })}
+              </div>
+              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                <span className={"text-15px text-caak-darkBlue"}>
+                  Миний дагасан бүлгүүд
+                </span>
+              </div>
+              <div className={"px-2 pb-5"}>
+                {
+                  groupData.map((data, index) => {
+                    return(
+                      <Link
+                        key={index}
+                        to={{
+                          pathname: `/group/view/${data.id}`
+                        }}
+                      >
+                    <Suggest
+                      item={data}
+                      className="ph:mb-4 sm:mb-4 btn:mb-4"
+                    />
+                  </Link>
+                    )
+                  })
+                }
               </div>
               <Loader
                   className={`bg-caak-primary ${
@@ -261,6 +263,36 @@ const Feed = () => {
                   }`}
               />
             </div>
+          </aside>
+          <div
+            className={
+              "flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start"
+            }
+          >
+            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+              {posts.map((data, index) => {
+                return (
+                  <Link
+                    key={index}
+                    to={{
+                      pathname: `/post/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <Card
+                      video={data.items.items[0].file.type.startsWith("video")}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4 btn:mb-4"
+                    />
+                  </Link>
+                );
+              })}
+            </div>
+            <Loader
+              className={`bg-caak-primary ${
+                isFetching ? "opacity-100" : "opacity-0"
+              }`}
+            />
           </div>
         </div>
         <footer className={`block md:hidden sticky bottom-0`}>

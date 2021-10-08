@@ -5,6 +5,7 @@ const post0004 = /* GraphQL */ `
     status
     updatedAt
     user {
+      firstname
       id
       followed
       aura
