@@ -12,6 +12,7 @@ import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
 import { Link, useLocation } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
+import { generateFileUrl } from "../../Utility/Util";
 
 const Feed = () => {
   const feedType = [
@@ -49,7 +50,7 @@ const Feed = () => {
   const [nextToken, setNextToken] = useState();
   const location = useLocation();
 
-  const getGroups = async () => {
+  const listGroups = async () => {
     try {
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
       setGroupData(resp.data.listGroups.items);
@@ -103,8 +104,8 @@ const Feed = () => {
           authMode: "AWS_IAM",
         });
       }
-
       setPosts(resp.data.getPostByStatus.items);
+      console.log(posts)
     } catch (ex) {
       console.log(ex);
     }
@@ -112,11 +113,11 @@ const Feed = () => {
 
   useEffect(() => {
     if (checkUser(user)) {
-      getGroups();
+      listGroups();
     }
-    fetchPosts();
-    // eslint-disable-next-line
-  }, []);
+      fetchPosts();
+      // eslint-disable-next-line
+    }, []);
 
   return (
     <div>
@@ -160,7 +161,7 @@ const Feed = () => {
               })}
             </div>
             <div className={`${!user && "hidden"}`}>
-              {/*<div className={"flex flex-row justify-between px-3.5 pt-2"}>
+              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний үүсгэсэн бүлгүүд
                 </span>
@@ -194,7 +195,7 @@ const Feed = () => {
                     </div>
                   );
                 })}
-              </div>*/}
+              </div>
               <div className={"px-2"}>
                 {
                   groupData.map((data, index) => {

@@ -29,11 +29,11 @@ export default function Group() {
 
     useEffect(() => {
       try {
-        const getGroupById = async (id) => {
+        const getGroup = async (id) => {
           const res = await API.graphql(graphqlOperation(getGroupView, { id }));
           setGroup(res.data.getGroup);
         };
-        getGroupById(groupId);
+        getGroup(groupId);
       } catch (ex) {
         console.log(ex);
       }

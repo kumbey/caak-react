@@ -100,27 +100,28 @@ export default function PostPending({settt}) {
             </div>
             {posts.map((data, index) => {
                 return (
-                    <Link
-                    key={index}
-                    to={{
-                      pathname: `/pending/view/${data.id}`,
-                      state: { background: location },
-                    }}
-                  >
+                    
                     <div className="flex items-center w-full bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen">
                         <div className="w-full flex items-center">
                         <Checkbox
-                            key={index}
+                            key={data.id}
                             id={data.id}
                             handleClick={handleClick}
                             isChecked={isCheck.includes(data.id)}
                             className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
                         />
-                        <Bilyat
-                            post={data}
-                            key={data.id}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4"
-                        />
+                        <Link
+                            key={index}
+                            to={{
+                                pathname: `/pending/view/${data.id}`,
+                                state: { background: location },
+                            }}
+                        >
+                            <Bilyat
+                                post={data}
+                                className="ph:mb-4 sm:mb-4 btn:mb-4"
+                            />
+                        </Link>
                         </div>
                         <div className="flex  justify-end relative 2xl:flex sm:block md:block lg:block hidden xl:mr-c24 lg:mr-c24 md:mr-c1 sm:mr-b1 justify-end items-center">
                             {
@@ -136,37 +137,9 @@ export default function PostPending({settt}) {
                             <Shittt/>
                         </div>
                     </div>
-                    </Link>
+                    
                 );
             })}
-            {/*{(array || []).map(item => {
-                return (
-                    <div className="flex items-center bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen" key={item.id}>
-                        <Checkbox
-                            key={item.id}
-                            id={item.id}
-                            handleClick={handleClick}
-                            isChecked={isCheck.includes(item.id)}
-                            className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
-                        />
-                        {item.content}
-                        <div className="relative 2xl:flex sm:block md:block lg:block hidden xl:mr-c24 lg:mr-c24 md:mr-c1 sm:mr-b1 justify-end items-center">
-                            {
-                                settt 
-                                ? 
-                                "" 
-                                :
-                                <div className="flex">
-                                    <Button className="bg-caak-bleudefrance text-15px text-white w-c132">Зөвшөөрөх</Button>
-                                    <Button onClick={() => deleteKey(item)} className="bg-white text-caak-generalblack text-15px ml-b1 border w-c14">Татгалзах</Button>
-                                </div>
-                            }
-                            <Shittt deletePost={() => deleteKey(item)}/>
-                        </div>
-                        
-                    </div>
-                );
-            })}*/}
         </div>
     )
 }
