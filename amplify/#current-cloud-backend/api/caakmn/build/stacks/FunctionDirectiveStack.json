@@ -94,6 +94,468 @@
         }
     },
     "Resources": {
+        "ResolverBooleanLambdaDataSourceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "HasEnvironmentParameter",
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "ResolverBooleanf4e1",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    },
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "ResolverBooleanf4e1",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "InvokeLambdaFunction",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::If": [
+                                            "HasEnvironmentParameter",
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:resolverBoolean-${env}",
+                                                    {
+                                                        "env": {
+                                                            "Ref": "env"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:resolverBoolean",
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "ResolverBooleanLambdaDataSource": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "ResolverBooleanLambdaDataSource",
+                "Type": "AWS_LAMBDA",
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "ResolverBooleanLambdaDataSourceRole",
+                        "Arn"
+                    ]
+                },
+                "LambdaConfig": {
+                    "LambdaFunctionArn": {
+                        "Fn::If": [
+                            "HasEnvironmentParameter",
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:resolverBoolean-${env}",
+                                    {
+                                        "env": {
+                                            "Ref": "env"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:resolverBoolean",
+                                    {}
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "DependsOn": "ResolverBooleanLambdaDataSourceRole"
+        },
+        "InvokeResolverBooleanLambdaDataSource": {
+            "Type": "AWS::AppSync::FunctionConfiguration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "InvokeResolverBooleanLambdaDataSource",
+                "DataSourceName": "ResolverBooleanLambdaDataSource",
+                "FunctionVersion": "2018-05-29",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeResolverBooleanLambdaDataSource",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeResolverBooleanLambdaDataSource",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "ResolverBooleanLambdaDataSource"
+        },
+        "UserfollowedResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "User",
+                "FieldName": "followed",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeResolverBooleanLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "followed",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "User",
+                                        "followed",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeResolverBooleanLambdaDataSource"
+        },
+        "PostreactedResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "Post",
+                "FieldName": "reacted",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeResolverBooleanLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Post",
+                                        "reacted",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Post",
+                                        "reacted",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeResolverBooleanLambdaDataSource"
+        },
+        "PostItemsreactedResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "PostItems",
+                "FieldName": "reacted",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeResolverBooleanLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "PostItems",
+                                        "reacted",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "PostItems",
+                                        "reacted",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeResolverBooleanLambdaDataSource"
+        },
+        "GroupfollowedResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "Group",
+                "FieldName": "followed",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeResolverBooleanLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Group",
+                                        "followed",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Group",
+                                        "followed",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeResolverBooleanLambdaDataSource"
+        },
         "UsersLambdaDataSourceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {

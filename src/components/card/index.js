@@ -8,7 +8,7 @@ const Card = ({ video, verifiedUser, post }) => {
     <div className="rounded-xl shadow-card max-w-8xl flex flex-col justify-between mx-auto mb-2 bg-white">
       <div className={"flex flex-col"}>
         <CardHeader
-          user={post.user}
+          postUser={post.user}
           group={post.group}
           updatedAt={post.updatedAt}
         />
