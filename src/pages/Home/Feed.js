@@ -10,7 +10,7 @@ import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import { onPostUpdate } from "../../graphql-custom/post/subscription";
+import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 
 const Feed = () => {
   const feedType = [
@@ -114,7 +114,7 @@ const Feed = () => {
 
   const subscriptions = () => {
     API.graphql({
-      query: onPostUpdate,
+      query: onPostStatusUpdate,
     })
     .subscribe({
       next: data => {
