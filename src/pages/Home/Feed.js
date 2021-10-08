@@ -100,6 +100,7 @@ const Feed = () => {
       } else {
         resp = await API.graphql({
           query: getPostByStatus,
+          variables: {status: "PENDING", limit: 6},
           authMode: "AWS_IAM",
         });
       }
@@ -111,12 +112,15 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    if (checkUser(user)) {
-      getGroups();
-    }
     fetchPosts();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if (checkUser(user)) {
+      getGroups();
+    }
+  }, [user]);
 
   return (
     <div>

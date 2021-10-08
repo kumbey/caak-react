@@ -1,13 +1,4 @@
 {
-  "lambdaLayers": [
-    {
-      "type": "ProjectLayer",
-      "resourceName": "caakmnlayerAPI",
-      "env": "devs",
-      "version": "Always choose latest version",
-      "isLatestVersionSelected": true
-    }
-  ],
   "permissions": {
     "storage": {
       "UserTotals:@model(appsync)": [
@@ -34,12 +25,21 @@
         "update",
         "delete"
       ],
-      "Notification:@model(appsync)": [
+      "CommentTotals:@model(appsync)": [
         "create",
         "read",
         "update",
         "delete"
       ]
     }
-  }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "caakmnlayerAPI",
+      "env": "devs",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true
+    }
+  ]
 }

@@ -10,6 +10,24 @@
   ],
   "permissions": {
     "storage": {
+      "UserTotals:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "PostItems:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
       "PostTotals:@model(appsync)": [
         "create",
         "read",
@@ -22,7 +40,19 @@
         "update",
         "delete"
       ],
+      "Comment:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
       "CommentTotals:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Notification:@model(appsync)": [
         "create",
         "read",
         "update",

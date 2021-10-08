@@ -116,17 +116,17 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
           "category": "api",
           "resourceName": "caakmn",
           "attributes": [
             "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
           ]
         }
       ]
@@ -200,17 +200,17 @@
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
           "category": "api",
           "resourceName": "caakmn",
           "attributes": [
             "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
           ]
         }
       ]
@@ -308,6 +308,48 @@
       ]
     },
     "resolverBoolean": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "totals": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ]
+    },
+    "aura": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",

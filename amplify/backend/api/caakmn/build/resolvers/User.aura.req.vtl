@@ -1,11 +1,5 @@
-#if( $util.isNull($ctx.source.id) )
-  #return
-#else
-{
-      "version": "2018-05-29",
-      "operation": "GetItem",
-      "key": {
-          "user_id": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.source.id, "___xamznone____"))
-    }
-  }
-#end
+## [Start] Stash resolver specific context.. **
+$util.qr($ctx.stash.put("typeName", "User"))
+$util.qr($ctx.stash.put("fieldName", "aura"))
+{}
+## [End] Stash resolver specific context.. **

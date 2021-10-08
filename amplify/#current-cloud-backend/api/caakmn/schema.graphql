@@ -31,12 +31,13 @@ type User @model(mutations: null)
   cover_pic_id: ID
   cover_pic: File @connection(fields:["cover_pic_id"])
   about: String
-  aura: Aura! @connection(fields:["id"])
+  aura: Int @function(name:"aura-${env}")
   is_public: Boolean
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
   totals: UserTotals @connection(fields:["id"])
   followed: Boolean @function(name:"resolverBoolean-${env}")
+  verified: Boolean
 }
 
 type UserTotals @model(mutations: null)
@@ -53,6 +54,9 @@ type UserTotals @model(mutations: null)
   drafted: Int
   following: Int
   followers: Int
+  post_reactions: Int,
+  post_items_reactions: Int
+  comment_reactions: Int,
   unseen: Int
 }
 
@@ -354,15 +358,16 @@ type Notification @model
     { allow: public, provider: iam, operations: [read]}
   ]){
     id: ID!
+    section: String!
     type: String!
+    item_id: String
+    action: String!
     from: ID!
+    from_user: User @connection(fields:["from"])
     to: ID!
-    group_id: ID
-    post_id: ID
-    comment_id: ID
-    group: Group @connection(fields:["group_id"])
-    post: Post @connection(fields:["post_id"])
-    comment: Comment @connection(fields:["comment_id"])
+    seen: Boolean!
+    updatedAt: AWSDateTime
+    createdAt: AWSDateTime
 }
 
 type Query {
@@ -381,6 +386,13 @@ type Mutation {
   @aws_cognito_user_pools
   updatePostStatus(input: UpdatePostStatusInput!): Post @function(name:"post-${env}")
   @aws_cognito_user_pools
+  changedTotals(type: String!, id: ID!): ChangedTotalsType @function(name:"totals-${env}")
+  @aws_cognito_user_pools
+}
+
+type ChangedTotalsType{
+    type: String!,
+    totals: String!,
 }
 
 input CreatePostInput{

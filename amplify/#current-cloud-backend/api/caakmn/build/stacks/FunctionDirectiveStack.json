@@ -94,6 +94,188 @@
         }
     },
     "Resources": {
+        "AuraLambdaDataSourceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "HasEnvironmentParameter",
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Aura5bc5",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    },
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Aura5bc5",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "InvokeLambdaFunction",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::If": [
+                                            "HasEnvironmentParameter",
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:aura-${env}",
+                                                    {
+                                                        "env": {
+                                                            "Ref": "env"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:aura",
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "AuraLambdaDataSource": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "AuraLambdaDataSource",
+                "Type": "AWS_LAMBDA",
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "AuraLambdaDataSourceRole",
+                        "Arn"
+                    ]
+                },
+                "LambdaConfig": {
+                    "LambdaFunctionArn": {
+                        "Fn::If": [
+                            "HasEnvironmentParameter",
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:aura-${env}",
+                                    {
+                                        "env": {
+                                            "Ref": "env"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:aura",
+                                    {}
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "DependsOn": "AuraLambdaDataSourceRole"
+        },
+        "InvokeAuraLambdaDataSource": {
+            "Type": "AWS::AppSync::FunctionConfiguration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "InvokeAuraLambdaDataSource",
+                "DataSourceName": "AuraLambdaDataSource",
+                "FunctionVersion": "2018-05-29",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeAuraLambdaDataSource",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeAuraLambdaDataSource",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "AuraLambdaDataSource"
+        },
         "ResolverBooleanLambdaDataSourceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -1269,9 +1451,285 @@
                 }
             },
             "DependsOn": "InvokePostLambdaDataSource"
+        },
+        "TotalsLambdaDataSourceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "HasEnvironmentParameter",
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Totals967b",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    },
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Totals967b",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "InvokeLambdaFunction",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::If": [
+                                            "HasEnvironmentParameter",
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:totals-${env}",
+                                                    {
+                                                        "env": {
+                                                            "Ref": "env"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:totals",
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "TotalsLambdaDataSource": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "TotalsLambdaDataSource",
+                "Type": "AWS_LAMBDA",
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "TotalsLambdaDataSourceRole",
+                        "Arn"
+                    ]
+                },
+                "LambdaConfig": {
+                    "LambdaFunctionArn": {
+                        "Fn::If": [
+                            "HasEnvironmentParameter",
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:totals-${env}",
+                                    {
+                                        "env": {
+                                            "Ref": "env"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:totals",
+                                    {}
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "DependsOn": "TotalsLambdaDataSourceRole"
+        },
+        "InvokeTotalsLambdaDataSource": {
+            "Type": "AWS::AppSync::FunctionConfiguration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "InvokeTotalsLambdaDataSource",
+                "DataSourceName": "TotalsLambdaDataSource",
+                "FunctionVersion": "2018-05-29",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeTotalsLambdaDataSource",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeTotalsLambdaDataSource",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "TotalsLambdaDataSource"
+        },
+        "MutationchangedTotalsResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "Mutation",
+                "FieldName": "changedTotals",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeTotalsLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "changedTotals",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "changedTotals",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeTotalsLambdaDataSource"
         }
     },
-    "Outputs": {},
+    "Outputs": {
+        "GetAttInvokeAuraLambdaDataSourceFunctionId": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "InvokeAuraLambdaDataSource",
+                    "FunctionId"
+                ]
+            },
+            "Export": {
+                "Name": {
+                    "Fn::Join": [
+                        ":",
+                        [
+                            {
+                                "Ref": "AppSyncApiId"
+                            },
+                            "GetAtt",
+                            "InvokeAuraLambdaDataSource",
+                            "FunctionId"
+                        ]
+                    ]
+                }
+            }
+        }
+    },
     "Mappings": {},
     "Conditions": {
         "ShouldUsePayPerRequestBilling": {
