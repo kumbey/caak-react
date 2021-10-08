@@ -1,6 +1,7 @@
 import React from "react";
 
-const CommentCard = ({ children }) => {
+const CommentCard = ({ totals, children }) => {
+  console.log(totals);
   return (
     <div className={" flex flex-col ml-2 justify-between"}>
       <div className={"relative flex flex-row items-center"}>

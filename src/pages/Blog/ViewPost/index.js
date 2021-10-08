@@ -8,16 +8,18 @@ import { useHistory, useParams } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../../graphql-custom/post/queries";
-import { getFileUrl } from "../../../Utility/Util";
+import { checkUser, getFileUrl } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import useScrollBlock from "../../../Utility/useScrollBlock";
+import { createPostViews } from "../../../graphql-custom/postViews/mutation";
+import { useUser } from "../../../context/userContext";
 
 const ViewPost = () => {
-  const { postId } = useParams();
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const { postId } = useParams();
   const history = useHistory();
+  const { user } = useUser();
 
   useEffect(() => {
     try {
@@ -53,6 +55,19 @@ const ViewPost = () => {
       allowScroll();
     };
   }, [allowScroll, blockScroll]);
+  const createPostView = async () => {
+    await API.graphql(
+      graphqlOperation(createPostViews, {
+        input: { post_id: post.id, user_id: user.sysUser.id },
+      })
+    );
+  };
+  useEffect(() => {
+    if (checkUser(user)) {
+      post && createPostView();
+    }
+    // eslint-disable-next-line
+  }, [post]);
 
   const nextItem = () => {
     if (activeIndex < post.items.items.length - 1) {
@@ -61,7 +76,6 @@ const ViewPost = () => {
       setActiveIndex(0);
     }
   };
-
   const prevItem = () => {
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
@@ -81,48 +95,54 @@ const ViewPost = () => {
         }
       >
         {/*<div className={"nonBlur"}>*/}
-        <span
-          onClick={() => prevItem()}
-          className={
-            "cursor-pointer z-2 absolute text-2xl left-2 text-white  top-1/2 transform -translate-y-1/2 bg-black bg-opacity-30 rounded-full p-1"
-          }
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+        {activeIndex > 0 && (
+          <span
+            onClick={() => prevItem()}
+            className={
+              "cursor-pointer z-2 absolute text-2xl left-2 text-white  top-1/2 transform -translate-y-1/2 bg-black bg-opacity-30 rounded-full p-1"
+            }
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </span>
-        <span
-          onClick={() => nextItem()}
-          className={
-            "cursor-pointer z-2 absolute text-2xl right-2 text-white top-1/2 transform -translate-y-1/2 bg-black bg-opacity-30 rounded-full p-1"
-          }
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </span>
+        )}
+
+        {activeIndex !== post.items.items.length - 1 && (
+          <span
+            onClick={() => nextItem()}
+            className={
+              "cursor-pointer z-2 absolute text-2xl right-2 text-white top-1/2 transform -translate-y-1/2 bg-black bg-opacity-30 rounded-full p-1"
+            }
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </span>
+        )}
+
         <ImageCarousel>
           {post.items.items.map((item, index) => {
             if (activeIndex === index)
@@ -167,16 +187,17 @@ const ViewPost = () => {
           })}
         </ImageCarousel>
         <div className={"flex flex-row absolute bottom-6"}>
-          {post.items.items.map((_, index) => {
-            return (
-              <div
-                key={index}
-                className={`rounded-full mr-1.5 w-2 h-2 bg-white ${
-                  activeIndex === index ? "bg-opacity-100" : "bg-opacity-40"
-                } `}
-              />
-            );
-          })}
+          {post.items.items.length > 1 &&
+            post.items.items.map((_, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`rounded-full mr-1.5 w-2 h-2 bg-white ${
+                    activeIndex === index ? "bg-opacity-100" : "bg-opacity-40"
+                  } `}
+                />
+              );
+            })}
         </div>
       </div>
       {/*</div>*/}
@@ -232,11 +253,9 @@ const ViewPost = () => {
           </div>
         </div>
         <PostHeader
-          comments={post.items.items}
-          reactions={post.items.items[activeIndex]}
+          item={post.items.items[activeIndex]}
           updatedAt={post.updatedAt}
           title={post.title}
-          itemTitle={post.items.items[activeIndex].title}
         />
 
         <div
@@ -250,7 +269,7 @@ const ViewPost = () => {
               src={Dummy.image("100x100")}
               alt="Alex"
             />
-            <CommentCard>
+            <CommentCard item={post.items.items[activeIndex]}>
               <SubCommentCard name={"Bataa"} comment={"Харин тиймээ"} />
               <SubCommentCard name={"Nomio"} comment={"Харин тиймээ"} />
               <SubCommentCard name={"Tsetsegee"} comment={"Харин тиймээ"} />

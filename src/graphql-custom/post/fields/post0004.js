@@ -39,10 +39,17 @@ const post0004 = /* GraphQL */ `
     totals {
       reactions
     }
-
+    reacted
     items {
       items {
+        id
         title
+        reacted
+        comments {
+          items {
+            comment
+          }
+        }
         file {
           bucket
           createdAt

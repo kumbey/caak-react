@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useState } from "react";
-import {generateTimeAgo, getFileUrl} from "../../Utility/Util";
+import { generateTimeAgo, getFileUrl } from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
 import { useClickOutSide } from "../../Utility/Util";
 import PostMore from "./PostMore";
@@ -10,11 +10,11 @@ import Dummy from "dummyjs";
 const CardHeader = ({ verifiedUser, user, group, updatedAt }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-};
-const menuRef = useClickOutSide(() => {
-  setIsMenuOpen(false);
-});
-const [isMenuOpen, setIsMenuOpen] = useState(false);
+  };
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="h-14 flex items-center justify-between px-4">
       <div className="flex items-center justify-between py-4">
@@ -60,12 +60,16 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
           </div>
         </div>
       </div>
-      <div ref={menuRef} onClick={toggleMenu} className={"cursor-pointer relative"}>
-        <span className="icon-fi-rs-dots text-4px"/>
-        <GroupInformationDrop 
+      <div
+        ref={menuRef}
+        onClick={toggleMenu}
+        className={"cursor-pointer relative"}
+      >
+        <span className="icon-fi-rs-dots text-4px" />
+        <GroupInformationDrop
           className="absolute"
           shadow
-          content={<PostMore/>}
+          content={<PostMore />}
           open={isMenuOpen}
         />
       </div>
