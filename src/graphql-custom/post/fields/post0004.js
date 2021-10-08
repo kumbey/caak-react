@@ -7,9 +7,7 @@ const post0004 = /* GraphQL */ `
     user {
       id
       followed
-      aura {
-        point
-      }
+      aura
       about
       totals {
         followers
