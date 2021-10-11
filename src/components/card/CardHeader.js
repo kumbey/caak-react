@@ -30,10 +30,6 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [doRender, setDoRender] = useState(0);
 
-  useEffect(() => {
-    console.log("FOLLOW: ", postUser.followed, doRender);
-  }, [postUser.followed, doRender]);
-
   const createFollowUser = async () => {
     await API.graphql({
       query: createFollowedUsers,
@@ -69,8 +65,6 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
         deleteFollowUser();
       }
     }
-
-    console.log("clikced");
   };
 
   return (
@@ -110,73 +104,84 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
           </div>
 
           <div className="flex flex-row items-center">
-            <Tippy
-              theme={"light-border"}
-              zIndex={25}
-              arrow={true}
-              interactive={true}
-              allowHTML={true}
-              placement={"bottom"}
-              animation={"shift-away-extreme"}
-              content={
-                <div className="custom-dropdown left-1 pl-7 pb-3 pr-6 bg-white">
-                  <div className="mt-c6 flex flex-row items-center justify-between w-full">
-                    <img
-                      className=" w-12 h-12 border-2 border-white rounded-full"
-                      alt=""
-                      src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
-                    />
-                    {checkUser(user) && user.sysUser.id !== postUser.id ? (
-                      <Button
-                        className="text-15px w-c19 h-c24 font-bold"
-                        onClick={handleClick}
+            <div>
+              <Tippy
+                theme={"light-border"}
+                zIndex={9999}
+                arrow={false}
+                interactive={true}
+                allowHTML={true}
+                placement={"bottom"}
+                animation={"shift-away-extreme"}
+                content={
+                  <div className="custom-dropdown pl-c1 shadow-dropdown pb-3 pr-6 bg-white rounded-lg">
+                    <div className="mt-c6 pt-c6 flex flex-row items-center justify-between w-full">
+                      <img
+                        className=" w-12 h-12 border-2 border-white rounded-full"
+                        alt=""
+                        src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
+                      />
+                      {checkUser(user) && user.sysUser.id !== postUser.id ? (
+                        <Button
+                          className="text-15px w-c19 h-c24 font-bold"
+                          onClick={handleClick}
+                        >
+                          {postUser.followed ? "Дагасан" : "Дагах"}
+                        </Button>
+                      ) : null}
+                    </div>
+                    <div className="mb-b1">
+                      <div className=" flex items-center">
+                        <p className="text-17px font-bold">
+                          @{postUser.nickname}
+                        </p>
+                        <span
+                          className=" icon-fi-rs-verified text-caak-buttonblue"
+                          style={{
+                            marginLeft: "3px",
+                            height: "13px",
+                            width: "13px",
+                          }}
+                        />
+                      </div>
+                      <p className="text-15px font-light">{postUser.about}</p>
+                    </div>
+                    <div className=" pr-14 flex flex-row items-center justify-between">
+                      <div
+                        className="flex items-center"
+                        style={{ marginRight: "22px" }}
                       >
-                        {postUser.followed ? "Дагасан" : "Дагах"}
-                      </Button>
-                    ) : null}
-                  </div>
-                  <div className="mb-b1">
-                    <div className=" flex items-center">
-                      <p className="text-17px font-bold">{postUser.nickname}</p>
-                      <span className="icon-fi-rs-verified text-13px text-caak-buttonblue " />
-                    </div>
-                    <p className="text-15px font-light">{postUser.about}</p>
-                  </div>
-                  <div className=" pr-14 flex flex-row items-center justify-between">
-                    <div
-                      className="flex items-center"
-                      style={{ marginRight: "22px" }}
-                    >
-                      <p className="text-18px mr-1 font-medium">
-                        {postUser.aura}
-                      </p>
-                      <p className="text-15px text-caak-darkBlue font-roboto font-light">
-                        Аура
-                      </p>
-                    </div>
-                    <div className="flex items-center">
-                      <p className="text-18px mr-1 font-medium">
-                        {postUser.totals.followers}
-                      </p>
-                      <p className="text-15px text-caak-darkBlue font-light">
-                        дагагчид
-                      </p>
+                        <p className="text-18px mr-1 font-medium">
+                          {postUser.aura}
+                        </p>
+                        <p className="text-15px text-caak-darkBlue font-roboto font-light">
+                          Аура
+                        </p>
+                      </div>
+                      <div className="flex items-center">
+                        <p className="text-18px mr-1 font-medium">
+                          {postUser.totals.followers}
+                        </p>
+                        <p className="text-15px text-caak-darkBlue font-light">
+                          дагагчид
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              }
-            >
-              <button
-                className="flex items-center text-gray-700"
-                data-toggle=" custom-dropdown"
-                data-tippy-arrow="true"
-                data-tippy-placement="bottom-end"
+                }
               >
-                <p className="hover:underline text-generalblack text-12px cursor-pointer">
-                  @{postUser.nickname}
-                </p>
-              </button>
-            </Tippy>
+                <button
+                  className="flex items-center text-gray-700"
+                  data-toggle=" custom-dropdown"
+                  data-tippy-arrow="true"
+                  data-tippy-placement="bottom-end"
+                >
+                  <p className="hover:underline text-generalblack text-12px cursor-pointer">
+                    @{postUser.nickname}
+                  </p>
+                </button>
+              </Tippy>
+            </div>
 
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
