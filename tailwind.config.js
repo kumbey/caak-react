@@ -28,8 +28,7 @@ module.exports = {
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
       },
       screens: {
-        ph: { min: "200px", max: "499px" },
-        btn: { min: "400px", max: "751px" },
+        ph: { min: "100px", max: "639px" },
       },
       zIndex: {
         1: "1",

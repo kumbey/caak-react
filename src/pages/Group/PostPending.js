@@ -108,7 +108,7 @@ export default function PostPending({settt}) {
                                 <PendingPostItem
                                     key={index}
                                     post={data}
-                                    className="ph:mb-4 sm:mb-4 btn:mb-4 "
+                                    className="ph:mb-4 sm:mb-4 ph:mb-4 "
                                 />
                         </div>
                         <div className="flex  justify-end relative 2xl:flex sm:block md:block lg:block hidden xl:mr-c24 lg:mr-c24 md:mr-c1 sm:mr-b1 justify-end items-center">

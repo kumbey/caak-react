@@ -13,6 +13,7 @@ import Loader from "../../components/loader";
 import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
+import { useLocation } from "react-router";
 
 const Feed = () => {
   const feedType = [
@@ -32,17 +33,18 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                  id: 3,
-                                                                                                  type: "Бүлгүүд",
-                                                                                                  icon: "icon-fi-rs-group",
-                                                                                                },
-                                                                                                {
-                                                                                                  id: 4,
-                                                                                                  type: "Дагасан найзууд",
-                                                                                                  icon: "icon-fi-rs-following",
-                                                                                                },*/
+                                                                                                          id: 3,
+                                                                                                          type: "Бүлгүүд",
+                                                                                                          icon: "icon-fi-rs-group",
+                                                                                                        },
+                                                                                                        {
+                                                                                                          id: 4,
+                                                                                                          type: "Дагасан найзууд",
+                                                                                                          icon: "icon-fi-rs-following",
+                                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
+  const location = useLocation();
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
@@ -209,15 +211,16 @@ const Feed = () => {
                           className={"w-8 h-8 rounded-md object-cover mr-2"}
                           alt={""}
                         />
-                        <span
-                          className={
-                            "text-caak-generalblack font-medium text-15px"
-                          }
-                        >
-                          {item.name}
-                        </span>
-                      </div>
-                    </div>
+                       
+                            <span
+                                className={
+                                  "text-caak-generalblack font-medium text-15px"
+                                }
+                            >
+                              {item.name}
+                            </span>
+                          </div>
+                       </div>
                   );
                 })}
               </div>
@@ -227,25 +230,56 @@ const Feed = () => {
                 </span>
               </div>
               <div className={"px-2 pb-5"}>
-                {groupData.map((data, index) => {
-                  return (
-                    <Link
-                      key={index}
-                      to={{
-                        pathname: `/group/view/${data.id}`,
-                      }}
-                    >
-                      <Suggest
-                        item={data}
-                        className="ph:mb-4 sm:mb-4 btn:mb-4"
-                      />
-                    </Link>
-                  );
-                })}
+                {
+                  groupData.map((data, index) => {
+                    return(
+                      <Link
+                        key={index}
+                        to={{
+                          pathname: `/group/view/${data.id}`
+                        }}
+                      >
+                    <Suggest
+                      item={data}
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
+                    />
+                  </Link>
+                    )
+                  })
+                }
               </div>
             </div>
           </aside>
           <div className={"w-full flex flex-col justify-center"}>
+            <div
+              className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
+            >
+              {feedType.map(({ icon, active, type, id }) => {
+                return (
+                  <Button
+                    key={id}
+                    onClick={() => setActiveIndex(id)}
+                    className={`h-8 w-auto mr-2 ${
+                      id === activeIndex
+                        ? "white shadow-button mb-2"
+                        : "transparent mb-2"
+                    }`}
+                    iconPosition={"left"}
+                    icon={
+                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                        <i
+                          className={`${icon}${
+                            id === activeIndex ? "" : "-o"
+                          } text-19px ph:text-15px`}
+                        />
+                      </div>
+                    }
+                  >
+                    <p className="text-16px ph:text-15px font-bold">{type}</p>
+                  </Button>
+                );
+              })}
+            </div>
             <div
               className={
                 "grid-container justify-center md:justify-center lg:justify-start"
@@ -253,13 +287,19 @@ const Feed = () => {
             >
               {posts.map((data, index) => {
                 return (
-                  <Card
+                  <Link
                     key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    // className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    className="inline-block"
-                  />
+                    to={{
+                      pathname: `/post/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <Card
+                      video={data.items.items[0].file.type.startsWith("video")}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
+                    />
+                  </Link>
                 );
               })}
             </div>

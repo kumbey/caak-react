@@ -1,10 +1,6 @@
 import {useState, useEffect} from 'react'
-import Admin from '../../components/Sidebar/Admin'
 import Button from '../../components/button'
 import Card from '../../components/card'
-import Description from '../../components/Sidebar/Description'
-import TopMembers from '../../components/Sidebar/TopMembers'
-import Suggest from '../../components/Sidebar/Suggest'
 import API from '@aws-amplify/api'
 import { graphqlOperation } from '@aws-amplify/api-graphql'
 import {getPostByStatus} from '../../graphql-custom/post/queries'
@@ -24,15 +20,12 @@ export default function Group() {
     const { user } = useUser();
     const { groupId } = useParams();
 
-    const [group, setGroup] = useState();
+    const [group, setGroup] = useState([]);
     const [posts, setPosts] = useState([]);
     const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
     const [isFetching, setIsFetching] = useInfiniteScroll(() => {});
-    const [userRole, setUserRole ] = useState("")
-
-    console.log("posts",posts);
 
     useEffect(() => {
       try {
@@ -60,26 +53,6 @@ export default function Group() {
         setIsFetching(fetchMoreListItems)
         // eslint-disable-next-line
       }, []);
-  
-      useEffect(() => {
-          if(checkUser(user)){
-            console.log("USER EFFECT")
-            fetchtGroupUserRole()
-          }
-          // eslint-disable-next-line
-      }, [user]);
-  
-    const fetchtGroupUserRole = async () => {
-      try {
-        let resp = await API.graphql(graphqlOperation(getGroupUserRole, {
-          user_id: user.sysUser.id,
-          group_id: groupId
-        }));
-        setUserRole(resp.data.getGroupUsers.role)
-      } catch (ex) {
-        console.log(ex);
-      }
-    };
 
     const listGroups = async () => {
       try {
@@ -142,57 +115,22 @@ export default function Group() {
 
     return ( group ?
         <div>
-            <div className="bg-white relative justify-center h-c18">
+          <div className="hidden ph:block bg-white items-center relative pl-c6">
+            <span className="icon-fi-rs-back text-20px cursour-pointer"/>
+            <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
+          </div>
                 <GroupHeader group={group}/>
-            </div>
-
-            {/* body */}
-            <div className="2xl:flex sm:flex md:flex lg:flex xl:flex md:flex">
-
-                {/* sideBar */}
-                <div className="mt-c24 ml-c3 2xl:w-c22 md:w-c17">
-
-                    {/* admin */}
-                    {/* { (userRole == "ADMIN" || userRole == "MODERATOR") ? */}
-                        <Admin userRole={userRole} /> : null
-                    {/* } */}
-
-                    {/* description */}
-                    <Description about={group.about}/>
-
-                    {/* top members */}
-                    {/* <TopMembers/> */}
-
-                    {/* suggested */}
-                    {/* {
-                      groupData.map((data, index) => {
-                        return(
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/group/view/${data.id}`
-                            }}
-                          >
-                        <Suggest
-                          item={data}
-                          className="ph:mb-4 sm:mb-4 btn:mb-4"
-                        />
-                      </Link>
-                        )
-                      })
-                    } */}
-                </div>
 
                 {/* post */}
-                <div className="flex flex-col w-full items-left sm:justify-center md:justify-center xl:justify-start xl:content-start">
+                <div className="grid justify-center">
 
                     {/* header */}
-                    {/* <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
-                      <img
-                        alt={user.sysUser.nickname}
-                        src={Dummy.img("200x200")}
-                        className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
-                      />
+                      <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5 mt-c6">
+                        <img
+                          alt={user.sysUser.nickname}
+                          src={Dummy.img("200x200")}
+                          className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
+                        />
                         <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
                             <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
                         </div>
@@ -204,7 +142,7 @@ export default function Group() {
                             <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
                             <p className="text-15px text-caak-blue">Линк</p>
                         </div>
-                    </div> */}
+                    </div> 
 
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
@@ -213,34 +151,32 @@ export default function Group() {
                             <Button className="text-15px font-bold w-c7 h-c32 text-caak-generalblack flex justify-center items-center mr-a1 rounded-lg bg-transparent hover:bg-caak-titaniumwhite">Шинэ</Button>
                             <Button className="text-15px font-bold w-c7 h-c32 text-caak-generalblack flex justify-center items-center rounded-lg bg-transparent hover:bg-caak-titaniumwhite">Шилдэг</Button>
                         </div>
-                        <select className="text-15px text-caak-generalblack font-semibold cursor-pointer border-0 bg-transparent">
+                        {/*<select className="text-15px text-caak-generalblack font-semibold cursor-pointer border-0 bg-transparent">
                             <option>Шинэ фостууд</option>
                             <option>Тйреырбйыр</option>
                             <option>йыөүйзшыбаөүк</option>
-                        </select>
+                          </select>*/}
                     </div>
 
                     {/* contents */}
-                    <div className="flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start">
-                      <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
-                        {posts.map((data, index) => {
-                          return (
-                            <Link
-                              key={index}
-                              to={{
-                                pathname: `/post/view/${data.id}`,
-                                state: { background: location },
-                              }}
-                            >
-                              <Card
-                                video={data.items.items[0].file.type.startsWith("video")}
-                                post={data}
-                                className="ph:mb-4 sm:mb-4 btn:mb-4"
-                              />
-                            </Link>
-                          );
-                        })}
-                      </div>
+                    <div style={{marginTop: "15px"}} className="grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
+                      {posts.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/post/view/${data.id}`,
+                              state: { background: location },
+                            }}
+                          >
+                            <Card
+                              video={data.items.items[0].file.type.startsWith("video")}
+                              post={data}
+                              className="ph:mb-4 sm:mb-4 ph:mb-4"
+                            />
+                          </Link>
+                        );
+                      })}
                     </div>
                     <Loader
                       className={`bg-caak-primary ${
@@ -248,7 +184,6 @@ export default function Group() {
                       }`}
                     />
                 </div>
-            </div>
         </div> 
           : 
         null
