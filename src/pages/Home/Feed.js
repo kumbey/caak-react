@@ -1,19 +1,19 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
 import BottomTabs from "./BottomTabs";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
 import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import { generateFileUrl } from "../../Utility/Util";
+import { useLocation } from "react-router";
 
 const Feed = () => {
   const feedType = [
@@ -33,28 +33,28 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                          id: 3,
-                                                                                          type: "Бүлгүүд",
-                                                                                          icon: "icon-fi-rs-group",
-                                                                                        },
-                                                                                        {
-                                                                                          id: 4,
-                                                                                          type: "Дагасан найзууд",
-                                                                                          icon: "icon-fi-rs-following",
-                                                                                        },*/
+                                                                                                  id: 3,
+                                                                                                  type: "Бүлгүүд",
+                                                                                                  icon: "icon-fi-rs-group",
+                                                                                                },
+                                                                                                {
+                                                                                                  id: 4,
+                                                                                                  type: "Дагасан найзууд",
+                                                                                                  icon: "icon-fi-rs-following",
+                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
+  const location = useLocation();
 
-  const {user} = useUser();
+  const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nextToken, setNextToken] = useState();
-  const location = useLocation();
 
   const listGroups = async () => {
     try {
-        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-        setGroupData(resp.data.listGroups.items);
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+      setGroupData(resp.data.listGroups.items);
     } catch (ex) {
       console.log(ex);
     }
@@ -65,11 +65,11 @@ const Feed = () => {
       setIsFetching(true);
       if (nextToken !== null) {
         let resp = await API.graphql(
-            graphqlOperation(getPostByStatus, {
-              limit: 2,
-              nextToken,
-              status: "PENDING",
-            })
+          graphqlOperation(getPostByStatus, {
+            limit: 2,
+            nextToken,
+            status: "PENDING",
+          })
         );
         setNextToken(resp.data.getPostByStatus.nextToken);
         setPosts([...posts, ...resp.data.getPostByStatus.items]);
@@ -93,11 +93,11 @@ const Feed = () => {
       let resp = [];
       if (checkUser(user)) {
         resp = await API.graphql(
-            graphqlOperation(getPostByStatus, {
-              sortDirection: "DESC",
-              status: "PENDING",
-              limit: 6,
-            })
+          graphqlOperation(getPostByStatus, {
+            sortDirection: "DESC",
+            status: "PENDING",
+            limit: 6,
+          })
         );
         setNextToken(resp.data.getPostByStatus.nextToken);
       } else {
@@ -105,13 +105,13 @@ const Feed = () => {
           query: getPostByStatus,
           variables: {
             sortDirection: "DESC",
-            status: "PENDING"
+            status: "PENDING",
           },
           authMode: "AWS_IAM",
         });
       }
       setPosts(resp.data.getPostByStatus.items);
-      console.log(posts)
+      console.log(posts);
     } catch (ex) {
       console.log(ex);
     }
@@ -120,70 +120,73 @@ const Feed = () => {
   const subscriptions = () => {
     API.graphql({
       query: onPostStatusUpdate,
-    })
-    .subscribe({
-      next: data => {
-        console.log('data: ', data)
-      }
-    })
-  }
+    }).subscribe({
+      next: (data) => {
+        console.log("data: ", data);
+      },
+    });
+  };
 
   useEffect(() => {
     fetchPosts();
     subscriptions();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
     }
-      fetchPosts();
-      // eslint-disable-next-line
-    }, []);
+    fetchPosts();
+    // eslint-disable-next-line
+  }, []);
 
   return (
-      <div>
-        <div className={`pt-4 px-10 w-full`}>
-          <div
-              className={`h-full flex ${
-                  user ? "flex-row items-start" : "flex-col items-center"
-              } sm:justify-between`}
+    <div>
+      <div className={`pt-4 px-10 w-full`}>
+        <div
+          className={`h-full flex ${
+            user ? "flex-row items-start" : "flex-col items-center"
+          } sm:justify-between`}
+        >
+          <aside
+            className={`hidden md:flex flex flex-col w-2/6 ${
+              user && "sticky top-0"
+            }`}
           >
-            <aside className={"hidden md:flex flex flex-col w-2/6 sticky top-0"}>
-              <div
-                  className={`flex ${
-                      user ? "flex-col" : "flex-row w-full"
-                  } justify-center mt-b4 pb-4 pr-6`}
-              >
-                {feedType.map(({icon, active, type, id}) => {
-                  return (
-                      <Button
-                          key={id}
-                          onClick={() => setActiveIndex(id)}
-                          className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
-                              id === activeIndex
-                                  ? "white shadow-button mb-2"
-                                  : "transparent mb-2"
-                          }`}
-                          iconPosition={"left"}
-                          icon={
-                            <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
-                              <i
-                                  className={`${icon}${
-                                      id === activeIndex ? "" : "-o"
-                                  } text-19px ph:text-15px`}
-                              />
-                            </div>
-                          }
-                      >
-                        <p className="text-16px ph:text-15px font-bold">{type}</p>
-                      </Button>
-                  );
-                })}
-              </div>
-              <div className={`${!user && "hidden"}`}>
-                <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+            <div
+              className={`flex ${
+                user ? "flex-col" : "flex-row w-full"
+              } justify-center mt-b4 pb-4 pr-6`}
+            >
+              {feedType.map(({ icon, active, type, id }) => {
+                return (
+                  <Button
+                    key={id}
+                    onClick={() => setActiveIndex(id)}
+                    className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
+                      id === activeIndex
+                        ? "white shadow-button mb-2"
+                        : "transparent mb-2"
+                    }`}
+                    iconPosition={"left"}
+                    icon={
+                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                        <i
+                          className={`${icon}${
+                            id === activeIndex ? "" : "-o"
+                          } text-19px ph:text-15px`}
+                        />
+                      </div>
+                    }
+                  >
+                    <p className="text-16px ph:text-15px font-bold">{type}</p>
+                  </Button>
+                );
+              })}
+            </div>
+            <div className={`${!user && "hidden"}`}>
+              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний үүсгэсэн бүлгүүд
                 </span>
@@ -194,7 +197,9 @@ const Feed = () => {
                     <div
                       key={index}
                       // onClick={() => onSelect(item)}
-                      className={"flex flex-col cursor-pointer w-max cursor-pointer"}
+                      className={
+                        "flex flex-col cursor-pointer w-max cursor-pointer"
+                      }
                     >
                       <div
                         className={
@@ -243,19 +248,14 @@ const Feed = () => {
                   })
                 }
               </div>
-              <Loader
-                  className={`bg-caak-primary ${
-                      isFetching ? "opacity-100" : "opacity-0"
-                  }`}
-              />
             </div>
           </aside>
-          <div
-            className={
-              "flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start"
-            }
-          >
-            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+          <div className={"w-full flex flex-col justify-center"}>
+            <div
+              className={
+                "grid-container justify-center md:justify-center lg:justify-start"
+              }
+            >
               {posts.map((data, index) => {
                 return (
                   <Link
@@ -275,17 +275,18 @@ const Feed = () => {
               })}
             </div>
             <Loader
+              containerClassName={"self-center"}
               className={`bg-caak-primary ${
                 isFetching ? "opacity-100" : "opacity-0"
               }`}
             />
           </div>
         </div>
-        </div>
-        <footer className={`block md:hidden sticky bottom-0`}>
-          <BottomTabs/>
-        </footer>
       </div>
+      <footer className={`block md:hidden sticky bottom-0 z-10`}>
+        <BottomTabs />
+      </footer>
+    </div>
   );
 };
 export default Feed;

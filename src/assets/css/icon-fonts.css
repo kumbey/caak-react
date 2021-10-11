@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'caakmoon';
-    src: url('../fonts/caakmoon.eot?xnslc5');
-    src: url('../fonts/caakmoon.eot?xnslc5#iefix') format('embedded-opentype'),
-    url('../fonts/caakmoon.ttf?xnslc5') format('truetype'),
-    url('../fonts/caakmoon.woff?xnslc5') format('woff'),
-    url('../fonts/caakmoon.svg?xnslc5#caakmoon') format('svg');
+    src: url('../fonts/caakmoon.eot?9j9lnf');
+    src: url('../fonts/caakmoon.eot?9j9lnf#iefix') format('embedded-opentype'),
+    url('../fonts/caakmoon.ttf?9j9lnf') format('truetype'),
+    url('../fonts/caakmoon.woff?9j9lnf') format('woff'),
+    url('../fonts/caakmoon.svg?9j9lnf#caakmoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -26,82 +26,107 @@
 }
 .icon-fi-fi-sp-hamburger-menu:before {
     content: "\e959";
-  }
-  .icon-fi-sp-hamburger-menu:before {
+}
+
+.icon-fi-sp-hamburger-menu:before {
     content: "\e95a";
-  }
-  .icon-fi-sp-home-f:before {
+}
+
+.icon-fi-sp-home-f:before {
     content: "\e95b";
-  }
-  .icon-fi-sp-home:before {
+}
+
+.icon-fi-sp-home:before {
     content: "\e95c";
   }
 .icon-fi-rs-add-group-f:before {
     content: "\e94c";
-  }
-  .icon-fi-rs-add-post:before {
+}
+
+.icon-fi-rs-add-post:before {
     content: "\e94d";
-  }
-  .icon-fi-rs-bookmark-f:before {
+}
+
+.icon-fi-rs-bookmark-f:before {
     content: "\e94e";
-  }
-  .icon-fi-rs-drag:before {
+}
+
+.icon-fi-rs-drag:before {
     content: "\e94f";
-  }
-  .icon-fi-rs-group-f:before {
+}
+
+.icon-fi-rs-group-f:before {
     content: "\e950";
-  }
-  .icon-fi-rs-invite-user:before {
+}
+
+.icon-fi-rs-invite-user:before {
     content: "\e951";
-  }
-  .icon-fi-rs-lock-f:before {
+}
+
+.icon-fi-rs-lock-f:before {
     content: "\e952";
-  }
-  .icon-fi-rs-social:before {
+}
+
+.icon-fi-rs-social:before {
     content: "\e953";
-  }
+}
+
 .icon-fi-rs-tiktok:before {
     content: "\e93e";
-  }
-  .icon-fi-rs-fb:before {
+}
+
+.icon-fi-rs-fb:before {
     content: "\e93f";
-  }
-  .icon-fi-rs-ig:before {
+}
+
+.icon-fi-rs-ig:before {
     content: "\e940";
-  }
-  .icon-fi-rs-comment-active:before {
+}
+
+.icon-fi-rs-comment-active:before {
     content: "\e941";
-  }
-  .icon-fi-rs-tw:before {
+}
+
+.icon-fi-rs-tw:before {
     content: "\e942";
-  }
-  .icon-fi-rs-lock:before {
+}
+
+.icon-fi-rs-lock:before {
     content: "\e943";
-  }
-  .icon-fi-rs-dots:before {
+}
+
+.icon-fi-rs-dots:before {
     content: "\e944";
-  }
-  .icon-fi-rs-pie-chart:before {
+}
+
+.icon-fi-rs-pie-chart:before {
     content: "\e945";
-  }
-  .icon-fi-rs-histogram:before {
+}
+
+.icon-fi-rs-histogram:before {
     content: "\e946";
-  }
-  .icon-fi-rs-add-friend:before {
+}
+
+.icon-fi-rs-add-friend:before {
     content: "\e947";
-  }
-  .icon-fi-rs-thick-add-friend:before {
+}
+
+.icon-fi-rs-thick-add-friend:before {
     content: "\e948";
-  }
-  .icon-fi-rs-thick-check:before {
+}
+
+.icon-fi-rs-thick-check:before {
     content: "\e949";
-  }
-  .icon-fi-rs-thick-add:before {
+}
+
+.icon-fi-rs-thick-add:before {
     content: "\e94a";
-  }
-  .icon-fi-rs-pencil:before {
+}
+
+.icon-fi-rs-pencil:before {
     content: "\e94b";
-  }
+}
+
 .icon-fi-rs-world:before {
     content: "\e93c";
 }

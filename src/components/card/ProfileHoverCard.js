@@ -5,16 +5,16 @@ import {
 } from "../../graphql-custom/user/mutation";
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { checkUser } from "../../Utility/Util";
 
-export default function ProfileHoverCard({ setHover, postUser }) {
+export default function ProfileHoverCard({ postUser }) {
   const { user } = useUser();
   const [doRender, setDoRender] = useState(0);
 
-  useEffect(() => {
-    console.log("FOLLOW: ", postUser.followed);
-  }, [postUser.followed]);
+  // useEffect(() => {
+  //   console.log("FOLLOW: ", postUser.followed);
+  // }, [postUser.followed]);
 
   const createFollowUser = async () => {
     await API.graphql({
@@ -52,15 +52,13 @@ export default function ProfileHoverCard({ setHover, postUser }) {
       }
     }
 
-    console.log("clikced");
   };
   return (
     <div
-      onMouseLeave={setHover}
-      className="dropdown left-5 pl-7 pb-3 pr-6 bg-white"
-      style={{ top: "45px" }}
+      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white"
+      // style={{ top: "45px" }}
     >
-      <div className="mt-c6 flex flex-row items-center justify-between w-full">
+      <div className="flex flex-row items-center justify-between w-full">
         <img
           className=" w-12 h-12 border-2 border-white rounded-full"
           alt=""
@@ -85,7 +83,7 @@ export default function ProfileHoverCard({ setHover, postUser }) {
       </div>
       <div className=" pr-14 flex flex-row items-center justify-between">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
-          {/* <p className="text-18px mr-1 font-medium">{postUser.aura.point}</p> */}
+          {/*<p className="text-18px mr-1 font-medium">{postUser.aura.point}</p>*/}
           <p className="text-15px text-caak-darkBlue font-roboto font-light">
             Аура
           </p>

@@ -13,6 +13,7 @@ import Loader from '../../components/loader'
 import { listGroupsForAddPost, getGroupView } from '../../graphql-custom/group/queries'
 import GroupHeader from './GroupHeader'
 import Dummy from "dummyjs"
+import { getGroupUserRole } from '../../graphql-custom/GroupUsers/queries'
 
 export default function Group() {
     
@@ -24,6 +25,7 @@ export default function Group() {
     const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
+    const [isFetching, setIsFetching] = useInfiniteScroll(() => {});
 
     useEffect(() => {
       try {
@@ -36,6 +38,21 @@ export default function Group() {
         console.log(ex);
       }
     }, [groupId]);
+
+    useEffect(() => {
+      if (!isFetching) return;
+      fetchMoreListItems();
+      // eslint-disable-next-line
+    }, [isFetching]);
+
+    useEffect(() => {
+      if (checkUser(user)) {
+        listGroups();
+      }
+        fetchPosts();
+        setIsFetching(fetchMoreListItems)
+        // eslint-disable-next-line
+      }, []);
 
     const listGroups = async () => {
       try {
@@ -66,14 +83,6 @@ export default function Group() {
       console.log(ex);
     }
   };
-
-    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-  
-    useEffect(() => {
-      if (!isFetching) return;
-      fetchMoreListItems();
-      // eslint-disable-next-line
-    }, [isFetching]);
   
     const fetchPosts = async () => {
       try {
@@ -103,44 +112,37 @@ export default function Group() {
         console.log(ex);
       }
     };
-  
-    useEffect(() => {
-    if (checkUser(user)) {
-      listGroups();
-    }
-      fetchPosts();
-      // eslint-disable-next-line
-    }, []);
 
     return ( group ?
-      <div>
-        <div className="hidden ph:block bg-white items-center relative pl-c6">
-          <span className="icon-fi-rs-back text-20px cursour-pointer"/>
-          <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
-        </div>
-              <GroupHeader title={group.name} profile={group.profile} cover={group.cover}/>
-              {/* header */}
-              {/*<div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
-                <img
-                  alt={user.sysUser.nickname}
-                  src={Dummy.img("200x200")}
-                  className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
-                />
-                <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
-                  <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
-                </div>
-                <div className="flex ml-b5 cursor-pointer">
-                  <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
-                  <p className="text-15px text-caak-blue">Зураг/Видео</p>
-                </div>
-                <div className="flex items-center  ml-b5 cursor-pointer">
-                  <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
-                  <p className="text-15px text-caak-blue">Линк</p>
-                </div>
-              </div> */}
+        <div>
+          <div className="hidden ph:block bg-white items-center relative pl-c6">
+            <span className="icon-fi-rs-back text-20px cursour-pointer"/>
+            <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
+          </div>
+                <GroupHeader group={group}/>
 
                 {/* post */}
                 <div className="grid justify-center">
+
+                    {/* header */}
+                      <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5 mt-c6">
+                        <img
+                          alt={user.sysUser.nickname}
+                          src={Dummy.img("200x200")}
+                          className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
+                        />
+                        <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
+                            <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
+                        </div>
+                        <div className="flex ml-b5 cursor-pointer">
+                            <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
+                            <p className="text-15px text-caak-blue">Зураг/Видео</p>
+                        </div>
+                        <div className="flex items-center  ml-b5 cursor-pointer">
+                            <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
+                            <p className="text-15px text-caak-blue">Линк</p>
+                        </div>
+                    </div> 
 
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
@@ -176,11 +178,11 @@ export default function Group() {
                         );
                       })}
                     </div>
-                      <Loader
-                        className={`bg-caak-primary ${
-                          isFetching ? "opacity-100" : "opacity-0"
-                          }`}
-                      />
+                    <Loader
+                      className={`bg-caak-primary ${
+                        isFetching ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
                 </div>
         </div> 
           : 
