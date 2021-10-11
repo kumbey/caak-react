@@ -140,7 +140,7 @@ const Feed = () => {
   }, []);
 
   return (
-    <div>
+    <div id={"feed"}>
       <div className={`pt-4 px-10 w-full`}>
         <div
           className={`h-full flex ${

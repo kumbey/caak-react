@@ -1,11 +1,13 @@
 import React from "react";
 import Notification from "./Notification";
+import ReactDOM from "react-dom";
 
 const NotificationDropDown = ({ isOpen }) => {
-  return (
+  //TODO Fix notifiaction
+  return ReactDOM.createPortal(
     <div
       onClick={(e) => e.stopPropagation()}
-      className={`dropdown  py-2 flex flex-col bg-white shadow-dropdown w-96 cursor-auto top-10 -right-4 ${
+      className={`dropdown fixed z-0 top-0 h-full w-full sm:top-10 sm:-right-0 py-2 flex flex-col bg-white shadow-dropdown w-96 cursor-auto  ${
         !isOpen && "hidden"
       }`}
     >
@@ -44,7 +46,8 @@ const NotificationDropDown = ({ isOpen }) => {
           Бүгдийг харах
         </span>
       </div>
-    </div>
+    </div>,
+    document.getElementById("feed")
   );
 };
 

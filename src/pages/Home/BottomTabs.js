@@ -2,15 +2,18 @@ import { useUser } from "../../context/userContext";
 import { checkUser, getFileUrl } from "../../Utility/Util";
 import Dummy from "dummyjs";
 import { useHistory, useLocation } from "react-router-dom";
+import { useWrapper } from "../../context/wrapperContext";
+import React from "react";
 
 export default function BottomTabs() {
   const { user } = useUser();
   const history = useHistory();
   const location = useLocation();
+  const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   return (
     <div
-      style={{ height: "50px" }}
-      className="justify-evenly flex items-center w-full bg-white"
+      style={{ height: "50px",zIndex: 100 }}
+      className="relative justify-evenly flex items-center w-full bg-white"
     >
       <span className="icon-fi-sp-home-f text-caak-generalblack text-24px px-b5 py-a2 rounded-lg" />
       <span className="icon-fi-fi-sp-hamburger-menu text-caak-blue text-24px px-b5 py-a2 rounded-lg" />
@@ -23,7 +26,10 @@ export default function BottomTabs() {
         }
         className="icon-fi-rs-thick-add text-14px bg-caak-primary px-b5 py-a2 text-white rounded-lg cursor-pointer"
       />
-      <span className="icon-fi-rs-notification text-22px text-caak-blue px-b5 py-a2 rounded-lg" />
+      <span
+        onClick={() => setIsNotificationMenu(!isNotificationMenu)}
+        className="icon-fi-rs-notification text-22px text-caak-blue px-b5 py-a2 rounded-lg"
+      />
       {checkUser(user) ? (
         <img
           className={"rounded-full w-c3 h-c3"}
