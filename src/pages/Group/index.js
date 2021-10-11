@@ -216,12 +216,13 @@ export default function Group() {
                 );
               })}
                     </div>
-                    <Loader
+                   
+                </div>
+                <Loader
               className={`bg-caak-primary ${
                 isFetching ? "opacity-100" : "opacity-0"
               }`}
             />
-                </div>
             </div>
         </div> 
           : 
