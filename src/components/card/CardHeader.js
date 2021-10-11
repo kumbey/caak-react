@@ -1,26 +1,16 @@
-import React, { useEffect } from "react";
-import Tippy from "@tippy.js/react";
-import "tippy.js/animations/shift-away-extreme.css";
-import { checkUser } from "../../Utility/Util";
-import { useUser } from "../../context/userContext";
-
-import API from "@aws-amplify/api";
+import React, { useState } from "react";
 import {
-  createFollowedUsers,
-  deleteFollowedUsers,
-} from "../../graphql-custom/user/mutation";
-
-import { useState } from "react";
-import { generateTimeAgo, getFileUrl } from "../../Utility/Util";
+  generateTimeAgo,
+  getFileUrl,
+  useClickOutSide,
+} from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
-import { useClickOutSide } from "../../Utility/Util";
 import PostMore from "./PostMore";
 import Dummy from "dummyjs";
-import Button from "../button";
+import Tooltip from "../tooltip/Tooltip";
+import ProfileHoverCard from "./ProfileHoverCard";
 
 const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
-  const { user } = useUser();
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -28,45 +18,6 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [doRender, setDoRender] = useState(0);
-
-  const createFollowUser = async () => {
-    await API.graphql({
-      query: createFollowedUsers,
-      variables: {
-        input: { followed_user_id: user.sysUser.id, user_id: postUser.id },
-      },
-    });
-    postUser.totals.followers += 1;
-    postUser.followed = true;
-    setDoRender(doRender + 1);
-  };
-
-  const deleteFollowUser = async () => {
-    await API.graphql({
-      query: deleteFollowedUsers,
-      variables: {
-        input: {
-          followed_user_id: user.sysUser.id,
-          user_id: postUser.id,
-        },
-      },
-    });
-    postUser.totals.followers -= 1;
-    postUser.followed = false;
-    setDoRender(doRender + 1);
-  };
-
-  const handleClick = () => {
-    if (checkUser(user)) {
-      if (!postUser.followed) {
-        createFollowUser();
-      } else if (postUser.followed) {
-        deleteFollowUser();
-      }
-    }
-  };
-
   return (
     <div className="h-14 relative flex items-center justify-between px-4">
       <div className="flex items-center justify-between py-4">
@@ -103,86 +54,14 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
             )}
           </div>
 
-          <div className="flex flex-row items-center">
-            <div>
-              <Tippy
-                theme={"light-border"}
-                zIndex={9999}
-                arrow={false}
-                interactive={true}
-                allowHTML={true}
-                placement={"bottom"}
-                animation={"shift-away-extreme"}
-                content={
-                  <div className="custom-dropdown pl-c1 shadow-dropdown pb-3 pr-6 bg-white rounded-lg">
-                    <div className="mt-c6 pt-c6 flex flex-row items-center justify-between w-full">
-                      <img
-                        className=" w-12 h-12 border-2 border-white rounded-full"
-                        alt=""
-                        src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
-                      />
-                      {checkUser(user) && user.sysUser.id !== postUser.id ? (
-                        <Button
-                          className="text-15px w-c19 h-c24 font-bold"
-                          onClick={handleClick}
-                        >
-                          {postUser.followed ? "Дагасан" : "Дагах"}
-                        </Button>
-                      ) : null}
-                    </div>
-                    <div className="mb-b1">
-                      <div className=" flex items-center">
-                        <p className="text-17px font-bold">
-                          @{postUser.nickname}
-                        </p>
-                        <span
-                          className=" icon-fi-rs-verified text-caak-buttonblue"
-                          style={{
-                            marginLeft: "3px",
-                            height: "13px",
-                            width: "13px",
-                          }}
-                        />
-                      </div>
-                      <p className="text-15px font-light">{postUser.about}</p>
-                    </div>
-                    <div className=" pr-14 flex flex-row items-center justify-between">
-                      <div
-                        className="flex items-center"
-                        style={{ marginRight: "22px" }}
-                      >
-                        <p className="text-18px mr-1 font-medium">
-                          {postUser.aura}
-                        </p>
-                        <p className="text-15px text-caak-darkBlue font-roboto font-light">
-                          Аура
-                        </p>
-                      </div>
-                      <div className="flex items-center">
-                        <p className="text-18px mr-1 font-medium">
-                          {postUser.totals.followers}
-                        </p>
-                        <p className="text-15px text-caak-darkBlue font-light">
-                          дагагчид
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                }
+          <div className={"flex flex-row   items-center"}>
+            <Tooltip content={<ProfileHoverCard postUser={postUser}/>}>
+              <p
+                className="hover:underline text-generalblack text-12px cursor-pointer"
               >
-                <button
-                  className="flex items-center text-gray-700"
-                  data-toggle=" custom-dropdown"
-                  data-tippy-arrow="true"
-                  data-tippy-placement="bottom-end"
-                >
-                  <p className="hover:underline text-generalblack text-12px cursor-pointer">
-                    @{postUser.nickname}
-                  </p>
-                </button>
-              </Tippy>
-            </div>
-
+                @{postUser.nickname}
+              </p>
+            </Tooltip>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
               {generateTimeAgo(updatedAt)}
