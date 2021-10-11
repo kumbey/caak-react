@@ -147,7 +147,7 @@ const Feed = () => {
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
-          } sm:justify-between`}
+          } sm:justify-between md:justify-between xl:justify-start`}
         >
           <aside
             className={`hidden md:flex flex flex-col w-2/6 ${
@@ -250,7 +250,7 @@ const Feed = () => {
               </div>
             </div>
           </aside>
-          <div className={"w-full flex flex-col justify-center"}>
+          <div className={"grid_container_container w-full flex flex-col justify-center"}>
             <div
               className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
             >
