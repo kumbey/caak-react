@@ -66,12 +66,12 @@
         "GraphQLAPIIdOutput": "t72xxpseifctlji4egzhmmxwsi",
         "GraphQLAPIEndpointOutput": "https://6gnxf22onnbhthhwytct62iesi.appsync-api.ap-southeast-1.amazonaws.com/graphql"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.627Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.676Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apicaakmn"
       },
-      "lastPushDirHash": "n+k6XtcYrXbhnKXVQaiv/UB5yxE="
+      "lastPushDirHash": "3sy6hLoMUFLnAoJFXZpStLaANJo="
     }
   },
   "storage": {
@@ -82,7 +82,7 @@
         "BucketName": "caakmn8fe6c2cb480d45cc8e0c9fac64b9f294100650-devs",
         "Region": "ap-southeast-1"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.574Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.685Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storages30c6bf4f5"
@@ -100,7 +100,7 @@
         "Name": "userpoolpostconfirmation-devs",
         "LambdaExecutionRole": "caakmnLambdaRolee0d8f565-devs"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.581Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.688Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/userpoolpostconfirmation-cloudformation-template.json",
         "logicalId": "functionuserpoolpostconfirmation"
@@ -137,7 +137,7 @@
         "Name": "users-devs",
         "LambdaExecutionRole": "caakmnLambdaRole37096d08-devs"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.585Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.690Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/users-cloudformation-template.json",
         "logicalId": "functionusers"
@@ -156,26 +156,26 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
-      "lastBuildTimeStamp": "2021-10-08T04:31:27.422Z",
+      "lastBuildTimeStamp": "2021-10-08T06:46:09.622Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-08T04:31:29.011Z",
-      "distZipFilename": "post-6b6d6d4b497a6e41765a-build.zip",
+      "lastPackageTimeStamp": "2021-10-08T06:46:11.262Z",
+      "distZipFilename": "post-7a31314a4c566b4a5247-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/post-6b6d6d4b497a6e41765a-build.zip"
+        "s3Key": "amplify-builds/post-7a31314a4c566b4a5247-build.zip"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/post-cloudformation-template.json",
         "logicalId": "functionpost"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.589Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.693Z",
       "output": {
         "Region": "ap-southeast-1",
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:post-devs",
         "Name": "post-devs",
         "LambdaExecutionRole": "caakmnLambdaRole470a13b7-devs"
       },
-      "lastPushDirHash": "sLrD+Qce4uDVS/y/knEyypFzD80=",
+      "lastPushDirHash": "J5MaoOgOqJ1zw7q3FIiebBd2vG0=",
       "dependsOn": [
         {
           "category": "function",
@@ -214,7 +214,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.592Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.696Z",
       "lastBuildTimeStamp": "2021-10-07T13:55:53.188Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-07T13:55:53.255Z",
@@ -252,7 +252,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/caakmnlayerAPI-awscloudformation-template.json",
         "logicalId": "functioncaakmnlayerAPI"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.596Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.699Z",
       "output": {
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:33"
       }
@@ -277,7 +277,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.600Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.701Z",
       "lastBuildTimeStamp": "2021-10-07T16:47:39.456Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-07T16:47:39.553Z",
@@ -318,7 +318,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.603Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.703Z",
       "lastBuildTimeStamp": "2021-10-06T19:40:56.133Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-06T19:40:56.204Z",
@@ -359,7 +359,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.605Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.705Z",
       "lastBuildTimeStamp": "2021-10-07T12:01:14.770Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-07T12:01:14.823Z",
@@ -400,7 +400,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.607Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.707Z",
       "lastBuildTimeStamp": "2021-10-06T05:08:42.983Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-06T05:08:43.188Z",
@@ -441,7 +441,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.609Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.709Z",
       "lastBuildTimeStamp": "2021-10-07T18:59:54.673Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-07T18:59:54.747Z",
@@ -482,7 +482,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.611Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.711Z",
       "lastBuildTimeStamp": "2021-10-06T05:08:42.985Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-06T05:08:43.186Z",
@@ -543,7 +543,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerPostShares-cloudformation-template.json",
         "logicalId": "functiontriggerPostShares"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.614Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.713Z",
       "output": {
         "Region": "ap-southeast-1",
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerPostShares-devs",
@@ -572,7 +572,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.616Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.714Z",
       "lastBuildTimeStamp": "2021-10-08T04:37:46.643Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-08T04:37:46.692Z",
@@ -613,7 +613,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.617Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.716Z",
       "lastBuildTimeStamp": "2021-10-06T08:42:07.779Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-06T08:42:07.982Z",
@@ -666,7 +666,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/resolverBoolean-cloudformation-template.json",
         "logicalId": "functionresolverBoolean"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.619Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.718Z",
       "output": {
         "Region": "ap-southeast-1",
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:resolverBoolean-devs",
@@ -695,7 +695,7 @@
           ]
         }
       ],
-      "lastPushTimeStamp": "2021-10-08T05:35:47.620Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.719Z",
       "lastBuildTimeStamp": "2021-10-08T03:19:02.770Z",
       "lastBuildType": "PROD",
       "lastPackageTimeStamp": "2021-10-08T03:19:02.841Z",
@@ -736,26 +736,26 @@
           ]
         }
       ],
-      "lastBuildTimeStamp": "2021-10-08T03:42:15.060Z",
+      "lastBuildTimeStamp": "2021-10-08T07:03:59.286Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-08T03:42:15.141Z",
-      "distZipFilename": "aura-6d366a4d4b61426a7a2f-build.zip",
+      "lastPackageTimeStamp": "2021-10-08T07:03:59.338Z",
+      "distZipFilename": "aura-6f6f6e7a684774374e50-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/aura-6d366a4d4b61426a7a2f-build.zip"
+        "s3Key": "amplify-builds/aura-6f6f6e7a684774374e50-build.zip"
       },
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/aura-cloudformation-template.json",
         "logicalId": "functionaura"
       },
-      "lastPushTimeStamp": "2021-10-08T05:35:47.622Z",
+      "lastPushTimeStamp": "2021-10-08T07:05:38.726Z",
       "output": {
         "Region": "ap-southeast-1",
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:aura-devs",
         "Name": "aura-devs",
         "LambdaExecutionRole": "caakmnLambdaRole514e3ae9-devs"
       },
-      "lastPushDirHash": "8ui3b9Bul9ksK7uMVIl/NOgHHhQ="
+      "lastPushDirHash": "0aI18iZ88IFldflKxSjTBfrNBlQ="
     }
   }
 }

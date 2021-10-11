@@ -11,3 +11,9 @@ export const onPostUpdate = /* GraphQL */ `
     onPostUpdate ${post0002}
   }
 `;
+
+export const onPostStatusUpdate = /* GraphQL */ `
+  subscription OnPostStatusUpdate {
+    onPostStatusUpdate ${post0002}
+  }
+`;

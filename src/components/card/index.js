@@ -24,7 +24,7 @@ const Card = ({ video, verifiedUser, post }) => {
         postId={post.id}
         title={post.title}
         totals={post.totals}
-        comments={post.items.items}
+        items={post.items.items}
       />
     </div>
   );

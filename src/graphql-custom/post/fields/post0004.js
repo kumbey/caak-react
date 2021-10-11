@@ -56,6 +56,26 @@ const post0004 = /* GraphQL */ `
         comments {
           items {
             comment
+            createdAt
+            totals {
+              reactions
+            }
+            user {
+              nickname
+              cover_pic {
+                bucket
+                createdAt
+                ext
+                id
+                key
+                level
+                name
+                owner
+                region
+                type
+                updatedAt
+              }
+            }
           }
         }
         file {

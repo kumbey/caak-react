@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { extractDate, generateTimeAgo } from "../../../Utility/Util";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import {
-  createReaction,
-  deleteReaction,
-} from "../../../graphql-custom/post/mutation";
 import { useUser } from "../../../context/userContext";
+import updateReaction from "./updateReaction";
 
 const PostHeader = ({ title, updatedAt, item }) => {
   const date = extractDate(updatedAt);
@@ -15,37 +10,9 @@ const PostHeader = ({ title, updatedAt, item }) => {
   useEffect(() => {
     setIsReacted(item.reacted);
   }, [item]);
-  // console.log(resp);
 
-  const updateReaction = async (type) => {
-    if (type) {
-      item.totals.reactions += 1;
-    } else {
-      item.totals.reactions -= 1;
-    }
-    setIsReacted(!isReacted);
-    if (type) {
-      await API.graphql(
-        graphqlOperation(createReaction, {
-          input: {
-            id: item.id,
-            on_to: "POST_ITEM",
-            type: "CAAK",
-            user_id: user.sysUser.id,
-          },
-        })
-      );
-    } else {
-      await API.graphql(
-        graphqlOperation(deleteReaction, {
-          input: {
-            id: item.id,
-            user_id: user.sysUser.id,
-          },
-        })
-      );
-    }
-  };
+    // console.log(item)
+
   return (
     <div className={"flex flex-col"}>
       <div className={"font-bold text-20px text-caak-generalblack pt-2 px-7"}>
@@ -68,7 +35,23 @@ const PostHeader = ({ title, updatedAt, item }) => {
             className={"flex flex-row items-center mr-4 cursor-pointer group"}
           >
             <div
-              onClick={() => updateReaction(!isReacted)}
+              onClick={() =>
+                updateReaction({
+                  item,
+                  isReacted,
+                  setIsReacted,
+                  deleteReactionInput: {
+                    id: item.id,
+                    user_id: user.sysUser.id,
+                  },
+                  createReactionInput: {
+                    id: item.id,
+                    on_to: "POST_ITEM",
+                    type: "CAAK",
+                    user_id: user.sysUser.id,
+                  },
+                })
+              }
               className={
                 "flex justify-center items-center group-hover:bg-caak-peachbreeze group-hover:text-caak-primary rounded-full p-2 h-8 w-8"
               }
