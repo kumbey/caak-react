@@ -238,7 +238,7 @@ type Comment @model
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name: "byPostItem", fields: ["post_item_id"])
+  @key(name: "byPostItem", fields: ["post_item_id"] queryField:"getCommentsByPostItem")
   @key(name: "byParent", fields: ["parent_id"])
   @key(name: "byType", fields: ["type"]){
   id: ID!,
@@ -413,6 +413,10 @@ type Subscription {
     @aws_cognito_user_pools
   onPostCreateByGroup(group_id: ID!): Post
     @aws_subscribe(mutations: ["createPost"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onPostStatusUpdate: Post
+    @aws_subscribe(mutations: ["updatePostStatus"])
     @aws_iam
     @aws_cognito_user_pools
 }

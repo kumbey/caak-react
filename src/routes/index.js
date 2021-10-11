@@ -114,7 +114,7 @@ const Routes = [
     page: () => <ViewPost />,
   },
   {
-    path: "/group",
+    path: "/group/view/:groupId",
     exact: true,
     background: true,
     page: () => <Group />,
@@ -125,8 +125,15 @@ const Routes = [
     background: true,
     page: () => <Infromation />,
   },
+  
   {
-    path: "/check",
+    path: "/group/pending",
+    exact: true,
+    background: true,
+    page: () => <PendingPostAdmin />,
+  },
+  {
+    path: "/pending/view/:postId",
     exact: true,
     background: true,
     page: () => <Check />,

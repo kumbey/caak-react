@@ -38,7 +38,7 @@
         },
         "post": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/post-6b6d6d4b497a6e41765a-build.zip"
+          "s3Key": "amplify-builds/post-7a31314a4c566b4a5247-build.zip"
         },
         "usersTrigger": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -90,7 +90,7 @@
         },
         "aura": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/aura-6d366a4d4b61426a7a2f-build.zip"
+          "s3Key": "amplify-builds/aura-6f6f6e7a684774374e50-build.zip"
         },
         "totals": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",

@@ -1,4 +1,3 @@
-import useCountComments from "../../Utility/useCountComments";
 import { Link, useLocation } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -9,8 +8,7 @@ import {
 import { useState } from "react";
 import { useUser } from "../../context/userContext";
 
-const CardFooter = ({ title, totals, comments, postId, reacted }) => {
-  const totalComments = useCountComments(comments);
+const CardFooter = ({ title, totals, items, postId, reacted }) => {
   const location = useLocation();
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(reacted);
@@ -87,7 +85,7 @@ const CardFooter = ({ title, totals, comments, postId, reacted }) => {
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-16px mr-1.5"} />
-            <span>{totalComments}</span>
+            <span>{totals.comments}</span>
           </div>
         </div>
         <div className={"flex flex-row items-center cursor-pointer"}>
