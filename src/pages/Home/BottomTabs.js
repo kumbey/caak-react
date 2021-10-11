@@ -1,10 +1,12 @@
 import { useUser } from "../../context/userContext";
 import { checkUser, getFileUrl } from "../../Utility/Util";
 import Dummy from "dummyjs";
+import { useHistory, useLocation } from "react-router-dom";
 
 export default function BottomTabs() {
   const { user } = useUser();
-
+  const history = useHistory();
+  const location = useLocation();
   return (
     <div
       style={{ height: "50px" }}
@@ -12,7 +14,15 @@ export default function BottomTabs() {
     >
       <span className="icon-fi-sp-home-f text-caak-generalblack text-24px px-b5 py-a2 rounded-lg" />
       <span className="icon-fi-fi-sp-hamburger-menu text-caak-blue text-24px px-b5 py-a2 rounded-lg" />
-      <span className="icon-fi-rs-thick-add text-14px bg-caak-primary px-b5 py-a2 text-white rounded-lg" />
+      <span
+        onClick={() =>
+          history.push({
+            pathname: "/post/add/new",
+            state: { background: location },
+          })
+        }
+        className="icon-fi-rs-thick-add text-14px bg-caak-primary px-b5 py-a2 text-white rounded-lg cursor-pointer"
+      />
       <span className="icon-fi-rs-notification text-22px text-caak-blue px-b5 py-a2 rounded-lg" />
       {checkUser(user) ? (
         <img
