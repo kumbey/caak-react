@@ -191,6 +191,7 @@
 .backBlur {
     background: rgba(0, 0, 0, 0.9);
 }
+
 .backBlur::before {
     background: rgba(0, 0, 0, 0.8);
     content: '';
@@ -206,10 +207,19 @@
     filter: blur(0);
 }
 
+:root {
+    --card-width: 384px;
+    --card-grid-gap: 16px;
+}
+
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(384px, max-content));
-    grid-gap: 16px;
-    /*justify-content: center;*/
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-width), max-content));
+    grid-gap: var(--card-grid-gap);
     padding: initial;
+}
+
+.grid_container_container {
+    max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);
 }
