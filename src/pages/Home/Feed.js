@@ -206,30 +206,16 @@ const Feed = () => {
                           className={"w-8 h-8 rounded-md object-cover mr-2"}
                           alt={""}
                         />
-                        <span
-                          className={
-                            "text-caak-generalblack font-medium text-15px"
-                          }
-                        >
-                          <div
-                              className={
-                                "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                              }
-                          >
-                            <img
-                                src={generateFileUrl(item.profile)}
-                                className={"w-8 h-8 rounded-md object-cover mr-2"}
-                                alt={""}
-                            />
+                       
                             <span
                                 className={
                                   "text-caak-generalblack font-medium text-15px"
                                 }
                             >
-                          {item.name}
-                        </span>
-                      </div>
-                    </div>
+                              {item.name}
+                            </span>
+                          </div>
+                       </div>
                   );
                 })}
               </div>
@@ -250,7 +236,7 @@ const Feed = () => {
                       >
                     <Suggest
                       item={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
                     />
                   </Link>
                     )
@@ -282,7 +268,7 @@ const Feed = () => {
                     <Card
                       video={data.items.items[0].file.type.startsWith("video")}
                       post={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
                     />
                   </Link>
                 );
@@ -294,6 +280,7 @@ const Feed = () => {
               }`}
             />
           </div>
+        </div>
         </div>
         <footer className={`block md:hidden sticky bottom-0`}>
           <BottomTabs/>

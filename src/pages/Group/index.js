@@ -1,10 +1,6 @@
 import {useState, useEffect} from 'react'
-import Admin from '../../components/Sidebar/Admin'
 import Button from '../../components/button'
 import Card from '../../components/card'
-import Description from '../../components/Sidebar/Description'
-import TopMembers from '../../components/Sidebar/TopMembers'
-import Suggest from '../../components/Sidebar/Suggest'
 import API from '@aws-amplify/api'
 import { graphqlOperation } from '@aws-amplify/api-graphql'
 import {getPostByStatus} from '../../graphql-custom/post/queries'
@@ -23,13 +19,11 @@ export default function Group() {
     const { user } = useUser();
     const { groupId } = useParams();
 
-    const [group, setGroup] = useState();
+    const [group, setGroup] = useState([]);
     const [posts, setPosts] = useState([]);
     const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
-
-    console.log("posts",posts);
 
     useEffect(() => {
       try {
@@ -119,68 +113,34 @@ export default function Group() {
     }, []);
 
     return ( group ?
-        <div>
-            <div className="bg-white relative justify-center h-c18">
-                <GroupHeader title={group.name} profile={group.profile} cover={group.cover}/>
-            </div>
-
-            {/* body */}
-            <div className="2xl:flex sm:flex md:flex lg:flex xl:flex md:flex">
-
-                {/* sideBar */}
-                <div className="mt-c24 ml-c3 2xl:w-c22 md:w-c17">
-
-                    {/* admin */}
-                    <Admin/>
-
-                    {/* description */}
-                    <Description about={group.about}/>
-
-                    {/* top members */}
-                    <TopMembers/>
-
-                    {/* suggested */}
-                    {
-                  groupData.map((data, index) => {
-                    return(
-                      <Link
-                        key={index}
-                        to={{
-                          pathname: `/group/view/${data.id}`
-                        }}
-                      >
-                    <Suggest
-                      item={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    />
-                  </Link>
-                    )
-                  })
-                }
+      <div>
+        <div className="hidden ph:block bg-white items-center relative pl-c6">
+          <span className="icon-fi-rs-back text-20px cursour-pointer"/>
+          <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
+        </div>
+              <GroupHeader title={group.name} profile={group.profile} cover={group.cover}/>
+              {/* header */}
+              {/*<div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
+                <img
+                  alt={user.sysUser.nickname}
+                  src={Dummy.img("200x200")}
+                  className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
+                />
+                <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
+                  <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
                 </div>
+                <div className="flex ml-b5 cursor-pointer">
+                  <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
+                  <p className="text-15px text-caak-blue">Зураг/Видео</p>
+                </div>
+                <div className="flex items-center  ml-b5 cursor-pointer">
+                  <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
+                  <p className="text-15px text-caak-blue">Линк</p>
+                </div>
+              </div> */}
 
                 {/* post */}
-                <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
-
-                    {/* header */}
-                    {/* <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
-                      <img
-                        alt={user.sysUser.nickname}
-                        src={Dummy.img("200x200")}
-                        className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
-                      />
-                        <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
-                            <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
-                        </div>
-                        <div className="flex ml-b5 cursor-pointer">
-                            <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
-                            <p className="text-15px text-caak-blue">Зураг/Видео</p>
-                        </div>
-                        <div className="flex items-center  ml-b5 cursor-pointer">
-                            <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
-                            <p className="text-15px text-caak-blue">Линк</p>
-                        </div>
-                    </div> */}
+                <div className="grid justify-center">
 
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
@@ -189,15 +149,15 @@ export default function Group() {
                             <Button className="text-15px font-bold w-c7 h-c32 text-caak-generalblack flex justify-center items-center mr-a1 rounded-lg bg-transparent hover:bg-caak-titaniumwhite">Шинэ</Button>
                             <Button className="text-15px font-bold w-c7 h-c32 text-caak-generalblack flex justify-center items-center rounded-lg bg-transparent hover:bg-caak-titaniumwhite">Шилдэг</Button>
                         </div>
-                        <select className="text-15px text-caak-generalblack font-semibold cursor-pointer border-0 bg-transparent">
+                        {/*<select className="text-15px text-caak-generalblack font-semibold cursor-pointer border-0 bg-transparent">
                             <option>Шинэ фостууд</option>
                             <option>Тйреырбйыр</option>
                             <option>йыөүйзшыбаөүк</option>
-                        </select>
+                          </select>*/}
                     </div>
 
                     {/* contents */}
-                    <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
+                    <div style={{marginTop: "15px"}} className="grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
                       {posts.map((data, index) => {
                         return (
                           <Link
@@ -210,20 +170,18 @@ export default function Group() {
                             <Card
                               video={data.items.items[0].file.type.startsWith("video")}
                               post={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4"
+                              className="ph:mb-4 sm:mb-4 ph:mb-4"
                             />
                           </Link>
                         );
                       })}
                     </div>
-                   
+                      <Loader
+                        className={`bg-caak-primary ${
+                          isFetching ? "opacity-100" : "opacity-0"
+                          }`}
+                      />
                 </div>
-                <Loader
-              className={`bg-caak-primary ${
-                isFetching ? "opacity-100" : "opacity-0"
-              }`}
-            />
-            </div>
         </div> 
           : 
         null
