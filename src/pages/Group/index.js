@@ -17,6 +17,7 @@ import Loader from '../../components/loader'
 import { listGroupsForAddPost, getGroupView } from '../../graphql-custom/group/queries'
 import GroupHeader from './GroupHeader'
 import Dummy from "dummyjs"
+import { getGroupUserRole } from '../../graphql-custom/GroupUsers/queries'
 
 export default function Group() {
     
@@ -28,6 +29,8 @@ export default function Group() {
     const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
+    const [isFetching, setIsFetching] = useInfiniteScroll(() => {});
+    const [userRole, setUserRole ] = useState("")
 
     console.log("posts",posts);
 
@@ -42,6 +45,41 @@ export default function Group() {
         console.log(ex);
       }
     }, [groupId]);
+
+    useEffect(() => {
+      if (!isFetching) return;
+      fetchMoreListItems();
+      // eslint-disable-next-line
+    }, [isFetching]);
+
+    useEffect(() => {
+      if (checkUser(user)) {
+        listGroups();
+      }
+        fetchPosts();
+        setIsFetching(fetchMoreListItems)
+        // eslint-disable-next-line
+      }, []);
+  
+      useEffect(() => {
+          if(checkUser(user)){
+            console.log("USER EFFECT")
+            fetchtGroupUserRole()
+          }
+          // eslint-disable-next-line
+      }, [user]);
+  
+    const fetchtGroupUserRole = async () => {
+      try {
+        let resp = await API.graphql(graphqlOperation(getGroupUserRole, {
+          user_id: user.sysUser.id,
+          group_id: groupId
+        }));
+        setUserRole(resp.data.getGroupUsers.role)
+      } catch (ex) {
+        console.log(ex);
+      }
+    };
 
     const listGroups = async () => {
       try {
@@ -72,14 +110,6 @@ export default function Group() {
       console.log(ex);
     }
   };
-
-    const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-  
-    useEffect(() => {
-      if (!isFetching) return;
-      fetchMoreListItems();
-      // eslint-disable-next-line
-    }, [isFetching]);
   
     const fetchPosts = async () => {
       try {
@@ -109,19 +139,11 @@ export default function Group() {
         console.log(ex);
       }
     };
-  
-    useEffect(() => {
-    if (checkUser(user)) {
-      listGroups();
-    }
-      fetchPosts();
-      // eslint-disable-next-line
-    }, []);
 
     return ( group ?
         <div>
             <div className="bg-white relative justify-center h-c18">
-                <GroupHeader title={group.name} profile={group.profile} cover={group.cover}/>
+                <GroupHeader group={group}/>
             </div>
 
             {/* body */}
@@ -131,36 +153,38 @@ export default function Group() {
                 <div className="mt-c24 ml-c3 2xl:w-c22 md:w-c17">
 
                     {/* admin */}
-                    <Admin/>
+                    {/* { (userRole == "ADMIN" || userRole == "MODERATOR") ? */}
+                        <Admin userRole={userRole} /> : null
+                    {/* } */}
 
                     {/* description */}
                     <Description about={group.about}/>
 
                     {/* top members */}
-                    <TopMembers/>
+                    {/* <TopMembers/> */}
 
                     {/* suggested */}
-                    {
-                  groupData.map((data, index) => {
-                    return(
-                      <Link
-                        key={index}
-                        to={{
-                          pathname: `/group/view/${data.id}`
-                        }}
-                      >
-                    <Suggest
-                      item={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    />
-                  </Link>
-                    )
-                  })
-                }
+                    {/* {
+                      groupData.map((data, index) => {
+                        return(
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/group/view/${data.id}`
+                            }}
+                          >
+                        <Suggest
+                          item={data}
+                          className="ph:mb-4 sm:mb-4 btn:mb-4"
+                        />
+                      </Link>
+                        )
+                      })
+                    } */}
                 </div>
 
                 {/* post */}
-                <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
+                <div className="flex flex-col w-full items-left sm:justify-center md:justify-center xl:justify-start xl:content-start">
 
                     {/* header */}
                     {/* <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5">
@@ -197,30 +221,32 @@ export default function Group() {
                     </div>
 
                     {/* contents */}
-                    <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
-                      {posts.map((data, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/post/view/${data.id}`,
-                              state: { background: location },
-                            }}
-                          >
-                            <Card
-                              video={data.items.items[0].file.type.startsWith("video")}
-                              post={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4"
-                            />
-                          </Link>
-                        );
-                      })}
+                    <div className="flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start">
+                      <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+                        {posts.map((data, index) => {
+                          return (
+                            <Link
+                              key={index}
+                              to={{
+                                pathname: `/post/view/${data.id}`,
+                                state: { background: location },
+                              }}
+                            >
+                              <Card
+                                video={data.items.items[0].file.type.startsWith("video")}
+                                post={data}
+                                className="ph:mb-4 sm:mb-4 btn:mb-4"
+                              />
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
                     <Loader
-              className={`bg-caak-primary ${
-                isFetching ? "opacity-100" : "opacity-0"
-              }`}
-            />
+                      className={`bg-caak-primary ${
+                        isFetching ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
                 </div>
             </div>
         </div> 
