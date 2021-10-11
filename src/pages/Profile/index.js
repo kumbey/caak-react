@@ -1,15 +1,101 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '../../components/button'
 import Card from '../../components/card'
-import TopMembers from '../../components/Sidebar/TopMembers'
-import Suggest from '../../components/Sidebar/Suggest'
-import { useHistory } from 'react-router'
+import { useHistory, useLocation } from 'react-router'
+import { graphqlOperation } from '@aws-amplify/api-graphql'
+import { getPostByStatus } from '../../graphql-custom/post/queries'
+import { checkUser } from '../../Utility/Util'
+import API from '@aws-amplify/api'
+import { useUser } from '../../context/userContext'
+import useInfiniteScroll from '../Home/useFetch'
+import { Link } from 'react-router-dom'
+import { listGroupsForAddPost } from '../../graphql-custom/group/queries'
+import Loader from '../../components/loader'
 
 export default function Profile() {
 
     const history = useHistory();
+    const { user } = useUser();
 
-    const [data] = useState(new Array(9).fill(""))
+    const [posts, setPosts] = useState([]);
+    const [groupData, setGroupData] = useState([]);
+    const [nextToken, setNextToken] = useState();
+    const location = useLocation();
+    const [isFetching, setIsFetching] = useInfiniteScroll(() => {});
+
+    useEffect(() => {
+      if (!isFetching) return;
+      fetchMoreListItems();
+      // eslint-disable-next-line
+    }, [isFetching]);
+
+    useEffect(() => {
+      if (checkUser(user)) {
+        listGroups();
+      }
+        fetchPosts();
+        setIsFetching(fetchMoreListItems)
+        // eslint-disable-next-line
+      }, []);
+
+    const listGroups = async () => {
+      try {
+        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+        setGroupData(resp.data.listGroups.items);
+      } catch (ex) {
+        console.log(ex);
+      }
+    };
+
+   const fetchMoreListItems = async () => {
+    try {
+      setIsFetching(true);
+      if (nextToken !== null) {
+        let resp = await API.graphql(
+          graphqlOperation(getPostByStatus, {
+            limit: 2,
+            nextToken,
+            status: "PENDING",
+          })
+        );
+        setNextToken(resp.data.getPostByStatus.nextToken);
+        setPosts([...posts, ...resp.data.getPostByStatus.items]);
+        setIsFetching(false);
+      }
+      setIsFetching(false);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+  
+    const fetchPosts = async () => {
+      try {
+        let resp = [];
+        if (checkUser(user)) {
+          resp = await API.graphql(
+            graphqlOperation(getPostByStatus, {
+              sortDirection: "DESC",
+              status: "PENDING",
+              limit: 6,
+            })
+          );
+          setNextToken(resp.data.getPostByStatus.nextToken);
+        } else {
+          resp = await API.graphql({
+            query: getPostByStatus,
+            variables: {
+              sortDirection: "DESC",
+              status: "PENDING"
+            },
+            authMode: "AWS_IAM",
+          });
+        }
+        setPosts(resp.data.getPostByStatus.items);
+        console.log(posts)
+      } catch (ex) {
+        console.log(ex);
+      }
+    }
 
     return (
         <div>
@@ -48,18 +134,18 @@ export default function Profile() {
             {/* body */}
             <div className="2xl:flex sm:flex md:flex lg:flex xl:flex md:flex">
 
-                {/* sideBar */}
-                <div className="mt-b5 ml-c3 2xl:w-c22 md:w-c17">
+                
+                {/*<div className="mt-b5 ml-c3 2xl:w-c22 md:w-c17">
 
-                    {/* suggested */}
+                    
                     <Suggest title={"Миний үүсгэсэн группууд"} className="text-caak-darkBlue text-15px font-medium"/>
 
-                    {/* top members */}
+                    
                     <TopMembers title={"Миний найзууд"} className="text-caak-darkBlue text-15px font-medium"/>
 
-                    {/* suggested */}
+                    
                     <Suggest title={"Миний элссэн группууд"} className="text-caak-darkBlue text-15px font-medium"/>
-                </div>
+                </div>*/}
 
                 {/* post */}
                 <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18  lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1 ">
@@ -79,13 +165,28 @@ export default function Profile() {
 
                     {/* contents */}
                     <div className="2xl:grid 2xl:grid-cols-3 xl:grid xl:grid-cols-3 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4">
-                        {
-                            data.map((data, index) => {
-                                return(
-                                    <Card key={index}/>
-                                )
-                            })
-                        }
+                    {posts.map((data, index) => {
+                return (
+                  <Link
+                    key={index}
+                    to={{
+                      pathname: `/post/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <Card
+                      video={data.items.items[0].file.type.startsWith("video")}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
+                    />
+                  </Link>
+                );
+              })}
+              <Loader
+                      className={`bg-caak-primary ${
+                        isFetching ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
                     </div>
                 </div>
             </div>

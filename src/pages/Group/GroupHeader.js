@@ -4,7 +4,7 @@ import { generateFileUrl } from "../../Utility/Util";
 export default function GroupHeader({group}) {
 
     const totalMembers = () => {
-        return parseInt(group.totals.admin) + parseInt(group.totals.moderator) + parseInt(group.totals.moderator);
+       
     }
 
     return (
@@ -42,7 +42,7 @@ export default function GroupHeader({group}) {
                             </Button>
                         </div>
                 </div>
-                <div className="flex ph:grid items-end">
+                <div className="flex items-end ph:hidden">
                     <Button className="ph:mb-b1 h-c13 text-15px rounded rounded-lg bg-caak-titaniumwhite text-caak-generalblack"> 
                         <span className="icon-fi-rs-check text-12px mr-a1"/>
                         {group.followed ? `Нэгдсэн`:`Нэгдэх` }
