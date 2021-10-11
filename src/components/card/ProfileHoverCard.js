@@ -13,8 +13,8 @@ export default function ProfileHoverCard({ setHover, postUser }) {
   const [doRender, setDoRender] = useState(0);
 
   useEffect(() => {
-    console.log("FOLLOW: ", postUser.followed);
-  }, [postUser.followed]);
+    console.log("FOLLOW: ", postUser.followed, doRender);
+  }, [postUser.followed, doRender]);
 
   const createFollowUser = async () => {
     await API.graphql({
@@ -69,7 +69,6 @@ export default function ProfileHoverCard({ setHover, postUser }) {
         {checkUser(user) && user.sysUser.id !== postUser.id ? (
           <Button
             className="text-15px w-c19 h-c24 font-bold"
-            // disabled={postUser.followed}
             onClick={handleClick}
           >
             {postUser.followed ? "Дагасан" : "Дагах"}
@@ -85,7 +84,7 @@ export default function ProfileHoverCard({ setHover, postUser }) {
       </div>
       <div className=" pr-14 flex flex-row items-center justify-between">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
-          <p className="text-18px mr-1 font-medium">{postUser.aura.point}</p>
+          <p className="text-18px mr-1 font-medium">{postUser.aura}</p>
           <p className="text-15px text-caak-darkBlue font-roboto font-light">
             Аура
           </p>

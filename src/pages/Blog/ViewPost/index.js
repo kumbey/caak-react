@@ -55,12 +55,17 @@ const ViewPost = () => {
       allowScroll();
     };
   }, [allowScroll, blockScroll]);
+
   const createPostView = async () => {
-    await API.graphql(
-      graphqlOperation(createPostViews, {
-        input: { post_id: post.id, user_id: user.sysUser.id },
-      })
-    );
+    try {
+      await API.graphql(
+        graphqlOperation(createPostViews, {
+          input: { post_id: post.id, user_id: user.sysUser.id },
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     if (checkUser(user)) {
