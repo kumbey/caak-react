@@ -2,16 +2,25 @@ import { menu_data } from "../menu_data";
 import Button from "../button";
 import { useWrapper } from "../../context/wrapperContext";
 import { useHistory, useLocation } from "react-router-dom";
+import { useUser } from "../../context/userContext";
+import { checkUser, useClickOutSide } from "../../Utility/Util";
 
 const MobileMenu = () => {
+  const { user } = useUser();
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
   const history = useHistory();
   const location = useLocation();
+  const sideMenuRef = useClickOutSide(() => {
+    setIsMobileMenuOpen(false);
+  });
   return (
     <div
+      ref={sideMenuRef}
       onClick={() => setIsMobileMenuOpen(false)}
-      className={`z-50 w-full bg-black bg-opacity-50 flex justify-end fixed right-0 top-0 transition ease-linear ${
-        isMobileMenuOpen ? "block" : "hidden"
+      className={`w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
+        isMobileMenuOpen
+          ? "transform translate-x-0"
+          : "transform translate-x-full"
       }`}
       id="mobile-menu"
     >
@@ -21,10 +30,16 @@ const MobileMenu = () => {
       >
         <div
           className={
-            "text-20px text-caak-generalblack font-medium py-2.5 px-5 border-t border-b border-gray-100"
+            "relative text-20px text-caak-generalblack font-medium py-2.5 px-5 border-t border-b border-gray-100"
           }
         >
           Туслах цэс
+          <span
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={
+              "cursor-pointer text-16px absolute right-0 top-1/2 transform -translate-y-1/2 icon-fi-rs-close"
+            }
+          />
         </div>
         <div className={`relative p-2`}>
           {menu_data.map((item) => (
@@ -39,34 +54,36 @@ const MobileMenu = () => {
             </a>
           ))}
         </div>
-        <div className={"flex flex-col"}>
-          <Button
-            round
-            className={"ml-2 mb-2 h-12"}
-            skin={"secondary"}
-            onClick={() =>
-              history.push({
-                pathname: "/login",
-                state: { background: location },
-              })
-            }
-          >
-            Нэвтрэх
-          </Button>
-          <Button
-            round
-            className={"ml-2 h-12"}
-            skin={"primary"}
-            onClick={() =>
-              history.push({
-                pathname: "/register",
-                state: { background: location },
-              })
-            }
-          >
-            Бүртгэл үүсгэх
-          </Button>
-        </div>
+        {!checkUser(user) && (
+          <div className={"flex flex-col"}>
+            <Button
+              round
+              className={"ml-2 mb-2 h-12"}
+              skin={"secondary"}
+              onClick={() =>
+                history.push({
+                  pathname: "/login",
+                  state: { background: location },
+                })
+              }
+            >
+              Нэвтрэх
+            </Button>
+            <Button
+              round
+              className={"ml-2 h-12"}
+              skin={"primary"}
+              onClick={() =>
+                history.push({
+                  pathname: "/register",
+                  state: { background: location },
+                })
+              }
+            >
+              Бүртгэл үүсгэх
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

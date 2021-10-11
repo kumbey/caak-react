@@ -33,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                  id: 3,
-                                                                                                  type: "Бүлгүүд",
-                                                                                                  icon: "icon-fi-rs-group",
-                                                                                                },
-                                                                                                {
-                                                                                                  id: 4,
-                                                                                                  type: "Дагасан найзууд",
-                                                                                                  icon: "icon-fi-rs-following",
-                                                                                                },*/
+                                                                                                          id: 3,
+                                                                                                          type: "Бүлгүүд",
+                                                                                                          icon: "icon-fi-rs-group",
+                                                                                                        },
+                                                                                                        {
+                                                                                                          id: 4,
+                                                                                                          type: "Дагасан найзууд",
+                                                                                                          icon: "icon-fi-rs-following",
+                                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
@@ -251,6 +251,35 @@ const Feed = () => {
             </div>
           </aside>
           <div className={"w-full flex flex-col justify-center"}>
+            <div
+              className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
+            >
+              {feedType.map(({ icon, active, type, id }) => {
+                return (
+                  <Button
+                    key={id}
+                    onClick={() => setActiveIndex(id)}
+                    className={`h-8 w-auto mr-2 ${
+                      id === activeIndex
+                        ? "white shadow-button mb-2"
+                        : "transparent mb-2"
+                    }`}
+                    iconPosition={"left"}
+                    icon={
+                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                        <i
+                          className={`${icon}${
+                            id === activeIndex ? "" : "-o"
+                          } text-19px ph:text-15px`}
+                        />
+                      </div>
+                    }
+                  >
+                    <p className="text-16px ph:text-15px font-bold">{type}</p>
+                  </Button>
+                );
+              })}
+            </div>
             <div
               className={
                 "grid-container justify-center md:justify-center lg:justify-start"
