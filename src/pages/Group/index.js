@@ -13,7 +13,6 @@ import Loader from '../../components/loader'
 import { listGroupsForAddPost, getGroupView } from '../../graphql-custom/group/queries'
 import GroupHeader from './GroupHeader'
 import Dummy from "dummyjs"
-import { getGroupUserRole } from '../../graphql-custom/GroupUsers/queries'
 
 export default function Group() {
     
@@ -112,20 +111,19 @@ export default function Group() {
         console.log(ex);
       }
     };
-
     return ( group ?
         <div>
           <div className="hidden ph:block bg-white items-center relative pl-c6">
             <span className="icon-fi-rs-back text-20px cursour-pointer"/>
             <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
           </div>
-                <GroupHeader group={group}/>
+            <GroupHeader group={group}/>
 
                 {/* post */}
-                <div className="grid justify-center">
+                <div className="ph:flex ph:flex-col ph:items-center grid justify-center">
 
                     {/* header */}
-                      <div className="bg-white h-c29 rounded rounded-lg flex items-center justify-between pr-b5 mt-c6">
+                      <div className="bg-white ph:hidden h-c29 rounded rounded-lg flex items-center justify-between pr-b5 mt-c6">
                         <img
                           alt={user.sysUser.nickname}
                           src={Dummy.img("200x200")}
@@ -142,7 +140,7 @@ export default function Group() {
                             <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
                             <p className="text-15px text-caak-blue">Линк</p>
                         </div>
-                    </div> 
+                      </div> 
 
                     {/* navigator */}
                     <div className="flex justify-between mt-c2 items-center">
@@ -159,7 +157,7 @@ export default function Group() {
                     </div>
 
                     {/* contents */}
-                    <div style={{marginTop: "15px"}} className="grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
+                    <div style={{marginTop: "15px"}} className="grid gap-5 grid-cols-1 justify-center md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
                       {posts.map((data, index) => {
                         return (
                           <Link
