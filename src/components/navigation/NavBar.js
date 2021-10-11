@@ -10,6 +10,7 @@ import { useUser } from "../../context/userContext";
 import { checkUser, useClickOutSide } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
 import NotificationDropDown from "./NotificationDropDown";
+import MobileMenu from "./MobileMenu";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,62 +29,31 @@ export default function NavBar() {
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
   });
-  
+
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
-
 
   return (
     <nav className="bg-white">
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
-          <div className="md:hidden lg:hidden flex">
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-caak-generalblack hover:text-white hover:bg-caak-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white inline-flex items-center justify-center p-2 rounded-md"
-            >
-              <span className="sr-only">Open main menu</span>
-              {isMobileMenuOpen ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
           <div className="flex flex-row items-center">
             <img className="w-auto h-10 mr-1" src={logo} alt="Caak Logo" />
           </div>
 
-          <div className="md:px-2 lg:px-4 xl:col-span-6 flex-1 max-w-xl min-w-0 px-1 py-4 mx-4">
+          <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
             <SearchInput hideLabel placeholder={"Хайлт хийх"} />
+          </div>
+          {/* Mobile menu button */}
+          <div className="md:hidden lg:hidden flex">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
+            >
+              <span className="sr-only">Open main menu</span>
+              <span className={"icon-fi-sp-hamburger-menu"} />
+            </button>
           </div>
           <div
             className={
@@ -131,7 +101,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div
-                    ref={menuRef}
+                  ref={menuRef}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={"relative flex flex-row mr-6"}
                 >
@@ -196,7 +166,7 @@ export default function NavBar() {
               </div>
             )}
             {!checkUser(user) && (
-              <div ref={menuRef} className={"relative"} >
+              <div ref={menuRef} className={"relative"}>
                 <Button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                   skin="secondary"
@@ -229,74 +199,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <div  
-        className={`bg-gray-100 flex justify-end ${
-          isMobileMenuOpen ? "block" : "hidden"
-        }`}
-        id="mobile-menu"
-      >
-        <div className="flex flex-col px-2 pb-3 h-screen">
-          <div>
-              {menu_data.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="hover:bg-gray-50 flex flex-row items-center px-4 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
-                >
-                  {item.image}
-
-                  <p className="text-base font-medium text-gray-900">
-                    {item.name}
-                  </p>
-                </a>
-              ))}
-          </div>
-          <div className={"flex flex-col"}>
-            <Button
-              round
-              className={"ml-2"}
-              skin={"secondary"}
-              onClick={() =>
-                history.push({
-                  pathname: "/login",
-                  state: { background: location },
-                })
-              }
-            >
-              Нэвтрэх
-            </Button>
-            <Button
-              round
-              className={"ml-2"}
-              skin={"primary"}
-              onClick={() =>
-                history.push({
-                  pathname: "/register",
-                  state: { background: location },
-                })
-              }
-            >
-              Бүртгэл үүсгэх
-            </Button>
-          </div>
-
-          <div className={`relative`}>
-            {menu_data.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="hover:bg-gray-50 flex flex-row items-center px-4 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
-              >
-                {item.image}
-
-                <p className="text-base font-medium text-gray-900">
-                  {item.name}
-                </p>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+      <MobileMenu />
     </nav>
   );
 }
