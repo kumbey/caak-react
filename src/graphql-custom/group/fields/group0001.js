@@ -11,6 +11,15 @@ const group0001 = /* GraphQL */ `{
     founder_id
     founder ${user0001}
     rating
+    followed
+    totals{
+        admin
+        confirmed
+        member
+        pending
+        unseen
+        moderator
+    }
 }`
 
 export default group0001
