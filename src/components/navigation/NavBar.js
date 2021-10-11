@@ -11,10 +11,11 @@ import { checkUser, useClickOutSide } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
 import NotificationDropDown from "./NotificationDropDown";
 import MobileMenu from "./MobileMenu";
+import { useWrapper } from "../../context/wrapperContext";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
 
   const { user } = useUser();
   const history = useHistory();
