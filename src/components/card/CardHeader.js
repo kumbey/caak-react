@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-
-import { useState } from "react";
-import { generateTimeAgo, getFileUrl } from "../../Utility/Util";
+import React, { useState } from "react";
+import {
+  generateTimeAgo,
+  getFileUrl,
+  useClickOutSide,
+} from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
-import { useClickOutSide } from "../../Utility/Util";
 import PostMore from "./PostMore";
 import Dummy from "dummyjs";
+import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "./ProfileHoverCard";
 
 const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
-  const [hover, setHover] = useState(false);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -20,12 +20,6 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div className="h-14 relative flex items-center justify-between px-4">
-      {hover && (
-        <ProfileHoverCard
-          setHover={() => setHover(false)}
-          postUser={postUser}
-        />
-      )}
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
           <img
@@ -61,13 +55,13 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
           </div>
 
           <div className={"flex flex-row   items-center"}>
-            <p
-              onMouseEnter={(e) => setHover(true)}
-              className="hover:underline text-generalblack text-12px cursor-pointer"
-            >
-              @{postUser.nickname}
-            </p>
-
+            <Tooltip content={<ProfileHoverCard postUser={postUser}/>}>
+              <p
+                className="hover:underline text-generalblack text-12px cursor-pointer"
+              >
+                @{postUser.nickname}
+              </p>
+            </Tooltip>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
               {generateTimeAgo(updatedAt)}

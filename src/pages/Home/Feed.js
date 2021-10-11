@@ -6,14 +6,13 @@ import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
 import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import { generateFileUrl } from "../../Utility/Util";
 
 const Feed = () => {
   const feedType = [
@@ -33,15 +32,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                          id: 3,
-                                                                                          type: "Бүлгүүд",
-                                                                                          icon: "icon-fi-rs-group",
-                                                                                        },
-                                                                                        {
-                                                                                          id: 4,
-                                                                                          type: "Дагасан найзууд",
-                                                                                          icon: "icon-fi-rs-following",
-                                                                                        },*/
+                                                                                                  id: 3,
+                                                                                                  type: "Бүлгүүд",
+                                                                                                  icon: "icon-fi-rs-group",
+                                                                                                },
+                                                                                                {
+                                                                                                  id: 4,
+                                                                                                  type: "Дагасан найзууд",
+                                                                                                  icon: "icon-fi-rs-following",
+                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -49,12 +48,11 @@ const Feed = () => {
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
   const [nextToken, setNextToken] = useState();
-  const location = useLocation();
 
   const listGroups = async () => {
     try {
-        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-        setGroupData(resp.data.listGroups.items);
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
+      setGroupData(resp.data.listGroups.items);
     } catch (ex) {
       console.log(ex);
     }
@@ -105,13 +103,13 @@ const Feed = () => {
           query: getPostByStatus,
           variables: {
             sortDirection: "DESC",
-            status: "PENDING"
+            status: "PENDING",
           },
           authMode: "AWS_IAM",
         });
       }
       setPosts(resp.data.getPostByStatus.items);
-      console.log(posts)
+      console.log(posts);
     } catch (ex) {
       console.log(ex);
     }
@@ -120,27 +118,26 @@ const Feed = () => {
   const subscriptions = () => {
     API.graphql({
       query: onPostStatusUpdate,
-    })
-    .subscribe({
-      next: data => {
-        console.log('data: ', data)
-      }
-    })
-  }
+    }).subscribe({
+      next: (data) => {
+        console.log("data: ", data);
+      },
+    });
+  };
 
   useEffect(() => {
     fetchPosts();
     subscriptions();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
     }
-      fetchPosts();
-      // eslint-disable-next-line
-    }, []);
+    fetchPosts();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -150,7 +147,11 @@ const Feed = () => {
             user ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between`}
         >
-          <aside className={"hidden md:flex flex flex-col w-2/6 sticky top-0"}>
+          <aside
+            className={`hidden md:flex flex flex-col w-2/6 ${
+              user && "sticky top-0"
+            }`}
+          >
             <div
               className={`flex ${
                 user ? "flex-col" : "flex-row w-full"
@@ -194,7 +195,9 @@ const Feed = () => {
                     <div
                       key={index}
                       // onClick={() => onSelect(item)}
-                      className={"flex flex-col cursor-pointer w-max cursor-pointer"}
+                      className={
+                        "flex flex-col cursor-pointer w-max cursor-pointer"
+                      }
                     >
                       <div
                         className={
@@ -224,51 +227,44 @@ const Feed = () => {
                 </span>
               </div>
               <div className={"px-2 pb-5"}>
-                {
-                  groupData.map((data, index) => {
-                    return(
-                      <Link
-                        key={index}
-                        to={{
-                          pathname: `/group/view/${data.id}`
-                        }}
-                      >
-                    <Suggest
-                      item={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    />
-                  </Link>
-                    )
-                  })
-                }
+                {groupData.map((data, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      to={{
+                        pathname: `/group/view/${data.id}`,
+                      }}
+                    >
+                      <Suggest
+                        item={data}
+                        className="ph:mb-4 sm:mb-4 btn:mb-4"
+                      />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </aside>
-          <div
-            className={
-              "flex flex-col w-full items-center sm:justify-center md:justify-center xl:justify-start xl:content-start"
-            }
-          >
-            <div className="2xl:grid-cols-3 xl:grid xl:grid-cols-2 sm:grid sm:grid-cols-1 md:grid md:grid-cols-2 gap-c11 mt-b4 ph:mt-0 mb-b4">
+          <div className={"w-full flex flex-col justify-center"}>
+            <div
+              className={
+                "grid-container justify-center md:justify-center lg:justify-start"
+              }
+            >
               {posts.map((data, index) => {
                 return (
-                  <Link
+                  <Card
                     key={index}
-                    to={{
-                      pathname: `/post/view/${data.id}`,
-                      state: { background: location },
-                    }}
-                  >
-                    <Card
-                      video={data.items.items[0].file.type.startsWith("video")}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    />
-                  </Link>
+                    video={data.items.items[0].file.type.startsWith("video")}
+                    post={data}
+                    // className="ph:mb-4 sm:mb-4 btn:mb-4"
+                    className="inline-block"
+                  />
                 );
               })}
             </div>
             <Loader
+              containerClassName={"self-center"}
               className={`bg-caak-primary ${
                 isFetching ? "opacity-100" : "opacity-0"
               }`}
@@ -276,7 +272,7 @@ const Feed = () => {
           </div>
         </div>
       </div>
-      <footer className={`block md:hidden sticky bottom-0`}>
+      <footer className={`block md:hidden sticky bottom-0 z-10`}>
         <BottomTabs />
       </footer>
     </div>
