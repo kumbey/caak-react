@@ -184,6 +184,7 @@ module.exports = {
         cc: "450px",
         iw: "550x",
         ih: "546px",
+        cl: "608px",
         sp: "220px",
         ck: "740px",
         cg: "854px",
