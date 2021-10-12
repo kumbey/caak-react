@@ -7,7 +7,7 @@ const DropZoneWithCaption = ({
 }) => {
 
   const onChangeText = (e) => {
-
+      setPost({...post, title: e.target.value})
   }
 
   return (

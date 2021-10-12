@@ -5,7 +5,7 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import { closeModal, removeKeyFromObj } from "../../../Utility/Util";
+import { closeModal, getReturnData, removeKeyFromObj } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
 import { useUser } from "../../../context/userContext";
@@ -15,6 +15,8 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
 import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
+import { createPostItems, deletePostItems, updatePostItems } from "../../../graphql-custom/postItems/mutation";
+import { createPostHistory } from "../../../graphql-custom/postHistory/mutation";
 
 const AddPost = () => {
   const history = useHistory();
@@ -29,6 +31,7 @@ const AddPost = () => {
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [groupData, setGroupData] = useState([]);
+  const [permissionDenied, setPermissionDenied] = useState(true)
 
   const [post, setPost] = useState({
     id: postId,
@@ -40,11 +43,16 @@ const AddPost = () => {
     category_id: "",
     items: [],
   });
+  const [oldPost, setOldPost] = useState({
+    items: []
+  })
 
   useEffect(() => {
     getGroups();
     if (postId !== "new") {
       loadPost(postId);
+    }else{
+      setPermissionDenied(false)
     }
 
     // eslint-disable-next-line
@@ -80,9 +88,13 @@ const AddPost = () => {
   const loadPost = async (id) => {
     try {
       let resp = await API.graphql(graphqlOperation(getPost, { id: id }));
-      let { items, ...data } = resp.data.getPost;
-      setSelectedGroupId(data.group_id);
-      setPost({ ...data, items: items.items });
+      let { items, ...data }  = resp.data.getPost;
+      if(data.user_id == user.sysUser.id){
+        setPermissionDenied(false)
+        setSelectedGroupId(data.group_id);
+        setPost({...data, items: items.items});
+        setOldPost({...data, items: items.items})
+      }
     } catch (ex) {
       console.log(ex);
     }
@@ -91,38 +103,62 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-
       for (let i = 0; i < post.items.length; i++) {
         let item = post.items[i];
-
         if (!item.id) {
           let resp = await ApiFileUpload(item.file);
           item.file = resp;
         }
       }
 
-      let postData = { ...post };
-      postData.group_id = selectedGroup.id;
+      const {items, ...postData} = {...post}
+      postData.group_id = selectedGroup.id
       postData.category_id = selectedGroup.category_id;
+      postData.status = "PENDING"
 
-      let postItems = [];
-      for (let i = 0; i < postData.items.length; i++) {
-        let item = postData.items[i];
+      const oldItems = [...oldPost.items]
 
-        postItems.push({
-          title: item.title,
-          file_id: item.file.id,
-          order: i,
-        });
-      }
+      let returnPost = {}
 
-      postData.items = postItems;
       if (postData.id === "new") {
         removeKeyFromObj(postData, ["id"]);
-        await API.graphql(graphqlOperation(createPost, { input: postData }));
+        postData.updated_user_id = user.sysUser.id
+        postData.user_id = user.sysUser.id
+        returnPost = await API.graphql(graphqlOperation(createPost, { input: postData }));
+        returnPost = getReturnData(returnPost)
       } else {
-        await API.graphql(graphqlOperation(updatePost, { input: postData }));
+        await API.graphql(graphqlOperation(createPostHistory, { input: {
+          post_id: oldPost.id,
+          post: JSON.stringify(oldPost)
+        } }));
+        postData.updated_user_id = user.sysUser.id
+        returnPost = await API.graphql(graphqlOperation(updatePost, { input: postData }));
+        returnPost = getReturnData(returnPost)
       }
+
+      console.log(returnPost)
+
+      //DELETE OLD ITEMS
+      for (let i = 0; i < oldItems.length; i++) {
+          let oldItem = oldItems[i]
+          if(!items.find(item => item.id === oldItem.id)){
+              await API.graphql(graphqlOperation(deletePostItems, {input: {id: oldItem.id}}))
+          }
+      }
+
+      //CREATE UPDATE NEW ITEMS
+      for (let i = 0; i < items.length; i++) {
+        const {file , ...postItem} = items[i]
+        postItem.file_id = file.id
+        postItem.order = i
+        postItem.post_id = returnPost.id
+        if(postItem.id){
+          await API.graphql(graphqlOperation(updatePostItems, {input: postItem}))
+        }else{
+          await API.graphql(graphqlOperation(createPostItems, {input: postItem}))
+        }
+      }
+
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
@@ -131,7 +167,7 @@ const AddPost = () => {
     }
   };
 
-  return (
+  return ( !permissionDenied ? 
     <Backdrop>
       <div
         className={`flex justify-center items-center h-screen md:h-auto md:mt-10 h-full`}
@@ -271,7 +307,7 @@ const AddPost = () => {
           </div>
         </div>
       </div>
-    </Backdrop>
+    </Backdrop> : null
   );
 };
 export default AddPost;

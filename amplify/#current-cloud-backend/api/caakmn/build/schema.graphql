@@ -159,7 +159,7 @@ type PostItemsTotals @aws_iam @aws_cognito_user_pools {
 type PostHistory @aws_iam @aws_cognito_user_pools {
   id: ID!
   post_id: ID!
-  post: Post
+  post: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -372,6 +372,9 @@ type Mutation {
   createPostItems(input: CreatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
   updatePostItems(input: UpdatePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
   deletePostItems(input: DeletePostItemsInput!, condition: ModelPostItemsConditionInput): PostItems
+  createPostHistory(input: CreatePostHistoryInput!, condition: ModelPostHistoryConditionInput): PostHistory
+  updatePostHistory(input: UpdatePostHistoryInput!, condition: ModelPostHistoryConditionInput): PostHistory
+  deletePostHistory(input: DeletePostHistoryInput!, condition: ModelPostHistoryConditionInput): PostHistory
   createPostViews(input: CreatePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
   updatePostViews(input: UpdatePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
   deletePostViews(input: DeletePostViewsInput!, condition: ModelPostViewsConditionInput): PostViews
@@ -590,6 +593,9 @@ type Subscription {
   onCreatePostItems: PostItems @aws_subscribe(mutations: ["createPostItems"]) @aws_iam @aws_cognito_user_pools
   onUpdatePostItems: PostItems @aws_subscribe(mutations: ["updatePostItems"]) @aws_iam @aws_cognito_user_pools
   onDeletePostItems: PostItems @aws_subscribe(mutations: ["deletePostItems"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostHistory: PostHistory @aws_subscribe(mutations: ["createPostHistory"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostHistory: PostHistory @aws_subscribe(mutations: ["updatePostHistory"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostHistory: PostHistory @aws_subscribe(mutations: ["deletePostHistory"]) @aws_iam @aws_cognito_user_pools
   onCreatePostViews: PostViews @aws_subscribe(mutations: ["createPostViews"]) @aws_iam @aws_cognito_user_pools
   onUpdatePostViews: PostViews @aws_subscribe(mutations: ["updatePostViews"]) @aws_iam @aws_cognito_user_pools
   onDeletePostViews: PostViews @aws_subscribe(mutations: ["deletePostViews"]) @aws_iam @aws_cognito_user_pools
@@ -976,9 +982,34 @@ type ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools {
 input ModelPostHistoryFilterInput {
   id: ModelIDInput
   post_id: ModelIDInput
+  post: ModelStringInput
   and: [ModelPostHistoryFilterInput]
   or: [ModelPostHistoryFilterInput]
   not: ModelPostHistoryFilterInput
+}
+
+input CreatePostHistoryInput {
+  id: ID
+  post_id: ID!
+  post: String!
+}
+
+input UpdatePostHistoryInput {
+  id: ID!
+  post_id: ID
+  post: String
+}
+
+input DeletePostHistoryInput {
+  id: ID!
+}
+
+input ModelPostHistoryConditionInput {
+  post_id: ModelIDInput
+  post: ModelStringInput
+  and: [ModelPostHistoryConditionInput]
+  or: [ModelPostHistoryConditionInput]
+  not: ModelPostHistoryConditionInput
 }
 
 type ModelPostViewsConnection @aws_iam @aws_cognito_user_pools {

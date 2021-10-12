@@ -265,6 +265,12 @@ export function removeKeyFromObj(obj, removeKeys) {
   });
 }
 
+export function getReturnData(data){
+    let retData = data.data
+    retData = retData[Object.keys(retData)[0]]
+    return retData
+}
+
 const object = {
   useQuery,
   mailNumber,
@@ -279,6 +285,7 @@ const object = {
   checkUser,
   closeModal,
   getFileUrl,
+  getReturnData
 };
 export default object;
 

@@ -54,8 +54,8 @@ const Feed = () => {
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
-      status: "PENDING",
-      limit: 6,
+      status: "CONFIRMED",
+      limit: 10,
     }
   })
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
@@ -253,6 +253,7 @@ const Feed = () => {
               }
             >
               {posts.map((data, index) => {
+                console.log(data)
                 return (
                   <Link
                     key={index}
