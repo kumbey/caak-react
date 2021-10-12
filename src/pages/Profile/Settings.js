@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
+import BottomTabs from "../Home/BottomTabs";
 
 const data = [
   {
@@ -280,6 +281,9 @@ export default function Settings() {
           </div>
         </div>
       </div>
+      <footer className={` block md:hidden sticky bottom-0 z-10`}>
+        <BottomTabs />
+      </footer>
     </div>
   );
 }
