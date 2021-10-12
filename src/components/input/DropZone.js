@@ -30,6 +30,7 @@ const DropZone = ({
         dropZoneFiles.map((file, index) => {
             let fileData = {
                 title: "",
+                post_id: post.id,
                 file: {
                   ext: getFileExt(file.name),
                   name: getFileName(file.name),

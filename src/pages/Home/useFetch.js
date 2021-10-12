@@ -2,8 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const useInfiniteScroll = (data, setData) => {
 
-  const [callback, setCallback] = useState(null)
-  const callbackRef = useRef(callback)
+  const callbackRef = useRef()
   const [curData, setCurData] = useState([])
 
   useEffect(() => {
@@ -13,7 +12,6 @@ const useInfiniteScroll = (data, setData) => {
 
   const _setCallback = (func) => {
     callbackRef.current = func
-    setCallback(func)
   }
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const useInfiniteScroll = (data, setData) => {
   const eventlistner = useCallback(() => {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
       if(callbackRef.current){
-        callbackRef.current(data, setCurData)
+        callbackRef.current(curData, setCurData)
       }
       return true
     }else{
