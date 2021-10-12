@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
 import BottomTabs from "../Home/BottomTabs";
+import { getUser } from "../../graphql-custom/user/queries";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { useParams } from "react-router";
+import Dummy from 'dummyjs'
 
 const data = [
   {
@@ -34,10 +39,22 @@ const data = [
 ];
 
 export default function Settings() {
+  const { userId } = useParams();
+  const [user, setUser] = useState();
+  console.log(user)
   const history = useHistory();
 
-  const image =
-    "https://64.media.tumblr.com/811c45f404aca73d87250678b55f1028/tumblr_pjbxaqvVYh1uhzhfj_400.jpg";
+  useEffect(() => {
+    try {
+      const getUserById = async (id) => {
+        const resp = await API.graphql(graphqlOperation(getUser, { id }));
+        setUser(resp.data.getUser);
+      };
+      getUserById(userId);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }, [userId]);
 
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -55,17 +72,18 @@ export default function Settings() {
           style={{
             marginLeft: "20px",
             marginRight: "8px",
-          }}
-          src={image}
+          }} 
+          data-dummy="200x200"
+          src={Dummy.img("200x200")}
         />
         <div className="sm:flex-row flex flex-col items-center">
           <p
             style={{ marginRight: "8px" }}
             className=" md:text-24px text-15px font-medium"
           >
-            Оюунэрдэнэ Батдорж
+            {user.firstname}
           </p>
-          <p className="text-13px md:text-18px">@oyunerdene</p>
+          <p className="text-13px md:text-18px">@{user.nickname}</p>
         </div>
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
