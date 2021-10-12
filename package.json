@@ -13,6 +13,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "@tippy.js/react": "^3.1.1",
     "aws-amplify": "^4.2.9",
     "aws-sdk": "^2.999.0",
     "cryptojs": "^2.5.3",
