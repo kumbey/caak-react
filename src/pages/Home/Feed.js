@@ -54,7 +54,7 @@ const Feed = () => {
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
-      status: "PENDING",
+      status: "CONFIRMED",
       limit: 6,
     }
   })
