@@ -92,9 +92,9 @@
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
           "s3Key": "amplify-builds/aura-46773666794f37626d49-build.zip"
         },
-        "totals": {
+        "triggerTotals": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/totals-706f644761576c754862-build.zip"
+          "s3Key": "amplify-builds/triggerTotals-346a546533514c614759-build.zip"
         }
       }
     }
