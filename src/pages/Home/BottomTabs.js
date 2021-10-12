@@ -12,8 +12,8 @@ export default function BottomTabs() {
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
   return (
     <div
-      style={{ height: "50px",zIndex: 100 }}
-      className="relative justify-evenly flex items-center w-full bg-white"
+      style={{ height: "50px" }}
+      className="z-2 justify-evenly relative flex items-center w-full bg-white"
     >
       <span className="icon-fi-sp-home-f text-caak-generalblack text-24px px-b5 py-a2 rounded-lg" />
       <span className="icon-fi-fi-sp-hamburger-menu text-caak-blue text-24px px-b5 py-a2 rounded-lg" />
@@ -28,7 +28,7 @@ export default function BottomTabs() {
       />
       <span
         onClick={() => setIsNotificationMenu(!isNotificationMenu)}
-        className="icon-fi-rs-notification text-22px text-caak-blue px-b5 py-a2 rounded-lg"
+        className={`${isNotificationMenu ? "icon-fi-rs-bookmark-f" : "icon-fi-rs-notification"} text-22px text-caak-blue px-b5 py-a2 rounded-lg`}
       />
       {checkUser(user) ? (
         <img
