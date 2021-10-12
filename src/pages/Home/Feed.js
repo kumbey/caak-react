@@ -34,15 +34,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                              id: 3,
-                                                                                                              type: "Бүлгүүд",
-                                                                                                              icon: "icon-fi-rs-group",
-                                                                                                            },
-                                                                                                            {
-                                                                                                              id: 4,
-                                                                                                              type: "Дагасан найзууд",
-                                                                                                              icon: "icon-fi-rs-following",
-                                                                                                            },*/
+                                                                                                                  id: 3,
+                                                                                                                  type: "Бүлгүүд",
+                                                                                                                  icon: "icon-fi-rs-group",
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  id: 4,
+                                                                                                                  type: "Дагасан найзууд",
+                                                                                                                  icon: "icon-fi-rs-following",
+                                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
@@ -254,19 +254,12 @@ const Feed = () => {
             >
               {posts.map((data, index) => {
                 return (
-                  <Link
+                  <Card
                     key={index}
-                    to={{
-                      pathname: `/post/view/${data.id}`,
-                      state: { background: location },
-                    }}
-                  >
-                    <Card
-                      video={data.items.items[0].file.type.startsWith("video")}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4"
-                    />
-                  </Link>
+                    video={data.items.items[0].file.type.startsWith("video")}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
                 );
               })}
             </div>
