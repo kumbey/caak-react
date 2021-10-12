@@ -4,7 +4,7 @@ import { generateFileUrl } from "../../Utility/Util";
 export default function GroupHeader({group}) {
 
     const totalMembers = () => {
-       
+        //return parseInt(group.totals.admin) + parseInt(group.totals.moderator) + parseInt(group.totals.moderator);
     }
 
     return (
@@ -14,11 +14,14 @@ export default function GroupHeader({group}) {
             {/* menu */}
             <div className="flex justify-between absolute xl:bottom-c6 bottom-a1 w-full 2xl:px-cf xl:px-ch lg:px-c12 md:px-c30">
                 <div className="flex ph:grid items-center w-full mx-c6">
-                    <img alt="" src={generateFileUrl(group.profile)} className="w-c19 h-c19 border-4 border-white bg-caak-red rounded-lg"/>
+                    <img alt="" src={generateFileUrl(group.profile)} className="w-c19 h-c19 border-4 border-white rounded-lg"/>
                         <div className="ml-c6 ph:ml-0">
-                            <p className="text-26px ph:text-22px font-bold">
-                                {group.name}
-                            </p>
+                            <div className="flex items-center">
+                                <p className="text-26px ph:text-22px font-bold">
+                                    {group.name}
+                                </p>
+                                <span className="icon-fi-rs-back text-12px ml-b3 transform rotate-180 ph:block hidden" />
+                            </div>
                             <div className="flex items-center ph:grid">
                                 <div className="flex items-center">
                                     <span className="icon-fi-rs-world text-16px text-caak-darkBlue flex"/>
@@ -37,7 +40,7 @@ export default function GroupHeader({group}) {
                             <Button className="w-full flex items-center bg-caak-bleudefrance">
                                 <span className="icon-fi-rs-add-group-f text-20px"/>
                                 <p className="text-16px font-medium ml-b3">
-                                Нэгдэх
+                                {group.followed ? `Нэгдсэн`:`Нэгдэх` }
                                 </p>
                             </Button>
                         </div>

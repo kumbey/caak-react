@@ -6,12 +6,11 @@ export default function Poster({user, updatedAt}) {
         <div className="flex items-center">
             <div className="flex items-center w-1/2">
                 <img
-                    style={{height: "32px", width: "32px"}}
-                    className="rounded-full"
+                    className="rounded-full w-8 h-8 ph:w-c2 ph:h-c2"
                     src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
                     alt=""
                 />
-                <p style={{marginLeft: "7px"}} className="text-15px">{user.firstname}</p>
+                <p className="text-15px ml-a3">{user.firstname}</p>
             </div>
             <span className={"text-darkblue text-12px"}>
                 {generateTimeAgo(updatedAt)}
