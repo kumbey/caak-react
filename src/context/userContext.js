@@ -17,7 +17,7 @@ function useUser() {
 
 function UserProvider(props) {
 
-    const [user, setUser] = useState(SessionStorageUtil.get(Consts.SS_UserKey))
+    const [user, setUser] = useState()
 
     useEffect(() => { 
       
@@ -39,12 +39,12 @@ function UserProvider(props) {
     },[])
 
     useEffect(() => {
-      console.log(user)
-      if(user){
-          SessionStorageUtil.set(Consts.SS_UserKey, user) 
-      }else{
-        SessionStorageUtil.remove(Consts.SS_UserKey)
-      }
+      // console.log(user)
+      // if(user){
+      //     SessionStorageUtil.set(Consts.SS_UserKey, user) 
+      // }else{
+      //   SessionStorageUtil.remove(Consts.SS_UserKey)
+      // }
       // eslint-disable-next-line
     },[user])
 

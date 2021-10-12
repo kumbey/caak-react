@@ -89,7 +89,7 @@ const AddPost = () => {
     try {
       let resp = await API.graphql(graphqlOperation(getPost, { id: id }));
       let { items, ...data }  = resp.data.getPost;
-      if(data.user_id == user.sysUser.id){
+      if(data.user_id === user.sysUser.id){
         setPermissionDenied(false)
         setSelectedGroupId(data.group_id);
         setPost({...data, items: items.items});
