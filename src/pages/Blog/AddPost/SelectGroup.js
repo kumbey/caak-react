@@ -11,9 +11,12 @@ const SelectGroup = ({
   selectedGroup,
   setSelectedGroup,
   groupData,
+  containerClassName,
 }) => {
   return (
-    <div className={"flex flex-col"}>
+    <div
+      className={`flex flex-col ${containerClassName}`}
+    >
       <div className={"flex flex-row items-center px-7"}>
         <img
           data-dummy="100x100"

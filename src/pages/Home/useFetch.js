@@ -1,33 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-const useInfiniteScroll = (callback) => {
-  const [isFetching, setIsFetching] = useState(false);
+const useInfiniteScroll = (data, setData) => {
+
+  const [callback, setCallback] = useState(null)
+  const callbackRef = useRef(callback)
+  const [curData, setCurData] = useState([])
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    setData([...data, ...curData])
+    // eslint-disable-next-line
+  },[curData])
+
+  const _setCallback = (func) => {
+    callbackRef.current = func
+    setCallback(func)
+  }
+
+  useEffect(() => {
+
+    window.addEventListener("scroll", eventlistner);
+    return () => window.removeEventListener("scroll", eventlistner);
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    if (!isFetching) return;
-    callback(() => {
-      console.log("called back");
-    });
-  }, [callback, isFetching]);
+  const eventlistner = useCallback(() => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+      if(callbackRef.current){
+        callbackRef.current(data, setCurData)
+      }
+      return true
+    }else{
+      return false
+    }
+    // eslint-disable-next-line
+  },[curData, setCurData])
 
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      isFetching
-    )
-      return;
-    console.log("Fetch more list items!");
-    setIsFetching(true);
-  }
-
-  return [isFetching, setIsFetching];
+  return [_setCallback];
 };
 
 export default useInfiniteScroll;

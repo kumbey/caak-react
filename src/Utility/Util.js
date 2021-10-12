@@ -265,7 +265,7 @@ export function removeKeyFromObj(obj, removeKeys) {
   });
 }
 
-var object = {
+const object = {
   useQuery,
   mailNumber,
   name,

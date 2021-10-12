@@ -32,6 +32,7 @@ module.exports = {
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
       },
       screens: {
+        xs: { max: "360px" },
         ph: { min: "200px", max: "499px" },
         btn: { min: "400px", max: "751px" },
         "3xl": { min: "1920px" },
