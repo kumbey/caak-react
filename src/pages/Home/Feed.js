@@ -49,7 +49,9 @@ const Feed = () => {
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
+  console.log(groupData)
   const [posts, setPosts] = useState([]);
+  console.log("asdasd",posts)
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
