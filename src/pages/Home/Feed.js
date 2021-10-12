@@ -34,15 +34,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                  id: 3,
-                                                                                                                  type: "Бүлгүүд",
-                                                                                                                  icon: "icon-fi-rs-group",
-                                                                                                                },
-                                                                                                                {
-                                                                                                                  id: 4,
-                                                                                                                  type: "Дагасан найзууд",
-                                                                                                                  icon: "icon-fi-rs-following",
-                                                                                                                },*/
+                                                                                                                      id: 3,
+                                                                                                                      type: "Бүлгүүд",
+                                                                                                                      icon: "icon-fi-rs-group",
+                                                                                                                    },
+                                                                                                                    {
+                                                                                                                      id: 4,
+                                                                                                                      type: "Дагасан найзууд",
+                                                                                                                      icon: "icon-fi-rs-following",
+                                                                                                                    },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
@@ -54,7 +54,7 @@ const Feed = () => {
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
-      status: "PENDING",
+      status: "CONFIRMED",
       limit: 6,
     }
   })
@@ -200,7 +200,7 @@ const Feed = () => {
                     <Link
                       key={index}
                       to={{
-                        pathname: `/group/view/${data.id}`,
+                        pathname: `/group/${data.id}`,
                       }}
                     >
                       <Suggest

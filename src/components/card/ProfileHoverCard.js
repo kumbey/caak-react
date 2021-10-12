@@ -7,6 +7,7 @@ import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useState } from "react";
 import { checkUser } from "../../Utility/Util";
+import { Link } from "react-router-dom";
 
 export default function ProfileHoverCard({ postUser }) {
   const { user } = useUser();
@@ -75,10 +76,16 @@ export default function ProfileHoverCard({ postUser }) {
         ) : null}
       </div>
       <div className="mb-b1">
-        <div className=" flex items-center">
-          <p className="text-17px font-bold">{postUser.nickname}</p>
-          <span className="icon-fi-rs-verified text-13px text-caak-buttonblue " />
-        </div>
+        <Link 
+          to={{
+            pathname: `/user/${postUser.id}/profile`,
+          }}
+        >
+          <div className=" flex items-center">
+            <p className="text-17px font-bold">{postUser.nickname}</p>
+            <span className="icon-fi-rs-verified text-13px text-caak-buttonblue " />
+          </div>
+        </Link>
         <p className="text-15px font-light">{postUser.about}</p>
       </div>
       <div className=" pr-14 flex flex-row items-center justify-between">
