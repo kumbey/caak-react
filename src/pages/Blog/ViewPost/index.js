@@ -12,6 +12,7 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
+import Header from "../AddPost/Header";
 
 const ViewPost = () => {
   const [post, setPost] = useState();
@@ -168,21 +169,6 @@ const ViewPost = () => {
                   >
                     <source src={getFileUrl(item.file)} type="video/mp4" />
                   </video>
-                  //     <VideoJS
-                  //         videoClassName={"w-full max-h-half lg:max-h-full md:h-full sm:max-h-half object-contain z-0"}
-                  //         options={{
-                  //           autoplay: false,
-                  //           controls: true,
-                  //           responsive: false,
-                  //           fluid: false,
-                  //           sources: [
-                  //             {
-                  //               src: getFileUrl(item.file),
-                  //               type: "video/mp4",
-                  //             },
-                  //           ],
-                  //         }}
-                  //     />
                 );
               } else {
                 return (

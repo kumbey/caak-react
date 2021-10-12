@@ -223,3 +223,7 @@
 .grid_container_container {
     max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);
 }
+
+.image_size {
+    aspect-ratio: 1/1;
+}

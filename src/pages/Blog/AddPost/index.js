@@ -143,17 +143,36 @@ const AddPost = () => {
             !isEditing ? (
               <Fragment>
                 <Header
-                  iconRight={
+                    hideDivider
+                    iconRight={
+                      <Fragment>
                     <span
-                      onClick={() => closeModal(history, state)}
-                      className={
-                        "icon-fi-rs-close absolute text-12px right-3 top-1/4 cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
-                      }
+                        onClick={() => closeModal(history, state)}
+                        className={
+                          "hidden md:block icon-fi-rs-close absolute right-4 text-12px cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
+                        }
                     />
-                  }
-                  title={"Нийтлэл нэмэх"}
+                        <span
+                            className={
+                              "md:hidden absolute right-4 font-medium text-15px text-caak-bleudefrance"
+                            }
+                        >
+                      Дараах
+                    </span>
+                      </Fragment>
+                    }
+                    title={"Нийтлэл нэмэх"}
+                    iconLeft={
+                      <span
+                          onClick={() => closeModal(history, state)}
+                          className={
+                            "icon-fi-rs-back absolute left-4 md:invisible text-20px cursor-pointer rounded-full"
+                          }
+                      />
+                    }
                 />
                 <SelectGroup
+                  containerClassName={"mt-2"}
                   groupData={groupData}
                   isGroupVisible={isGroupVisible}
                   setIsGroupVisible={setIsGroupVisible}
@@ -206,6 +225,7 @@ const AddPost = () => {
                 title={"Нийтлэл нэмэх"}
               />
               <SelectGroup
+                containerClassName={"mt-2"}
                 groupData={groupData}
                 isGroupVisible={isGroupVisible}
                 setIsGroupVisible={setIsGroupVisible}
