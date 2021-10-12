@@ -27,6 +27,11 @@ const user0001 = /* GraphQL */ `{
         id
       }
     }
+    totals {
+      followers
+      following
+      confirmed
+    }
   }`;
 
 export default user0001;
