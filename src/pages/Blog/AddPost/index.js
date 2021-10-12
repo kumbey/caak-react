@@ -5,7 +5,11 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import { closeModal, getReturnData, removeKeyFromObj } from "../../../Utility/Util";
+import {
+  closeModal,
+  getReturnData,
+  removeKeyFromObj,
+} from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react/cjs/react.development";
 import { useUser } from "../../../context/userContext";
@@ -15,7 +19,11 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
 import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
-import { createPostItems, deletePostItems, updatePostItems } from "../../../graphql-custom/postItems/mutation";
+import {
+  createPostItems,
+  deletePostItems,
+  updatePostItems,
+} from "../../../graphql-custom/postItems/mutation";
 import { createPostHistory } from "../../../graphql-custom/postHistory/mutation";
 
 const AddPost = () => {
@@ -31,7 +39,7 @@ const AddPost = () => {
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
   const [groupData, setGroupData] = useState([]);
-  const [permissionDenied, setPermissionDenied] = useState(true)
+  const [permissionDenied, setPermissionDenied] = useState(true);
 
   const [post, setPost] = useState({
     id: postId,
@@ -44,15 +52,15 @@ const AddPost = () => {
     items: [],
   });
   const [oldPost, setOldPost] = useState({
-    items: []
-  })
+    items: [],
+  });
 
   useEffect(() => {
     getGroups();
     if (postId !== "new") {
       loadPost(postId);
-    }else{
-      setPermissionDenied(false)
+    } else {
+      setPermissionDenied(false);
     }
 
     // eslint-disable-next-line
@@ -88,12 +96,12 @@ const AddPost = () => {
   const loadPost = async (id) => {
     try {
       let resp = await API.graphql(graphqlOperation(getPost, { id: id }));
-      let { items, ...data }  = resp.data.getPost;
-      if(data.user_id === user.sysUser.id){
-        setPermissionDenied(false)
+      let { items, ...data } = resp.data.getPost;
+      if (data.user_id === user.sysUser.id) {
+        setPermissionDenied(false);
         setSelectedGroupId(data.group_id);
-        setPost({...data, items: items.items});
-        setOldPost({...data, items: items.items})
+        setPost({ ...data, items: items.items });
+        setOldPost({ ...data, items: items.items });
       }
     } catch (ex) {
       console.log(ex);
@@ -111,51 +119,63 @@ const AddPost = () => {
         }
       }
 
-      const {items, ...postData} = {...post}
-      postData.group_id = selectedGroup.id
+      const { items, ...postData } = { ...post };
+      postData.group_id = selectedGroup.id;
       postData.category_id = selectedGroup.category_id;
-      postData.status = "PENDING"
+      postData.status = "PENDING";
 
-      const oldItems = [...oldPost.items]
+      const oldItems = [...oldPost.items];
 
-      let returnPost = {}
+      let returnPost = {};
 
       if (postData.id === "new") {
         removeKeyFromObj(postData, ["id"]);
-        postData.updated_user_id = user.sysUser.id
-        postData.user_id = user.sysUser.id
-        returnPost = await API.graphql(graphqlOperation(createPost, { input: postData }));
-        returnPost = getReturnData(returnPost)
+        postData.updated_user_id = user.sysUser.id;
+        postData.user_id = user.sysUser.id;
+        returnPost = await API.graphql(
+          graphqlOperation(createPost, { input: postData })
+        );
+        returnPost = getReturnData(returnPost);
       } else {
-        await API.graphql(graphqlOperation(createPostHistory, { input: {
-          post_id: oldPost.id,
-          post: JSON.stringify(oldPost)
-        } }));
-        postData.updated_user_id = user.sysUser.id
-        returnPost = await API.graphql(graphqlOperation(updatePost, { input: postData }));
-        returnPost = getReturnData(returnPost)
+        await API.graphql(
+          graphqlOperation(createPostHistory, {
+            input: {
+              post_id: oldPost.id,
+              post: JSON.stringify(oldPost),
+            },
+          })
+        );
+        postData.updated_user_id = user.sysUser.id;
+        returnPost = await API.graphql(
+          graphqlOperation(updatePost, { input: postData })
+        );
+        returnPost = getReturnData(returnPost);
       }
-
-      console.log(returnPost)
 
       //DELETE OLD ITEMS
       for (let i = 0; i < oldItems.length; i++) {
-          let oldItem = oldItems[i]
-          if(!items.find(item => item.id === oldItem.id)){
-              await API.graphql(graphqlOperation(deletePostItems, {input: {id: oldItem.id}}))
-          }
+        let oldItem = oldItems[i];
+        if (!items.find((item) => item.id === oldItem.id)) {
+          await API.graphql(
+            graphqlOperation(deletePostItems, { input: { id: oldItem.id } })
+          );
+        }
       }
 
       //CREATE UPDATE NEW ITEMS
       for (let i = 0; i < items.length; i++) {
-        const {file , ...postItem} = items[i]
-        postItem.file_id = file.id
-        postItem.order = i
-        postItem.post_id = returnPost.id
-        if(postItem.id){
-          await API.graphql(graphqlOperation(updatePostItems, {input: postItem}))
-        }else{
-          await API.graphql(graphqlOperation(createPostItems, {input: postItem}))
+        const { file, ...postItem } = items[i];
+        postItem.file_id = file.id;
+        postItem.order = i;
+        postItem.post_id = returnPost.id;
+        if (postItem.id) {
+          await API.graphql(
+            graphqlOperation(updatePostItems, { input: postItem })
+          );
+        } else {
+          await API.graphql(
+            graphqlOperation(createPostItems, { input: postItem })
+          );
         }
       }
 
@@ -167,7 +187,7 @@ const AddPost = () => {
     }
   };
 
-  return ( !permissionDenied ? 
+  return !permissionDenied ? (
     <Backdrop>
       <div
         className={`flex justify-center items-center h-screen md:h-auto md:mt-10 h-full`}
@@ -179,33 +199,33 @@ const AddPost = () => {
             !isEditing ? (
               <Fragment>
                 <Header
-                    hideDivider
-                    iconRight={
-                      <Fragment>
-                    <span
+                  hideDivider
+                  iconRight={
+                    <Fragment>
+                      <span
                         onClick={() => closeModal(history, state)}
                         className={
                           "hidden md:block icon-fi-rs-close absolute right-4 text-12px cursor-pointer bg-caak-titaniumwhite p-2 rounded-full"
                         }
-                    />
-                        <span
-                            className={
-                              "md:hidden absolute right-4 font-medium text-15px text-caak-bleudefrance"
-                            }
-                        >
-                      Дараах
-                    </span>
-                      </Fragment>
-                    }
-                    title={"Нийтлэл нэмэх"}
-                    iconLeft={
-                      <span
-                          onClick={() => closeModal(history, state)}
-                          className={
-                            "icon-fi-rs-back absolute left-4 md:invisible text-20px cursor-pointer rounded-full"
-                          }
                       />
-                    }
+                      <span
+                        className={
+                          "md:hidden absolute right-4 font-medium text-15px text-caak-bleudefrance"
+                        }
+                      >
+                        Дараах
+                      </span>
+                    </Fragment>
+                  }
+                  title={"Нийтлэл нэмэх"}
+                  iconLeft={
+                    <span
+                      onClick={() => closeModal(history, state)}
+                      className={
+                        "icon-fi-rs-back absolute left-4 md:invisible text-20px cursor-pointer rounded-full"
+                      }
+                    />
+                  }
                 />
                 <SelectGroup
                   containerClassName={"mt-2"}
@@ -307,7 +327,7 @@ const AddPost = () => {
           </div>
         </div>
       </div>
-    </Backdrop> : null
-  );
+    </Backdrop>
+  ) : null;
 };
 export default AddPost;

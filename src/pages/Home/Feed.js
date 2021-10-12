@@ -13,7 +13,6 @@ import Loader from "../../components/loader";
 import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import { useLocation } from "react-router";
 import { useListPager } from "../../Utility/ApiHelper";
 
 const Feed = () => {
@@ -34,32 +33,31 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                      id: 3,
-                                                                                                                      type: "Бүлгүүд",
-                                                                                                                      icon: "icon-fi-rs-group",
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                      id: 4,
-                                                                                                                      type: "Дагасан найзууд",
-                                                                                                                      icon: "icon-fi-rs-following",
-                                                                                                                    },*/
+                                                                                                                          id: 3,
+                                                                                                                          type: "Бүлгүүд",
+                                                                                                                          icon: "icon-fi-rs-group",
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                          id: 4,
+                                                                                                                          type: "Дагасан найзууд",
+                                                                                                                          icon: "icon-fi-rs-following",
+                                                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-  const location = useLocation();
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
   console.log(groupData)
   const [posts, setPosts] = useState([]);
-  console.log("asdasd",posts)
+  console.log(groupData);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
       sortDirection: "DESC",
       status: "CONFIRMED",
       limit: 6,
-    }
-  })
+    },
+  });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -168,32 +166,32 @@ const Feed = () => {
                         pathname: `/group/${item.id}`,
                       }}
                     >
-                    <div
-                      key={index}
-                      // onClick={() => onSelect(item)}
-                      className={
-                        "flex flex-col cursor-pointer w-max cursor-pointer"
-                      }
-                    >
                       <div
+                        key={index}
+                        // onClick={() => onSelect(item)}
                         className={
-                          "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                          "flex flex-col cursor-pointer w-max cursor-pointer"
                         }
                       >
-                        <img
-                          src={generateFileUrl(item.profile)}
-                          className={"w-8 h-8 rounded-md object-cover mr-2"}
-                          alt={""}
-                        />
-                        <span
+                        <div
                           className={
-                            "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
+                            "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
                           }
                         >
-                          {item.name}
-                        </span>
+                          <img
+                            src={generateFileUrl(item.profile)}
+                            className={"w-8 h-8 rounded-md object-cover mr-2"}
+                            alt={""}
+                          />
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
+                            }
+                          >
+                            {item.name}
+                          </span>
+                        </div>
                       </div>
-                    </div>
                     </Link>
                   );
                 })}

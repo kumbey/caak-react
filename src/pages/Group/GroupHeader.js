@@ -2,13 +2,11 @@ import Button from "../../components/button";
 import { generateFileUrl } from "../../Utility/Util";
 import React, { useState } from "react";
 import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function GroupHeader({ group }) {
-  console.log(group);
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
   const history = useHistory();
-  const location = useLocation();
   const totalMembers = () => {
     //return parseInt(group.totals.admin) + parseInt(group.totals.moderator) + parseInt(group.totals.moderator);
   };
@@ -17,7 +15,7 @@ export default function GroupHeader({ group }) {
       <img
         alt="cover"
         src={generateFileUrl(group.cover)}
-        className="h-c17 ph:h-c31 w-full"
+        className="h-c17 ph:h-c31 object-cover w-full"
       />
 
       {/* menu */}

@@ -35,7 +35,7 @@ export default function PendingPostItem({ post, onClick, className, settt }) {
   return (
     <div
       style={{ paddingBlock: "20px", marginLeft: "25px" }}
-      className={`flex ph:grid w-full items-center ${
+      className={`flex ph:grid w-full justify-between items-center ${
         className ? className : ""
       }`}
     >
@@ -54,10 +54,10 @@ export default function PendingPostItem({ post, onClick, className, settt }) {
           />
         </Link>
       </div>
-      <div className="w-1/2 ph:w-full ph:mt-3">
+      <div className="ph:w-full ph:mt-3 w-1/2">
         <Poster user={post.user} updatedAt={post.updatedAt} />
       </div>
-      <div className="flex hidden relative justify-end items-center 2xl:flex sm:block md:block lg:block xl:mr-c24 sm:mr-b1">
+      <div className="2xl:flex sm:block md:block lg:block xl:mr-c24 sm:mr-b1 relative flex items-center justify-end hidden">
         <PendingPostMenuDrop
           setIsMenuOpen={setIsMenuOpen}
           toggleMenu={toggleMenu}
@@ -68,16 +68,16 @@ export default function PendingPostItem({ post, onClick, className, settt }) {
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={
-              <div className="flex hidden flex-col justify-center items-center p-2 w-full sm:block md:block lg:block">
+              <div className="sm:block md:block lg:block flex flex-col items-center justify-center hidden w-full p-2">
                 <Button
                   onClick={() => acceptHandler()}
-                  className="mr-2 mb-2 w-full text-white bg-caak-bleudefrance text-15px"
+                  className="bg-caak-bleudefrance text-15px w-full mb-2 mr-2 text-white"
                 >
                   Зөвшөөрөх
                 </Button>
                 <Button
                   onClick={() => declineHandler()}
-                  className="w-full bg-white border text-caak-generalblack text-15px"
+                  className="text-caak-generalblack text-15px w-full bg-white border"
                 >
                   Татгалзах
                 </Button>
