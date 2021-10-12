@@ -1,7 +1,7 @@
 export const menu_data = [
   {
     name: "Миний нүүр хуудас",
-    href: "#",
+    href: `/user/:userId/profile`,
     image: <span className={"icon-fi-rs-profile text-18px5 w-5 h-5 mr-2"} />,
     user: true,
   },

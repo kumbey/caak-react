@@ -139,7 +139,7 @@ const Routes = [
     page: () => <Check />,
   },
   {
-    path: "/profile",
+    path: "/user/:userId/profile",
     exact: true,
     background: true,
     page: () => <Profile />,
