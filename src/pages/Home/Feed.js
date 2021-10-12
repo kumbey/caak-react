@@ -13,6 +13,7 @@ import Loader from "../../components/loader";
 import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
+import { useLocation } from "react-router";
 
 const Feed = () => {
   const feedType = [
@@ -43,6 +44,7 @@ const Feed = () => {
                                                                                                             },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
+  const location = useLocation();
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
@@ -286,13 +288,19 @@ const Feed = () => {
             >
               {posts.map((data, index) => {
                 return (
-                  <Card
+                  <Link
                     key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    // className="ph:mb-4 sm:mb-4 btn:mb-4"
-                    className="inline-block"
-                  />
+                    to={{
+                      pathname: `/post/view/${data.id}`,
+                      state: { background: location },
+                    }}
+                  >
+                    <Card
+                      video={data.items.items[0].file.type.startsWith("video")}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4 ph:mb-4"
+                    />
+                  </Link>
                 );
               })}
             </div>
