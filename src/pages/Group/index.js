@@ -5,12 +5,12 @@ import API from '@aws-amplify/api'
 import { graphqlOperation } from '@aws-amplify/api-graphql'
 import {getPostByStatus} from '../../graphql-custom/post/queries'
 import { Link } from 'react-router-dom'
-import { useLocation, useParams } from 'react-router'
+import { useLocation, useParams, useHistory } from 'react-router'
 import { useUser } from '../../context/userContext'
 import { checkUser } from '../../Utility/Util'
 import useInfiniteScroll from '../Home/useFetch'
 import Loader from '../../components/loader'
-import { listGroupsForAddPost, getGroupView } from '../../graphql-custom/group/queries'
+import { getGroupView } from '../../graphql-custom/group/queries'
 import GroupHeader from './GroupHeader'
 import Dummy from "dummyjs"
 
@@ -21,9 +21,9 @@ export default function Group() {
 
     const [group, setGroup] = useState([]);
     const [posts, setPosts] = useState([]);
-    const [groupData, setGroupData] = useState([]);
     const [nextToken, setNextToken] = useState();
     const location = useLocation();
+    const history = useHistory();
     const [isFetching, setIsFetching] = useInfiniteScroll(() => {});
 
     useEffect(() => {
@@ -45,22 +45,10 @@ export default function Group() {
     }, [isFetching]);
 
     useEffect(() => {
-      if (checkUser(user)) {
-        listGroups();
-      }
         fetchPosts();
         setIsFetching(fetchMoreListItems)
         // eslint-disable-next-line
       }, []);
-
-    const listGroups = async () => {
-      try {
-        let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-        setGroupData(resp.data.listGroups.items);
-      } catch (ex) {
-        console.log(ex);
-      }
-    };
 
    const fetchMoreListItems = async () => {
     try {
@@ -68,7 +56,7 @@ export default function Group() {
       if (nextToken !== null) {
         let resp = await API.graphql(
           graphqlOperation(getPostByStatus, {
-            limit: 2,
+            limit: 3,
             nextToken,
             status: "PENDING",
           })
@@ -113,9 +101,10 @@ export default function Group() {
     };
     return ( group ?
         <div>
-          <div className="hidden ph:block bg-white items-center relative pl-c6">
-            <span className="icon-fi-rs-back text-20px cursour-pointer"/>
-            <p className="absolute right-1/2 top-0 text-20px font-medium">Грүпп</p>
+          <div className="bg-white sm:hidden flex items-center justify-between px-c6 border-t border-b py-b3">
+            <span onClick={() => history.goBack()} className="icon-fi-rs-back text-20px cursour-pointer"/>
+            <p className="text-  font-medium">Грүпп</p>
+            <span className="icon-fi-rs-dots text-4px" />
           </div>
             <GroupHeader group={group}/>
 
@@ -123,22 +112,26 @@ export default function Group() {
                 <div className="ph:flex ph:flex-col ph:items-center grid justify-center">
 
                     {/* header */}
-                      <div className="bg-white ph:hidden h-c29 rounded rounded-lg flex items-center justify-between pr-b5 mt-c6">
-                        <img
-                          alt={user.sysUser.nickname}
-                          src={Dummy.img("200x200")}
-                          className={"w-c28 w-c28 block object-cover rounded-full ml-c3"}
-                        />
-                        <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
-                            <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
+                      <div className="bg-white ph:w-full h-c29 ph:h-c35 sm:rounded-lg flex ph:flex-col ph:justify-evenly justify-between ph:pr-a1 sm:pr-b5 mt-c6">
+                        <div className="flex items-center justify-center">
+                          <img
+                            alt=""
+                            src={Dummy.img("200x200")}
+                            className={"w-c28 h-c28 ph:w-c25 ph:h-c25 block object-cover rounded-full sm:ml-c3 ph:ml-c6"}
+                          />
+                          <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
+                            <p onClick={() => alert("yu ch hiigd bgan")} className="text-15px text-caak-darkBlue flex items-center w-full h-c30 ph:h-c37 bg-caak-liquidnitrogen rounded-lg pl-b1 hover:bg-gray-200 cursor-pointer">Энэ бүлэгт фост нийтлэх...</p>
+                          </div>
                         </div>
-                        <div className="flex ml-b5 cursor-pointer">
+                        <div className="flex items-center justify-center">
+                          <div className="flex ml-b5 cursor-pointer">
                             <span className="icon-fi-rs-image mr-a2 text-22px text-caak-algalfuel"/>
                             <p className="text-15px text-caak-blue">Зураг/Видео</p>
-                        </div>
-                        <div className="flex items-center  ml-b5 cursor-pointer">
+                          </div>
+                          <div className="flex items-center  ml-b5 cursor-pointer">
                             <span className="icon-fi-rs-link pr-a2 text-20px text-caak-bleudefrance"/>
                             <p className="text-15px text-caak-blue">Линк</p>
+                          </div>
                         </div>
                       </div> 
 
@@ -157,6 +150,7 @@ export default function Group() {
                     </div>
 
                     {/* contents */}
+                    <div>
                     <div style={{marginTop: "15px"}} className="grid gap-5 grid-cols-1 justify-center md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3">
                       {posts.map((data, index) => {
                         return (
@@ -181,6 +175,7 @@ export default function Group() {
                         isFetching ? "opacity-100" : "opacity-0"
                       }`}
                     />
+                    </div>
                 </div>
         </div> 
           : 

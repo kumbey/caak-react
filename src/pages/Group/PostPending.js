@@ -87,26 +87,30 @@ export default function PostPending({settt}) {
                         className=" w-b4 h-b4 ml-c34 cursor-pointer border-2 border-caak-darkgray rounded"
                     />
                     <p className="w-1/3 ml-c2 justify-center flex">Фостын нэр</p>
-                    <div className="flex justify-between w-2/3">
+                    <div className="flex justify-between w-2/3 ph:justify-evenly">
                         <p>Нийтлэгч</p>
                         <p>Хугацаа</p>
-                        <p className={`${settt ? "mr-c24" : "2xl:mr-c18 xl:mr-c14"}`}>Үйлдэл</p>
+                        <p className={`${settt ? "mr-c24" : "2xl:mr-c18 xl:mr-c14"} ph:hidden`}>Үйлдэл</p>
                     </div>
                 </div>}
             </div>
             {posts.map((data, index) => {
                 return (
-                    <div className="flex items-center  bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen">
+                    <div 
+                        key={index} 
+                        className="flex items-center  bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen"
+                    >
                         <div className="w-full flex items-center">
-                            <Checkbox
-                                key={data.id}
-                                id={data.id}
-                                handleClick={handleClick}
-                                isChecked={isCheck.includes(data.id)}
-                                className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
-                            />
+                            <div>
+                                <Checkbox
+                                    key={data.id}
+                                    id={data.id}
+                                    handleClick={handleClick}
+                                    isChecked={isCheck.includes(data.id)}
+                                    className=" ml-c34 w-b4 h-b4 cursor-pointer border-2 border-caak-darkgray rounded"
+                                />
+                            </div>
                                 <PendingPostItem
-                                    key={index}
                                     post={data}
                                     className="ph:mb-4 sm:mb-4 ph:mb-4 "
                                 />

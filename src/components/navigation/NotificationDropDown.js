@@ -66,7 +66,7 @@ const NotificationDropDown = ({ isOpen }) => {
           </span>
         </div>
       </div>,
-      document.getElementById("feed")
+      document.getElementById("root")
     )
   );
 };
