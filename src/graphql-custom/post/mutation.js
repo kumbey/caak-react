@@ -7,7 +7,7 @@ export const createPost = /* GraphQL */ `
 `;
 
 export const updatePost = /* GraphQL */ `
-    mutation updatePost($input: CreatePostInput!) {
+    mutation updatePost($input: UpdatePostInput!) {
         updatePost(input: $input) ${post0001}
     }
 `;

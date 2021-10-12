@@ -1,15 +1,15 @@
 import LoginRegsiter from "../pages/Login";
 import Login from "../pages/Login/Login";
-import Register from "../pages/Register/UserInformation"
+import Register from "../pages/Register/UserInformation";
 import Logout from "../pages/Logout";
 import AddPost from "../pages/Blog/AddPost";
-import Confirmation from "../pages/Register/Confirmation"
-import Group from "../pages/Group/index"
+import Confirmation from "../pages/Register/Confirmation";
+import Group from "../pages/Group/index";
 import Completed from "../pages/Register/Completed";
 import FederatedLogin from "../pages/Login/FederatedLogin";
 import PendingPostAdmin from "../pages/Group/PendingPostAdmin";
 import Check from "../pages/Group/Check";
-import Profile from '../pages/Profile/index'
+import Profile from "../pages/Profile/index";
 import Activities from "../pages/Profile/Activities";
 import Infromation from "../pages/Group/Infromation";
 import Feed from "../pages/Home/Feed";
@@ -20,7 +20,7 @@ const Routes = [
   {
     path: "/",
     exact: true,
-    page: () => <Feed/>,
+    page: () => <Feed />,
   },
   {
     path: "/sanjaa",
@@ -44,21 +44,21 @@ const Routes = [
     path: "/logout",
     exact: true,
     background: true,
-    page: () => <Logout/>,
+    page: () => <Logout />,
   },
   {
     path: "/login",
     exact: true,
     background: true,
     unAuth: true,
-    page: () => <LoginRegsiter type="signIn"/>,
+    page: () => <LoginRegsiter type="signIn" />,
   },
   {
     path: "/register",
     exact: true,
     background: true,
     unAuth: true,
-    page: () => <LoginRegsiter type="signUp"/>,
+    page: () => <LoginRegsiter type="signUp" />,
   },
   {
     path: "/login/main",
@@ -114,7 +114,7 @@ const Routes = [
     page: () => <ViewPost />,
   },
   {
-    path: "/group/view/:groupId",
+    path: "/group/:groupId",
     exact: true,
     background: true,
     page: () => <Group />,
@@ -125,9 +125,9 @@ const Routes = [
     background: true,
     page: () => <Infromation />,
   },
-  
+
   {
-    path: "/group/pending",
+    path: "/group/:groupId/pending",
     exact: true,
     background: true,
     page: () => <PendingPostAdmin />,
