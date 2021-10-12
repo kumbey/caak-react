@@ -14,6 +14,7 @@ import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
 import { useLocation } from "react-router";
+import { useListPager } from "../../Utility/ApiHelper";
 
 const Feed = () => {
   const feedType = [
@@ -49,7 +50,17 @@ const Feed = () => {
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [nextToken, setNextToken] = useState();
+  const [nextPosts] = useListPager({
+    query: getPostByStatus,
+    variables: {
+      sortDirection: "DESC",
+      status: "PENDING",
+      limit: 6,
+    }
+  })
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts);
+  //FORCE RENDER STATE
+  const [loading, setLoading] = useState(false)
 
   const listGroups = async () => {
     try {
@@ -60,62 +71,22 @@ const Feed = () => {
     }
   };
 
-  const fetchMoreListItems = async () => {
+  const fetchPosts = async (data, setData) => {
     try {
-      setIsFetching(true);
-      if (nextToken !== null) {
-        let resp = await API.graphql(
-          graphqlOperation(getPostByStatus, {
-            limit: 2,
-            nextToken,
-            status: "PENDING",
-          })
-        );
-        setNextToken(resp.data.getPostByStatus.nextToken);
-        setPosts([...posts, ...resp.data.getPostByStatus.items]);
-        setIsFetching(false);
+      if(!loading){
+        setLoading(true)
+
+        let resp = await nextPosts()
+        if(resp){
+          setData([...data, ...resp]);
+        }
+
+        setLoading(false)
       }
-      setIsFetching(false);
     } catch (ex) {
       console.log(ex);
     }
-  };
-  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
-
-  useEffect(() => {
-    if (!isFetching) return;
-    fetchMoreListItems();
-    // eslint-disable-next-line
-  }, [isFetching]);
-
-  const fetchPosts = async () => {
-    try {
-      let resp = [];
-      if (checkUser(user)) {
-        resp = await API.graphql(
-          graphqlOperation(getPostByStatus, {
-            sortDirection: "DESC",
-            status: "PENDING",
-            limit: 6,
-          })
-        );
-        setNextToken(resp.data.getPostByStatus.nextToken);
-      } else {
-        resp = await API.graphql({
-          query: getPostByStatus,
-          variables: {
-            sortDirection: "DESC",
-            status: "PENDING",
-          },
-          authMode: "AWS_IAM",
-        });
-      }
-      setPosts(resp.data.getPostByStatus.items);
-      console.log(posts);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
+  }
 
   const subscriptions = () => {
     API.graphql({
@@ -128,16 +99,11 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    fetchPosts();
-    subscriptions();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     if (checkUser(user)) {
       listGroups();
     }
-    fetchPosts();
+    fetchPosts(posts ,setPosts);
+    setPostScroll(fetchPosts)
     // eslint-disable-next-line
   }, []);
 
@@ -307,7 +273,7 @@ const Feed = () => {
             <Loader
               containerClassName={"self-center"}
               className={`bg-caak-primary ${
-                isFetching ? "opacity-100" : "opacity-0"
+                loading ? "opacity-100" : "opacity-0"
               }`}
             />
           </div>
