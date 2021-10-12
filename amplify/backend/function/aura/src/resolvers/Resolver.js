@@ -11,8 +11,7 @@ async function calcAura(ctx){
         const { source } = ctx
 
         const ids = {
-            id: source.id,
-            user_id: source.user_id
+            user_id: source.id
         }
 
         let resp = await UserTotalsDB.get(ids)
