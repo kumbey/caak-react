@@ -12,7 +12,6 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
-import Header from "../AddPost/Header";
 
 const ViewPost = () => {
   const [post, setPost] = useState();
