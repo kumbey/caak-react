@@ -34,15 +34,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                              id: 3,
-                                                                                                              type: "Бүлгүүд",
-                                                                                                              icon: "icon-fi-rs-group",
-                                                                                                            },
-                                                                                                            {
-                                                                                                              id: 4,
-                                                                                                              type: "Дагасан найзууд",
-                                                                                                              icon: "icon-fi-rs-following",
-                                                                                                            },*/
+                                                                                                                  id: 3,
+                                                                                                                  type: "Бүлгүүд",
+                                                                                                                  icon: "icon-fi-rs-group",
+                                                                                                                },
+                                                                                                                {
+                                                                                                                  id: 4,
+                                                                                                                  type: "Дагасан найзууд",
+                                                                                                                  icon: "icon-fi-rs-following",
+                                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
@@ -56,11 +56,11 @@ const Feed = () => {
       sortDirection: "DESC",
       status: "PENDING",
       limit: 6,
-    }
-  })
+    },
+  });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
   //FORCE RENDER STATE
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const listGroups = async () => {
     try {
@@ -73,20 +73,20 @@ const Feed = () => {
 
   const fetchPosts = async (data, setData) => {
     try {
-      if(!loading){
-        setLoading(true)
+      if (!loading) {
+        setLoading(true);
 
-        let resp = await nextPosts()
-        if(resp){
+        let resp = await nextPosts();
+        if (resp) {
           setData([...data, ...resp]);
         }
 
-        setLoading(false)
+        setLoading(false);
       }
     } catch (ex) {
       console.log(ex);
     }
-  }
+  };
 
   const subscriptions = () => {
     API.graphql({
@@ -102,8 +102,8 @@ const Feed = () => {
     if (checkUser(user)) {
       listGroups();
     }
-    fetchPosts(posts ,setPosts);
-    setPostScroll(fetchPosts)
+    fetchPosts(posts, setPosts);
+    setPostScroll(fetchPosts);
     // eslint-disable-next-line
   }, []);
 
@@ -254,19 +254,12 @@ const Feed = () => {
             >
               {posts.map((data, index) => {
                 return (
-                  <Link
+                  <Card
                     key={index}
-                    to={{
-                      pathname: `/post/view/${data.id}`,
-                      state: { background: location },
-                    }}
-                  >
-                    <Card
-                      video={data.items.items[0].file.type.startsWith("video")}
-                      post={data}
-                      className="ph:mb-4 sm:mb-4 ph:mb-4"
-                    />
-                  </Link>
+                    video={data.items.items[0].file.type.startsWith("video")}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
                 );
               })}
             </div>
