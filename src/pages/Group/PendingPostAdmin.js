@@ -24,7 +24,7 @@ export default function PendingPostAdmin() {
                                 <div>
                                     <p className="text-26px font-bold text-caak-generalblack">Монгол өв уламжлал</p>
                                 </div>
-                                <div className="flex items-center  btn:grid">
+                                <div className="flex items-center  ph:grid">
                                     <div className="flex items-center">
                                         <span className="icon-fi-rs-world text-16px text-caak-darkBlue flex"/>
                                         <p className="text-15px ml-a1 text-caak-darkBlue">Нээлттэй бүлэг</p>
@@ -75,7 +75,7 @@ export default function PendingPostAdmin() {
               )}
             </button>
           </div>
-                        <div className="flex btn:grid items-end">
+                        <div className="flex ph:grid items-end">
                             <Button className="ph:mb-b1 h-c13 text-15px rounded rounded-lg bg-caak-titaniumwhite text-caak-generalblack"> 
                                 <span className="icon-fi-rs-check text-12px mr-a1"/>
                                 Нэгдсэн
@@ -84,7 +84,7 @@ export default function PendingPostAdmin() {
                                 <span className="icon-fi-rs-add text-15px mr-a1"/>
                                 Найзаа урих
                             </Button>
-                            <div className="flex btn:justify-end">
+                            <div className="flex ph:justify-end">
                                 <div className="bg-white ml-b1 rounded rounded-lg cursor-pointer">
                                     <span className="icon-fi-rs-notification text-caak-generalblack shadow text-18px rounded rounded-lg px-b4 py-b1 flex"/>
                                 </div>

@@ -143,7 +143,7 @@ export default function Check() {
                         <Button className="bg-caak-bleudefrance text-15px text-white ml-b1 mr-c11 w-c132">Зөвшөөрөх</Button>
                     </div>
                 </div>
-                <span onClick={() => closeModal(history, state)} className="icon-fi-rs-close text-white text-30px mt-c3 ml-c3 cursor-pointer btn:flex btn:justify-center"/>
+                <span onClick={() => closeModal(history, state)} className="icon-fi-rs-close text-white text-30px mt-c3 ml-c3 cursor-pointer ph:flex ph:justify-center"/>
             </div>
         </Backdrop>
     ) : null
