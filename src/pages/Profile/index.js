@@ -7,12 +7,15 @@ import useInfiniteScroll from '../Home/useFetch'
 import { Link } from 'react-router-dom'
 import Loader from '../../components/loader'
 import { useListPager } from '../../Utility/ApiHelper'
-import { useUser } from '../../context/userContext'
+import { getUser } from '../../graphql-custom/user/queries'
+import API from '@aws-amplify/api'
+import { graphqlOperation } from '@aws-amplify/api-graphql'
+import { useParams } from 'react-router'
 
 export default function Profile() {
 
-    const { user } = useUser();
-    
+    const [user, setUser] = useState();
+    const { userId } = useParams();
     const history = useHistory();
 
     const [posts, setPosts] = useState([]);
@@ -46,6 +49,17 @@ export default function Profile() {
         console.log(ex);
       }
     }
+    useEffect(() => {
+      try {
+        const getUserById = async (id) => {
+          const resp = await API.graphql(graphqlOperation(getUser, { id }));
+          setUser(resp.data.getUser);
+        };
+        getUserById(userId);
+      } catch (ex) {
+        console.log(ex);
+      }
+    }, [userId]);
 
     useEffect(() => {
       fetchPosts(posts ,setPosts);
@@ -53,7 +67,7 @@ export default function Profile() {
       // eslint-disable-next-line
     }, []);
 
-    return (
+    return user ? (
         <div>
           <div className="ph:block hidden flex">
             <span/>
@@ -72,8 +86,8 @@ export default function Profile() {
                         
                     </div>
                     <div className="ph:grid ph:justify-center ph:mt-3 sm:ml-c6">
-                        <p style={{marginBlockStart: "13px"}} className="text-26px  font-bold ph:hidden">Blackpink Jisoo</p>
-                        <p className="text-18px text-caak-generalblack font-normal flex ph:justify-center">@sooyaaa__ <span style={{marginInlineStart: "4px"}} className="icon-fi-rs-verified text-13px text-caak-buttonblue" /></p>
+                        <p style={{marginBlockStart: "13px"}} className="text-26px  font-bold ph:hidden">{user.firstname}</p>
+                        <p className="text-18px text-caak-generalblack font-normal flex ph:justify-center items-center">@{user.nickname}<span style={{marginInlineStart: "4px"}} className="icon-fi-rs-verified text-13px text-caak-buttonblue" /></p>
                         <div className="flex mt-b4">
                             <span className="flex items-center"><p className="text-18px font-medium text-caak-generalblack">2434</p> <p style={{marginInlineStart: "4px"}} className="text-15px text-caak-darkBlue">Аура</p></span>
                             <span className="flex items-center mx-c11 ph:mx-a2"><p className="text-18px font-medium text-caak-generalblack">47.2 сая</p> <p style={{marginInlineStart: "4px"}} className="text-15px text-caak-darkBlue">дагагчид</p></span>
@@ -81,7 +95,7 @@ export default function Profile() {
                         </div>
                     </div>
                   </div>
-                  <p className="text-15px text-caak-generalblack mt-a2 sm:mt-c11">energy never lies 🍓</p>
+                  <p className="text-15px text-caak-generalblack mt-a2 sm:mt-c11">{user.about}</p>
                 </div>
                 <div style={{marginTop: "10px"}}>
                     <div className="flex ph:hidden">
@@ -146,5 +160,6 @@ export default function Profile() {
                 </div>
             </div>
         </div>
-    )
+    ) 
+    : null
 }

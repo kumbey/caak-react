@@ -7,12 +7,6 @@ export const getPost = /* GraphQL */ `
     }
 `;
 
-export const getPostByUser = /* GraphQL */ `
-    query GetPostByUser($user_id: ID!) {
-        getPostByUser($user_id: $user_id) ${post0002}
-    }
-`;
-
 export const getPostView = /* GraphQL */ `
     query GetPost($id: ID!) {
         getPost(id: $id) ${post0004}
