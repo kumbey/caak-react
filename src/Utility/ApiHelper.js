@@ -39,10 +39,12 @@ export const useListPager = (params) => {
             resp = resp.data
             let key = Object.keys(resp)[0]
             let nextToken = resp[key].nextToken
+
             items = [...items, ...resp[key].items]
 
             if(items.length < limit && nextToken){
-                return await list(qry, nextToken)
+                qry.variables.nextToken = nextToken
+                return await list(qry, limit, items)
             }else{
                 if(!nextToken){
                     isFinished = true
