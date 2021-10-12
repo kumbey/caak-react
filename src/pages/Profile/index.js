@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Button from '../../components/button'
 import Card from '../../components/card'
-import { useHistory, useLocation } from 'react-router'
+import { useLocation } from 'react-router'
 import { getPostByStatus } from '../../graphql-custom/post/queries'
 import useInfiniteScroll from '../Home/useFetch'
 import { Link } from 'react-router-dom'
@@ -17,13 +17,12 @@ export default function Profile() {
 
     const [user, setUser] = useState();
     const { userId } = useParams();
-    const history = useHistory();
-    console.log(user)
     const [posts, setPosts] = useState([]);
     const location = useLocation();
     const [nextPosts] = useListPager({
       query: getPostByStatus,
       variables: {
+        filter: { user_id: { eq: userId } },
         sortDirection: "DESC",
         status: "CONFIRMED",
         limit: 6,
@@ -103,7 +102,13 @@ export default function Profile() {
                 </div>
                 <div style={{marginTop: "10px"}}>
                     <div className="flex ph:hidden">
-                        <div onClick={() => history.push({pathname: "/profile/settings"})} className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
+                      <Link 
+                        to={{
+                          pathname: `/user/${user.id}/settings`,
+                        }}
+                      >
+                        <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
+                      </Link> 
                         <span style={{width: "49px", marginInlineStart: "10px"}} className="h-c13 text-4px shadow icon-fi-rs-dots text-caak-generalblack items-center flex justify-center rounded-lg cursor-pointer"/>
                     </div>
                     <div className="flex ph:mt-4 md:mt-10 justify-end ph:justify-center">

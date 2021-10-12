@@ -151,7 +151,7 @@ const Routes = [
     page: () => <Activities />,
   },
   {
-    path: "/profile/settings",
+    path: "/user/:userId/settings",
     exact: true,
     background: true,
     page: () => <SettingsProfile />,

@@ -160,6 +160,12 @@ const Feed = () => {
               <div className={"px-2 pb-5"}>
                 {groupData.map((item, index) => {
                   return (
+                    <Link
+                      key={index}
+                      to={{
+                        pathname: `/group/${item.id}`,
+                      }}
+                    >
                     <div
                       key={index}
                       // onClick={() => onSelect(item)}
@@ -186,6 +192,7 @@ const Feed = () => {
                         </span>
                       </div>
                     </div>
+                    </Link>
                   );
                 })}
               </div>
