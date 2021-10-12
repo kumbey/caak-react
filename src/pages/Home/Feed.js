@@ -66,7 +66,7 @@ const Feed = () => {
       if (nextToken !== null) {
         let resp = await API.graphql(
           graphqlOperation(getPostByStatus, {
-            limit: 2,
+            limit: 6,
             nextToken,
             status: "PENDING",
           })

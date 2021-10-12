@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
@@ -7,11 +7,10 @@ export const VideoJS = ({
   onReady,
   videoClassName,
   pressToPlay,
+  videoRef,
+  playerRef,
   ...props
 }) => {
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
-
   useEffect(() => {
     if (!playerRef.current) {
       const videoElement = videoRef.current;
@@ -21,9 +20,6 @@ export const VideoJS = ({
         onReady && onReady(player);
         player.tech_.off("dblclick");
       }));
-      playerRef.current.on("touchstart", function () {
-        console.log("sda")
-      });
     }
     // eslint-disable-next-line
   }, [options]);
