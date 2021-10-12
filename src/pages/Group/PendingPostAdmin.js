@@ -5,12 +5,13 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
+import { useUser } from "../../context/userContext";
 
 export default function PendingPostAdmin() {
   const history = useHistory();
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
-
+  const { user } = useUser();
   const getGroupDataById = async () => {
     try {
       let resp = await API.graphql(
@@ -34,7 +35,7 @@ export default function PendingPostAdmin() {
   };
 
   return (
-    groupData && (
+    groupData.founder_id === user.sysUser.id ? (
       <div>
         <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
           <span
@@ -80,6 +81,6 @@ export default function PendingPostAdmin() {
           <div className={"w-1/5 hidden md:block"} />
         </div>
       </div>
-    )
+    ): <div>404</div>
   );
 }
