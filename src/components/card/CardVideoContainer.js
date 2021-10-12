@@ -31,11 +31,29 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
     };
   }
 
+
+  let clickTimer = null;
+
+  function touchStart() {
+    if (clickTimer == null) {
+      clickTimer = setTimeout(function () {
+        clickTimer = null;
+        console.log("single");
+
+      }, 500)
+    } else {
+      clearTimeout(clickTimer);
+      clickTimer = null;
+      console.log("double");
+
+    }
+  }
+
   const formattedTime = formatTime(videoDuration);
   return (
     <div
       className={`relative ${
-        files.length > 0 ? "max-h-100 h-100" : "max-w-8xl max-h-80"
+        files.length > 0 ? "max-h-100 h-100" : " max-h-80"
       }`}
     >
       <div
@@ -56,12 +74,15 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         ""
       )}
       <VideoJS
-        onDoubleClick={() =>
-          history.push({
-            pathname: `/post/view/${postId}`,
-            state: { background: location },
-          })
-        }
+          onTouch={()=> {
+            touchStart()
+          }}
+        // onDoubleClick={() =>
+        //   history.push({
+        //     pathname: `/post/view/${postId}`,
+        //     state: { background: location },
+        //   })
+        // }
         onLoadedMetadata={(e) => setVideoDuration(e.target.duration)}
         files={files}
         options={videoJsOptions}

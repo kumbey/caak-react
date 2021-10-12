@@ -33,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                          id: 3,
-                                                                                                          type: "Бүлгүүд",
-                                                                                                          icon: "icon-fi-rs-group",
-                                                                                                        },
-                                                                                                        {
-                                                                                                          id: 4,
-                                                                                                          type: "Дагасан найзууд",
-                                                                                                          icon: "icon-fi-rs-following",
-                                                                                                        },*/
+                                                                                                              id: 3,
+                                                                                                              type: "Бүлгүүд",
+                                                                                                              icon: "icon-fi-rs-group",
+                                                                                                            },
+                                                                                                            {
+                                                                                                              id: 4,
+                                                                                                              type: "Дагасан найзууд",
+                                                                                                              icon: "icon-fi-rs-following",
+                                                                                                            },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
   const location = useLocation();
@@ -142,15 +142,15 @@ const Feed = () => {
   }, []);
 
   return (
-    <div>
-      <div className={`pt-4 px-10 w-full`}>
+    <div id={"feed"}>
+      <div className={`pt-3 px-0 md:px-10 w-full`}>
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
-          } sm:justify-between md:justify-between xl:justify-start`}
+          } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <aside
-            className={`hidden md:flex flex flex-col w-2/6 ${
+            className={`hidden mr-4 md:flex flex flex-col w-2/6 lg:w-72 ${
               user && "sticky top-0"
             }`}
           >
@@ -185,8 +185,8 @@ const Feed = () => {
                 );
               })}
             </div>
-            <div className={`${!user && "hidden"}`}>
-              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+            <div className={`${!user && "hidden"} pr-6 `}>
+              <div className={"flex flex-row justify-between px-3.5 pt-2 "}>
                 <span className={"text-15px text-caak-darkBlue"}>
                   Миний үүсгэсэн бүлгүүд
                 </span>
@@ -203,7 +203,7 @@ const Feed = () => {
                     >
                       <div
                         className={
-                          "flex flex-row items-center p-1.5 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                          "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
                         }
                       >
                         <img
@@ -211,16 +211,15 @@ const Feed = () => {
                           className={"w-8 h-8 rounded-md object-cover mr-2"}
                           alt={""}
                         />
-                       
-                            <span
-                                className={
-                                  "text-caak-generalblack font-medium text-15px"
-                                }
-                            >
-                              {item.name}
-                            </span>
-                          </div>
-                       </div>
+                        <span
+                          className={
+                            "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
+                          }
+                        >
+                          {item.name}
+                        </span>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -230,27 +229,29 @@ const Feed = () => {
                 </span>
               </div>
               <div className={"px-2 pb-5"}>
-                {
-                  groupData.map((data, index) => {
-                    return(
-                      <Link
-                        key={index}
-                        to={{
-                          pathname: `/group/view/${data.id}`
-                        }}
-                      >
-                    <Suggest
-                      item={data}
-                      className="ph:mb-4 sm:mb-4 ph:mb-4"
-                    />
-                  </Link>
-                    )
-                  })
-                }
+                {groupData.map((data, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      to={{
+                        pathname: `/group/view/${data.id}`,
+                      }}
+                    >
+                      <Suggest
+                        item={data}
+                        className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                      />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </aside>
-          <div className={"grid_container_container w-full flex flex-col justify-center"}>
+          <div
+            className={
+              "grid_container_container w-full flex flex-col justify-center"
+            }
+          >
             <div
               className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
             >

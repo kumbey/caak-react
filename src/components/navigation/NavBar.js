@@ -25,7 +25,7 @@ export default function NavBar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const [isNotificationMenu, setIsNotificationMenu] = useState(false);
+  const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
 
   const notificationRef = useClickOutSide(() => {
     setIsNotificationMenu(false);
@@ -34,23 +34,22 @@ export default function NavBar() {
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
-
   return (
-    <nav className="bg-white">
-      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
-        <div className="relative flex items-center justify-between h-16">
+    <nav className="bg-white sticky top-0 z-50">
+      <div className="px-2 px-7 py-1 mx-auto sm:px-6 lg:px-8">
+        <div className="flex relative justify-between items-center h-16">
           <div className="flex flex-row items-center">
-            <img className="w-auto h-10 mr-1" src={logo} alt="Caak Logo" />
+            <img className="mr-1 w-auto h-10" src={logo} alt="Caak Logo" />
           </div>
 
-          <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
+          <div className="hidden flex-1 px-1 py-4 mx-4 min-w-0 max-w-xl sm:block md:px-2 lg:px-4 xl:col-span-6">
             <SearchInput hideLabel placeholder={"Хайлт хийх"} />
           </div>
           {/* Mobile menu button */}
-          <div className="md:hidden lg:hidden flex">
+          <div className="flex md:hidden lg:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
+              className="inline-flex justify-center items-center p-2 rounded-md text-caak-generalblack"
             >
               <span className="sr-only">Open main menu</span>
               <span className={"icon-fi-sp-hamburger-menu"} />

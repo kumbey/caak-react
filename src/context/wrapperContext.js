@@ -13,10 +13,11 @@ function useWrapper() {
 
 function WrapperProvider(props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotificationMenu, setIsNotificationMenu] = useState(false);
 
   const value = useMemo(
-    () => ({ isMobileMenuOpen, setIsMobileMenuOpen }),
-    [isMobileMenuOpen]
+    () => ({ isMobileMenuOpen, setIsMobileMenuOpen, isNotificationMenu, setIsNotificationMenu }),
+    [isMobileMenuOpen, isNotificationMenu]
   );
   return <WrapperContext.Provider value={value} {...props} />;
 }

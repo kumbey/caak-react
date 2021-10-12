@@ -133,9 +133,11 @@ const AddPost = () => {
 
   return (
     <Backdrop>
-      <div className={`flex justify-center items-center mt-10`}>
+      <div
+        className={`flex justify-center items-center h-screen md:h-auto md:mt-10 h-full`}
+      >
         <div
-          className={`flex flex-col w-full max-w-xl bg-white mx-auto rounded-square shadow-card `}
+          className={`flex flex-col w-screen sm:w-full max-w-xl bg-white mx-auto rounded-square shadow-card h-full md:h-auto`}
         >
           {post.items.length !== 0 ? (
             !isEditing ? (

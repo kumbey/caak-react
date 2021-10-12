@@ -5,7 +5,7 @@ import CardImageContainer from "./CardImageContainer";
 
 const Card = ({ video, verifiedUser, post }) => {
   return (
-    <div className="rounded-xl shadow-card max-w-8xl flex flex-col justify-between mx-auto mb-2 bg-white">
+    <div className="rounded-xl shadow-card max-w-8xl flex flex-col justify-between mx-auto bg-white">
       <div className={"flex flex-col"}>
         <CardHeader
           postUser={post.user}
