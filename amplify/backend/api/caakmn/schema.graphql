@@ -132,7 +132,7 @@ type Category @model
   icon: String!
 }
 
-type Post
+type Post @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -158,7 +158,7 @@ type Post
   updatedAt: AWSDateTime!
 }
 
-type PostItems
+type PostItems @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
