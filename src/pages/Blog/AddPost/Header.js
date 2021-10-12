@@ -1,8 +1,8 @@
 import Divider from "../../../components/divider";
 
-const Header = ({ title, iconLeft, iconRight, hideDivider }) => {
+const Header = ({ title, iconLeft, iconRight, hideDivider, containerClassName }) => {
   return (
-    <div className={"relative header"}>
+    <div className={`bg-white relative header flex flex-row items-center justify-center px-3.5 shadow-sm ${containerClassName}`}>
       {iconLeft}
       <div
         className={
@@ -12,7 +12,7 @@ const Header = ({ title, iconLeft, iconRight, hideDivider }) => {
         {title}
       </div>
       {iconRight}
-      {hideDivider && <Divider />}
+      {!hideDivider && <Divider />}
     </div>
   );
 };

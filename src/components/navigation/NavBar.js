@@ -35,7 +35,7 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
   return (
-    <nav className="bg-white sticky top-0 z-50">
+    <nav className="bg-white">
       <div className="px-2 px-7 py-1 mx-auto sm:px-6 lg:px-8">
         <div className="flex relative justify-between items-center h-16">
           <div className="flex flex-row items-center">
