@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "api": {
+      "caakmn": [
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

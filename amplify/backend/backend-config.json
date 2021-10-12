@@ -328,27 +328,6 @@
         }
       ]
     },
-    "totals": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ]
-    },
     "aura": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -366,6 +345,21 @@
           "resourceName": "caakmnlayerAPI",
           "attributes": [
             "Arn"
+          ]
+        }
+      ]
+    },
+    "triggerTotals": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
           ]
         }
       ]
