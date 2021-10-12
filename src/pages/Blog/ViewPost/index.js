@@ -12,6 +12,7 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
+import Header from "../AddPost/Header";
 
 const ViewPost = () => {
   const [post, setPost] = useState();
@@ -92,7 +93,7 @@ const ViewPost = () => {
   return post ? (
     <div
       className={
-        "z-10 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "z-50 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
@@ -164,25 +165,10 @@ const ViewPost = () => {
                     controls
                     disablePictureInPicture
                     controlsList="nodownload noremoteplayback noplaybackrate"
-                    className={"h-full backdrop-blur"}
+                    className={"h-half backdrop-blur"}
                   >
                     <source src={getFileUrl(item.file)} type="video/mp4" />
                   </video>
-                  //     <VideoJS
-                  //         videoClassName={"w-full max-h-half lg:max-h-full md:h-full sm:max-h-half object-contain z-0"}
-                  //         options={{
-                  //           autoplay: false,
-                  //           controls: true,
-                  //           responsive: false,
-                  //           fluid: false,
-                  //           sources: [
-                  //             {
-                  //               src: getFileUrl(item.file),
-                  //               type: "video/mp4",
-                  //             },
-                  //           ],
-                  //         }}
-                  //     />
                 );
               } else {
                 return (

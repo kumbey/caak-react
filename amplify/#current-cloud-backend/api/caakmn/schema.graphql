@@ -132,7 +132,7 @@ type Category @model
   icon: String!
 }
 
-type Post @model(mutations: null)
+type Post @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -158,7 +158,7 @@ type Post @model(mutations: null)
   updatedAt: AWSDateTime!
 }
 
-type PostItems @model(mutations: null)
+type PostItems @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -380,88 +380,13 @@ type Mutation {
   createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
   @aws_iam
   @aws_cognito_user_pools
-  createPost(input: CreatePostInput!): Post @function(name:"post-${env}")
-  @aws_cognito_user_pools
-  updatePost(input: UpdatePostInput!): Post @function(name:"post-${env}")
-  @aws_cognito_user_pools
-  updatePostStatus(input: UpdatePostStatusInput!): Post @function(name:"post-${env}")
-  @aws_cognito_user_pools
   changedTotals(type: String!, id: ID!): ChangedTotalsType @function(name:"totals-${env}")
   @aws_cognito_user_pools
-}
-
-type Subscription {
-  onPostUpdate: Post
-    @aws_subscribe(mutations: ["updatePost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostUpdateByUser(user_id: ID!): Post
-    @aws_subscribe(mutations: ["updatePost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostUpdateByGroup(group_id: ID!): Post
-    @aws_subscribe(mutations: ["updatePost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostCreate: Post
-    @aws_subscribe(mutations: ["createPost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostCreateByUser(user_id: ID!): Post
-    @aws_subscribe(mutations: ["createPost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostCreateByGroup(group_id: ID!): Post
-    @aws_subscribe(mutations: ["createPost"])
-    @aws_iam
-    @aws_cognito_user_pools
-  onPostStatusUpdate: Post
-    @aws_subscribe(mutations: ["updatePostStatus"])
-    @aws_iam
-    @aws_cognito_user_pools
 }
 
 type ChangedTotalsType{
     type: String!,
     totals: String!,
-}
-
-input CreatePostInput{
-  id: ID
-	title: String
-	commentType: Boolean
-  status: String
-	user_id: ID
-  updated_user_id: ID
-  group_id: ID!
-  category_id: ID!
-  items: [CreatePostItemsInput]
-}
-
-input UpdatePostInput{
-  id: ID!
-	title: String
-	commentType: Boolean
-  status: String
-	user_id: ID
-  updated_user_id: ID
-  group_id: ID
-  category_id: ID
-  items: [CreatePostItemsInput]
-}
-
-input CreatePostItemsInput{
-  id: ID
-	title: String
-	post_id: ID
-  file_id: ID!
-	user_id: ID
-  order: Int
-}
-
-input UpdatePostStatusInput{
-  id: ID!
-  status: String!
 }
 
 input CreateUserInputCustom{

@@ -8,7 +8,7 @@ const CardImageContainer = ({ files, postId }) => {
     <Link
       to={{ pathname: `/post/view/${postId}`, state: { background: location } }}
     >
-      <div className={"relative max-w-8xl w-96 h-100"}>
+      <div className={"relative max-w-8xl xs:w-full w-96 h-100"}>
         {files.length > 1 ? (
           <div
             className={
@@ -23,7 +23,9 @@ const CardImageContainer = ({ files, postId }) => {
         )}
         <img
           src={getFileUrl(files[0].file)}
-          className={"w-96 h-100 block object-cover"}
+          className={
+            "image_size h-100 xs:w-full w-96 md:w-auto block object-cover"
+          }
           alt={""}
         />
       </div>

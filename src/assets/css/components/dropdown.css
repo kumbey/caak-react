@@ -1,5 +1,5 @@
 .dropdown {
-  @apply w-max rounded-square -right-2 absolute z-50 mt-3 overflow-hidden;
+  @apply w-max bg-white rounded-square -right-2 absolute z-50 mt-3 overflow-hidden;
 }
 .dropdown > div {
   @apply relative flex flex-col self-start w-full align-baseline bg-white;

@@ -1,11 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
-export const VideoJS = ({ options, onReady, videoClassName, ...props }) => {
-  const videoRef = useRef(null);
-  const playerRef = useRef(null);
-
+export const VideoJS = ({
+  options,
+  onReady,
+  videoClassName,
+  pressToPlay,
+  videoRef,
+  playerRef,
+  ...props
+}) => {
   useEffect(() => {
     if (!playerRef.current) {
       const videoElement = videoRef.current;

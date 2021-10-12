@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { getFileUrl } from "../../Utility/Util";
 import VideoJS from "./VideoJS";
 import { useHistory, useLocation } from "react-router-dom";
 
 const CardVideoContainer = ({ files, addPost, postId }) => {
   const [videoDuration, setVideoDuration] = useState(0);
+  const [isTouching, setIsTouching] = useState(false);
   const history = useHistory();
   const location = useLocation();
+  const videoRef = useRef(null);
+  const playerRef = useRef(null);
+  let clickTimer = null;
 
   const videoJsOptions = {
-    // lookup the options in the docs for more options
     autoplay: false,
     controls: true,
     responsive: false,
@@ -31,11 +34,40 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
     };
   }
 
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
+  //Double click checker on mobile device
+  function doubleTapHandler() {
+    if (clickTimer == null) {
+      clickTimer = setTimeout(function () {
+        clickTimer = null;
+        toggleVideo();
+      }, 200);
+    } else {
+      clearTimeout(clickTimer);
+      clickTimer = null;
+      //When double clicked
+      if (playerRef.current) playerRef.current.pause();
+      history.push({
+        pathname: `/post/view/${postId}`,
+        state: { background: location },
+      });
+    }
+  }
+
   const formattedTime = formatTime(videoDuration);
   return (
     <div
       className={`relative ${
-        files.length > 0 ? "max-h-100 h-100" : "max-w-8xl max-h-80"
+        files.length > 0 ? "max-h-100 h-100" : " max-h-80"
       }`}
     >
       <div
@@ -56,6 +88,17 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         ""
       )}
       <VideoJS
+        videoRef={videoRef}
+        playerRef={playerRef}
+        onTouchStart={() => {
+          setIsTouching(true);
+        }}
+        onTouchMove={() => {
+          setIsTouching(false);
+        }}
+        onTouchEnd={() => {
+          isTouching && doubleTapHandler();
+        }}
         onDoubleClick={() =>
           history.push({
             pathname: `/post/view/${postId}`,
@@ -67,7 +110,7 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         options={videoJsOptions}
         style={{ objectFit: "cover", width: "100%" }}
         videoClassName={`videoPlayer  video-js vjs-big-play-centered max-w-8xl ${
-          addPost ? "w-full rounded-square" : "w-96"
+          addPost ? "w-full rounded-square" : "xs:w-full w-96 md:w-96"
         } ${
           files?.length > 0 ? "max-h-100 h-100" : "max-h-80"
         } block cursor-pointer`}
