@@ -18,6 +18,10 @@ module.exports = {
         "17px": "17px",
         "18px": "18px",
         "19px": "19px",
+        "0.23px": "0.23px",
+      },
+      lineHeight: {
+        18: 18,
       },
       borderRadius: {
         square: "8px",
@@ -28,11 +32,15 @@ module.exports = {
         button: "0px 1px 3px rgba(0, 0, 0, 0.15)",
       },
       screens: {
-        ph: { min: "100px", max: "639px" },
+        ph: { min: "200px", max: "499px" },
+        btn: { min: "400px", max: "751px" },
+        "3xl": { min: "1920px" },
       },
       zIndex: {
         1: "1",
         2: "2",
+        3: "3",
+        4: "4",
       },
       colors: {
         caak: {
@@ -144,6 +152,7 @@ module.exports = {
         c5: "43px",
         c9: "44px",
         c30: "48px",
+        px50: "50px",
         c28: "52px",
         c15: "55px",
         c20: "68px",
@@ -166,6 +175,7 @@ module.exports = {
         c18: "278px",
         ch: "300px",
         ci: "320px",
+        px360: "360px",
         cf: "356px",
         ce: "370px",
         ca: "390px",

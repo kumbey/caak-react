@@ -23,7 +23,7 @@ const CardImageContainer = ({ files, postId }) => {
         )}
         <img
           src={getFileUrl(files[0].file)}
-          className={"w-96 h-100 block object-cover"}
+          className={"h-100 block object-cover"}
           alt={""}
         />
       </div>

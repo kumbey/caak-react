@@ -92,7 +92,7 @@ const ViewPost = () => {
   return post ? (
     <div
       className={
-        "z-10 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "z-50 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
@@ -164,7 +164,7 @@ const ViewPost = () => {
                     controls
                     disablePictureInPicture
                     controlsList="nodownload noremoteplayback noplaybackrate"
-                    className={"h-full backdrop-blur"}
+                    className={"h-half backdrop-blur"}
                   >
                     <source src={getFileUrl(item.file)} type="video/mp4" />
                   </video>
