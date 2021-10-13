@@ -1,5 +1,5 @@
 import Button from "../../components/button";
-import { generateFileUrl } from "../../Utility/Util";
+import { checkUser, generateFileUrl } from "../../Utility/Util";
 import React, { useState } from "react";
 import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
 import { useHistory } from "react-router-dom";
@@ -69,78 +69,86 @@ export default function GroupHeader({ group }) {
             <div className="ml-b1 bg-white rounded rounded-lg cursor-pointer">
               <span className="icon-fi-rs-notification text-caak-generalblack text-18px px-b4 py-b1 flex rounded rounded-lg shadow" />
             </div>
-            {group.founder_id === user.sysUser.id && (
-              <div
-                onClick={() => setGroupOptionsMenu(!groupOptionsMenu)}
-                className="ml-b1 relative bg-white rounded rounded-lg cursor-pointer"
-              >
-                <span className="icon-fi-rs-settings text-caak-generalblack text-18px px-b4 py-b1 flex rounded rounded-lg shadow" />
-                <GroupInformationDrop
-                  className="shadow-dropdown top-8 absolute right-0"
-                  shadow
-                  content={
-                    <div
-                      className={`bg-white ${!groupOptionsMenu && "hidden"}`}
-                    >
-                      <div
-                        onClick={() =>
-                          history.push({
-                            pathname: `/group/${group.id}/pending`,
-                          })
-                        }
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
-                      >
-                        <span
-                          className={
-                            " icon-fi-rs-pending ml-b4 mr-b2 text-16px"
-                          }
-                        />
-                        <p className="text-14px text-caak-extraBlack font-roboto">
-                          Хүлээгдэж буй постууд
-                        </p>
-                      </div>
-                      <div
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
-                      >
-                        <span
-                          className={"icon-fi-rs-archive ml-b4 mr-b2 text-16px"}
-                        />
-                        <p className="text-14px text-caak-extraBlack font-roboto">
-                          Архивлагдсан фостууд
-                        </p>
-                      </div>
-                      <div
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
-                      >
-                        <span
-                          className={"icon-fi-rs-stats ml-b4 mr-b2 text-16px"}
-                        />
-                        <p className="text-14px text-caak-extraBlack font-roboto">
-                          Статистик
-                        </p>
-                      </div>
-                      <div
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
-                      >
-                        <span
-                          className={
-                            "icon-fi-rs-settings ml-b4 mr-b2 text-16px"
-                          }
-                        />
-                        <p className="text-14px text-caak-extraBlack font-roboto">
-                          Тохиргоо
-                        </p>
-                      </div>
-                    </div>
-                  }
-                  open={groupOptionsMenu}
-                />
-              </div>
-            )}
+            {checkUser(user)
+              ? group.founder_id === user.sysUser.id && (
+                  <div
+                    onClick={() => setGroupOptionsMenu(!groupOptionsMenu)}
+                    className="ml-b1 relative bg-white rounded rounded-lg cursor-pointer"
+                  >
+                    <span className="icon-fi-rs-settings text-caak-generalblack text-18px px-b4 py-b1 flex rounded rounded-lg shadow" />
+                    <GroupInformationDrop
+                      className="shadow-dropdown top-8 absolute right-0"
+                      shadow
+                      content={
+                        <div
+                          className={`bg-white ${
+                            !groupOptionsMenu && "hidden"
+                          }`}
+                        >
+                          <div
+                            onClick={() =>
+                              history.push({
+                                pathname: `/group/${group.id}/pending`,
+                              })
+                            }
+                            style={{ paddingInlineEnd: "21px" }}
+                            className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
+                          >
+                            <span
+                              className={
+                                " icon-fi-rs-pending ml-b4 mr-b2 text-16px"
+                              }
+                            />
+                            <p className="text-14px text-caak-extraBlack font-roboto">
+                              Хүлээгдэж буй постууд
+                            </p>
+                          </div>
+                          <div
+                            style={{ paddingInlineEnd: "21px" }}
+                            className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
+                          >
+                            <span
+                              className={
+                                "icon-fi-rs-archive ml-b4 mr-b2 text-16px"
+                              }
+                            />
+                            <p className="text-14px text-caak-extraBlack font-roboto">
+                              Архивлагдсан фостууд
+                            </p>
+                          </div>
+                          <div
+                            style={{ paddingInlineEnd: "21px" }}
+                            className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
+                          >
+                            <span
+                              className={
+                                "icon-fi-rs-stats ml-b4 mr-b2 text-16px"
+                              }
+                            />
+                            <p className="text-14px text-caak-extraBlack font-roboto">
+                              Статистик
+                            </p>
+                          </div>
+                          <div
+                            style={{ paddingInlineEnd: "21px" }}
+                            className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
+                          >
+                            <span
+                              className={
+                                "icon-fi-rs-settings ml-b4 mr-b2 text-16px"
+                              }
+                            />
+                            <p className="text-14px text-caak-extraBlack font-roboto">
+                              Тохиргоо
+                            </p>
+                          </div>
+                        </div>
+                      }
+                      open={groupOptionsMenu}
+                    />
+                  </div>
+                )
+              : null}
           </div>
         </div>
       </div>

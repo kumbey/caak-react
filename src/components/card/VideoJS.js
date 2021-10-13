@@ -31,7 +31,7 @@ export const VideoJS = ({
         playerRef.current = null;
       }
     };
-  }, []);
+  }, [playerRef]);
 
   return (
     <div data-vjs-player>
