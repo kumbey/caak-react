@@ -5,12 +5,14 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
 
 export default function PendingPostAdmin() {
   const history = useHistory();
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
-
+  const { user } = useUser();
   const getGroupDataById = async () => {
     try {
       let resp = await API.graphql(
@@ -25,47 +27,47 @@ export default function PendingPostAdmin() {
     getGroupDataById();
     // eslint-disable-next-line
   }, []);
+  // const totalMembers = () => {
+  //   // return (
+  //   //   parseInt(groupData.totals.admin) +
+  //   //   parseInt(groupData.totals.moderator) +
+  //   //   parseInt(groupData.totals.moderator)
+  //   // );
+  // };
 
-  const totalMembers = () => {
-    // return (
-    //   parseInt(groupData.totals.admin) +
-    //   parseInt(groupData.totals.moderator) +
-    //   parseInt(groupData.totals.moderator)
-    // );
-  };
-
-  return (
-    groupData && (
+  return checkUser(user) ? (
+    groupData.founder_id === user.sysUser.id && (
       <div>
-        <div className="flex justify-between items-center bg-white border-t border-b sm:hidden px-c6 py-b3">
+        <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
           <span
             onClick={() => history.goBack()}
             className="icon-fi-rs-back text-20px cursour-pointer"
           />
-          <p className="font-medium text-">Грүпп</p>
+          <p className="text- font-medium">Грүпп</p>
           <span className="icon-fi-rs-dots text-4px" />
         </div>
         <GroupHeader group={groupData} />
 
         {/* body */}
-        <div className="flex justify-center items-start w-full">
+        <div className="flex items-start justify-center w-full">
+          <div className={"w-1/5 hidden md:block"} />
           {/*  <Admin />*/}
           {/* post */}
-          <div className="bg-white rounded-lg mt-c11">
+          <div className="mt-c11 md:w-3/5 w-full bg-white rounded-lg">
             {/* navigator */}
-            <div className="flex justify-between items-center p-c11">
+            <div className="p-c11 flex items-center justify-between">
               <div className="flex items-center">
-                <p className="font-medium text-18px text-caak-generalblack">
+                <p className="text-18px text-caak-generalblack font-medium">
                   Хүлээгдэж буй фостууд
                 </p>
                 <p
                   style={{ marginLeft: "6px" }}
-                  className="bg-opacity-20 rounded-full text-13px px-b3 bg-caak-bleudefrance text-caak-bleudefrance"
+                  className="bg-opacity-20 text-13px px-b3 bg-caak-bleudefrance text-caak-bleudefrance rounded-full"
                 >
                   {groupData.totals?.pending}
                 </p>
               </div>
-              <select className="font-medium rounded-lg border-0 shadow cursor-pointer text-15px text-caak-generalblack">
+              <select className="text-15px text-caak-generalblack font-medium border-0 rounded-lg shadow cursor-pointer">
                 <option>Шинэ фостууд</option>
                 <option>Тйреырбйыр</option>
                 <option>йыөүйзшыбаөүк</option>
@@ -77,8 +79,11 @@ export default function PendingPostAdmin() {
               <PostPending />
             </div>
           </div>
+          <div className={"w-1/5 hidden md:block"} />
         </div>
       </div>
     )
+  ) : (
+    <div>404</div>
   );
 }

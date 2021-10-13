@@ -41,7 +41,6 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
-  console.log(user);
   const history = useHistory();
 
   useEffect(() => {

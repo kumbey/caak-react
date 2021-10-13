@@ -5,6 +5,9 @@ import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
 import { useParams } from "react-router-dom";
 import PendingPostItem from "../../components/PendingPost/PendingPostItem";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { updatePost } from "../../graphql-custom/post/mutation";
 
 export default function PostPending({ settt }) {
   const [isCheckAll, setIsCheckAll] = useState(false);
@@ -17,7 +20,7 @@ export default function PostPending({ settt }) {
       filter: { group_id: { eq: groupId } },
       sortDirection: "DESC",
       status: "PENDING",
-      limit: 2,
+      // limit: 6,
     },
   });
   const [setPostScroll] = useInfiniteScroll(
@@ -26,6 +29,16 @@ export default function PostPending({ settt }) {
   );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
+
+  const updatePostStatus = async (id, status) => {
+    await API.graphql(graphqlOperation(updatePost, { input: { id, status } }));
+  };
+
+  const onSelectHandler = (e) => {
+    isCheck.map((item) => {
+      return updatePostStatus(item, e.target.value);
+    });
+  };
 
   const fetchGroupPosts = async (data, setData) => {
     try {
@@ -59,7 +72,6 @@ export default function PostPending({ settt }) {
       setIsCheck([...isCheck, id]);
     }
   };
-
   useEffect(() => {
     fetchGroupPosts(groupPendingPosts, setGroupPendingPosts);
     setPostScroll(fetchGroupPosts);
@@ -78,12 +90,17 @@ export default function PostPending({ settt }) {
               className="w-b4 h-b4 ml-b3 border-caak-darkgray border-2 rounded cursor-pointer"
             />
             <p className="ml-b3 text-15px text-caak-generalblack font-medium">
-              {isCheck.length} фост сонгогдлоо
+              {isCheck.length} пост сонгогдлоо
             </p>
-            <select className="text-15px text-caak-generalblack font-medium border-0">
-              <option className="focus:bg-caak-darkBlue">Үйлдэл</option>
-              <option>Үйлдэл</option>
-              <option>Үйлдэл</option>
+            <select
+              onChange={(e) => onSelectHandler(e)}
+              className="text-15px text-caak-generalblack font-medium border-0"
+            >
+              <option hidden className="focus:bg-caak-darkBlue">
+                Үйлдэл
+              </option>
+              <option value={"CONFIRMED"}>Зөвшөөрөх</option>
+              <option value={"ARCHIVED"}>Татгалзах</option>
             </select>
           </div>
         ) : (

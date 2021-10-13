@@ -9,6 +9,7 @@ import PostMore from "./PostMore";
 import Dummy from "dummyjs";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "./ProfileHoverCard";
+import {Link} from "react-router-dom";
 
 const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
   const toggleMenu = () => {
@@ -40,9 +41,11 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
 
         <div className="ml-3">
           <div className={"flex flex-row  items-center"}>
+            <Link to={`/group/${group.id}`}>
             <span className="text-generalblack text-14px mr-1 font-bold cursor-pointer">
               {group.name}
             </span>
+            </Link>
             {verifiedUser ? (
               <i
                 className={

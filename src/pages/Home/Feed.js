@@ -10,10 +10,8 @@ import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import { useLocation } from "react-router";
 import { useListPager } from "../../Utility/ApiHelper";
 
 const Feed = () => {
@@ -34,18 +32,17 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                      id: 3,
-                                                                                                                      type: "Бүлгүүд",
-                                                                                                                      icon: "icon-fi-rs-group",
-                                                                                                                    },
-                                                                                                                    {
-                                                                                                                      id: 4,
-                                                                                                                      type: "Дагасан найзууд",
-                                                                                                                      icon: "icon-fi-rs-following",
-                                                                                                                    },*/
+                                                                                                                              id: 3,
+                                                                                                                              type: "Бүлгүүд",
+                                                                                                                              icon: "icon-fi-rs-group",
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              id: 4,
+                                                                                                                              type: "Дагасан найзууд",
+                                                                                                                              icon: "icon-fi-rs-following",
+                                                                                                                            },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-  const location = useLocation();
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
@@ -56,8 +53,8 @@ const Feed = () => {
       sortDirection: "DESC",
       status: "CONFIRMED",
       limit: 6,
-    }
-  })
+    },
+  });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -71,6 +68,17 @@ const Feed = () => {
     }
   };
 
+  const listGroupsIAM = async () => {
+    try {
+      const resp = await API.graphql({
+        query: listGroupsForAddPost,
+        authMode: "AWS_IAM",
+      });
+      setGroupData(resp.data.listGroups.items);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
   const fetchPosts = async (data, setData) => {
     try {
       if (!loading) {
@@ -88,19 +96,21 @@ const Feed = () => {
     }
   };
 
-  const subscriptions = () => {
-    API.graphql({
-      query: onPostStatusUpdate,
-    }).subscribe({
-      next: (data) => {
-        console.log("data: ", data);
-      },
-    });
-  };
+  // const subscriptions = () => {
+  //   API.graphql({
+  //     query: onPostStatusUpdate,
+  //   }).subscribe({
+  //     next: (data) => {
+  //       console.log("data: ", data);
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
+    } else {
+      listGroupsIAM();
     }
     fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
@@ -125,7 +135,7 @@ const Feed = () => {
                 user ? "flex-col" : "flex-row w-full"
               } justify-center mt-b4 pb-4 pr-6`}
             >
-              {feedType.map(({ icon, active, type, id }) => {
+              {feedType.map(({ icon, type, id }) => {
                 return (
                   <Button
                     key={id}
@@ -166,32 +176,32 @@ const Feed = () => {
                         pathname: `/group/${item.id}`,
                       }}
                     >
-                    <div
-                      key={index}
-                      // onClick={() => onSelect(item)}
-                      className={
-                        "flex flex-col cursor-pointer w-max cursor-pointer"
-                      }
-                    >
                       <div
+                        key={index}
+                        // onClick={() => onSelect(item)}
                         className={
-                          "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
+                          "flex flex-col cursor-pointer w-max cursor-pointer"
                         }
                       >
-                        <img
-                          src={generateFileUrl(item.profile)}
-                          className={"w-8 h-8 rounded-md object-cover mr-2"}
-                          alt={""}
-                        />
-                        <span
+                        <div
                           className={
-                            "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
+                            "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
                           }
                         >
-                          {item.name}
-                        </span>
+                          <img
+                            src={generateFileUrl(item.profile)}
+                            className={"w-8 h-8 rounded-md object-cover mr-2"}
+                            alt={""}
+                          />
+                          <span
+                            className={
+                              "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
+                            }
+                          >
+                            {item.name}
+                          </span>
+                        </div>
                       </div>
-                    </div>
                     </Link>
                   );
                 })}
@@ -228,7 +238,7 @@ const Feed = () => {
             <div
               className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
             >
-              {feedType.map(({ icon, active, type, id }) => {
+              {feedType.map(({ icon, type, id }) => {
                 return (
                   <Button
                     key={id}

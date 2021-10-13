@@ -7,12 +7,14 @@ import useInfiniteScroll from "../Home/useFetch";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
 import { useListPager } from "../../Utility/ApiHelper";
-import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import GroupSubHeader from "./GroupSubHeader";
 import GroupBody from "./GroupBody";
+import { checkUser } from "../../Utility/Util";
+import { useUser } from "../../context/userContext";
 
 export default function Group() {
   const history = useHistory();
+  const { user } = useUser();
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
   const [groupPosts, setGroupPosts] = useState([]);
@@ -30,13 +32,26 @@ export default function Group() {
   const [loading, setLoading] = useState(false);
 
   const getGroupDataById = async () => {
-    try {
-      let resp = await API.graphql(
-        graphqlOperation(getGroupView, { id: groupId })
-      );
-      setGroupData(resp.data.getGroup);
-    } catch (ex) {
-      console.log(ex);
+    if (checkUser(user)) {
+      try {
+        let resp = await API.graphql(
+          graphqlOperation(getGroupView, { id: groupId })
+        );
+        setGroupData(resp.data.getGroup);
+      } catch (ex) {
+        console.log(ex);
+      }
+    } else {
+      try {
+        const resp = await API.graphql({
+          query: getGroupView,
+          authMode: "AWS_IAM",
+          variables: { id: groupId },
+        });
+        setGroupData(resp.data.getGroup);
+      } catch (ex) {
+        console.log(ex);
+      }
     }
   };
 
@@ -57,15 +72,15 @@ export default function Group() {
     }
   };
 
-  const subscriptions = () => {
-    API.graphql({
-      query: onPostStatusUpdate,
-    }).subscribe({
-      next: (data) => {
-        console.log("data: ", data);
-      },
-    });
-  };
+  // const subscriptions = () => {
+  //   API.graphql({
+  //     query: onPostStatusUpdate,
+  //   }).subscribe({
+  //     next: (data) => {
+  //       console.log("data: ", data);
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     getGroupDataById();
