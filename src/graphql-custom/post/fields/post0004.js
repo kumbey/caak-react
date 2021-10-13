@@ -28,6 +28,7 @@ const post0004 = /* GraphQL */ `
       }
     }
     group {
+      id
       name
       profile {
         bucket

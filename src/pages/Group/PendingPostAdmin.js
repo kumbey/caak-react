@@ -5,12 +5,14 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
 
 export default function PendingPostAdmin() {
   const history = useHistory();
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
-
+  const { user } = useUser();
   const getGroupDataById = async () => {
     try {
       let resp = await API.graphql(
@@ -25,16 +27,16 @@ export default function PendingPostAdmin() {
     getGroupDataById();
     // eslint-disable-next-line
   }, []);
-  const totalMembers = () => {
-    // return (
-    //   parseInt(groupData.totals.admin) +
-    //   parseInt(groupData.totals.moderator) +
-    //   parseInt(groupData.totals.moderator)
-    // );
-  };
+  // const totalMembers = () => {
+  //   // return (
+  //   //   parseInt(groupData.totals.admin) +
+  //   //   parseInt(groupData.totals.moderator) +
+  //   //   parseInt(groupData.totals.moderator)
+  //   // );
+  // };
 
-  return (
-    groupData && (
+  return checkUser(user) ? (
+    groupData.founder_id === user.sysUser.id && (
       <div>
         <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
           <span
@@ -81,5 +83,7 @@ export default function PendingPostAdmin() {
         </div>
       </div>
     )
+  ) : (
+    <div>404</div>
   );
 }

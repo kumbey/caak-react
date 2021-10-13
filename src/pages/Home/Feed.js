@@ -10,7 +10,6 @@ import { checkUser, generateFileUrl } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import { onPostStatusUpdate } from "../../graphql-custom/post/subscription";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
 import { useListPager } from "../../Utility/ApiHelper";
@@ -33,23 +32,21 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                          id: 3,
-                                                                                                                          type: "Бүлгүүд",
-                                                                                                                          icon: "icon-fi-rs-group",
-                                                                                                                        },
-                                                                                                                        {
-                                                                                                                          id: 4,
-                                                                                                                          type: "Дагасан найзууд",
-                                                                                                                          icon: "icon-fi-rs-following",
-                                                                                                                        },*/
+                                                                                                                              id: 3,
+                                                                                                                              type: "Бүлгүүд",
+                                                                                                                              icon: "icon-fi-rs-group",
+                                                                                                                            },
+                                                                                                                            {
+                                                                                                                              id: 4,
+                                                                                                                              type: "Дагасан найзууд",
+                                                                                                                              icon: "icon-fi-rs-following",
+                                                                                                                            },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { user } = useUser();
   const [groupData, setGroupData] = useState([]);
-  console.log(groupData)
   const [posts, setPosts] = useState([]);
-  console.log(groupData);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -71,6 +68,17 @@ const Feed = () => {
     }
   };
 
+  const listGroupsIAM = async () => {
+    try {
+      const resp = await API.graphql({
+        query: listGroupsForAddPost,
+        authMode: "AWS_IAM",
+      });
+      setGroupData(resp.data.listGroups.items);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
   const fetchPosts = async (data, setData) => {
     try {
       if (!loading) {
@@ -88,19 +96,21 @@ const Feed = () => {
     }
   };
 
-  const subscriptions = () => {
-    API.graphql({
-      query: onPostStatusUpdate,
-    }).subscribe({
-      next: (data) => {
-        console.log("data: ", data);
-      },
-    });
-  };
+  // const subscriptions = () => {
+  //   API.graphql({
+  //     query: onPostStatusUpdate,
+  //   }).subscribe({
+  //     next: (data) => {
+  //       console.log("data: ", data);
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
+    } else {
+      listGroupsIAM();
     }
     fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
@@ -125,7 +135,7 @@ const Feed = () => {
                 user ? "flex-col" : "flex-row w-full"
               } justify-center mt-b4 pb-4 pr-6`}
             >
-              {feedType.map(({ icon, active, type, id }) => {
+              {feedType.map(({ icon, type, id }) => {
                 return (
                   <Button
                     key={id}
@@ -228,7 +238,7 @@ const Feed = () => {
             <div
               className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
             >
-              {feedType.map(({ icon, active, type, id }) => {
+              {feedType.map(({ icon, type, id }) => {
                 return (
                   <Button
                     key={id}

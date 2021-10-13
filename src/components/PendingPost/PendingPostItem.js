@@ -10,7 +10,7 @@ import { updatePost } from "../../graphql-custom/post/mutation";
 import GroupInformationDrop from "./GroupInformationDrop";
 import { useState } from "react";
 
-export default function PendingPostItem({ post, onClick, className, settt }) {
+export default function PendingPostItem({ post, onClick, className }) {
   const location = useLocation();
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
