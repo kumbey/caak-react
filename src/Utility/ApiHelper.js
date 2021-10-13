@@ -2,6 +2,7 @@ import API from "@aws-amplify/api"
 import { graphqlOperation } from "@aws-amplify/api-graphql"
 import Storage from "@aws-amplify/storage"
 import { useMemo } from "react"
+import { useEffect } from "react/cjs/react.development"
 import { useUser } from "../context/userContext"
 import { createFile } from "../graphql-custom/file/mutation"
 import { checkUser } from "./Util"
@@ -85,7 +86,7 @@ export const useListPager = (params) => {
     }
 
     // eslint-disable-next-line
-    return useMemo(() => ([next ,renew]), [lastToken, isFinished])
+    return useMemo(() => ([next ,renew]), [lastToken, isFinished, user])
 }
 
 const object = {

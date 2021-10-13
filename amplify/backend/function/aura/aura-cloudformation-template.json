@@ -78,12 +78,12 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
-            "API_CAAKMN_USERTOTALSTABLE_NAME": {
+            "API_CAAKMN_USERTOTALTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
+                "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
               }
             },
-            "API_CAAKMN_USERTOTALSTABLE_ARN": {
+            "API_CAAKMN_USERTOTALTABLE_ARN": {
               "Fn::Join": [
                 "",
                 [
@@ -98,7 +98,7 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
+                      "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                     }
                   }
                 ]
@@ -130,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRole514e3ae9",
+            "caakmnLambdaRole338d693f",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRole514e3ae9",
+                  "caakmnLambdaRole338d693f",
                   "-",
                   {
                     "Ref": "env"
@@ -224,18 +224,12 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:Put*",
-                "dynamodb:Create*",
-                "dynamodb:BatchWriteItem",
                 "dynamodb:Get*",
                 "dynamodb:BatchGetItem",
                 "dynamodb:List*",
                 "dynamodb:Describe*",
                 "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*",
-                "dynamodb:Delete*"
+                "dynamodb:Query"
               ],
               "Resource": [
                 {
@@ -253,7 +247,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       }
                     ]
@@ -274,7 +268,7 @@
                       ":table/",
                       {
                         "Fn::ImportValue": {
-                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalsTable:Name"
+                          "Fn::Sub": "${apicaakmnGraphQLAPIIdOutput}:GetAtt:UserTotalTable:Name"
                         }
                       },
                       "/index/*"

@@ -31,7 +31,6 @@
         "CreatedSNSRole": "arn:aws:iam::699925983689:role/service-role/caakauth-SMS-Role",
         "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\",\"implicit\"],\"AllowedOAuthScopes\":[\"aws.cognito.signin.user.admin\",\"email\",\"openid\",\"phone\",\"profile\"],\"CallbackURLs\":[\"https://localhost:3000/federated/login/\",\"https://prod.d3cv0kq0oa3k6b.amplifyapp.com/federated/login/\"],\"LogoutURLs\":[\"https://localhost:3000/\",\"https://prod.d3cv0kq0oa3k6b.amplifyapp.com/\"]}"
       },
-      "lastPushTimeStamp": "2021-09-08T06:08:04.110Z",
       "frontendAuthConfig": {
         "loginMechanisms": [
           "PREFERRED_USERNAME"
@@ -42,7 +41,8 @@
         },
         "mfaTypes": [],
         "verificationMechanisms": []
-      }
+      },
+      "lastPushTimeStamp": "2021-10-13T09:12:27.121Z"
     }
   },
   "api": {
@@ -66,12 +66,12 @@
         "GraphQLAPIIdOutput": "t72xxpseifctlji4egzhmmxwsi",
         "GraphQLAPIEndpointOutput": "https://6gnxf22onnbhthhwytct62iesi.appsync-api.ap-southeast-1.amazonaws.com/graphql"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.414Z",
+      "lastPushTimeStamp": "2021-10-13T10:59:54.580Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apicaakmn"
       },
-      "lastPushDirHash": "AfOy2TrXdeO01O3YOB7eAvNpNNo="
+      "lastPushDirHash": "ejg1lXYfnBHWoT+O9sD5Ubdpvng="
     }
   },
   "storage": {
@@ -82,11 +82,12 @@
         "BucketName": "caakmn8fe6c2cb480d45cc8e0c9fac64b9f294100650-devs",
         "Region": "ap-southeast-1"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.423Z",
+      "lastPushTimeStamp": "2021-10-13T10:59:54.584Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
         "logicalId": "storages30c6bf4f5"
-      }
+      },
+      "lastPushDirHash": "rEnYL5Exdc6jatSNJbvGgsqTUPY="
     }
   },
   "function": {
@@ -100,7 +101,7 @@
         "Name": "userpoolpostconfirmation-devs",
         "LambdaExecutionRole": "caakmnLambdaRolee0d8f565-devs"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.429Z",
+      "lastPushTimeStamp": "2021-10-13T10:59:54.586Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/userpoolpostconfirmation-cloudformation-template.json",
         "logicalId": "functionuserpoolpostconfirmation"
@@ -108,531 +109,34 @@
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
         "s3Key": "amplify-builds/userpoolpostconfirmation-6b7a5232433258332f4b-build.zip"
-      }
-    },
-    "users": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "caakmn248efac3",
-          "attributes": [
-            "UserPoolId"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ],
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:users-devs",
-        "Name": "users-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole37096d08-devs"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.434Z",
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/users-cloudformation-template.json",
-        "logicalId": "functionusers"
-      },
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/users-2f4261764e4734586d79-build.zip"
-      },
-      "lastBuildTimeStamp": "2021-09-30T22:24:35.528Z",
+      "lastBuildTimeStamp": "2021-10-13T09:35:10.454Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-09-30T22:24:38.190Z",
-      "distZipFilename": "users-2f4261764e4734586d79-build.zip",
-      "lastPushDirHash": "q/vQBBsDzBQJ7wPqGC6G0IkS5GY="
-    },
-    "post": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "lastBuildTimeStamp": "2021-10-08T06:46:09.622Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-08T06:46:11.262Z",
-      "distZipFilename": "post-7a31314a4c566b4a5247-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/post-7a31314a4c566b4a5247-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/post-cloudformation-template.json",
-        "logicalId": "functionpost"
-      },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.438Z",
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:post-devs",
-        "Name": "post-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole470a13b7-devs"
-      },
-      "lastPushDirHash": "J5MaoOgOqJ1zw7q3FIiebBd2vG0=",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastDevBuildTimeStamp": "2021-10-01T04:43:30.659Z"
-    },
-    "usersTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.442Z",
-      "lastBuildTimeStamp": "2021-10-07T13:55:53.188Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-07T13:55:53.255Z",
-      "distZipFilename": "usersTrigger-38644c53666f74457944-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/usersTrigger-38644c53666f74457944-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/usersTrigger-cloudformation-template.json",
-        "logicalId": "functionusersTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:usersTrigger-devs",
-        "Name": "usersTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole9565bd3f-devs"
-      },
-      "lastPushDirHash": "6CJE+RYQoymT6Z9NIBDOupvFlAI="
+      "lastPackageTimeStamp": "2021-10-13T09:35:10.539Z",
+      "distZipFilename": "userpoolpostconfirmation-6b7a5232433258332f4b-build.zip",
+      "lastPushDirHash": "GnnzexTytmwgbLDCJAvRL6RYRg0="
     },
     "caakmnlayerAPI": {
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer",
       "build": true,
-      "lastBuildTimeStamp": "2021-10-07T18:59:54.672Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-07T18:59:58.425Z",
-      "distZipFilename": "caakmnlayerAPI-LambdaLayerVersion600661de-build.zip",
-      "latestPushedVersionHash": "08c148f607c4861520d47194a259139bf60a8d35979296d326b040cc5d599540",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersion600661de-build.zip"
+      "output": {
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:42"
       },
+      "lastPushTimeStamp": "2021-10-13T10:59:54.589Z",
       "providerMetadata": {
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/caakmnlayerAPI-awscloudformation-template.json",
         "logicalId": "functioncaakmnlayerAPI"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.448Z",
-      "output": {
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:33"
-      }
-    },
-    "postTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.452Z",
-      "lastBuildTimeStamp": "2021-10-07T16:47:39.456Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-07T16:47:39.553Z",
-      "distZipFilename": "postTrigger-5a3261435a305a384c77-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/postTrigger-5a3261435a305a384c77-build.zip"
+        "s3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersionab5cdb44-build.zip"
       },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/postTrigger-cloudformation-template.json",
-        "logicalId": "functionpostTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:postTrigger-devs",
-        "Name": "postTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole19013d67-devs"
-      },
-      "lastPushDirHash": "np3iKQF5C4A7RvAuLFzkEcg+lXc="
-    },
-    "groupTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.456Z",
-      "lastBuildTimeStamp": "2021-10-06T19:40:56.133Z",
+      "lastBuildTimeStamp": "2021-10-13T10:48:05.229Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T19:40:56.204Z",
-      "distZipFilename": "groupTrigger-4463722f54324841685a-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/groupTrigger-4463722f54324841685a-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/groupTrigger-cloudformation-template.json",
-        "logicalId": "functiongroupTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:groupTrigger-devs",
-        "Name": "groupTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole823759a1-devs"
-      },
-      "lastPushDirHash": "ivP8rrUh/UHoehQssEXyu080vCg="
-    },
-    "followedUsersTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.458Z",
-      "lastBuildTimeStamp": "2021-10-07T12:01:14.770Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-07T12:01:14.823Z",
-      "distZipFilename": "followedUsersTrigger-52752b7670462b374176-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/followedUsersTrigger-52752b7670462b374176-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/followedUsersTrigger-cloudformation-template.json",
-        "logicalId": "functionfollowedUsersTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:followedUsersTrigger-devs",
-        "Name": "followedUsersTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole630df441-devs"
-      },
-      "lastPushDirHash": "iElX9dT3TxSSCj6NVPzYbZsGURE="
-    },
-    "groupUsersTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.461Z",
-      "lastBuildTimeStamp": "2021-10-06T05:08:42.983Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T05:08:43.188Z",
-      "distZipFilename": "groupUsersTrigger-4149484b476d6d414363-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/groupUsersTrigger-4149484b476d6d414363-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/groupUsersTrigger-cloudformation-template.json",
-        "logicalId": "functiongroupUsersTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:groupUsersTrigger-devs",
-        "Name": "groupUsersTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRoledccb0995-devs"
-      },
-      "lastPushDirHash": "RK67lmV8qzfhG1ym0ZLTuh8+DSE="
-    },
-    "reactionsTrigger": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.464Z",
-      "lastBuildTimeStamp": "2021-10-12T12:45:28.042Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-12T12:45:28.115Z",
-      "distZipFilename": "reactionsTrigger-374e765436716c334648-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/reactionsTrigger-374e765436716c334648-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/reactionsTrigger-cloudformation-template.json",
-        "logicalId": "functionreactionsTrigger"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:reactionsTrigger-devs",
-        "Name": "reactionsTrigger-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole4b39b5e3-devs"
-      },
-      "lastPushDirHash": "/YCZu75iJJoJGciDmUxYf0l41rw="
-    },
-    "triggerPostViews": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.466Z",
-      "lastBuildTimeStamp": "2021-10-06T05:08:42.985Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T05:08:43.186Z",
-      "distZipFilename": "triggerPostViews-676d6f4b55736a4c774b-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/triggerPostViews-676d6f4b55736a4c774b-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerPostViews-cloudformation-template.json",
-        "logicalId": "functiontriggerPostViews"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerPostViews-devs",
-        "Name": "triggerPostViews-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole932f09a8-devs"
-      },
-      "lastPushDirHash": "tPIhIhoehNp4aU+nZstdf8NgCpY="
-    },
-    "triggerPostShares": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ],
-      "lastBuildTimeStamp": "2021-10-06T05:08:42.986Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T05:08:43.184Z",
-      "distZipFilename": "triggerPostShares-4c4e31786367352b2f4c-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/triggerPostShares-4c4e31786367352b2f4c-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerPostShares-cloudformation-template.json",
-        "logicalId": "functiontriggerPostShares"
-      },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.468Z",
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerPostShares-devs",
-        "Name": "triggerPostShares-devs",
-        "LambdaExecutionRole": "caakmnLambdaRolef0eb7b93-devs"
-      },
-      "lastPushDirHash": "/CwZVTeyUWb7LvtuC51Qb92rlrE="
-    },
-    "triggerComment": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.470Z",
-      "lastBuildTimeStamp": "2021-10-08T04:37:46.643Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-08T04:37:46.692Z",
-      "distZipFilename": "triggerComment-47684a4437343374616d-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/triggerComment-47684a4437343374616d-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerComment-cloudformation-template.json",
-        "logicalId": "functiontriggerComment"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerComment-devs",
-        "Name": "triggerComment-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole64e101ce-devs"
-      },
-      "lastPushDirHash": "kK64CmrGhVPt0qkooHxEVJ22sWk="
-    },
-    "triggerPostItems": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput"
-          ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        }
-      ],
-      "lastPushTimeStamp": "2021-10-12T19:59:55.472Z",
-      "lastBuildTimeStamp": "2021-10-06T08:42:07.779Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T08:42:07.982Z",
-      "distZipFilename": "triggerPostItems-6f582f64414f2b58325a-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/triggerPostItems-6f582f64414f2b58325a-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerPostItems-cloudformation-template.json",
-        "logicalId": "functiontriggerPostItems"
-      },
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerPostItems-devs",
-        "Name": "triggerPostItems-devs",
-        "LambdaExecutionRole": "caakmnLambdaRolef83e6347-devs"
-      },
-      "lastPushDirHash": "qDAclrdVpExhrYJ6S4WG+IO44+o="
+      "lastPackageTimeStamp": "2021-10-13T10:48:08.768Z",
+      "distZipFilename": "caakmnlayerAPI-LambdaLayerVersionab5cdb44-build.zip",
+      "latestPushedVersionHash": "55621fd7d66a7d14888997997fb0908454ea78c8f4d61c5769fcd77b5944f9bb"
     },
     "resolverBoolean": {
       "build": true,
@@ -654,28 +158,110 @@
           ]
         }
       ],
-      "lastBuildTimeStamp": "2021-10-06T20:48:21.850Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-06T20:48:21.900Z",
-      "distZipFilename": "resolverBoolean-626e50317335315a6c4a-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/resolverBoolean-626e50317335315a6c4a-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/resolverBoolean-cloudformation-template.json",
-        "logicalId": "functionresolverBoolean"
-      },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.474Z",
       "output": {
         "Region": "ap-southeast-1",
         "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:resolverBoolean-devs",
         "Name": "resolverBoolean-devs",
         "LambdaExecutionRole": "caakmnLambdaRolef80b410a-devs"
       },
+      "lastPushTimeStamp": "2021-10-13T10:59:54.591Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/resolverBoolean-cloudformation-template.json",
+        "logicalId": "functionresolverBoolean"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+        "s3Key": "amplify-builds/resolverBoolean-626e50317335315a6c4a-build.zip"
+      },
+      "lastBuildTimeStamp": "2021-10-13T09:35:10.455Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-10-13T09:35:10.871Z",
+      "distZipFilename": "resolverBoolean-626e50317335315a6c4a-build.zip",
       "lastPushDirHash": "UIZ60Q7TYA2r2C8BfN9ZGOU4BVY="
     },
     "aura": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ],
+      "output": {
+        "Region": "ap-southeast-1",
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:aura-devs",
+        "Name": "aura-devs",
+        "LambdaExecutionRole": "caakmnLambdaRole338d693f-devs"
+      },
+      "lastPushTimeStamp": "2021-10-13T10:59:54.593Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/aura-cloudformation-template.json",
+        "logicalId": "functionaura"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+        "s3Key": "amplify-builds/aura-46457a79354879347959-build.zip"
+      },
+      "lastBuildTimeStamp": "2021-10-13T09:35:10.456Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-10-13T09:35:10.877Z",
+      "distZipFilename": "aura-46457a79354879347959-build.zip",
+      "lastPushDirHash": "yxPcBRt0zAn2loWj1ZoB2eiA684="
+    },
+    "userRoleOnGroup": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "api",
+          "resourceName": "caakmn",
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ]
+        }
+      ],
+      "output": {
+        "Region": "ap-southeast-1",
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:userRoleOnGroup-devs",
+        "Name": "userRoleOnGroup-devs",
+        "LambdaExecutionRole": "caakmnLambdaRolebf6c8f3e-devs"
+      },
+      "lastPushTimeStamp": "2021-10-13T10:59:54.595Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/userRoleOnGroup-cloudformation-template.json",
+        "logicalId": "functionuserRoleOnGroup"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+        "s3Key": "amplify-builds/userRoleOnGroup-417a3345565338683851-build.zip"
+      },
+      "lastBuildTimeStamp": "2021-10-13T09:35:10.457Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2021-10-13T09:35:10.874Z",
+      "distZipFilename": "userRoleOnGroup-417a3345565338683851-build.zip",
+      "lastPushDirHash": "SxID3Z85LPEZNae9+8psbAtfMgY="
+    },
+    "triggerTables": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
@@ -686,70 +272,28 @@
           "attributes": [
             "GraphQLAPIIdOutput"
           ]
-        },
-        {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
         }
       ],
-      "lastBuildTimeStamp": "2021-10-12T19:41:34.183Z",
+      "lastPushTimeStamp": "2021-10-13T10:59:54.602Z",
+      "lastBuildTimeStamp": "2021-10-13T10:57:15.195Z",
       "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-12T19:41:34.238Z",
-      "distZipFilename": "aura-46773666794f37626d49-build.zip",
+      "lastPackageTimeStamp": "2021-10-13T10:57:15.229Z",
+      "distZipFilename": "triggerTables-485736326b32324c4a43-build.zip",
       "s3Bucket": {
         "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/aura-46773666794f37626d49-build.zip"
+        "s3Key": "amplify-builds/triggerTables-485736326b32324c4a43-build.zip"
       },
       "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/aura-cloudformation-template.json",
-        "logicalId": "functionaura"
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerTables-cloudformation-template.json",
+        "logicalId": "functiontriggerTables"
       },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.476Z",
       "output": {
         "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:aura-devs",
-        "Name": "aura-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole514e3ae9-devs"
+        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerTables-devs",
+        "Name": "triggerTables-devs",
+        "LambdaExecutionRole": "caakmnLambdaRole71c146ee-devs"
       },
-      "lastPushDirHash": "xnaymqe2+yIL5mOkJOzbJiPAvmA="
-    },
-    "triggerTotals": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "caakmn",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ],
-      "lastBuildTimeStamp": "2021-10-12T19:56:36.755Z",
-      "lastBuildType": "PROD",
-      "lastPackageTimeStamp": "2021-10-12T19:56:36.771Z",
-      "distZipFilename": "triggerTotals-346a546533514c614759-build.zip",
-      "s3Bucket": {
-        "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-        "s3Key": "amplify-builds/triggerTotals-346a546533514c614759-build.zip"
-      },
-      "providerMetadata": {
-        "s3TemplateURL": "https://s3.amazonaws.com/amplify-caakmn-devs-100650-deployment/amplify-cfn-templates/function/triggerTotals-cloudformation-template.json",
-        "logicalId": "functiontriggerTotals"
-      },
-      "lastPushTimeStamp": "2021-10-12T19:59:55.488Z",
-      "output": {
-        "Region": "ap-southeast-1",
-        "Arn": "arn:aws:lambda:ap-southeast-1:699925983689:function:triggerTotals-devs",
-        "Name": "triggerTotals-devs",
-        "LambdaExecutionRole": "caakmnLambdaRole657480ff-devs"
-      },
-      "lastPushDirHash": "f3qFCnh1yeksDR0MP4tprsbT2rg="
+      "lastPushDirHash": "2UAHfPaM5HDvQgh64Tc+SJ6PmdE="
     }
   }
 }

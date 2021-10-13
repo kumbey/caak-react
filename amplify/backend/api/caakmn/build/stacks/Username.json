@@ -139,7 +139,7 @@
                         "AttributeType": "S"
                     },
                     {
-                        "AttributeName": "user_id",
+                        "AttributeName": "id_name",
                         "AttributeType": "S"
                     }
                 ],
@@ -193,10 +193,10 @@
                 },
                 "GlobalSecondaryIndexes": [
                     {
-                        "IndexName": "byUser",
+                        "IndexName": "byIdName",
                         "KeySchema": [
                             {
-                                "AttributeName": "user_id",
+                                "AttributeName": "id_name",
                                 "KeyType": "HASH"
                             }
                         ],
@@ -554,7 +554,7 @@
                 }
             }
         },
-        "QueryusernameByUserResolver": {
+        "QueryuserByIdNameResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -566,7 +566,7 @@
                         "Name"
                     ]
                 },
-                "FieldName": "usernameByUser",
+                "FieldName": "userByIdName",
                 "TypeName": "Query",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -583,7 +583,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "usernameByUser",
+                                        "userByIdName",
                                         "req",
                                         "vtl"
                                     ]
@@ -607,7 +607,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "usernameByUser",
+                                        "userByIdName",
                                         "res",
                                         "vtl"
                                     ]

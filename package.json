@@ -16,6 +16,7 @@
     "@tippy.js/react": "^3.1.1",
     "aws-amplify": "^4.2.9",
     "aws-sdk": "^2.999.0",
+    "axios": "^0.23.0",
     "cryptojs": "^2.5.3",
     "luxon": "^2.0.2",
     "masonic": "^3.4.1",

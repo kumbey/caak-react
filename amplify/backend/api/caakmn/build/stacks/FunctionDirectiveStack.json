@@ -738,7 +738,7 @@
             },
             "DependsOn": "InvokeResolverBooleanLambdaDataSource"
         },
-        "UsersLambdaDataSourceRole": {
+        "UserRoleOnGroupLambdaDataSourceRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
                 "RoleName": {
@@ -748,7 +748,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Users9c0e",
+                                    "UserRoleOnGroupc63d",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
                                     },
@@ -762,7 +762,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Users9c0e",
+                                    "UserRoleOnGroupc63d",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
                                     }
@@ -799,7 +799,7 @@
                                             "HasEnvironmentParameter",
                                             {
                                                 "Fn::Sub": [
-                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:users-${env}",
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:userRoleOnGroup-${env}",
                                                     {
                                                         "env": {
                                                             "Ref": "env"
@@ -809,7 +809,7 @@
                                             },
                                             {
                                                 "Fn::Sub": [
-                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:users",
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:userRoleOnGroup",
                                                     {}
                                                 ]
                                             }
@@ -822,17 +822,17 @@
                 ]
             }
         },
-        "UsersLambdaDataSource": {
+        "UserRoleOnGroupLambdaDataSource": {
             "Type": "AWS::AppSync::DataSource",
             "Properties": {
                 "ApiId": {
                     "Ref": "AppSyncApiId"
                 },
-                "Name": "UsersLambdaDataSource",
+                "Name": "UserRoleOnGroupLambdaDataSource",
                 "Type": "AWS_LAMBDA",
                 "ServiceRoleArn": {
                     "Fn::GetAtt": [
-                        "UsersLambdaDataSourceRole",
+                        "UserRoleOnGroupLambdaDataSourceRole",
                         "Arn"
                     ]
                 },
@@ -842,7 +842,7 @@
                             "HasEnvironmentParameter",
                             {
                                 "Fn::Sub": [
-                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:users-${env}",
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:userRoleOnGroup-${env}",
                                     {
                                         "env": {
                                             "Ref": "env"
@@ -852,7 +852,7 @@
                             },
                             {
                                 "Fn::Sub": [
-                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:users",
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:userRoleOnGroup",
                                     {}
                                 ]
                             }
@@ -860,16 +860,16 @@
                     }
                 }
             },
-            "DependsOn": "UsersLambdaDataSourceRole"
+            "DependsOn": "UserRoleOnGroupLambdaDataSourceRole"
         },
-        "InvokeUsersLambdaDataSource": {
+        "InvokeUserRoleOnGroupLambdaDataSource": {
             "Type": "AWS::AppSync::FunctionConfiguration",
             "Properties": {
                 "ApiId": {
                     "Ref": "AppSyncApiId"
                 },
-                "Name": "InvokeUsersLambdaDataSource",
-                "DataSourceName": "UsersLambdaDataSource",
+                "Name": "InvokeUserRoleOnGroupLambdaDataSource",
+                "DataSourceName": "UserRoleOnGroupLambdaDataSource",
                 "FunctionVersion": "2018-05-29",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -885,7 +885,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "InvokeUsersLambdaDataSource",
+                                        "InvokeUserRoleOnGroupLambdaDataSource",
                                         "req",
                                         "vtl"
                                     ]
@@ -908,7 +908,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "InvokeUsersLambdaDataSource",
+                                        "InvokeUserRoleOnGroupLambdaDataSource",
                                         "res",
                                         "vtl"
                                     ]
@@ -918,22 +918,22 @@
                     ]
                 }
             },
-            "DependsOn": "UsersLambdaDataSource"
+            "DependsOn": "UserRoleOnGroupLambdaDataSource"
         },
-        "QuerygetUserCustomResolver": {
+        "Grouproleongroup5ba1Resolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
                     "Ref": "AppSyncApiId"
                 },
-                "TypeName": "Query",
-                "FieldName": "getUserCustom",
+                "TypeName": "Group",
+                "FieldName": "role_on_group",
                 "Kind": "PIPELINE",
                 "PipelineConfig": {
                     "Functions": [
                         {
                             "Fn::GetAtt": [
-                                "InvokeUsersLambdaDataSource",
+                                "InvokeUserRoleOnGroupLambdaDataSource",
                                 "FunctionId"
                             ]
                         }
@@ -953,8 +953,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Query",
-                                        "getUserCustom",
+                                        "Group",
+                                        "role_on_group",
                                         "req",
                                         "vtl"
                                     ]
@@ -977,8 +977,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Query",
-                                        "getUserCustom",
+                                        "Group",
+                                        "role_on_group",
                                         "res",
                                         "vtl"
                                     ]
@@ -988,77 +988,7 @@
                     ]
                 }
             },
-            "DependsOn": "InvokeUsersLambdaDataSource"
-        },
-        "MutationcreateUserCustomResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "AppSyncApiId"
-                },
-                "TypeName": "Mutation",
-                "FieldName": "createUserCustom",
-                "Kind": "PIPELINE",
-                "PipelineConfig": {
-                    "Functions": [
-                        {
-                            "Fn::GetAtt": [
-                                "InvokeUsersLambdaDataSource",
-                                "FunctionId"
-                            ]
-                        }
-                    ]
-                },
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Mutation",
-                                        "createUserCustom",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Mutation",
-                                        "createUserCustom",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            },
-            "DependsOn": "InvokeUsersLambdaDataSource"
+            "DependsOn": "InvokeUserRoleOnGroupLambdaDataSource"
         },
         "TotalsLambdaDataSourceRole": {
             "Type": "AWS::IAM::Role",
