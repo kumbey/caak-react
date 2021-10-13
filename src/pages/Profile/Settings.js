@@ -8,7 +8,7 @@ import { getUser } from "../../graphql-custom/user/queries";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { useParams } from "react-router";
-import Dummy from 'dummyjs'
+import Dummy from "dummyjs";
 
 const data = [
   {
@@ -41,7 +41,7 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
-  console.log(user)
+  console.log(user);
   const history = useHistory();
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function Settings() {
 
   const [activeIndex, setActiveIndex] = useState(1);
 
-  return (
+  return user ? (
     <div style={{ marginTop: "36px" }} className="grid justify-center">
       <div className=" flex items-center">
         <span
@@ -72,18 +72,18 @@ export default function Settings() {
           style={{
             marginLeft: "20px",
             marginRight: "8px",
-          }} 
+          }}
           data-dummy="200x200"
           src={Dummy.img("200x200")}
         />
         <div className="sm:flex-row flex flex-col items-center">
           <p
             style={{ marginRight: "8px" }}
-            className=" md:text-24px text-15px font-medium"
+            className=" md:text-24px text-18px font-medium"
           >
             {user.firstname}
           </p>
-          <p className="text-13px md:text-18px">@{user.nickname}</p>
+          <p className="text-15px md:text-18px">@{user.nickname}</p>
         </div>
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
@@ -303,5 +303,5 @@ export default function Settings() {
         <BottomTabs />
       </footer>
     </div>
-  );
+  ) : null;
 }
