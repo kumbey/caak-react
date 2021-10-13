@@ -14,13 +14,13 @@ type File @model
     type: String
 }
 
-type User @model(mutations: null)
+type User @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read, create]}
   ]){
   id: ID!
-  username: Username! @connection(fields:["id"])
+  username: Username @connection(fields:["id"])
   firstname: String
   lastname: String
   nickname: String

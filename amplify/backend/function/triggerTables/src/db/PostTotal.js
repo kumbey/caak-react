@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
+const Counter = require("/opt/tables/Counter")
 const DBClient = DB(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
 const CountClient = Counter(process.env.API_CAAKMN_POSTTOTALTABLE_NAME, docClient)
 

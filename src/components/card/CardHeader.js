@@ -19,7 +19,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  return (
+  return ( group ?
     <div className="h-14 relative flex items-center justify-between px-4">
       <div className="flex items-center justify-between py-4">
         <div className={"relative"}>
@@ -85,7 +85,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
           open={isMenuOpen}
         />
       </div>
-    </div>
+    </div> : null
   );
 };
 

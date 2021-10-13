@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Select = ( {containerStyle, labelStyle, label, defaultValue, className, children, ...props}) => {
+const Select = ( {containerStyle, labelStyle, label, defaultValue, className, children, errorMessage,...props}) => {
     return (
         <div className={containerStyle}>
             <label className={`block  ${labelStyle}`}>

@@ -18,9 +18,7 @@ const user0001 = /* GraphQL */ `{
     pic ${file0001}
     cover_pic ${file0001}
     username {
-      items {
-        id
-      }
+        id_name
     }
     category{
       items{

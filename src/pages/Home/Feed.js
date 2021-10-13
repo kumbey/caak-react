@@ -68,17 +68,6 @@ const Feed = () => {
     }
   };
 
-  const listGroupsIAM = async () => {
-    try {
-      const resp = await API.graphql({
-        query: listGroupsForAddPost,
-        authMode: "AWS_IAM",
-      });
-      setGroupData(resp.data.listGroups.items);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
   const fetchPosts = async (data, setData) => {
     try {
       if (!loading) {
@@ -109,13 +98,16 @@ const Feed = () => {
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
-    } else {
-      listGroupsIAM();
-    }
+    } 
     fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
+
+    return () => {
+      setPostScroll(null);
+    }
+
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   return (
     <div id={"feed"}>

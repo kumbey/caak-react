@@ -59,9 +59,9 @@ exports.handler = async (event) => {
 		let db_name = ""
 
 		if(record.eventName === "INSERT" || record.eventName === "MODIFY"){
-			db_name = record.dynamodb.NewImage["__typename"]
+			db_name = record.dynamodb.NewImage["__typename"].S
 		}else if(record.eventName === "REMOVE"){
-			db_name = record.dynamodb.OldImage["__typename"]
+			db_name = record.dynamodb.OldImage["__typename"].S
 		}
 		
 		const typeHandler = Types[db_name]
@@ -69,7 +69,7 @@ exports.handler = async (event) => {
 			const resolver = typeHandler[record.eventName]
 
 			if(resolver){
-				let result = await resolver(record) 
+				let result = await resolver(record.dynamodb)
 				return result
 			}else{
 				console.log("RESOLVER NOT FOUND:", record.eventName)

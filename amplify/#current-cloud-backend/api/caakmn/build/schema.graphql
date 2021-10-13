@@ -32,7 +32,7 @@ type User @aws_iam @aws_cognito_user_pools {
   pic: File @aws_iam @aws_cognito_user_pools
   cover_pic: File @aws_iam @aws_cognito_user_pools
   totals: UserTotal @aws_iam @aws_cognito_user_pools
-  username: Username! @aws_iam @aws_cognito_user_pools
+  username: Username @aws_iam @aws_cognito_user_pools
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
 }
 
@@ -295,6 +295,8 @@ type Mutation {
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
   createFollowedUsers(input: CreateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   updateFollowedUsers(input: UpdateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   deleteFollowedUsers(input: DeleteFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
@@ -343,6 +345,7 @@ type Mutation {
   createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
 }
 
 type ChangedTotalsType {
@@ -569,6 +572,9 @@ type Subscription {
   onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
   onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
   onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
   onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
@@ -642,6 +648,63 @@ input ModelUserFilterInput {
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  firstname: String
+  lastname: String
+  nickname: String
+  birthdate: String
+  gender: String
+  pic_id: ID
+  cover_pic_id: ID
+  about: String
+  aura: Int
+  is_public: Boolean
+  status: String!
+  followed: Boolean
+  verified: Boolean
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstname: String
+  lastname: String
+  nickname: String
+  birthdate: String
+  gender: String
+  pic_id: ID
+  cover_pic_id: ID
+  about: String
+  aura: Int
+  is_public: Boolean
+  status: String
+  followed: Boolean
+  verified: Boolean
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelUserConditionInput {
+  firstname: ModelStringInput
+  lastname: ModelStringInput
+  nickname: ModelStringInput
+  birthdate: ModelStringInput
+  gender: ModelStringInput
+  pic_id: ModelIDInput
+  cover_pic_id: ModelIDInput
+  about: ModelStringInput
+  aura: ModelIntInput
+  is_public: ModelBooleanInput
+  status: ModelStringInput
+  followed: ModelBooleanInput
+  verified: ModelBooleanInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
 }
 
 type ModelUserTotalConnection @aws_iam @aws_cognito_user_pools {
