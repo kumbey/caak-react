@@ -246,7 +246,7 @@ export default function Profile() {
           </div>
           <div style={{ marginTop: "10px" }}>
             <div className="ph:hidden flex">
-              {checkUser(signedUser) && (
+              {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
                     pathname: `/user/${user.id}/settings`,
@@ -257,7 +257,7 @@ export default function Profile() {
                     <p className="text-15px font-medium">Тохиргоо</p>
                   </div>
                 </Link>
-              )}
+              ):null}
               <span
                 style={{ width: "49px", marginInlineStart: "10px" }}
                 className="h-c13 text-4px icon-fi-rs-dots text-caak-generalblack flex items-center justify-center rounded-lg shadow cursor-pointer"
