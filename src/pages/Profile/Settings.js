@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
@@ -7,8 +7,9 @@ import BottomTabs from "../Home/BottomTabs";
 import { getUser } from "../../graphql-custom/user/queries";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { useParams } from "react-router";
 import Dummy from "dummyjs";
+import { getUserById } from "../../Utility/ApiHelper";
+import { checkUser } from "../../Utility/Util";
 
 const data = [
   {
@@ -45,15 +46,18 @@ export default function Settings() {
 
   useEffect(() => {
     try {
-      const getUserById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getUser, { id }));
-        setUser(resp.data.getUser);
-      };
-      getUserById(userId);
+      if (checkUser(user))
+        getUserById({
+          id: userId,
+          setUser,
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+      history.goBack();
     } catch (ex) {
       console.log(ex);
     }
-  }, [userId]);
+    // eslint-disable-next-line
+  }, [user, userId]);
 
   const [activeIndex, setActiveIndex] = useState(1);
 
