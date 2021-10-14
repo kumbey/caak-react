@@ -16,7 +16,6 @@ import PostBody from "./PostBody";
 const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [commentInputValue, setCommentInputValue] = useState("");
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
@@ -24,7 +23,18 @@ const ViewPost = () => {
   useEffect(() => {
     try {
       const getPostById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        let resp;
+        if(checkUser(user)) {
+
+        resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        }
+        else {
+          resp = await API.graphql({
+            query: getPostView,
+            variables: {id},
+            authMode: "AWS_IAM"
+          })
+        }
         setPost(resp.data.getPost);
       };
       getPostById(postId);
@@ -69,6 +79,7 @@ const ViewPost = () => {
     }
   };
   useEffect(() => {
+    console.log(post);
     if (checkUser(user)) {
       post && createPostView();
     }
@@ -246,11 +257,15 @@ const ViewPost = () => {
             updatedAt={post.updatedAt}
             title={post.title}
           />
-          <PostBody item={post.items.items[activeIndex]} />
+          <PostBody
+            posts={post}
+            activeIndex={activeIndex}
+            post={post.items.items[activeIndex]}
+          />
         </div>
         <AddComment
-          commentInputValue={commentInputValue}
-          setCommentInputValue={setCommentInputValue}
+          posts={post}
+          activeIndex={activeIndex}
           item={post.items.items[activeIndex]}
         />
       </div>

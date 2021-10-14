@@ -6,7 +6,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getFileUrl } from "../../Utility/Util";
 import { Link } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
 
@@ -14,7 +14,6 @@ export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
-
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
@@ -72,14 +71,18 @@ export default function ProfileHoverCard({ userId }) {
   };
   return profileUser.id ? (
     <div
-      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white"
+      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white z-50"
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">
         <img
           className=" w-12 h-12 border-2 border-white rounded-full"
           alt=""
-          src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
+          src={
+            profileUser.pic
+              ? getFileUrl(profileUser.pic)
+              : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
+          }
         />
         {checkUser(user) && user.sysUser.id !== profileUser.id ? (
           <Button
