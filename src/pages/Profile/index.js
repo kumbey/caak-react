@@ -25,6 +25,25 @@ import {
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
 import { useUser } from "../../context/userContext";
+import PendingPostUser from "../Group/PendingPostUser";
+
+const data = [
+  {
+    id: 1,
+    icon: <span className="icon-fi-rs-drag text-20px mr-a1" />,
+    title: "Миний постууд",
+  },
+  {
+    id: 2,
+    icon: <span className="icon-fi-rs-bookmark text-20px mr-a1" />,
+    title: "Архивлагдсан постууд",
+  },
+  {
+    id: 3,
+    icon: <span className="icon-fi-rs-settings text-22px" />,
+    title: "Хүлээгдэж буй постууд",
+  },
+];
 
 export default function Profile() {
   const [user, setUser] = useState();
@@ -32,6 +51,7 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -246,7 +266,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="flex justify-end md:justify-center ">
+            <div className="md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -285,14 +305,21 @@ export default function Profile() {
 
       <div className="mt-c2 flex items-center justify-around w-full">
         <div className="flex">
-          <Button className="text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
-            <span className="icon-fi-rs-drag text-20px mr-a1" />
-            Миний фостууд
-          </Button>
-          <Button className="text-15px h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
-            <span className="icon-fi-rs-bookmark text-20px mr-a1" />
-            Хадгалсан фостууд
-          </Button>
+          {data.map(({ icon, title, id }) => (
+            <Button
+              key={id}
+              onClick={() => setActiveIndex(id)}
+              className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      id === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+            >
+              {icon}
+              <p className="text-17px ml-b1 font-medium">{title}</p>
+            </Button>
+          ))}
         </div>
         <select className="md:block text-15px w-c132 text-caak-generalblack hidden font-semibold bg-transparent border-0 cursor-pointer">
           <option>Илүү ихийг</option>
@@ -304,7 +331,11 @@ export default function Profile() {
         {/* post */}
         <div className="grid_container_container flex flex-col justify-center w-full">
           {/* contents */}
-          <div className="grid-container mt-b5 justify-center">
+          <div
+            className={`grid-container mt-b5  justify-center ${
+              activeIndex === 1 ? "" : "hidden"
+            }`}
+          >
             {posts.map((data, index) => {
               return (
                 <Card
@@ -314,6 +345,41 @@ export default function Profile() {
                   className="ph:mb-4 sm:mb-4"
                 />
               );
+            })}
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`grid-container mt-b5  justify-center ${
+              activeIndex === 2 ? "" : "hidden"
+            }`}
+          >
+            <PendingPostUser />
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`grid-container mt-b5  justify-center ${
+              activeIndex === 3 ? "" : "hidden"
+            }`}
+          >
+            {posts.map((data, index) => {
+              return data.status === "PENDING" ? (
+                <Card
+                  key={index}
+                  video={data.items.items[0].file.type.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                />
+              ) : null;
             })}
             <Loader
               containerClassName={"self-center"}
