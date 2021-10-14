@@ -10,6 +10,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
+import {useUser} from "../../context/userContext";
 
 const data = [
   {
@@ -42,17 +43,20 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
+  const {user: signedUser} = useUser()
   const history = useHistory();
 
   useEffect(() => {
     try {
-      if (checkUser(user))
+      if (checkUser(signedUser))
         getUserById({
           id: userId,
           setUser,
           authMode: "AMAZON_COGNITO_USER_POOLS",
         });
-      history.goBack();
+      else {
+        history.goBack();
+      }
     } catch (ex) {
       console.log(ex);
     }
