@@ -246,7 +246,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="ph:hidden flex justify-end md:justify-center ">
+            <div className="flex justify-end md:justify-center ">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
