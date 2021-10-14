@@ -3,6 +3,9 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
 
+import { getFileUrl } from "../../Utility/Util";
+import Dummy from "dummyjs";
+
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
@@ -27,7 +30,7 @@ export default function Informations({ currentUser }) {
       text: "Хэрэглэгчийн ID",
       name: "user_id",
       placeholder: currentUser.username.id_name,
-      type: "hidden",
+      type: "text",
       value: currentUser.username.id_name,
       isReadOnly: true,
     },
@@ -40,15 +43,7 @@ export default function Informations({ currentUser }) {
       value: currentUser.about,
       isReadOnly: false,
     },
-    {
-      id: 3,
-      text: "Хөрөг зураг",
-      name: "cover_pic",
-      placeholder: currentUser.cover_pic_id,
-      type: "image",
-      value: currentUser.cover_pic_id,
-      isReadOnly: false,
-    },
+
     // {
     //   id: 4,
     // text: "Цахим хаяг",
@@ -76,13 +71,9 @@ export default function Informations({ currentUser }) {
         },
       })
     );
-    console.log("submit value:", text);
     setText("");
     setShowInput(false);
   };
-  useEffect(() => {
-    console.log([text]);
-  }, [text]);
 
   const handleClick = (id) => {
     setCurrentIndex(id);
@@ -95,7 +86,7 @@ export default function Informations({ currentUser }) {
   return (
     <div
       style={{ marginTop: "34px" }}
-      className="lg:w-cl md:w-iw sm:w-cb ph:w-72 rounded-lg"
+      className="lg:w-cl md:w-iw sm:w-cb w-80 rounded-lg"
     >
       <p
         className="font-medium"
@@ -106,9 +97,8 @@ export default function Informations({ currentUser }) {
       <div style={{ marginTop: "21px" }} className="mx-c3">
         {settings.map((setting, index) => {
           return (
-            <div className=" flex">
+            <div key={index} className=" flex">
               <div
-                key={index}
                 style={{ paddingBlock: "14px" }}
                 className="text-14px sm:text-16px flex items-center w-full border-b"
               >
@@ -118,14 +108,14 @@ export default function Informations({ currentUser }) {
                     <input
                       name={setting.name}
                       className="w-full"
-                       // value={setting.
                       readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
                       onChange={handleChange}
                       placeholder={setting.placeholder}
-                      type="text"
+                      type={setting.type}
                     />
+
                     <button
                       onClick={handleSubmit}
                       className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
@@ -135,6 +125,7 @@ export default function Informations({ currentUser }) {
                   <p>{setting.value}</p>
                 )}
               </div>
+
               <div className=" flex items-center">
                 <span
                   onClick={() => handleClick(index)}

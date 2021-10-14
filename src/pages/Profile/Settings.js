@@ -4,13 +4,11 @@ import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
 import BottomTabs from "../Home/BottomTabs";
-import { getUser } from "../../graphql-custom/user/queries";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
+import { getFileUrl } from "../../Utility/Util";
 
 const data = [
   {
@@ -80,7 +78,7 @@ export default function Settings() {
             marginRight: "8px",
           }}
           data-dummy="200x200"
-          src={Dummy.img("200x200")}
+          src={user.pic ? getFileUrl(user.pic) : Dummy.img("200x200")}
         />
         <div className="sm:flex-row flex flex-col items-center">
           <p
@@ -91,7 +89,6 @@ export default function Settings() {
           </p>
           <p className="text-15px md:text-18px">@{user.nickname}</p>
         </div>
-
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
