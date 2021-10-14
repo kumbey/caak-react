@@ -9,8 +9,9 @@ import GroupHeader from "./GroupHeader";
 import { useListPager } from "../../Utility/ApiHelper";
 import GroupSubHeader from "./GroupSubHeader";
 import GroupBody from "./GroupBody";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getReturnData } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
+import { onPostByGroup } from "../../graphql-custom/post/subscription";
 
 export default function Group() {
   const history = useHistory();
@@ -27,6 +28,7 @@ export default function Group() {
       limit: 6,
     },
   });
+  const subscriptions = {};
   const [setPostScroll] = useInfiniteScroll(groupPosts, setGroupPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -67,25 +69,44 @@ export default function Group() {
     }
   };
 
-  // const subscriptions = () => {
-  //   API.graphql({
-  //     query: onPostStatusUpdate,
-  //   }).subscribe({
-  //     next: (data) => {
-  //       console.log("data: ", data);
-  //     },
-  //   });
-  // };
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroup = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupId,
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        console.log(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
 
   useEffect(() => {
+    subscrib();
+
     getGroupDataById();
 
     fetchGroupPosts(groupPosts, setGroupPosts);
     setPostScroll(fetchGroupPosts);
 
     return () => {
-      setPostScroll(null)
-    }
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+      setPostScroll(null);
+    };
 
     // eslint-disable-next-line
   }, [user]);

@@ -375,6 +375,8 @@ type Notification @model
 
 type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @function(name:"totals-${env}")
+  @aws_iam
+  @aws_cognito_user_pools
   notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @function(name:"totals-${env}")
   @aws_iam
   @aws_cognito_user_pools

@@ -63,7 +63,7 @@ const Feed = () => {
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
-  const subscriptions = {}
+  // const subscriptions = {}
 
   const listGroups = async () => {
     try {
@@ -127,14 +127,21 @@ const Feed = () => {
 
   useEffect(() => {
     
-    // subscrip()
+    fetchPosts(posts, setPosts);
+    setPostScroll(fetchPosts);
 
     return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true
-      })
+      setPostScroll(null);
     }
+
+    // subscrip()
+
+    // return () => {
+    //   Object.keys(subscriptions).map((key) => {
+    //     subscriptions[key].unsubscribe();
+    //     return true
+    //   })
+    // }
 
     // eslint-disable-next-line
   }, []);
@@ -143,15 +150,9 @@ const Feed = () => {
     if (checkUser(user)) {
       listGroups();
     } 
-    fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
-
-    return () => {
-      setPostScroll(null);
-    }
-
     // eslint-disable-next-line
   }, [user]);
+
 
   return (
     <div id={"feed"}>

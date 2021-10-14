@@ -50,7 +50,6 @@ const NotificationDropDown = ({ isOpen }) => {
   const fetchNotification = async (id) => {
     try {
         let resp = await API.graphql(graphqlOperation(getNotification, {id: id}))
-        console.log(resp)
         resp = getReturnData(resp)
         setNotifications([resp, ...notifications])
     } catch (ex) {
