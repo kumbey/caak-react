@@ -12,10 +12,10 @@ export async function isLogged(user, setUser){
         let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
         setUser({...usr, sysUser: resp.data.getUser})
       }else if(usr && user){
-        if(!user.sysUser){
+        // if(!user.sysUser){
           let resp = await API.graphql(graphqlOperation(getUser, { id : usr.attributes.sub }))
           setUser({...usr, sysUser: resp.data.getUser})
-        }
+        // }
       }else if(!usr){
         setUser(null)
       }else{

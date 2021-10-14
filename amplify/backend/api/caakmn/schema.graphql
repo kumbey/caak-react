@@ -375,7 +375,7 @@ type Notification @model
 
 type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @function(name:"totals-${env}")
-  notificationAdded(section: String!, to: ID!): NotifcationAddedType @function(name:"totals-${env}")
+  notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @function(name:"totals-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
@@ -385,7 +385,7 @@ type Subscription {
     @aws_subscribe(mutations: ["changedTotals"])
     @aws_iam
     @aws_cognito_user_pools
-  onNoficationAdded(section: String!, to: ID!): NotifcationAddedType
+  onNoficationAdded(section: String!, to: ID!): NotificationAddedType
     @aws_subscribe(mutations: ["notificationAdded"])
     @aws_iam
     @aws_cognito_user_pools
@@ -401,12 +401,17 @@ type Subscription {
     @aws_subscribe(mutations: ["createPost","updatePost"])
     @aws_iam
     @aws_cognito_user_pools
+  onUserUpdateByUser(id: ID!): User
+    @aws_subscribe(mutations: ["updateUser"])
+    @aws_iam
+    @aws_cognito_user_pools 
 }
 
-type NotifcationAddedType
+type NotificationAddedType
   @aws_iam
   @aws_cognito_user_pools{
     section: String!,
+    to: ID!
     id: ID!
 }
 

@@ -292,7 +292,7 @@ type Notification @aws_iam @aws_cognito_user_pools {
 
 type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType
-  notificationAdded(section: String!, to: ID!): NotifcationAddedType @aws_iam @aws_cognito_user_pools
+  notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -351,10 +351,11 @@ type Mutation {
 
 type Subscription {
   onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType @aws_subscribe(mutations: ["changedTotals"]) @aws_iam @aws_cognito_user_pools
-  onNoficationAdded(section: String!, to: ID!): NotifcationAddedType @aws_subscribe(mutations: ["notificationAdded"]) @aws_iam @aws_cognito_user_pools
+  onNoficationAdded(section: String!, to: ID!): NotificationAddedType @aws_subscribe(mutations: ["notificationAdded"]) @aws_iam @aws_cognito_user_pools
   onCommentByPostItem(post_item_id: ID!): Comment @aws_subscribe(mutations: ["createComment", "updateComment"]) @aws_iam @aws_cognito_user_pools
   onPostByGroup(group_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
   onPostByUser(user_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
+  onUserUpdateByUser(id: ID!): User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
   onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
   onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
   onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
@@ -411,8 +412,9 @@ type Subscription {
   onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"]) @aws_iam @aws_cognito_user_pools
 }
 
-type NotifcationAddedType @aws_iam @aws_cognito_user_pools {
+type NotificationAddedType @aws_iam @aws_cognito_user_pools {
   section: String!
+  to: ID!
   id: ID!
 }
 
