@@ -20,11 +20,15 @@ export default function ProfileHoverCard({ userId }) {
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (userId){
-      if(checkUser(user)){
-        getUserById({ id: userId, setUser: setProfileUser});   
-      }else{
-        getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
+    if (userId) {
+      if (checkUser(user)) {
+        getUserById({ id: userId, setUser: setProfileUser });
+      } else {
+        getUserById({
+          id: userId,
+          setUser: setProfileUser,
+          authMode: "AWS_IAM",
+        });
       }
     }
     // eslint-disable-next-line
@@ -94,8 +98,8 @@ export default function ProfileHoverCard({ userId }) {
           }}
         >
           <div className=" flex items-center">
-            <p className="text-17px font-bold">{profileUser.nickname}</p>
-            <span className="icon-fi-rs-verified text-13px text-caak-buttonblue " />
+            <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
+            <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
           </div>
         </Link>
         <p className="text-15px font-light">{profileUser.about}</p>
