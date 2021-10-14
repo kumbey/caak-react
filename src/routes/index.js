@@ -127,7 +127,7 @@ const Routes = [
   },
 
   {
-    path: "/group/:groupId/pending",
+    path: "/group/pending",
     exact: true,
     background: true,
     page: () => <PendingPostAdmin />,
@@ -139,7 +139,7 @@ const Routes = [
     page: () => <Check />,
   },
   {
-    path: "/user/:userId/profile",
+    path: "/profile",
     exact: true,
     background: true,
     page: () => <Profile />,
@@ -151,7 +151,7 @@ const Routes = [
     page: () => <Activities />,
   },
   {
-    path: "/user/:userId/settings",
+    path: "/profile/settings/:userId",
     exact: true,
     background: true,
     page: () => <SettingsProfile />,

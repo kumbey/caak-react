@@ -115,7 +115,7 @@ export default function Settings() {
             style={{ paddingBottom: "65px" }}
             className={`${activeIndex === 1 ? "block" : "hidden"}`}
           >
-            <Informations />
+            <Informations currentUser={user} />
           </div>
           <div
             style={{ paddingBottom: "65px" }}
