@@ -183,7 +183,7 @@ const UserInformation = () => {
                     <div className=" px-c13 ">
                         <div className="flex ph:grid">
                             <Input
-                                value={lastname}
+                                value={lastname || ""}
                                 name={"lastname"}
                                 errorMessage={errors.lastname}
                                 onChange={handleChange}
@@ -192,7 +192,7 @@ const UserInformation = () => {
                             />
                             <div className="mr-a2"/>
                             <Input
-                                value={firstname}
+                                value={firstname || ""}
                                 name={"firstname"}
                                 errorMessage={errors.firstname}
                                 onChange={handleChange}
@@ -202,7 +202,7 @@ const UserInformation = () => {
                         </div>
 
                         <Input
-                            value={nickname}
+                            value={nickname || ""}
                             name={"nickname"}
                             errorMessage={errors.nickname}
                             onChange={handleChange}
