@@ -1,5 +1,6 @@
 const comment0001 = /* GraphQL */ `
   {
+    id
     post_item_id
     comment
     createdAt

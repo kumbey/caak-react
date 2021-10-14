@@ -41,6 +41,7 @@ const ViewPost = () => {
     } catch (ex) {
       console.log(ex);
     }
+    // eslint-disable-next-line
   }, [postId]);
 
   useEffect(() => {
@@ -79,7 +80,6 @@ const ViewPost = () => {
     }
   };
   useEffect(() => {
-    console.log(post);
     if (checkUser(user)) {
       post && createPostView();
     }
