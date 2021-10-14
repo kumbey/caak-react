@@ -43,7 +43,7 @@ const AddComment = ({ item, commentInputValue, setCommentInputValue }) => {
         <img
           className="border-caak-primary w-10 h-10 ml-5 border-2 rounded-full"
           src={
-            user.sysUser.pick
+            user?.sysUser?.pic
               ? getFileUrl(user.sysUser.pic)
               : Dummy.image("50x50")
           }
