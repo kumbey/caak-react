@@ -7,7 +7,7 @@ function WithOutAuth(){
    const location = useLocation()
 
     useEffect(() => {
-      history.push({pathname: "/login", state: {background: location}})
+      history.replace({pathname: "/login", state: {background: location}})
        //eslint-disable-next-line
     },[])
 

@@ -9,6 +9,7 @@ const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
 const UserTotal = require("../db/UserTotal")
 const PostTotal = require("../db/PostTotal")
+const NotificationDB = require("../db/Notification")
 const PostDB = DB(process.env.API_CAAKMN_POSTTABLE_NAME, docClient)
 const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME, docClient)
 const CommentDB = DB(process.env.API_CAAKMN_COMMENTTABLE_NAME, docClient)
@@ -46,13 +47,19 @@ async function remove(record){
 async function changeReactions(newImg, increase){
     try{
 
-        items = [
+        const items = [
             {
                 field: "reactions",
                 increase: increase,
                 count: 1
             }
         ]
+
+        const notifiData = {
+            section: "USER",
+            type: "REACTION",
+            seen: false
+        }
 
         if(newImg.on_to === "POST"){
 
@@ -61,6 +68,11 @@ async function changeReactions(newImg, increase){
             await PostTotal.modify(post.id , items)
             items[0].field = "post_reactions"
             await UserTotal.modify(post.user_id, items)
+            
+            notifiData.item_id = post.id
+            notifiData.action = `REACTION_${newImg.on_to}`
+            notifiData.from = newImg.user_id
+            notifiData.to = post.user_id
 
         }else if(newImg.on_to === "POST_ITEM"){
 
@@ -72,6 +84,11 @@ async function changeReactions(newImg, increase){
             items[0].field = "post_items_reactions"
             await UserTotal.modify(post.user_id, items)
 
+            notifiData.item_id = postItem.id
+            notifiData.action = `REACTION_${newImg.on_to}`
+            notifiData.from = newImg.user_id
+            notifiData.to = post.user_id
+
         }else if(newImg.on_to === "COMMENT"){
             
             let comment = await CommentDB.get(newImg.id)
@@ -79,6 +96,15 @@ async function changeReactions(newImg, increase){
             items[0].field = "comment_reactions"
             await UserTotal.modify(comment.user_id)
 
+            notifiData.item_id = comment.id
+            notifiData.action = `REACTION_${newImg.on_to}`
+            notifiData.from = newImg.user_id
+            notifiData.to = comment.user_id
+
+        }
+        
+        if(increase){
+            await NotificationDB.insert(notifiData)
         }
 
         return true

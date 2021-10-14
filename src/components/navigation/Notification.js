@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
+import { generateFileUrl } from "../../Utility/Util";
 
-const Notification = ({ newPost, type }) => {
+const Notification = ({ item }) => {
+
+  const [text] = useState({
+    short: "",
+    long: ""
+  })
+
   const button = () => {
-    if (type === "success") {
+    if (item.action === "POST_CONFIRMED") {
+
+      text.short = `таны пост`
+      text.long = `амжилттай нийтлэгдлээ`
+
       return (
         <div
           className={
@@ -15,7 +26,16 @@ const Notification = ({ newPost, type }) => {
           />
         </div>
       );
-    } else if (type === "plus") {
+    } else if (item.action === "POST_PENDING" || item.action === "POST_ARCHIVED") {
+
+      if(item.action === "POST_PENDING"){
+        text.short = `таны пост`
+        text.long = `шалгалдаж байна`
+      }else{
+        text.short = `таны пост`
+        text.long = `архивлагдлаа`
+      }
+
       return (
         <div
           className={
@@ -28,7 +48,16 @@ const Notification = ({ newPost, type }) => {
           />
         </div>
       );
-    } else if (type === "caak") {
+    } else if (item.action === "REACTION_POST" || item.action === "REACTION_COMMENT" || item.action === "REACTION_POST_ITEM") {
+
+      if(item.action === "REACTION_COMMENT"){
+        text.short = `таны сэтгэгдэл`
+        text.long = `дээр саак дарлаа`
+      }else{
+        text.short = `таны пост`
+        text.long = `дээр саак дарлаа`
+      }
+
       return (
         <div
           className={
@@ -41,7 +70,11 @@ const Notification = ({ newPost, type }) => {
           />
         </div>
       );
-    } else if (type === "comment") {
+    } else if (item.action === "COMMENT_WRITED") {
+
+      text.short = `таны пост`
+      text.long = `сэтгэгдэл үлдээлээ`
+
       return (
         <div
           className={
@@ -54,7 +87,11 @@ const Notification = ({ newPost, type }) => {
           />
         </div>
       );
-    } else if (type === "request") {
+    } else if (item.action === "USER_FOLLOWED") {
+
+      text.short = `таныг`
+      text.long = `дагалаа`
+
       return (
         <div
           className={
@@ -77,7 +114,7 @@ const Notification = ({ newPost, type }) => {
     >
       <div className={"flex flex-row"}>
         <div className={"avatar relative"}>
-          {newPost && (
+          {!item.seen && (
             <div
               className={
                 "absolute -left-2 top-0 w-2 h-2 bg-caak-bleudefrance rounded-full"
@@ -88,7 +125,7 @@ const Notification = ({ newPost, type }) => {
           <div className={"flex justify-center items-center  w-10 h-10"}>
             <img
               className={"rounded-full w-full h-full"}
-              src={"https://i.pravatar.cc/100"}
+              src={generateFileUrl(item.from_user.pic)}
               alt={""}
             />
           </div>
@@ -107,21 +144,21 @@ const Notification = ({ newPost, type }) => {
         </div>
         <div className={"flex flex-row flex-wrap items-center ml-3"}>
           <span className={"text-15px text-caak-generalblack font-medium"}>
-            Oyunerdene{" "}
+            {`${item.from_user.nickname}`}
           </span>
-          <span className={"text-14px text-caak-darkBlue"}>таны пост</span>
+          <span className={"text-14px text-caak-darkBlue"}>&nbsp;{text.short}</span>
           <span className={"text-14px text-caak-generalblack"}>
-            амжилттай нийтлэгдлээ
+            &nbsp;{text.long}
           </span>
         </div>
       </div>
-      <div className={"postImage"}>
+      {/* <div className={"postImage"}>
         <img
           className={"rounded-square w-14 h-10 object-cover"}
           src={"https://i.pravatar.cc/300"}
           alt={""}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

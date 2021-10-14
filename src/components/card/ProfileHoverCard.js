@@ -27,6 +27,7 @@ export default function ProfileHoverCard({ userId }) {
         getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
       }
     }
+    // eslint-disable-next-line
   }, [userId]);
 
   const createFollowUser = async () => {

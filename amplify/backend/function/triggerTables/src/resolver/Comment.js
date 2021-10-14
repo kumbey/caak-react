@@ -2,6 +2,7 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
 const UserTotal = require("../db/PostItemsTotal")
+const NotificationDB = require("../db/Notification")
 
 async function insert(record){
     try{
@@ -20,6 +21,18 @@ async function insert(record){
                 count: 1
             }
         ])
+
+        const notifiData = {
+            section: "USER",
+            type: "COMMENT",
+            item_id: newImg.id,
+            action: `COMMENT_WRITED`,
+            from: newImg.user_id,
+            to: newImg.replyUserID,
+            seen: false
+        }
+
+        await NotificationDB.insert(notifiData)
 
         return true
 
