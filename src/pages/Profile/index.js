@@ -154,7 +154,7 @@ export default function Profile() {
         </div>
       </div>
       <div
-        style={{ height: "220px" }}
+        style={{ height: "230px" }}
         className="ph:h-c22 flex items-center justify-center bg-white border-t"
       >
         <div className="w-full grid justify-center md:flex md:justify-around">
@@ -244,8 +244,8 @@ export default function Profile() {
               {user.about}
             </p>
           </div>
-          <div style={{ marginTop: "10px" }}>
-            <div className="ph:hidden flex justify-center">
+          <div>
+            <div className="ph:hidden flex justify-end md:justify-center ">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{

@@ -11,6 +11,7 @@ import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
 import {useUser} from "../../context/userContext";
+import { getFileUrl } from "../../Utility/Util";
 
 const data = [
   {
@@ -80,7 +81,7 @@ export default function Settings() {
             marginRight: "8px",
           }}
           data-dummy="200x200"
-          src={Dummy.img("200x200")}
+          src={user.pic ? getFileUrl(user.pic) : Dummy.img("200x200")}
         />
         <div className="sm:flex-row flex flex-col items-center">
           <p
