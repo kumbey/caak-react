@@ -38,7 +38,7 @@
         },
         "resolverBoolean": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/resolverBoolean-626e50317335315a6c4a-build.zip"
+          "s3Key": "amplify-builds/resolverBoolean-71514f4e58616f374654-build.zip"
         },
         "aura": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -50,7 +50,7 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerTables-52754435474837664d6a-build.zip"
+          "s3Key": "amplify-builds/triggerTables-5742316a73685358452f-build.zip"
         }
       }
     }
