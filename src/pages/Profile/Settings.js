@@ -41,7 +41,9 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
+  console.log("asdasd", user)
   const history = useHistory();
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     try {
@@ -55,7 +57,10 @@ export default function Settings() {
     }
   }, [userId]);
 
-  const [activeIndex, setActiveIndex] = useState(1);
+  /*const handleSubmit = (evt) => {
+    evt.preventDefault();
+    alert(`Submitting Name ${user}`)
+  }*/
 
   return user ? (
     <div style={{ marginTop: "36px" }} className="grid justify-center">
@@ -84,6 +89,7 @@ export default function Settings() {
           </p>
           <p className="text-13px md:text-18px">@{user.nickname}</p>
         </div>
+
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
@@ -297,6 +303,18 @@ export default function Settings() {
             </div>
           </div>
         </div>
+        
+
+        {/*<form onSubmit={handleSubmit}>
+          <label>
+            <input
+              type="text"
+              value={user.firstname}
+              onChange={(e) => setUser(e.target.value)}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>*/}
       </div>
       <footer className={` block md:hidden sticky bottom-0 z-10`}>
         <BottomTabs />

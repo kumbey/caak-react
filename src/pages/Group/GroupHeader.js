@@ -40,7 +40,7 @@ export default function GroupHeader({ group }) {
   };
 
   return (
-    <div className="h-c18 relative flex justify-center bg-white">
+    <div className="h-c18 relative bg-white">
       <img
         alt="cover"
         src={generateFileUrl(group.cover)}
@@ -48,18 +48,15 @@ export default function GroupHeader({ group }) {
       />
 
       {/* menu */}
-      <div className="xl:bottom-c6 bottom-a1 2xl:px-cf xl:px-ch lg:px-c12 md:px-c30 absolute flex justify-between w-full">
-        <div className="ph:grid mx-c6 flex items-center w-full">
+      <div className="absolute xl:bottom-c6 bottom-a1 flex w-full justify-center sm:justify-around">
+        <div className="ph:grid mx-c6 flex items-end">
           <img
             alt=""
             src={generateFileUrl(group.profile)}
             className="w-c19 h-c19 border-4 border-white rounded-lg"
           />
           <div className="ml-c6 ph:ml-0">
-            <div className="flex items-center">
-              <p className="text-26px ph:text-22px font-bold">{group.name}</p>
-              <span className="icon-fi-rs-back text-12px ml-b3 ph:block hidden transform rotate-180" />
-            </div>
+            <p className="text-26px ph:text-22px font-bold">{group.name}</p>
             <div className="ph:grid flex items-center">
               <div className="flex items-center">
                 <span className="icon-fi-rs-world text-16px text-caak-darkBlue flex" />
@@ -75,9 +72,9 @@ export default function GroupHeader({ group }) {
             </div>
           </div>
         </div>
-        <div className="ph:hidden flex items-end">
+        <div className="flex items-end ph:flex-col ph:justify-evenly">
           <Button 
-            className="ph:mb-b1 h-c13 text-15px rounded rounded-lg" 
+            className="h-c13 text-15px rounded rounded-lg" 
             disabled={group.followed}
             onClick={followGroup}
           >
@@ -88,7 +85,7 @@ export default function GroupHeader({ group }) {
                         <span className="icon-fi-rs-link text-15px mr-a1"/>
                         Найзаа урих
                     </Button> */}
-          <div className="flex">
+          <div className="flex h-c13 items-center w-full">
             <div className="ml-b1 bg-white rounded rounded-lg cursor-pointer">
               <span className="icon-fi-rs-notification text-caak-generalblack text-18px px-b4 py-b1 flex rounded rounded-lg shadow" />
             </div>

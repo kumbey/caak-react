@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Button from '../../components/button'
 import Card from '../../components/card'
-import { useLocation } from 'react-router'
 import { getPostByStatus } from '../../graphql-custom/post/queries'
 import useInfiniteScroll from '../Home/useFetch'
 import { Link } from 'react-router-dom'
@@ -18,7 +17,6 @@ export default function Profile() {
     const [user, setUser] = useState();
     const { userId } = useParams();
     const [posts, setPosts] = useState([]);
-    const location = useLocation();
     const [nextPosts] = useListPager({
       query: getPostByStatus,
       variables: {
@@ -107,7 +105,9 @@ export default function Profile() {
                           pathname: `/user/${user.id}/settings`,
                         }}
                       >
-                        <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/><p className="text-15px font-medium">Тохиргоо</p></div>
+                        <div className="h-c13 shadow flex items-center rounded-lg px-c1 cursor-pointer"><span className="pr-a1 icon-fi-rs-settings text-18px"/>
+                          <p className="text-15px font-medium">Тохиргоо</p>
+                        </div>
                       </Link> 
                         <span style={{width: "49px", marginInlineStart: "10px"}} className="h-c13 text-4px shadow icon-fi-rs-dots text-caak-generalblack items-center flex justify-center rounded-lg cursor-pointer"/>
                     </div>
@@ -144,19 +144,13 @@ export default function Profile() {
                     <div className="grid-container justify-center mt-b5">
                       {posts.map((data, index) => {
                         return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/post/view/${data.id}`,
-                              state: { background: location },
-                            }}
-                          >
+                          <div key={index}>
                             <Card
                               video={data.items.items[0].file.type.startsWith("video")}
                               post={data}
                               className="ph:mb-4 sm:mb-4 ph:mb-4"
                             />
-                          </Link>
+                          </div>
                         );
                       })}
                       <Loader
