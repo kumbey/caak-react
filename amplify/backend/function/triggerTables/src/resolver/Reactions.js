@@ -7,9 +7,10 @@ const DB = require("/opt/tables/DB")
 
 const CommentTotal = require("../db/CommentTotal")
 const PostItemsTotal = require("../db/PostItemsTotal")
-const UserTotal = require("../db/PostItemsTotal")
+const UserTotal = require("../db/UserTotal")
 const PostTotal = require("../db/PostTotal")
 const PostDB = DB(process.env.API_CAAKMN_POSTTABLE_NAME, docClient)
+const PostItems = DB(process.env.API_CAAKMN_POSTITEMSTABLE_NAME, docClient)
 const CommentDB = DB(process.env.API_CAAKMN_COMMENTTABLE_NAME, docClient)
 
 async function insert(record){
@@ -57,21 +58,22 @@ async function changeReactions(newImg, increase){
 
             const post = await PostDB.get(newImg.id)
 
-            await PostTotal.modify(newImg.id , items)
+            await PostTotal.modify(post.id , items)
             await UserTotal.modify(post.user_id, {...items, field: "post_reactions"})
 
         }else if(newImg.on_to === "POST_ITEM"){
 
-            const post = await PostDB.get(newImg.post_id)
+            const postItem = PostItems.get(newImg.id)
+            const post = await PostDB.get(postItem.post_id)
 
-            await PostItemsTotal.modify(newImg.id, items)
-            await PostTotal.modify(newImg.post_id , items)
+            await PostItemsTotal.modify(postItem.id, items)
+            await PostTotal.modify(post.id , items)
             await UserTotal.modify(post.user_id, items, {...items, field: "post_items_reactions"})
 
         }else if(newImg.on_to === "COMMENT"){
             
             let comment = await CommentDB.get(newImg.id)
-            await CommentTotal.modify(newImg.id, items)
+            await CommentTotal.modify(comment.id, items)
             await UserTotal.modify(comment.user_id, items, {...items, field: "comment_reactions"})
 
         }

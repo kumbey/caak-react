@@ -265,11 +265,20 @@ export function removeKeyFromObj(obj, removeKeys) {
   });
 }
 
-export function getReturnData(data){
-    let retData = data.data
+export function getReturnData(data, isSubscription){
+
+    let retData = {}
+
+    if(isSubscription){
+      retData = data.value.data
+    }else{
+      retData = data.data
+    }
+
     retData = retData[Object.keys(retData)[0]]
     return retData
 }
+
 
 const object = {
   useQuery,

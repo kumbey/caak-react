@@ -13,6 +13,7 @@ import Loader from "../../components/loader";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
 import { useListPager } from "../../Utility/ApiHelper";
+// import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 const Feed = () => {
   const feedType = [
@@ -62,6 +63,7 @@ const Feed = () => {
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
+  const subscriptions = {}
 
   const listGroups = async () => {
     try {
@@ -108,15 +110,34 @@ const Feed = () => {
     }
   };
 
-  // const subscriptions = () => {
-  //   API.graphql({
-  //     query: onPostStatusUpdate,
+  // const subscrip = () => {
+  //   subscriptions.onChangedTotalsBy = API.graphql({
+  //     query: onChangedTotalsBy,
+  //     variables: {
+  //       type: "PostTotal",
+  //       id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
+  //     }
   //   }).subscribe({
   //     next: (data) => {
   //       console.log("data: ", data);
   //     },
   //   });
-  // };
+  // }
+
+
+  useEffect(() => {
+    
+    // subscrip()
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true
+      })
+    }
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (checkUser(user)) {
