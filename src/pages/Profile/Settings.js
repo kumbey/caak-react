@@ -10,7 +10,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 
 const data = [
   {
@@ -43,7 +43,7 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
-  const {user: signedUser} = useUser()
+  const { user: signedUser } = useUser();
   const history = useHistory();
 
   useEffect(() => {

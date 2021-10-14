@@ -15,6 +15,7 @@ export default function Informations({ currentUser }) {
   const settings = [
     {
       id: 0,
+      text: "Нэр",
       name: "firstname",
       placeholder: currentUser.firstname,
       type: "text",
@@ -23,14 +24,16 @@ export default function Informations({ currentUser }) {
     },
     {
       id: 1,
+      text: "Хэрэглэгчийн ID",
       name: "user_id",
-      placeholder: currentUser.id,
+      placeholder: currentUser.username.id_name,
       type: "hidden",
-      value: currentUser.id,
+      value: currentUser.username.id_name,
       isReadOnly: true,
     },
     {
       id: 2,
+      text: "Тухай",
       name: "about",
       placeholder: currentUser.about,
       type: "text",
@@ -39,8 +42,8 @@ export default function Informations({ currentUser }) {
     },
     {
       id: 3,
+      text: "Хөрөг зураг",
       name: "cover_pic",
-
       placeholder: currentUser.cover_pic_id,
       type: "image",
       value: currentUser.cover_pic_id,
@@ -48,13 +51,15 @@ export default function Informations({ currentUser }) {
     },
     // {
     //   id: 4,
+    // text: "Цахим хаяг",
     //   name: "email",
-    //   placeholder: "Имайл хаяг",
+    //   placeholder: "Цахим хаяг",
     //   type: "text",
     //   value: currentUser.id,isReadOnly: false,
     // },
     // {
     //   id: 5,
+    // text: "Утасны дугаар",
     //   name: "phone_number",
     //   placeholder: "Утасны дугаар",
     //   type: "text",
@@ -105,17 +110,15 @@ export default function Informations({ currentUser }) {
               <div
                 key={index}
                 style={{ paddingBlock: "14px" }}
-                className="flex items-center w-full border-b"
+                className="text-14px sm:text-16px flex items-center w-full border-b"
               >
-                <p className="text-16px my-a4 w-32 mr-1 font-medium">
-                  {setting.name}
-                </p>
+                <p className="my-a4 w-32 font-medium">{setting.text}</p>
                 {showInput && index === currentIndex ? (
                   <div className="flex">
                     <input
                       name={setting.name}
                       className="w-full"
-                      // value={setting.value}
+                       // value={setting.
                       readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
