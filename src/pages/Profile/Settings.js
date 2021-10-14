@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router";
+import { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
 import BottomTabs from "../Home/BottomTabs";
-import { getUser } from "../../graphql-custom/user/queries";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { useParams } from "react-router";
-import Dummy from 'dummyjs'
+import Dummy from "dummyjs";
+import { getUserById } from "../../Utility/ApiHelper";
+import { checkUser } from "../../Utility/Util";
+import {useUser} from "../../context/userContext";
 
 const data = [
   {
@@ -41,21 +40,26 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
+  const {user: signedUser} = useUser()
   const history = useHistory();
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     try {
-      const getUserById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getUser, { id }));
-        setUser(resp.data.getUser);
-      };
-      getUserById(userId);
+      if (checkUser(signedUser))
+        getUserById({
+          id: userId,
+          setUser,
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+      else {
+        history.goBack();
+      }
     } catch (ex) {
       console.log(ex);
     }
-  }, [userId]);
-
-  const [activeIndex, setActiveIndex] = useState(1);
+    // eslint-disable-next-line
+  }, [user, userId]);
 
   return user ? (
     <div style={{ marginTop: "36px" }} className="grid justify-center">
@@ -71,7 +75,7 @@ export default function Settings() {
           style={{
             marginLeft: "20px",
             marginRight: "8px",
-          }} 
+          }}
           data-dummy="200x200"
           src={Dummy.img("200x200")}
         />
@@ -84,6 +88,7 @@ export default function Settings() {
           </p>
           <p className="text-13px md:text-18px">@{user.nickname}</p>
         </div>
+
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
@@ -302,6 +307,5 @@ export default function Settings() {
         <BottomTabs />
       </footer>
     </div>
-  )
-  : null
+  ) : null;
 }

@@ -17,6 +17,7 @@ const user0001 = /* GraphQL */ `{
     aura
     pic ${file0001}
     cover_pic ${file0001}
+    followed
     username {
         id_name
     }

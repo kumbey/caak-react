@@ -8,6 +8,14 @@ import { useEffect, useRef } from "react";
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
 
+export const getFileExt = (fileName) => {
+  return fileName.substring(fileName.lastIndexOf(".") + 1);
+};
+
+export const getFileName = (fileName) => {
+  return fileName.replace("." + getFileExt(fileName), "");
+};
+
 export const useClickOutSide = (handler) => {
   let domNode = useRef();
 
@@ -141,11 +149,7 @@ export function unmergeDate(date) {
 }
 
 export function isFilledObj(obj) {
-  if (Object.keys(obj).lenght > 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return Object.keys(obj).length > 0;
 }
 
 export function getRandomInt(max) {
@@ -170,11 +174,10 @@ export function generateFileUrl(file) {
 }
 
 export function decodeURL(string) {
-  var id = CryptoJS.AES.decrypt(
+  return CryptoJS.AES.decrypt(
     decodeURIComponent(string),
     Configure.urlEncodeKey
   ).toString(CryptoJS.enc.Utf8);
-  return id;
 }
 
 export function encodeURL(string) {
@@ -185,7 +188,7 @@ export function encodeURL(string) {
 
 export const extractDate = (date) => {
   const { year, month, day } = DateTime.fromISO(date);
-  return {year,month, day}
+  return { year, month, day };
 };
 
 // Postiin uussen ognoog ni stringeer avch heden second/minute/tsagiin/odriin omno uussniig stringeer butsaadag funkts
@@ -294,7 +297,6 @@ const object = {
   checkUser,
   closeModal,
   getFileUrl,
-  getReturnData
+  getReturnData,
 };
 export default object;
-

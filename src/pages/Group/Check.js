@@ -131,7 +131,7 @@ export default function Check() {
                           controls
                           disablePictureInPicture
                           controlsList="nodownload noremoteplayback noplaybackrate"
-                          className="ph:w-sp ph:h-sp h-ih w-iw"
+                          className="ph:w-sp ph:h-sp max-h-ih max-w-iw"
                         >
                           <source
                             src={getFileUrl(item.file)}
@@ -142,7 +142,7 @@ export default function Check() {
                     } else {
                       return (
                         <img
-                          className="h-ih ph:w-sp ph:h-sp"
+                          className="max-h-ih max-w-iw ph:w-sp ph:h-sp"
                           key={index}
                           src={getFileUrl(item.file)}
                           alt={""}

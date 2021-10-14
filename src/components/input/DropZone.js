@@ -1,6 +1,7 @@
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
-import awsExports from "../../aws-exports"
+import awsExports from "../../aws-exports";
+import { getFileExt, getFileName } from "../../Utility/Util";
 
 const DropZone = ({
   setPost,
@@ -22,50 +23,42 @@ const DropZone = ({
   });
 
   useEffect(() => {
-    if((post.items.length + dropZoneFiles.length) > 10){
-      alert("maxFiles 10 files")
-    }else{
-        let files = []
+    if (post.items.length + dropZoneFiles.length > 10) {
+      alert("maxFiles 10 files");
+    } else {
+      let files = [];
 
-        dropZoneFiles.map((file, index) => {
-            let fileData = {
-                title: "",
-                post_id: post.id,
-                file: {
-                  ext: getFileExt(file.name),
-                  name: getFileName(file.name),
-                  key: file.name,
-                  type: file.type,
-                  url: URL.createObjectURL(file),
-                  bucket: awsExports.aws_user_files_s3_bucket,
-                  region: awsExports.aws_user_files_s3_bucket_region,
-                  level: 'public',
-                  obj: file
-                }
-            }
+      dropZoneFiles.map((file) => {
+        let fileData = {
+          title: "",
+          post_id: post.id,
+          file: {
+            ext: getFileExt(file.name),
+            name: getFileName(file.name),
+            key: file.name,
+            type: file.type,
+            url: URL.createObjectURL(file),
+            bucket: awsExports.aws_user_files_s3_bucket,
+            region: awsExports.aws_user_files_s3_bucket_region,
+            level: "public",
+            obj: file,
+          },
+        };
 
-            // if(post.length <= 0 && index === 0){
-            //     postData.featured = true
-            // }
-            files.push(fileData)
-            return false
-        })
-        
-        if(files.length > 0){
-          let items = [...post.items , ...files]
-          setPost({...post, items: items})
-        }
+        // if(post.length <= 0 && index === 0){
+        //     postData.featured = true
+        // }
+        files.push(fileData);
+        return false;
+      });
+
+      if (files.length > 0) {
+        let items = [...post.items, ...files];
+        setPost({ ...post, items: items });
+      }
     }
     // eslint-disable-next-line
   }, [dropZoneFiles]);
-
-  const getFileExt = (fileName) => {
-    return fileName.substring(fileName.lastIndexOf('.') + 1)
-  }
-
-  const getFileName = (fileName) => {
-      return fileName.replace("." + getFileExt(fileName), '')
-  }
 
   return (
     <div
