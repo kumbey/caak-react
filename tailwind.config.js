@@ -130,6 +130,7 @@ module.exports = {
         a1: "6px",
         a3: "7px",
         a2: "8px",
+        a4: "9.2px",
         b1: "10px",
         b3: "11px",
         b2: "12px",

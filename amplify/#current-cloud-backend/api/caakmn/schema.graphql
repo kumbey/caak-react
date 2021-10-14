@@ -373,12 +373,34 @@ type Notification @model
 }
 
 type Mutation {
-  changedTotals(type: String!, id: ID!): ChangedTotalsType @function(name:"totals-${env}")
+  changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @function(name:"totals-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
 
-type ChangedTotalsType{
+type Subscription {
+  onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType
+    @aws_subscribe(mutations: ["changedTotals"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onCommentByPostItem(post_item_id: ID!): Comment
+    @aws_subscribe(mutations: ["createComment","updateComment"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onPostByGroup(group_id: ID!, status: String!): Post
+    @aws_subscribe(mutations: ["createPost","updatePost"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onPostByUser(user_id: ID!, status: String!): Post
+    @aws_subscribe(mutations: ["createPost","updatePost"])
+    @aws_iam
+    @aws_cognito_user_pools
+}
+
+type ChangedTotalsType
+  @aws_iam
+  @aws_cognito_user_pools{
     type: String!,
+    id: ID!
     totals: String!,
 }

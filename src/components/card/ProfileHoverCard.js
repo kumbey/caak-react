@@ -109,5 +109,5 @@ export default function ProfileHoverCard({ userId }) {
         </div>
       </div>
     </div>
-  ) : null
+  ) : null;
 }

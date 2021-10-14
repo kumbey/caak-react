@@ -42,7 +42,7 @@
         },
         "aura": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/aura-46457a79354879347959-build.zip"
+          "s3Key": "amplify-builds/aura-5641446f6a795a586234-build.zip"
         },
         "userRoleOnGroup": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -50,7 +50,15 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerTables-5742316a73685358452f-build.zip"
+          "s3Key": "amplify-builds/triggerTables-794b52746b6b544d3131-build.zip"
+        },
+        "totals": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/totals-51362b736453485a4552-build.zip"
+        },
+        "totalsTrigger": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/totalsTrigger-736b6545373238496b56-build.zip"
         }
       }
     }
