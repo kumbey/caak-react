@@ -62,7 +62,21 @@ const post0004 = /* GraphQL */ `
               reactions
             }
             user {
+              id
               nickname
+              pic {
+                bucket
+                createdAt
+                ext
+                id
+                key
+                level
+                name
+                owner
+                region
+                type
+                updatedAt
+              }
               cover_pic {
                 bucket
                 createdAt

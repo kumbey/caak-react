@@ -1,5 +1,6 @@
-import Dummy from "dummyjs";
 import CommentCard from "../../../components/card/CommentCard";
+import {getFileUrl} from "../../../Utility/Util";
+import Dummy from "dummyjs";
 
 const PostBody = ({ item }) => {
   return (
@@ -7,11 +8,12 @@ const PostBody = ({ item }) => {
       className={"relative flex flex-col justify-between bg-caak-whitesmoke"}
     >
       {item.comments.items.map((comment, index) => {
+        console.log(comment)
         return (
           <div key={index} className={"flex flex-row border-b-2 px-7 mt-2"}>
             <img
               className="m-34px w-10 h-10 rounded-full"
-              src={Dummy.image("100x100")}
+              src={comment.user.pic ? getFileUrl(comment.user.pic) : Dummy.image("100x100")}
               alt="Alex"
             />
             <CommentCard comment={comment}>
