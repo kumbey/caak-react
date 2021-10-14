@@ -2,21 +2,15 @@ import { useEffect, useState } from "react";
 import { getPostByUser } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
-import PendingPostItem from "../../components/PendingPost/PendingPostItem";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { updatePost } from "../../graphql-custom/post/mutation";
-import { useUser } from "../../context/userContext";
-
-export default function PostPendingUser() {
+import UserPostItem from "../../components/PendingPost/UserPostItem";
+export default function PostPendingUser({ userId }) {
   const [userPendingPosts, setUserPendingPosts] = useState([]);
-  const { user } = useUser();
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
-      user_id:  user.sysUser.id,
+      user_id: userId,
       sortDirection: "DESC",
-      filter: {status: {eq: "PENDING"}},
+      filter: { status: { eq: "PENDING" } },
       limit: 6,
     },
   });
@@ -27,10 +21,6 @@ export default function PostPendingUser() {
   );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
-
-  const updatePostStatus = async (id, status) => {
-    await API.graphql(graphqlOperation(updatePost, { input: { id, status } }));
-  };
 
   const fetchUserPosts = async (data, setData) => {
     try {
@@ -59,11 +49,10 @@ export default function PostPendingUser() {
     <div className={"w-full"}>
       <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
         <div className="text-16px text-caak-generalblack flex items-center w-full">
-          <p className="ml-c2 flex justify-start w-1/3">Фостын нэр</p>
-          <div className="ph:justify-evenly flex justify-between w-2/3">
+          <p className="ml-c2 flex justify-start w-full">Фостын нэр</p>
+          <div className=" pr-7 flex justify-between w-full">
             <p>Нийтлэгч</p>
             <p>Хугацаа</p>
-            <p className={`2xl:mr-c18 xl:mr-c14 ph:hidden`}>Үйлдэл</p>
           </div>
         </div>
       </div>
@@ -74,7 +63,7 @@ export default function PostPendingUser() {
             className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
           >
             <div className="flex items-center w-full">
-              <PendingPostItem post={data} className="ph:mb-4 sm:mb-4" />
+              <UserPostItem post={data} className="ph:mb-4 sm:mb-4 " />
             </div>
           </div>
         );
