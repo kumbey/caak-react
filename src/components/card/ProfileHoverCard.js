@@ -96,7 +96,7 @@ export default function ProfileHoverCard({ userId }) {
       </div>
       <div className=" pr-14 flex flex-row items-center justify-between">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
-          <p className="text-18px mr-1 font-medium">{postUser.aura}</p>
+          <p className="text-18px mr-1 font-medium">{profileUser.aura}</p>
           <p className="text-15px text-caak-darkBlue font-roboto font-light">
             Аура
           </p>
@@ -109,5 +109,5 @@ export default function ProfileHoverCard({ userId }) {
         </div>
       </div>
     </div>
-  ) : null
+  ) : null;
 }
