@@ -20,8 +20,13 @@ export default function ProfileHoverCard({ userId }) {
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (userId)
-      getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
+    if (userId){
+      if(checkUser(user)){
+        getUserById({ id: userId, setUser: setProfileUser});   
+      }else{
+        getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
+      }
+    }
   }, [userId]);
 
   const createFollowUser = async () => {
