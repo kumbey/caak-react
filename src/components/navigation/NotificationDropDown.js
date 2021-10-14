@@ -4,8 +4,9 @@ import ReactDOM from "react-dom";
 import { useUser } from "../../context/userContext";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useListPager } from "../../Utility/ApiHelper";
-import { listNotificationByUser } from "../../graphql-custom/notification/queries";
+import { getNotification, listNotificationByUser } from "../../graphql-custom/notification/queries";
 import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
 
 const NotificationDropDown = ({ isOpen }) => {
@@ -27,7 +28,7 @@ const NotificationDropDown = ({ isOpen }) => {
   })
 
 
-  const fetchNotification = async (data, setData) => {
+  const fetchNotifications = async (data, setData) => {
     try {
       if (!loading) {
         setLoading(true);
@@ -41,21 +42,33 @@ const NotificationDropDown = ({ isOpen }) => {
         setLoading(false);
       }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
 
-  const subscrip = () => {
-    subscriptions.onNoficationAdded = API.graphql({
+  const fetchNotification = async (id) => {
+    try {
+        let resp = await API.graphql(graphqlOperation(getNotification, {id: id}))
+        console.log(resp)
+        resp = getReturnData(resp)
+        setNotifications([resp, ...notifications])
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const subscrip = async () => {
+    subscriptions.onNoficationAdded = await API.graphql({
       query: onNoficationAdded,
       variables: {
-        type: "USER",
+        section: "USER",
         to: user.sysUser.id
       }
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true)
-        setSubscripNotification(JSON.parse(onData.totals))
+        setSubscripNotification(onData)
       },
       error: error => {
         console.warn(error);
@@ -65,7 +78,7 @@ const NotificationDropDown = ({ isOpen }) => {
 
   useEffect(() => {
     if(domReady && checkUser(user)){
-      fetchNotification(notifications, setNotifications)
+      fetchNotifications(notifications, setNotifications)
     }
     // eslint-disable-next-line
   },[domReady, user])
@@ -87,7 +100,7 @@ const NotificationDropDown = ({ isOpen }) => {
 
   useEffect(() => {
     if(subscripNotifcation){
-        console.log(subscripNotifcation)
+        fetchNotification(subscripNotifcation.id)
     }
     // eslint-disable-next-line
   },[subscripNotifcation])

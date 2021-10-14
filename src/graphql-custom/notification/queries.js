@@ -20,3 +20,10 @@ export const listNotificationByUser = /* GraphQL */ `
         }
     }
 `;
+
+export const getNotification = /* GraphQL */ `
+    query GetNotification($id: ID!) 
+    {
+        getNotification(id: $id) ${notification0001}
+    }
+`;

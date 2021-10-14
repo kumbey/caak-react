@@ -29,14 +29,16 @@ async function insert(record){
             ])
         }
 
-        await GraphqlAPI.call({
+       const resp = await GraphqlAPI.call({
             query: notificationAdded,
             variables: {
                 section: newImg.section,
-                to: newImg.to
+                to: newImg.to,
+                id: newImg.id
             },
             operation: "NotificationAdded"
         })
+        console.log(resp)
 
         return true
 

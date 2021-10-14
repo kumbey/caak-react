@@ -62,7 +62,7 @@
         },
         "triggerNotification": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerNotification-5251454d314359696353-build.zip"
+          "s3Key": "amplify-builds/triggerNotification-5a6e646f526d5a436130-build.zip"
         }
       }
     }
