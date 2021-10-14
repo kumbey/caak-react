@@ -66,9 +66,9 @@ const AddPost = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
+  // useEffect(() => {
+  //   console.log(post);
+  // }, [post]);
 
   useEffect(() => {
     if (groupData && selectedGroupId) {

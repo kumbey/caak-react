@@ -6,17 +6,25 @@ import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "../Home/useFetch";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader";
-import { ApiFileUpload, useListPager } from "../../Utility/ApiHelper";
-import { getUser } from "../../graphql-custom/user/queries";
+import {
+  ApiFileUpload,
+  getUserById,
+  useListPager,
+} from "../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
-import { useUser } from "../../context/userContext";
 import { useDropzone } from "react-dropzone";
 import awsExports from "../../aws-exports";
-import { getFileExt, getFileName, getFileUrl } from "../../Utility/Util";
+import {
+  checkUser,
+  getFileExt,
+  getFileName,
+  getFileUrl,
+} from "../../Utility/Util";
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
+import { useUser } from "../../context/userContext";
 
 export default function Profile() {
   const [user, setUser] = useState();
@@ -94,15 +102,23 @@ export default function Profile() {
 
   useEffect(() => {
     try {
-      const getUserById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getUser, { id }));
-        setUser(resp.data.getUser);
-      };
-      getUserById(userId);
+      if (checkUser(signedUser)) {
+        getUserById({
+          id: userId,
+          setUser,
+          authMode: "AMAZON_COGNITO_USER_POOLS",
+        });
+      } else {
+        getUserById({
+          id: userId,
+          setUser,
+          authMode: "AWS_IAM",
+        });
+      }
     } catch (ex) {
       console.log(ex);
     }
-  }, [userId]);
+  }, [signedUser, userId]);
 
   useEffect(() => {
     fetchPosts(posts, setPosts);
@@ -230,16 +246,18 @@ export default function Profile() {
           </div>
           <div style={{ marginTop: "10px" }}>
             <div className="ph:hidden flex">
-              <Link
-                to={{
-                  pathname: `/user/${user.id}/settings`,
-                }}
-              >
-                <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
-                  <span className="pr-a1 icon-fi-rs-settings text-18px" />
-                  <p className="text-15px font-medium">Тохиргоо</p>
-                </div>
-              </Link>
+              {checkUser(signedUser) && (
+                <Link
+                  to={{
+                    pathname: `/user/${user.id}/settings`,
+                  }}
+                >
+                  <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
+                    <span className="pr-a1 icon-fi-rs-settings text-18px" />
+                    <p className="text-15px font-medium">Тохиргоо</p>
+                  </div>
+                </Link>
+              )}
               <span
                 style={{ width: "49px", marginInlineStart: "10px" }}
                 className="h-c13 text-4px icon-fi-rs-dots text-caak-generalblack flex items-center justify-center rounded-lg shadow cursor-pointer"
