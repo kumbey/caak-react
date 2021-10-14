@@ -45,6 +45,7 @@ export default function Settings() {
   const [user, setUser] = useState();
   const { user: signedUser } = useUser();
   const history = useHistory();
+  const [activeIndex, setActiveIndex] = useState(1);
 
   useEffect(() => {
     try {
@@ -62,8 +63,6 @@ export default function Settings() {
     }
     // eslint-disable-next-line
   }, [user, userId]);
-
-  const [activeIndex, setActiveIndex] = useState(1);
 
   return user ? (
     <div style={{ marginTop: "36px" }} className="grid justify-center">
@@ -92,6 +91,7 @@ export default function Settings() {
           </p>
           <p className="text-15px md:text-18px">@{user.nickname}</p>
         </div>
+
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
