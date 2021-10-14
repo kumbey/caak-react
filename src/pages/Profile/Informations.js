@@ -1,66 +1,83 @@
 import { useEffect, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { updateUser } from "../../graphql-custom/user/mutation";
 
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
-  const [text, setText] = useState("");
+  const [text, setText] = useState({});
+  const [data, setData] = useState();
+  const [firstName, setFirstName] = useState("");
+  const [about, setAbout] = useState("");
+
   const [currentIndex, setCurrentIndex] = useState();
 
   const settings = [
     {
       id: 0,
-      name: "Нэр",
+      name: "firstname",
       placeholder: currentUser.firstname,
       type: "text",
       value: currentUser.firstname,
+      isReadOnly: false,
     },
     {
       id: 1,
-      name: "Хэрэглэгчийн ID",
-      placeholder: "Хэрэглэгчийн ID",
-      type: "text",
+      name: "user_id",
+      placeholder: currentUser.id,
+      type: "hidden",
       value: currentUser.id,
+      isReadOnly: true,
     },
     {
       id: 2,
-      name: "Тухай",
-      placeholder: "Тухай",
+      name: "about",
+      placeholder: currentUser.about,
       type: "text",
       value: currentUser.about,
+      isReadOnly: false,
     },
     {
       id: 3,
-      name: "Хөрөг зураг",
+      name: "cover_pic",
 
-      placeholder: "Хөрөг зураг",
-      type: "text",
-      value: currentUser.id,
+      placeholder: currentUser.cover_pic_id,
+      type: "image",
+      value: currentUser.cover_pic_id,
+      isReadOnly: false,
     },
-    {
-      id: 4,
-      name: "Имайл хаяг",
-      placeholder: "Имайл хаяг",
-      type: "text",
-      value: currentUser.id,
-    },
-    {
-      id: 5,
-      name: "Утасны дугаар",
-      placeholder: "Утасны дугаар",
-      type: "text",
-      value: currentUser.id,
-    },
+    // {
+    //   id: 4,
+    //   name: "email",
+    //   placeholder: "Имайл хаяг",
+    //   type: "text",
+    //   value: currentUser.id,isReadOnly: false,
+    // },
+    // {
+    //   id: 5,
+    //   name: "phone_number",
+    //   placeholder: "Утасны дугаар",
+    //   type: "text",
+    //   value: currentUser.id,  isReadOnly: false,
+    // },
   ];
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const resp = await API.graphql(
-      graphqlOperation(updateCategory, { input: data })
+    await API.graphql(
+      graphqlOperation(updateUser, {
+        input: {
+          id: currentUser.id,
+          ...text,
+        },
+      })
     );
     console.log("submit value:", text);
+    setText("");
     setShowInput(false);
   };
+  useEffect(() => {
+    console.log([text]);
+  }, [text]);
 
   const handleClick = (id) => {
     setCurrentIndex(id);
@@ -68,7 +85,7 @@ export default function Informations({ currentUser }) {
   };
 
   const handleChange = (e) => {
-    setText(e.target.value);
+    setText({ ...text, [e.target.name]: e.target.value });
   };
   return (
     <div
@@ -96,7 +113,10 @@ export default function Informations({ currentUser }) {
                 {showInput && index === currentIndex ? (
                   <div className="flex">
                     <input
+                      name={setting.name}
                       className="w-full"
+                      // value={setting.value}
+                      readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
                       onChange={handleChange}
