@@ -3,6 +3,9 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
 
+import { getFileUrl } from "../../Utility/Util";
+import Dummy from "dummyjs";
+
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
@@ -15,6 +18,7 @@ export default function Informations({ currentUser }) {
   const settings = [
     {
       id: 0,
+      text: "Нэр",
       name: "firstname",
       placeholder: currentUser.firstname,
       type: "text",
@@ -23,38 +27,34 @@ export default function Informations({ currentUser }) {
     },
     {
       id: 1,
+      text: "Хэрэглэгчийн ID",
       name: "user_id",
-      placeholder: currentUser.id,
-      type: "hidden",
-      value: currentUser.id,
+      placeholder: currentUser.username.id_name,
+      type: "text",
+      value: currentUser.username.id_name,
       isReadOnly: true,
     },
     {
       id: 2,
+      text: "Тухай",
       name: "about",
       placeholder: currentUser.about,
       type: "text",
       value: currentUser.about,
       isReadOnly: false,
     },
-    {
-      id: 3,
-      name: "cover_pic",
 
-      placeholder: currentUser.cover_pic_id,
-      type: "image",
-      value: currentUser.cover_pic_id,
-      isReadOnly: false,
-    },
     // {
     //   id: 4,
+    // text: "Цахим хаяг",
     //   name: "email",
-    //   placeholder: "Имайл хаяг",
+    //   placeholder: "Цахим хаяг",
     //   type: "text",
     //   value: currentUser.id,isReadOnly: false,
     // },
     // {
     //   id: 5,
+    // text: "Утасны дугаар",
     //   name: "phone_number",
     //   placeholder: "Утасны дугаар",
     //   type: "text",
@@ -71,13 +71,9 @@ export default function Informations({ currentUser }) {
         },
       })
     );
-    console.log("submit value:", text);
     setText("");
     setShowInput(false);
   };
-  useEffect(() => {
-    console.log([text]);
-  }, [text]);
 
   const handleClick = (id) => {
     setCurrentIndex(id);
@@ -90,7 +86,7 @@ export default function Informations({ currentUser }) {
   return (
     <div
       style={{ marginTop: "34px" }}
-      className="lg:w-cl md:w-iw sm:w-cb ph:w-72 rounded-lg"
+      className="lg:w-cl md:w-iw sm:w-cb w-80 rounded-lg"
     >
       <p
         className="font-medium"
@@ -101,28 +97,25 @@ export default function Informations({ currentUser }) {
       <div style={{ marginTop: "21px" }} className="mx-c3">
         {settings.map((setting, index) => {
           return (
-            <div className=" flex">
+            <div key={index} className=" flex">
               <div
-                key={index}
                 style={{ paddingBlock: "14px" }}
-                className="flex items-center w-full border-b"
+                className="text-14px sm:text-16px flex items-center w-full border-b"
               >
-                <p className="text-16px my-a4 w-32 mr-1 font-medium">
-                  {setting.name}
-                </p>
+                <p className="my-a4 w-32 font-medium">{setting.text}</p>
                 {showInput && index === currentIndex ? (
                   <div className="flex">
                     <input
                       name={setting.name}
                       className="w-full"
-                      // value={setting.value}
                       readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
                       onChange={handleChange}
                       placeholder={setting.placeholder}
-                      type="text"
+                      type={setting.type}
                     />
+
                     <button
                       onClick={handleSubmit}
                       className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
@@ -132,6 +125,7 @@ export default function Informations({ currentUser }) {
                   <p>{setting.value}</p>
                 )}
               </div>
+
               <div className=" flex items-center">
                 <span
                   onClick={() => handleClick(index)}

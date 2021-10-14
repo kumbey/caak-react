@@ -4,13 +4,10 @@ import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
 import BottomTabs from "../Home/BottomTabs";
-import { getUser } from "../../graphql-custom/user/queries";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 import { getFileUrl } from "../../Utility/Util";
 
 const data = [
@@ -44,7 +41,7 @@ const data = [
 export default function Settings() {
   const { userId } = useParams();
   const [user, setUser] = useState();
-  const {user: signedUser} = useUser()
+  const { user: signedUser } = useUser();
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -92,7 +89,6 @@ export default function Settings() {
           </p>
           <p className="text-15px md:text-18px">@{user.nickname}</p>
         </div>
-
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
