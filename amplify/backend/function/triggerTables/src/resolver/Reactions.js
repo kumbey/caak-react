@@ -59,26 +59,29 @@ async function changeReactions(newImg, increase){
             const post = await PostDB.get(newImg.id)
 
             await PostTotal.modify(post.id , items)
-            await UserTotal.modify(post.user_id, {...items, field: "post_reactions"})
+            items[0].field = "post_reactions"
+            await UserTotal.modify(post.user_id, items)
 
         }else if(newImg.on_to === "POST_ITEM"){
 
-            const postItem = PostItems.get(newImg.id)
+            const postItem = await PostItems.get(newImg.id)
             const post = await PostDB.get(postItem.post_id)
 
             await PostItemsTotal.modify(postItem.id, items)
             await PostTotal.modify(post.id , items)
-            await UserTotal.modify(post.user_id, items, {...items, field: "post_items_reactions"})
+            items[0].field = "post_items_reactions"
+            await UserTotal.modify(post.user_id, items)
 
         }else if(newImg.on_to === "COMMENT"){
             
             let comment = await CommentDB.get(newImg.id)
             await CommentTotal.modify(comment.id, items)
-            await UserTotal.modify(comment.user_id, items, {...items, field: "comment_reactions"})
+            items[0].field = "comment_reactions"
+            await UserTotal.modify(comment.user_id)
 
         }
 
-        return resp
+        return true
     }catch(ex){
         console.log(ex)
     }

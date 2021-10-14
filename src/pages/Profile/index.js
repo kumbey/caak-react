@@ -77,13 +77,14 @@ export default function Profile() {
             },
           })
         );
-        await API.graphql(
-          graphqlOperation(deleteFile, {
-            input: {
-              id: user.pic_id,
-            },
-          })
-        );
+        if (user.pic_id)
+          await API.graphql(
+            graphqlOperation(deleteFile, {
+              input: {
+                id: user.pic_id,
+              },
+            })
+          );
         user.pic = resp;
         setProfilePictureDropZone({});
         setUploading(false);
@@ -154,10 +155,10 @@ export default function Profile() {
         </div>
       </div>
       <div
-        style={{ height: "220px" }}
+        style={{ height: "230px" }}
         className="ph:h-c22 flex items-center justify-center bg-white border-t"
       >
-        <div className="w-full grid justify-center md:flex md:justify-around">
+        <div className="md:flex md:justify-around grid justify-center w-full">
           <div className="ph:text-center">
             <div className="ph:grid flex">
               <div className="ph:grid ph:justify-center relative flex items-center justify-center">
@@ -244,8 +245,8 @@ export default function Profile() {
               {user.about}
             </p>
           </div>
-          <div style={{ marginTop: "10px" }}>
-            <div className="ph:hidden flex">
+          <div>
+            <div className="flex justify-end md:justify-center ">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -257,7 +258,7 @@ export default function Profile() {
                     <p className="text-15px font-medium">Тохиргоо</p>
                   </div>
                 </Link>
-              ):null}
+              ) : null}
               <span
                 style={{ width: "49px", marginInlineStart: "10px" }}
                 className="h-c13 text-4px icon-fi-rs-dots text-caak-generalblack flex items-center justify-center rounded-lg shadow cursor-pointer"
@@ -282,27 +283,26 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="w-full mt-c2 justify-around flex items-center">
-            <div className="flex">
-              <Button className="text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
-                <span className="icon-fi-rs-drag text-20px mr-a1" />
-                Миний фостууд
-              </Button>
-              <Button className="text-15px h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
-                <span className="icon-fi-rs-bookmark text-20px mr-a1" />
-                Хадгалсан фостууд
-              </Button>
-            </div>
-            <select className="hidden md:block text-15px w-c132 text-caak-generalblack font-semibold bg-transparent border-0 cursor-pointer">
-              <option>Илүү ихийг</option>
-              <option>Илүү ихийг</option>
-              <option>Илүү ихийг</option>
-            </select>
-          </div>
+      <div className="mt-c2 flex items-center justify-around w-full">
+        <div className="flex">
+          <Button className="text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
+            <span className="icon-fi-rs-drag text-20px mr-a1" />
+            Миний фостууд
+          </Button>
+          <Button className="text-15px h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
+            <span className="icon-fi-rs-bookmark text-20px mr-a1" />
+            Хадгалсан фостууд
+          </Button>
+        </div>
+        <select className="md:block text-15px w-c132 text-caak-generalblack hidden font-semibold bg-transparent border-0 cursor-pointer">
+          <option>Илүү ихийг</option>
+          <option>Илүү ихийг</option>
+          <option>Илүү ихийг</option>
+        </select>
+      </div>
       <div className="flex justify-center">
         {/* post */}
         <div className="grid_container_container flex flex-col justify-center w-full">
-          
           {/* contents */}
           <div className="grid-container mt-b5 justify-center">
             {posts.map((data, index) => {
