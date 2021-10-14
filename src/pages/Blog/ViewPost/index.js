@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import PostHeader from "./PostHeader";
 import { useHistory, useParams } from "react-router-dom";
@@ -19,21 +19,20 @@ const ViewPost = () => {
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
+  const addCommentRef = useRef();
 
   useEffect(() => {
     try {
       const getPostById = async (id) => {
         let resp;
-        if(checkUser(user)) {
-
-        resp = await API.graphql(graphqlOperation(getPostView, { id }));
-        }
-        else {
+        if (checkUser(user)) {
+          resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        } else {
           resp = await API.graphql({
             query: getPostView,
-            variables: {id},
-            authMode: "AWS_IAM"
-          })
+            variables: { id },
+            authMode: "AWS_IAM",
+          });
         }
         setPost(resp.data.getPost);
       };
@@ -253,6 +252,7 @@ const ViewPost = () => {
             </div>
           </div>
           <PostHeader
+            addCommentRef={addCommentRef}
             item={post.items.items[activeIndex]}
             updatedAt={post.updatedAt}
             title={post.title}
@@ -264,6 +264,7 @@ const ViewPost = () => {
           />
         </div>
         <AddComment
+          addCommentRef={addCommentRef}
           posts={post}
           activeIndex={activeIndex}
           item={post.items.items[activeIndex]}

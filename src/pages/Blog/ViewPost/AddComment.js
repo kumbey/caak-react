@@ -7,7 +7,12 @@ import { getFileUrl, getReturnData } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
 
-const AddComment = ({ item, activeIndex, posts }) => {
+const AddComment = ({
+  item,
+  activeIndex,
+  posts,
+  addCommentRef,
+}) => {
   const [loading, setLoading] = useState(false);
   const [commentInputValue, setCommentInputValue] = useState("");
   const { user } = useUser();
@@ -70,6 +75,7 @@ const AddComment = ({ item, activeIndex, posts }) => {
       </div>
       <div className={"relative flex w-3/5 justify-center items-center"}>
         <textarea
+          ref={addCommentRef}
           value={commentInputValue || ""}
           rows={1}
           className={
