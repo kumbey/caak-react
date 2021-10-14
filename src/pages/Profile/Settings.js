@@ -57,11 +57,6 @@ export default function Settings() {
     }
   }, [userId]);
 
-  /*const handleSubmit = (evt) => {
-    evt.preventDefault();
-    alert(`Submitting Name ${user}`)
-  }*/
-
   return user ? (
     <div style={{ marginTop: "36px" }} className="grid justify-center">
       <div className=" flex items-center">
@@ -303,18 +298,6 @@ export default function Settings() {
             </div>
           </div>
         </div>
-        
-
-        {/*<form onSubmit={handleSubmit}>
-          <label>
-            <input
-              type="text"
-              value={user.firstname}
-              onChange={(e) => setUser(e.target.value)}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>*/}
       </div>
       <footer className={` block md:hidden sticky bottom-0 z-10`}>
         <BottomTabs />
