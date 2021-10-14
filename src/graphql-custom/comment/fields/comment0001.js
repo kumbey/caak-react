@@ -1,4 +1,5 @@
 const comment0001 = /* GraphQL */ `{
+    id
     comment
 }`
 
