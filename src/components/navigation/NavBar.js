@@ -4,7 +4,7 @@ import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
-
+import { getFileUrl } from "../../Utility/Util";
 import Dummy from "dummyjs";
 import { useUser } from "../../context/userContext";
 import { checkUser, useClickOutSide } from "../../Utility/Util";
@@ -115,7 +115,7 @@ export default function NavBar() {
                     <img
                       alt={user.sysUser.nickname}
                       data-dummy="200x200"
-                      src={Dummy.img("200x200")}
+                      src={user.sysUser.pic ? getFileUrl(user.sysUser.pic) : Dummy.img("200x200")}
                       className={"w-full block object-cover rounded-full"}
                     />
                   </div>
