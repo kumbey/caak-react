@@ -27,16 +27,9 @@ export default function PendingPostAdmin() {
     getGroupDataById();
     // eslint-disable-next-line
   }, []);
-  // const totalMembers = () => {
-  //   // return (
-  //   //   parseInt(groupData.totals.admin) +
-  //   //   parseInt(groupData.totals.moderator) +
-  //   //   parseInt(groupData.totals.moderator)
-  //   // );
-  // };
 
   return checkUser(user) ? (
-    groupData.founder_id === user.sysUser.id && (
+    groupData.role_on_group === ("ADMIN" || "MODERATOR") && (
       <div>
         <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
           <span
