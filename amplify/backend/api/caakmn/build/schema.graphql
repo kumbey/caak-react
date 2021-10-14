@@ -291,7 +291,8 @@ type Notification @aws_iam @aws_cognito_user_pools {
 }
 
 type Mutation {
-  changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
+  changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType
+  notificationAdded(section: String!, to: ID!): NotifcationAddedType @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -350,6 +351,7 @@ type Mutation {
 
 type Subscription {
   onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType @aws_subscribe(mutations: ["changedTotals"]) @aws_iam @aws_cognito_user_pools
+  onNoficationAdded(section: String!, to: ID!): NotifcationAddedType @aws_subscribe(mutations: ["notificationAdded"]) @aws_iam @aws_cognito_user_pools
   onCommentByPostItem(post_item_id: ID!): Comment @aws_subscribe(mutations: ["createComment", "updateComment"]) @aws_iam @aws_cognito_user_pools
   onPostByGroup(group_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
   onPostByUser(user_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
@@ -407,6 +409,11 @@ type Subscription {
   onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"]) @aws_iam @aws_cognito_user_pools
   onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"]) @aws_iam @aws_cognito_user_pools
   onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"]) @aws_iam @aws_cognito_user_pools
+}
+
+type NotifcationAddedType @aws_iam @aws_cognito_user_pools {
+  section: String!
+  id: ID!
 }
 
 type ChangedTotalsType @aws_iam @aws_cognito_user_pools {
@@ -586,6 +593,7 @@ type Query {
   groupByIdName(id_name: ID, sortDirection: ModelSortDirection, filter: ModelGroupUsernameFilterInput, limit: Int, nextToken: String): ModelGroupUsernameConnection @aws_iam @aws_cognito_user_pools
   getNotification(id: ID!): Notification @aws_iam @aws_cognito_user_pools
   listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
+  listNotificationByUser(to: ID, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
 }
 
 input CreateFileInput {

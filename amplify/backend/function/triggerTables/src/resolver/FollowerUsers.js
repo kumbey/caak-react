@@ -1,5 +1,6 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
 const UserTotal = require("../db/UserTotal")
+const NoficationDB = require("../db/Notification")
 
 async function insert(record){
     try{
@@ -20,6 +21,18 @@ async function insert(record){
                 count: 1
             }
         ])
+
+        const notifiData = {
+            section: "USER",
+            type: "FOLLOWED",
+            item_id: "NONE",
+            action: `USER_FOLLOWED`,
+            from: newImg.followed_user_id,
+            to: newImg.user_id,
+            seen: false
+        }
+
+        await NoficationDB.insert(notifiData)
 
         return true
 

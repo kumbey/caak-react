@@ -53,12 +53,11 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
   };
 
   const subscrip = () => {
-
       subscriptions.onChangedTotalsBy = API.graphql({
         query: onChangedTotalsBy,
         variables: {
           type: "PostTotal",
-          id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
+          id: postId
         },
         authMode: "AWS_IAM"
       }).subscribe({
