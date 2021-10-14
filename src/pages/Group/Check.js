@@ -185,14 +185,14 @@ export default function Check() {
           <div className="mt-b4 flex justify-end">
             <Button
               loading={loading}
-              onClick={() => acceptHandler(postId)}
+              onClick={() => declineHandler(postId)}
               className="text-caak-generalblack text-15px w-c14 bg-white"
             >
               Татгалзах
             </Button>
             <Button
               loading={loading}
-              onClick={() => declineHandler(postId)}
+              onClick={() => acceptHandler(postId)}
               className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
             >
               Зөвшөөрөх
