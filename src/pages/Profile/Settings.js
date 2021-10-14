@@ -4,6 +4,9 @@ import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
 import BottomTabs from "../Home/BottomTabs";
+import { getUser } from "../../graphql-custom/user/queries";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
@@ -82,11 +85,11 @@ export default function Settings() {
         <div className="sm:flex-row flex flex-col items-center">
           <p
             style={{ marginRight: "8px" }}
-            className=" md:text-24px text-15px font-medium"
+            className=" md:text-24px text-18px font-medium"
           >
             {user.firstname}
           </p>
-          <p className="text-13px md:text-18px">@{user.nickname}</p>
+          <p className="text-15px md:text-18px">@{user.nickname}</p>
         </div>
 
       </div>
@@ -120,7 +123,7 @@ export default function Settings() {
             style={{ paddingBottom: "65px" }}
             className={`${activeIndex === 1 ? "block" : "hidden"}`}
           >
-            <Informations />
+            <Informations currentUser={user} />
           </div>
           <div
             style={{ paddingBottom: "65px" }}
