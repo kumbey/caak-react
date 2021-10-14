@@ -1,6 +1,6 @@
 import user0001 from "./fields/user0001";
 import user0002 from "./fields/user0002";
-import user0003 from "./fields/user0003";
+// import user0003 from "./fields/user0003";
 
 export const createUser = /* GraphQL */ `
     mutation CreateUse($input: CreateUserInput!) {
@@ -21,6 +21,6 @@ export const deleteFollowedUsers = /* GraphQL */ `
 
 export const updateUser = /* GraphQL */ `
     mutation updateUser($input: UpdateUserInput!) {
-        updateUser(input: $input) ${user0003}
+        updateUser(input: $input) ${user0001}
     }
 `;
