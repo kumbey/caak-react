@@ -45,6 +45,12 @@ export default function ProfileHoverCard({ userId }) {
     setDoRender(doRender + 1);
   };
 
+  useEffect(()=> {
+    return ()=> {
+      setProfileUser(null)
+    }
+  },[])
+
   const deleteFollowUser = async () => {
     await API.graphql({
       query: deleteFollowedUsers,

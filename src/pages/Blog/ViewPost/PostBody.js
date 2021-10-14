@@ -11,7 +11,7 @@ const PostBody = ({post, activeIndex, posts}) => {
   const [reRender, setReRender] = useState(0);
 
   const subscrip = () => {
-    subscriptions.onCreateCategory = API.graphql({
+    subscriptions.onCommentByPostItem = API.graphql({
       query: onCommentByPostItem,
       variables: {
         post_item_id: post.id,
@@ -19,7 +19,6 @@ const PostBody = ({post, activeIndex, posts}) => {
       authMode: "AWS_IAM",
     }).subscribe({
       next: (data) => {
-        console.log(data);
         const onData = getReturnData(data, true);
         setSubscriptionComment(onData);
       },

@@ -3,7 +3,7 @@ import { extractDate, generateTimeAgo } from "../../../Utility/Util";
 import { useUser } from "../../../context/userContext";
 import updateReaction from "./updateReaction";
 
-const PostHeader = ({ title, updatedAt, item }) => {
+const PostHeader = ({ title, updatedAt, item, addCommentRef }) => {
   const date = extractDate(updatedAt);
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(false);
@@ -11,7 +11,7 @@ const PostHeader = ({ title, updatedAt, item }) => {
     setIsReacted(item.reacted);
   }, [item]);
 
-    // console.log(item)
+  // console.log(item)
 
   return (
     <div className={"flex flex-col"}>
@@ -70,7 +70,10 @@ const PostHeader = ({ title, updatedAt, item }) => {
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-18px mr-1.5"} />
-            <span className={"text-15px"}>
+            <span
+              onClick={() => addCommentRef.current.focus()}
+              className={"text-15px"}
+            >
               {item.totals?.comments} сэтгэгдэлтэй
             </span>
           </div>

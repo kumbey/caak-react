@@ -8,11 +8,18 @@ import PendingPostItem from "../../components/PendingPost/PendingPostItem";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../graphql-custom/post/mutation";
+import { checkUser, getReturnData } from "../../Utility/Util";
+import { onPostByGroup } from "../../graphql-custom/post/subscription";
+import { useUser } from "../../context/userContext";
 
 export default function PostPending({ settt }) {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
+  const subscriptions = {};
   const [groupPendingPosts, setGroupPendingPosts] = useState([]);
+  const [subscriptionPostStatus, setSubscriptionPostStatus] = useState(null);
+  console.log(subscriptionPostStatus)
+  const { user } = useUser();
   const { groupId } = useParams();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -23,6 +30,28 @@ export default function PostPending({ settt }) {
       // limit: 6,
     },
   });
+
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroup = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "PENDING" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        console.log(data);
+        const onData = getReturnData(data, true);
+        setSubscriptionPostStatus(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
   const [setPostScroll] = useInfiniteScroll(
     groupPendingPosts,
     setGroupPendingPosts
@@ -73,8 +102,21 @@ export default function PostPending({ settt }) {
     }
   };
   useEffect(() => {
+    if (groupId) subscrib();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
+    subscrib();
     fetchGroupPosts(groupPendingPosts, setGroupPendingPosts);
     setPostScroll(fetchGroupPosts);
+
     // eslint-disable-next-line
   }, []);
 

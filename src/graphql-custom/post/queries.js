@@ -33,3 +33,12 @@ export const getPostByStatus = /* GraphQL */ `
         }
     }
 `;
+
+export const getPostByUser = /* GraphQL */ `
+    query GetPostByUser($user_id: ID!,  $filter: ModelPostFilterInput) {
+        getPostByUser(user_id: $user_id, filter: $filter) {
+            items ${post0004}
+        }
+
+    }
+`;
