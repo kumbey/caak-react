@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
 
-import { getFileUrl } from "../../Utility/Util";
-import Dummy from "dummyjs";
-
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
   const [text, setText] = useState({});
-  const [data, setData] = useState();
-  const [firstName, setFirstName] = useState("");
-  const [about, setAbout] = useState("");
 
   const [currentIndex, setCurrentIndex] = useState();
 
