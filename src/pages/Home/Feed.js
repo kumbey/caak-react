@@ -6,7 +6,7 @@ import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
-import { checkUser, generateFileUrl } from "../../Utility/Util";
+import { checkUser, getReturnData } from "../../Utility/Util";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
@@ -45,7 +45,11 @@ const Feed = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { user } = useUser();
-  const [groupData, setGroupData] = useState([]);
+  const [groupData, setGroupData] = useState({
+    adminModerator: [],
+    member: [],
+    unMember: [],
+  });
   const [posts, setPosts] = useState([]);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -61,24 +65,32 @@ const Feed = () => {
 
   const listGroups = async () => {
     try {
-      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-      setGroupData(resp.data.listGroups.items);
+      let adminResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
+        filter: {or: [{role_on_group: {eq: "ADMIN"}}, {role_on_group: {eq: "MODERATOR"}}]}
+      }));
+
+      let memberResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
+        filter: {role_on_group: {eq: "MEMBER"}}
+      }));
+
+      let unMemberResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
+        filter: {and: [
+          {role_on_group: {ne: "ADMIN"}}, 
+          {role_on_group: {ne: "MODERATOR"}},
+          {role_on_group: {ne: "MEMBER"}},
+        ]}
+      }));
+
+      setGroupData({
+        adminModerator: getReturnData(adminResp).items,
+        member: getReturnData(memberResp).items,
+        unMember: getReturnData(unMemberResp).items
+      });
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  const listGroupsIAM = async () => {
-    try {
-      const resp = await API.graphql({
-        query: listGroupsForAddPost,
-        authMode: "AWS_IAM",
-      });
-      setGroupData(resp.data.listGroups.items);
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
   const fetchPosts = async (data, setData) => {
     try {
       if (!loading) {
@@ -109,13 +121,16 @@ const Feed = () => {
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
-    } else {
-      listGroupsIAM();
-    }
+    } 
     fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
+
+    return () => {
+      setPostScroll(null);
+    }
+
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   return (
     <div id={"feed"}>
@@ -161,73 +176,89 @@ const Feed = () => {
                 );
               })}
             </div>
-            <div className={`${!user && "hidden"} pr-6 `}>
-              <div className={"flex flex-row justify-between px-3.5 pt-2 "}>
-                <span className={"text-15px text-caak-darkBlue"}>
-                  Миний үүсгэсэн бүлгүүд
-                </span>
-              </div>
-              <div className={"px-2 pb-5"}>
-                {groupData.map((item, index) => {
-                  return (
-                    <Link
-                      key={index}
-                      to={{
-                        pathname: `/group/${item.id}`,
-                      }}
-                    >
-                      <div
-                        key={index}
-                        // onClick={() => onSelect(item)}
-                        className={
-                          "flex flex-col cursor-pointer w-max cursor-pointer"
-                        }
-                      >
-                        <div
-                          className={
-                            "flex flex-row items-center p-1.5 w-56 my-px rounded-square hover:bg-caak-liquidnitrogen"
-                          }
+            <div className={`pr-6 `}>
+            {
+                (groupData.adminModerator.length > 0 ) ? 
+                <>
+                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                    <span className={"text-15px text-caak-darkBlue"}>
+                      {`Миний дагасан бүлгүүд`}
+                    </span>
+                  </div>
+                  <div className={"px-2 pb-5"}>
+                    {groupData.member.map((data, index) => {
+                      return (
+                        <Link
+                          key={index}
+                          to={{
+                            pathname: `/group/${data.id}`,
+                          }}
                         >
-                          <img
-                            src={generateFileUrl(item.profile)}
-                            className={"w-8 h-8 rounded-md object-cover mr-2"}
-                            alt={""}
+                          <Suggest
+                            item={data}
+                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
                           />
-                          <span
-                            className={
-                              "text-caak-generalblack font-medium text-15px tracking-0.23px h-c1 tracking-18 whitespace-normal"
-                            }
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </> : null
+              }
+              {
+                (groupData.member.length > 0 ) ? 
+                <>
+                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                    <span className={"text-15px text-caak-darkBlue"}>
+                      {`Миний дагасан бүлгүүд`}
+                    </span>
+                  </div>
+                  <div className={"px-2 pb-5"}>
+                    {groupData.member.map((data, index) => {
+                      return (
+                        <Link
+                          key={index}
+                          to={{
+                            pathname: `/group/${data.id}`,
+                          }}
+                        >
+                          <Suggest
+                            item={data}
+                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                          />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </> : null
+              }
+
+              {
+                (groupData.unMember.length > 0 ) ? 
+                  <>
+                    <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                      <span className={"text-15px text-caak-darkBlue"}>
+                        {`Бүлгүүд`}
+                      </span>
+                    </div>
+                    <div className={"px-2 pb-5"}>
+                      {groupData.unMember.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/group/${data.id}`,
+                            }}
                           >
-                            {item.name}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-              <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                <span className={"text-15px text-caak-darkBlue"}>
-                  Миний дагасан бүлгүүд
-                </span>
-              </div>
-              <div className={"px-2 pb-5"}>
-                {groupData.map((data, index) => {
-                  return (
-                    <Link
-                      key={index}
-                      to={{
-                        pathname: `/group/${data.id}`,
-                      }}
-                    >
-                      <Suggest
-                        item={data}
-                        className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                      />
-                    </Link>
-                  );
-                })}
-              </div>
+                            <Suggest
+                              item={data}
+                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </> : null
+              }
             </div>
           </aside>
           <div

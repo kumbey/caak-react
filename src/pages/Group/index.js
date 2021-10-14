@@ -16,7 +16,7 @@ export default function Group() {
   const history = useHistory();
   const { user } = useUser();
   const { groupId } = useParams();
-  const [groupData, setGroupData] = useState([]);
+  const [groupData, setGroupData] = useState({});
   const [groupPosts, setGroupPosts] = useState([]);
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -32,26 +32,22 @@ export default function Group() {
   const [loading, setLoading] = useState(false);
 
   const getGroupDataById = async () => {
-    if (checkUser(user)) {
-      try {
+    try {
+      if (checkUser(user)) {
         let resp = await API.graphql(
           graphqlOperation(getGroupView, { id: groupId })
         );
         setGroupData(resp.data.getGroup);
-      } catch (ex) {
-        console.log(ex);
-      }
-    } else {
-      try {
+      } else {
         const resp = await API.graphql({
           query: getGroupView,
           authMode: "AWS_IAM",
           variables: { id: groupId },
         });
         setGroupData(resp.data.getGroup);
-      } catch (ex) {
-        console.log(ex);
       }
+    } catch (ex) {
+      console.log(ex);
     }
   };
 
@@ -61,6 +57,7 @@ export default function Group() {
         setLoading(true);
 
         let resp = await nextPosts();
+        console.log(resp)
         if (resp) {
           setData([...data, ...resp]);
         }
@@ -87,8 +84,13 @@ export default function Group() {
 
     fetchGroupPosts(groupPosts, setGroupPosts);
     setPostScroll(fetchGroupPosts);
+
+    return () => {
+      setPostScroll(null)
+    }
+
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   return (
     <div>

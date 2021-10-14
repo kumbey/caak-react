@@ -122,7 +122,7 @@ const AddPost = () => {
       const { items, ...postData } = { ...post };
       postData.group_id = selectedGroup.id;
       postData.category_id = selectedGroup.category_id;
-      postData.status = "PENDING";
+      postData.status = "POSTING";
 
       const oldItems = [...oldPost.items];
 
@@ -168,6 +168,7 @@ const AddPost = () => {
         postItem.file_id = file.id;
         postItem.order = i;
         postItem.post_id = returnPost.id;
+        postItem.user_id = user.sysUser.id;
         if (postItem.id) {
           await API.graphql(
             graphqlOperation(updatePostItems, { input: postItem })
@@ -178,6 +179,13 @@ const AddPost = () => {
           );
         }
       }
+
+      await API.graphql(
+        graphqlOperation(updatePost, { input: {
+          id: returnPost.id,
+          status: "PENDING",
+        } })
+      );
 
       setLoading(false);
       closeModal(history, state);

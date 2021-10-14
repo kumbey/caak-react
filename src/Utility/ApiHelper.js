@@ -85,7 +85,7 @@ export const useListPager = (params) => {
     }
 
     // eslint-disable-next-line
-    return useMemo(() => ([next ,renew]), [lastToken, isFinished])
+    return useMemo(() => ([next ,renew]), [lastToken, isFinished, user])
 }
 
 const object = {

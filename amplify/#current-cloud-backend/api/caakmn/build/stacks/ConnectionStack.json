@@ -479,7 +479,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "UserTotalsDataSource",
+                                "UserTotalDataSource",
                                 "Name"
                             ]
                         ]
@@ -1063,7 +1063,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "PostTotalsDataSource",
+                                "PostTotalDataSource",
                                 "Name"
                             ]
                         ]
@@ -1355,7 +1355,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "PostItemsTotalsDataSource",
+                                "PostItemsTotalDataSource",
                                 "Name"
                             ]
                         ]
@@ -1720,7 +1720,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "CommentTotalsDataSource",
+                                "CommentTotalDataSource",
                                 "Name"
                             ]
                         ]
@@ -2523,7 +2523,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "GroupTotalsDataSource",
+                                "GroupTotalDataSource",
                                 "Name"
                             ]
                         ]
@@ -2581,7 +2581,80 @@
                 }
             }
         },
-        "GroupIDgroupResolver": {
+        "GroupusernameResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "GroupUsernameDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "username",
+                "TypeName": "Group",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Group",
+                                        "username",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Group",
+                                        "username",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "GroupUsernamegroupResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -2603,7 +2676,7 @@
                     }
                 },
                 "FieldName": "group",
-                "TypeName": "GroupID",
+                "TypeName": "GroupUsername",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -2618,7 +2691,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "GroupID",
+                                        "GroupUsername",
                                         "group",
                                         "req",
                                         "vtl"
@@ -2642,7 +2715,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "GroupID",
+                                        "GroupUsername",
                                         "group",
                                         "res",
                                         "vtl"

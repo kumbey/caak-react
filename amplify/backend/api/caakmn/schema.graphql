@@ -14,13 +14,13 @@ type File @model
     type: String
 }
 
-type User @model(mutations: null)
+type User @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read, create]}
   ]){
   id: ID!
-  username: [Username]! @connection(keyName:"byUser", fields:["id"])
+  username: Username @connection(fields:["id"])
   firstname: String
   lastname: String
   nickname: String
@@ -35,12 +35,12 @@ type User @model(mutations: null)
   is_public: Boolean
   status: String!
   category: [UserCategory] @connection(keyName:"byUser" ,fields:["id"])
-  totals: UserTotals @connection(fields:["id"])
+  totals: UserTotal @connection(fields:["id"])
   followed: Boolean @function(name:"resolverBoolean-${env}")
   verified: Boolean
 }
 
-type UserTotals @model(mutations: null)
+type UserTotal @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -60,7 +60,7 @@ type UserTotals @model(mutations: null)
   unseen: Int
 }
 
-type GroupTotals @model(mutations: null)
+type GroupTotal @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -80,10 +80,10 @@ type Username @model(mutations: null)
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name:"byUser" fields: ["user_id"], queryField:"usernameByUser"){
+  @key(name:"byIdName" fields: ["id_name"], queryField:"userByIdName"){
      id: ID!
-     user_id: ID!
-     user: User @connection(fields:["user_id"])
+     id_name: ID!
+     user: User @connection(fields:["id"])
 }
 
 type Aura @model(mutations: null)
@@ -153,7 +153,7 @@ type Post @model
   category_id: ID!
   category: Category @connection(fields:["category_id"])
   items: [PostItems] @connection(keyName:"byPost", fields:["id"])
-  totals: PostTotals @connection(fields:["id"])
+  totals: PostTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
   updatedAt: AWSDateTime!
 }
@@ -166,17 +166,18 @@ type PostItems @model
   @key(name: "byPost", fields:["post_id","order"]){
   id: ID!
   post_id: ID!
+  user_id: ID!
   post: Post! @connection(fields:["post_id"])
   file_id: ID!
   file: File @connection(fields:["file_id"])
   title: String
   order: Int
   comments: [Comment] @connection(keyName:"byPostItem", fields:["id"])
-  totals: PostItemsTotals @connection(fields:["id"])
+  totals: PostItemsTotal @connection(fields:["id"])
   reacted: Boolean @function(name:"resolverBoolean-${env}")
 }
 
-type PostTotals @model(mutations: null)
+type PostTotal @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -188,7 +189,7 @@ type PostTotals @model(mutations: null)
   shares: Int!
 }
 
-type PostItemsTotals @model(mutations: null)
+type PostItemsTotal @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -253,10 +254,10 @@ type Comment @model
   sub: [Comment] @connection(keyName:"byParent" fields:["id"])
   replyUserID: ID
   replyTo: User @connection(fields:["replyUserID"])
-  totals: CommentTotals @connection(fields:["id"])
+  totals: CommentTotal @connection(fields:["id"])
 }
 
-type CommentTotals @model
+type CommentTotal@model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -264,7 +265,6 @@ type CommentTotals @model
   @key(fields:["comment_id"]){
   comment_id: ID!
   reactions: Int
-  subs: Int
 }
 
 type Reactions @model
@@ -337,19 +337,21 @@ type Group @model
   founder: User @connection(fields:["founder_id"])
   rating: Float
   members: [GroupUsers] @connection(keyName:"byGroup", fields:["id"])
-  totals: GroupTotals @connection(fields:["id"])
+  totals: GroupTotal @connection(fields:["id"])
   followed: Boolean @function(name:"resolverBoolean-${env}")
+  role_on_group: String @function(name:"userRoleOnGroup-${env}")
+  username: GroupUsername! @connection(fields:["id"])
 }
 
-type GroupID @model(mutations: null)
+type GroupUsername @model(mutations: null)
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name:"byGroup" fields: ["group_id"], queryField:"groupByID"){
+  @key(name:"byIdName" fields: ["id_name"], queryField:"groupByIdName"){
      id: ID!
-     group_id: ID!
-     group: Group @connection(fields:["group_id"])
+     id_name: ID!
+     group: Group @connection(fields:["id"])
 }
 
 type Notification @model
@@ -370,30 +372,13 @@ type Notification @model
     createdAt: AWSDateTime
 }
 
-type Query {
-  getUserCustom(id: ID!): User @function(name:"users-${env}")
-  @aws_iam
-  @aws_cognito_user_pools
-}
-
 type Mutation {
-  createUserCustom(input: CreateUserInputCustom!): User @function(name:"users-${env}")
-  @aws_iam
-  @aws_cognito_user_pools
   changedTotals(type: String!, id: ID!): ChangedTotalsType @function(name:"totals-${env}")
+  @aws_iam
   @aws_cognito_user_pools
 }
 
 type ChangedTotalsType{
     type: String!,
     totals: String!,
-}
-
-input CreateUserInputCustom{
-  id: ID
-	firstname: String
-	lastname: String
-  nickname: String
-	birthdate: String
-  gender: String
 }

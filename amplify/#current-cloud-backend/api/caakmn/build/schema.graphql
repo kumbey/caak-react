@@ -31,12 +31,12 @@ type User @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   pic: File @aws_iam @aws_cognito_user_pools
   cover_pic: File @aws_iam @aws_cognito_user_pools
-  totals: UserTotals @aws_iam @aws_cognito_user_pools
-  username(filter: ModelUsernameFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
+  totals: UserTotal @aws_iam @aws_cognito_user_pools
+  username: Username @aws_iam @aws_cognito_user_pools
   category(filter: ModelUserCategoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
 }
 
-type UserTotals @aws_iam @aws_cognito_user_pools {
+type UserTotal @aws_iam @aws_cognito_user_pools {
   user_id: ID!
   pending: Int
   confirmed: Int
@@ -53,7 +53,7 @@ type UserTotals @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
 }
 
-type GroupTotals @aws_iam @aws_cognito_user_pools {
+type GroupTotal @aws_iam @aws_cognito_user_pools {
   group_id: ID!
   pending: Int
   confirmed: Int
@@ -67,7 +67,7 @@ type GroupTotals @aws_iam @aws_cognito_user_pools {
 
 type Username @aws_iam @aws_cognito_user_pools {
   id: ID!
-  user_id: ID!
+  id_name: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   user: User @aws_iam @aws_cognito_user_pools
@@ -120,13 +120,14 @@ type Post @aws_iam @aws_cognito_user_pools {
   updated_user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
   items(order: ModelIntKeyConditionInput, filter: ModelPostItemsFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
-  totals: PostTotals @aws_iam @aws_cognito_user_pools
+  totals: PostTotal @aws_iam @aws_cognito_user_pools
   group: Group @aws_iam @aws_cognito_user_pools
 }
 
 type PostItems @aws_iam @aws_cognito_user_pools {
   id: ID!
   post_id: ID!
+  user_id: ID!
   file_id: ID!
   title: String
   order: Int
@@ -135,11 +136,11 @@ type PostItems @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   file: File @aws_iam @aws_cognito_user_pools
   post: Post! @aws_iam @aws_cognito_user_pools
-  totals: PostItemsTotals @aws_iam @aws_cognito_user_pools
+  totals: PostItemsTotal @aws_iam @aws_cognito_user_pools
   comments(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
 }
 
-type PostTotals @aws_iam @aws_cognito_user_pools {
+type PostTotal @aws_iam @aws_cognito_user_pools {
   post_id: ID!
   reactions: Int!
   views: Int!
@@ -148,7 +149,7 @@ type PostTotals @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
 }
 
-type PostItemsTotals @aws_iam @aws_cognito_user_pools {
+type PostItemsTotal @aws_iam @aws_cognito_user_pools {
   post_item_id: ID!
   reactions: Int!
   comments: Int!
@@ -197,13 +198,12 @@ type Comment @aws_iam @aws_cognito_user_pools {
   replyTo: User @aws_iam @aws_cognito_user_pools
   post_item: PostItems! @aws_iam @aws_cognito_user_pools
   sub(filter: ModelCommentFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-  totals: CommentTotals @aws_iam @aws_cognito_user_pools
+  totals: CommentTotal @aws_iam @aws_cognito_user_pools
 }
 
-type CommentTotals @aws_iam @aws_cognito_user_pools {
+type CommentTotal @aws_iam @aws_cognito_user_pools {
   comment_id: ID!
   reactions: Int
-  subs: Int
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -256,19 +256,21 @@ type Group @aws_iam @aws_cognito_user_pools {
   founder_id: ID!
   rating: Float
   followed: Boolean
+  role_on_group: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   profile: File @aws_iam @aws_cognito_user_pools
   cover: File @aws_iam @aws_cognito_user_pools
   founder: User @aws_iam @aws_cognito_user_pools
-  totals: GroupTotals @aws_iam @aws_cognito_user_pools
+  totals: GroupTotal @aws_iam @aws_cognito_user_pools
   category: Category! @aws_iam @aws_cognito_user_pools
   members(filter: ModelGroupUsersFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
+  username: GroupUsername! @aws_iam @aws_cognito_user_pools
 }
 
-type GroupID @aws_iam @aws_cognito_user_pools {
+type GroupUsername @aws_iam @aws_cognito_user_pools {
   id: ID!
-  group_id: ID!
+  id_name: ID!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   group: Group @aws_iam @aws_cognito_user_pools
@@ -288,75 +290,13 @@ type Notification @aws_iam @aws_cognito_user_pools {
   from_user: User @aws_iam @aws_cognito_user_pools
 }
 
-type Query {
-  getUserCustom(id: ID!): User @aws_iam @aws_cognito_user_pools
-  getFile(id: ID!): File @aws_iam @aws_cognito_user_pools
-  listFiles(filter: ModelFileFilterInput, limit: Int, nextToken: String): ModelFileConnection @aws_iam @aws_cognito_user_pools
-  getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
-  getUserTotals(user_id: ID!): UserTotals @aws_iam @aws_cognito_user_pools
-  listUserTotals(user_id: ID, filter: ModelUserTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools
-  getGroupTotals(group_id: ID!): GroupTotals @aws_iam @aws_cognito_user_pools
-  listGroupTotals(group_id: ID, filter: ModelGroupTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools
-  getUsername(id: ID!): Username @aws_iam @aws_cognito_user_pools
-  listUsernames(filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
-  usernameByUser(user_id: ID, sortDirection: ModelSortDirection, filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
-  getAura(user_id: ID!): Aura @aws_iam @aws_cognito_user_pools
-  listAuras(user_id: ID, filter: ModelAuraFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelAuraConnection @aws_iam @aws_cognito_user_pools
-  getFollowedUsers(user_id: ID!, followed_user_id: ID!): FollowedUsers @aws_iam @aws_cognito_user_pools
-  listFollowedUsers(user_id: ID, followed_user_id: ModelIDKeyConditionInput, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
-  byFollowed(user_id: ID, sortDirection: ModelSortDirection, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
-  byFollowing(followed_user_id: ID, sortDirection: ModelSortDirection, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
-  getUserCategory(user_id: ID!, category_id: ID!): UserCategory @aws_iam @aws_cognito_user_pools
-  listUserCategories(user_id: ID, category_id: ModelIDKeyConditionInput, filter: ModelUserCategoryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
-  getCategory(id: ID!): Category @aws_iam @aws_cognito_user_pools
-  listCategories(filter: ModelCategoryFilterInput, limit: Int, nextToken: String): ModelCategoryConnection @aws_iam @aws_cognito_user_pools
-  getPost(id: ID!): Post @aws_iam @aws_cognito_user_pools
-  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
-  getPostByStatus(status: String, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
-  getPostByGroup(group_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
-  getPostByUser(user_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
-  getPostItems(id: ID!): PostItems @aws_iam @aws_cognito_user_pools
-  listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
-  getPostTotals(post_id: ID!): PostTotals @aws_iam @aws_cognito_user_pools
-  listPostTotals(post_id: ID, filter: ModelPostTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostTotalsConnection @aws_iam @aws_cognito_user_pools
-  getPostItemsTotals(post_item_id: ID!): PostItemsTotals @aws_iam @aws_cognito_user_pools
-  listPostItemsTotals(post_item_id: ID, filter: ModelPostItemsTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostItemsTotalsConnection @aws_iam @aws_cognito_user_pools
-  getPostHistory(id: ID!): PostHistory @aws_iam @aws_cognito_user_pools
-  listPostHistories(filter: ModelPostHistoryFilterInput, limit: Int, nextToken: String): ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools
-  getPostViews(post_id: ID!, user_id: ID!): PostViews @aws_iam @aws_cognito_user_pools
-  listPostViews(post_id: ID, user_id: ModelIDKeyConditionInput, filter: ModelPostViewsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostViewsConnection @aws_iam @aws_cognito_user_pools
-  getPostShares(id: ID!): PostShares @aws_iam @aws_cognito_user_pools
-  listPostShares(filter: ModelPostSharesFilterInput, limit: Int, nextToken: String): ModelPostSharesConnection @aws_iam @aws_cognito_user_pools
-  getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
-  listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-  getCommentsByPostItem(post_item_id: ID, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
-  getCommentTotals(comment_id: ID!): CommentTotals @aws_iam @aws_cognito_user_pools
-  listCommentTotals(comment_id: ID, filter: ModelCommentTotalsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentTotalsConnection @aws_iam @aws_cognito_user_pools
-  getReactions(id: ID!, user_id: ID!): Reactions @aws_iam @aws_cognito_user_pools
-  listReactions(id: ID, user_id: ModelIDKeyConditionInput, filter: ModelReactionsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelReactionsConnection @aws_iam @aws_cognito_user_pools
-  getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
-  listReportedPosts(filter: ModelReportedPostFilterInput, limit: Int, nextToken: String): ModelReportedPostConnection @aws_iam @aws_cognito_user_pools
-  getReportType(id: ID!): ReportType @aws_iam @aws_cognito_user_pools
-  listReportTypes(filter: ModelReportTypeFilterInput, limit: Int, nextToken: String): ModelReportTypeConnection @aws_iam @aws_cognito_user_pools
-  getGroupUsers(user_id: ID!, group_id: ID!): GroupUsers @aws_iam @aws_cognito_user_pools
-  listGroupUsers(user_id: ID, group_id: ModelIDKeyConditionInput, filter: ModelGroupUsersFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
-  getGroupUsersByGroup(group_id: ID, sortDirection: ModelSortDirection, filter: ModelGroupUsersFilterInput, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
-  getGroup(id: ID!): Group @aws_iam @aws_cognito_user_pools
-  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_iam @aws_cognito_user_pools
-  getGroupID(id: ID!): GroupID @aws_iam @aws_cognito_user_pools
-  listGroupIDS(filter: ModelGroupIDFilterInput, limit: Int, nextToken: String): ModelGroupIDConnection @aws_iam @aws_cognito_user_pools
-  groupByID(group_id: ID, sortDirection: ModelSortDirection, filter: ModelGroupIDFilterInput, limit: Int, nextToken: String): ModelGroupIDConnection @aws_iam @aws_cognito_user_pools
-  getNotification(id: ID!): Notification @aws_iam @aws_cognito_user_pools
-  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
-}
-
 type Mutation {
-  createUserCustom(input: CreateUserInputCustom!): User @aws_iam @aws_cognito_user_pools
-  changedTotals(type: String!, id: ID!): ChangedTotalsType @aws_cognito_user_pools
+  changedTotals(type: String!, id: ID!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
   createFollowedUsers(input: CreateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   updateFollowedUsers(input: UpdateFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
   deleteFollowedUsers(input: DeleteFollowedUsersInput!, condition: ModelFollowedUsersConditionInput): FollowedUsers
@@ -384,9 +324,9 @@ type Mutation {
   createComment(input: CreateCommentInput!, condition: ModelCommentConditionInput): Comment
   updateComment(input: UpdateCommentInput!, condition: ModelCommentConditionInput): Comment
   deleteComment(input: DeleteCommentInput!, condition: ModelCommentConditionInput): Comment
-  createCommentTotals(input: CreateCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
-  updateCommentTotals(input: UpdateCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
-  deleteCommentTotals(input: DeleteCommentTotalsInput!, condition: ModelCommentTotalsConditionInput): CommentTotals
+  createCommentTotal(input: CreateCommentTotalInput!, condition: ModelCommentTotalConditionInput): CommentTotal
+  updateCommentTotal(input: UpdateCommentTotalInput!, condition: ModelCommentTotalConditionInput): CommentTotal
+  deleteCommentTotal(input: DeleteCommentTotalInput!, condition: ModelCommentTotalConditionInput): CommentTotal
   createReactions(input: CreateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   updateReactions(input: UpdateReactionsInput!, condition: ModelReactionsConditionInput): Reactions
   deleteReactions(input: DeleteReactionsInput!, condition: ModelReactionsConditionInput): Reactions
@@ -405,20 +345,12 @@ type Mutation {
   createNotification(input: CreateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   updateNotification(input: UpdateNotificationInput!, condition: ModelNotificationConditionInput): Notification
   deleteNotification(input: DeleteNotificationInput!, condition: ModelNotificationConditionInput): Notification
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
 }
 
 type ChangedTotalsType {
   type: String!
   totals: String!
-}
-
-input CreateUserInputCustom {
-  id: ID
-  firstname: String
-  lastname: String
-  nickname: String
-  birthdate: String
-  gender: String
 }
 
 enum ModelSortDirection {
@@ -532,6 +464,68 @@ enum ModelAttributeTypes {
   _null
 }
 
+type Query {
+  getFile(id: ID!): File @aws_iam @aws_cognito_user_pools
+  listFiles(filter: ModelFileFilterInput, limit: Int, nextToken: String): ModelFileConnection @aws_iam @aws_cognito_user_pools
+  getUser(id: ID!): User @aws_iam @aws_cognito_user_pools
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_iam @aws_cognito_user_pools
+  getUserTotal(user_id: ID!): UserTotal @aws_iam @aws_cognito_user_pools
+  listUserTotals(user_id: ID, filter: ModelUserTotalFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserTotalConnection @aws_iam @aws_cognito_user_pools
+  getGroupTotal(group_id: ID!): GroupTotal @aws_iam @aws_cognito_user_pools
+  listGroupTotals(group_id: ID, filter: ModelGroupTotalFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupTotalConnection @aws_iam @aws_cognito_user_pools
+  getUsername(id: ID!): Username @aws_iam @aws_cognito_user_pools
+  listUsernames(filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
+  userByIdName(id_name: ID, sortDirection: ModelSortDirection, filter: ModelUsernameFilterInput, limit: Int, nextToken: String): ModelUsernameConnection @aws_iam @aws_cognito_user_pools
+  getAura(user_id: ID!): Aura @aws_iam @aws_cognito_user_pools
+  listAuras(user_id: ID, filter: ModelAuraFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelAuraConnection @aws_iam @aws_cognito_user_pools
+  getFollowedUsers(user_id: ID!, followed_user_id: ID!): FollowedUsers @aws_iam @aws_cognito_user_pools
+  listFollowedUsers(user_id: ID, followed_user_id: ModelIDKeyConditionInput, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
+  byFollowed(user_id: ID, sortDirection: ModelSortDirection, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
+  byFollowing(followed_user_id: ID, sortDirection: ModelSortDirection, filter: ModelFollowedUsersFilterInput, limit: Int, nextToken: String): ModelFollowedUsersConnection @aws_iam @aws_cognito_user_pools
+  getUserCategory(user_id: ID!, category_id: ID!): UserCategory @aws_iam @aws_cognito_user_pools
+  listUserCategories(user_id: ID, category_id: ModelIDKeyConditionInput, filter: ModelUserCategoryFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelUserCategoryConnection @aws_iam @aws_cognito_user_pools
+  getCategory(id: ID!): Category @aws_iam @aws_cognito_user_pools
+  listCategories(filter: ModelCategoryFilterInput, limit: Int, nextToken: String): ModelCategoryConnection @aws_iam @aws_cognito_user_pools
+  getPost(id: ID!): Post @aws_iam @aws_cognito_user_pools
+  listPosts(filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostByStatus(status: String, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostByGroup(group_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostByUser(user_id: ID, updatedAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelPostFilterInput, limit: Int, nextToken: String): ModelPostConnection @aws_iam @aws_cognito_user_pools
+  getPostItems(id: ID!): PostItems @aws_iam @aws_cognito_user_pools
+  listPostItems(filter: ModelPostItemsFilterInput, limit: Int, nextToken: String): ModelPostItemsConnection @aws_iam @aws_cognito_user_pools
+  getPostTotal(post_id: ID!): PostTotal @aws_iam @aws_cognito_user_pools
+  listPostTotals(post_id: ID, filter: ModelPostTotalFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostTotalConnection @aws_iam @aws_cognito_user_pools
+  getPostItemsTotal(post_item_id: ID!): PostItemsTotal @aws_iam @aws_cognito_user_pools
+  listPostItemsTotals(post_item_id: ID, filter: ModelPostItemsTotalFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostItemsTotalConnection @aws_iam @aws_cognito_user_pools
+  getPostHistory(id: ID!): PostHistory @aws_iam @aws_cognito_user_pools
+  listPostHistories(filter: ModelPostHistoryFilterInput, limit: Int, nextToken: String): ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools
+  getPostViews(post_id: ID!, user_id: ID!): PostViews @aws_iam @aws_cognito_user_pools
+  listPostViews(post_id: ID, user_id: ModelIDKeyConditionInput, filter: ModelPostViewsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelPostViewsConnection @aws_iam @aws_cognito_user_pools
+  getPostShares(id: ID!): PostShares @aws_iam @aws_cognito_user_pools
+  listPostShares(filter: ModelPostSharesFilterInput, limit: Int, nextToken: String): ModelPostSharesConnection @aws_iam @aws_cognito_user_pools
+  getComment(id: ID!): Comment @aws_iam @aws_cognito_user_pools
+  listComments(filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  getCommentsByPostItem(post_item_id: ID, sortDirection: ModelSortDirection, filter: ModelCommentFilterInput, limit: Int, nextToken: String): ModelCommentConnection @aws_iam @aws_cognito_user_pools
+  getCommentTotal(comment_id: ID!): CommentTotal @aws_iam @aws_cognito_user_pools
+  listCommentTotals(comment_id: ID, filter: ModelCommentTotalFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelCommentTotalConnection @aws_iam @aws_cognito_user_pools
+  getReactions(id: ID!, user_id: ID!): Reactions @aws_iam @aws_cognito_user_pools
+  listReactions(id: ID, user_id: ModelIDKeyConditionInput, filter: ModelReactionsFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelReactionsConnection @aws_iam @aws_cognito_user_pools
+  getReportedPost(id: ID!): ReportedPost @aws_iam @aws_cognito_user_pools
+  listReportedPosts(filter: ModelReportedPostFilterInput, limit: Int, nextToken: String): ModelReportedPostConnection @aws_iam @aws_cognito_user_pools
+  getReportType(id: ID!): ReportType @aws_iam @aws_cognito_user_pools
+  listReportTypes(filter: ModelReportTypeFilterInput, limit: Int, nextToken: String): ModelReportTypeConnection @aws_iam @aws_cognito_user_pools
+  getGroupUsers(user_id: ID!, group_id: ID!): GroupUsers @aws_iam @aws_cognito_user_pools
+  listGroupUsers(user_id: ID, group_id: ModelIDKeyConditionInput, filter: ModelGroupUsersFilterInput, limit: Int, nextToken: String, sortDirection: ModelSortDirection): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
+  getGroupUsersByGroup(group_id: ID, sortDirection: ModelSortDirection, filter: ModelGroupUsersFilterInput, limit: Int, nextToken: String): ModelGroupUsersConnection @aws_iam @aws_cognito_user_pools
+  getGroup(id: ID!): Group @aws_iam @aws_cognito_user_pools
+  listGroups(filter: ModelGroupFilterInput, limit: Int, nextToken: String): ModelGroupConnection @aws_iam @aws_cognito_user_pools
+  getGroupUsername(id: ID!): GroupUsername @aws_iam @aws_cognito_user_pools
+  listGroupUsernames(filter: ModelGroupUsernameFilterInput, limit: Int, nextToken: String): ModelGroupUsernameConnection @aws_iam @aws_cognito_user_pools
+  groupByIdName(id_name: ID, sortDirection: ModelSortDirection, filter: ModelGroupUsernameFilterInput, limit: Int, nextToken: String): ModelGroupUsernameConnection @aws_iam @aws_cognito_user_pools
+  getNotification(id: ID!): Notification @aws_iam @aws_cognito_user_pools
+  listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
+}
+
 input CreateFileInput {
   id: ID
   key: String!
@@ -578,6 +572,9 @@ type Subscription {
   onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
   onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
   onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
   onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
   onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
@@ -605,9 +602,9 @@ type Subscription {
   onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
   onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
   onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
-  onCreateCommentTotals: CommentTotals @aws_subscribe(mutations: ["createCommentTotals"]) @aws_iam @aws_cognito_user_pools
-  onUpdateCommentTotals: CommentTotals @aws_subscribe(mutations: ["updateCommentTotals"]) @aws_iam @aws_cognito_user_pools
-  onDeleteCommentTotals: CommentTotals @aws_subscribe(mutations: ["deleteCommentTotals"]) @aws_iam @aws_cognito_user_pools
+  onCreateCommentTotal: CommentTotal @aws_subscribe(mutations: ["createCommentTotal"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCommentTotal: CommentTotal @aws_subscribe(mutations: ["updateCommentTotal"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCommentTotal: CommentTotal @aws_subscribe(mutations: ["deleteCommentTotal"]) @aws_iam @aws_cognito_user_pools
   onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
   onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
   onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
@@ -653,12 +650,69 @@ input ModelUserFilterInput {
   not: ModelUserFilterInput
 }
 
-type ModelUserTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [UserTotals]
+input CreateUserInput {
+  id: ID
+  firstname: String
+  lastname: String
+  nickname: String
+  birthdate: String
+  gender: String
+  pic_id: ID
+  cover_pic_id: ID
+  about: String
+  aura: Int
+  is_public: Boolean
+  status: String!
+  followed: Boolean
+  verified: Boolean
+}
+
+input UpdateUserInput {
+  id: ID!
+  firstname: String
+  lastname: String
+  nickname: String
+  birthdate: String
+  gender: String
+  pic_id: ID
+  cover_pic_id: ID
+  about: String
+  aura: Int
+  is_public: Boolean
+  status: String
+  followed: Boolean
+  verified: Boolean
+}
+
+input DeleteUserInput {
+  id: ID!
+}
+
+input ModelUserConditionInput {
+  firstname: ModelStringInput
+  lastname: ModelStringInput
+  nickname: ModelStringInput
+  birthdate: ModelStringInput
+  gender: ModelStringInput
+  pic_id: ModelIDInput
+  cover_pic_id: ModelIDInput
+  about: ModelStringInput
+  aura: ModelIntInput
+  is_public: ModelBooleanInput
+  status: ModelStringInput
+  followed: ModelBooleanInput
+  verified: ModelBooleanInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+type ModelUserTotalConnection @aws_iam @aws_cognito_user_pools {
+  items: [UserTotal]
   nextToken: String
 }
 
-input ModelUserTotalsFilterInput {
+input ModelUserTotalFilterInput {
   user_id: ModelIDInput
   pending: ModelIntInput
   confirmed: ModelIntInput
@@ -671,17 +725,17 @@ input ModelUserTotalsFilterInput {
   post_items_reactions: ModelIntInput
   comment_reactions: ModelIntInput
   unseen: ModelIntInput
-  and: [ModelUserTotalsFilterInput]
-  or: [ModelUserTotalsFilterInput]
-  not: ModelUserTotalsFilterInput
+  and: [ModelUserTotalFilterInput]
+  or: [ModelUserTotalFilterInput]
+  not: ModelUserTotalFilterInput
 }
 
-type ModelGroupTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupTotals]
+type ModelGroupTotalConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupTotal]
   nextToken: String
 }
 
-input ModelGroupTotalsFilterInput {
+input ModelGroupTotalFilterInput {
   group_id: ModelIDInput
   pending: ModelIntInput
   confirmed: ModelIntInput
@@ -689,9 +743,9 @@ input ModelGroupTotalsFilterInput {
   admin: ModelIntInput
   moderator: ModelIntInput
   unseen: ModelIntInput
-  and: [ModelGroupTotalsFilterInput]
-  or: [ModelGroupTotalsFilterInput]
-  not: ModelGroupTotalsFilterInput
+  and: [ModelGroupTotalFilterInput]
+  or: [ModelGroupTotalFilterInput]
+  not: ModelGroupTotalFilterInput
 }
 
 type ModelUsernameConnection @aws_iam @aws_cognito_user_pools {
@@ -701,7 +755,7 @@ type ModelUsernameConnection @aws_iam @aws_cognito_user_pools {
 
 input ModelUsernameFilterInput {
   id: ModelIDInput
-  user_id: ModelIDInput
+  id_name: ModelIDInput
   and: [ModelUsernameFilterInput]
   or: [ModelUsernameFilterInput]
   not: ModelUsernameFilterInput
@@ -903,6 +957,7 @@ type ModelPostItemsConnection @aws_iam @aws_cognito_user_pools {
 input ModelPostItemsFilterInput {
   id: ModelIDInput
   post_id: ModelIDInput
+  user_id: ModelIDInput
   file_id: ModelIDInput
   title: ModelStringInput
   order: ModelIntInput
@@ -915,6 +970,7 @@ input ModelPostItemsFilterInput {
 input CreatePostItemsInput {
   id: ID
   post_id: ID!
+  user_id: ID!
   file_id: ID!
   title: String
   order: Int
@@ -924,6 +980,7 @@ input CreatePostItemsInput {
 input UpdatePostItemsInput {
   id: ID!
   post_id: ID
+  user_id: ID
   file_id: ID
   title: String
   order: Int
@@ -936,6 +993,7 @@ input DeletePostItemsInput {
 
 input ModelPostItemsConditionInput {
   post_id: ModelIDInput
+  user_id: ModelIDInput
   file_id: ModelIDInput
   title: ModelStringInput
   order: ModelIntInput
@@ -945,33 +1003,33 @@ input ModelPostItemsConditionInput {
   not: ModelPostItemsConditionInput
 }
 
-type ModelPostTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [PostTotals]
+type ModelPostTotalConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostTotal]
   nextToken: String
 }
 
-input ModelPostTotalsFilterInput {
+input ModelPostTotalFilterInput {
   post_id: ModelIDInput
   reactions: ModelIntInput
   views: ModelIntInput
   shares: ModelIntInput
-  and: [ModelPostTotalsFilterInput]
-  or: [ModelPostTotalsFilterInput]
-  not: ModelPostTotalsFilterInput
+  and: [ModelPostTotalFilterInput]
+  or: [ModelPostTotalFilterInput]
+  not: ModelPostTotalFilterInput
 }
 
-type ModelPostItemsTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [PostItemsTotals]
+type ModelPostItemsTotalConnection @aws_iam @aws_cognito_user_pools {
+  items: [PostItemsTotal]
   nextToken: String
 }
 
-input ModelPostItemsTotalsFilterInput {
+input ModelPostItemsTotalFilterInput {
   post_item_id: ModelIDInput
   reactions: ModelIntInput
   comments: ModelIntInput
-  and: [ModelPostItemsTotalsFilterInput]
-  or: [ModelPostItemsTotalsFilterInput]
-  not: ModelPostItemsTotalsFilterInput
+  and: [ModelPostItemsTotalFilterInput]
+  or: [ModelPostItemsTotalFilterInput]
+  not: ModelPostItemsTotalFilterInput
 }
 
 type ModelPostHistoryConnection @aws_iam @aws_cognito_user_pools {
@@ -1154,42 +1212,38 @@ input ModelCommentConditionInput {
   not: ModelCommentConditionInput
 }
 
-type ModelCommentTotalsConnection @aws_iam @aws_cognito_user_pools {
-  items: [CommentTotals]
+type ModelCommentTotalConnection @aws_iam @aws_cognito_user_pools {
+  items: [CommentTotal]
   nextToken: String
 }
 
-input ModelCommentTotalsFilterInput {
+input ModelCommentTotalFilterInput {
   comment_id: ModelIDInput
   reactions: ModelIntInput
-  subs: ModelIntInput
-  and: [ModelCommentTotalsFilterInput]
-  or: [ModelCommentTotalsFilterInput]
-  not: ModelCommentTotalsFilterInput
+  and: [ModelCommentTotalFilterInput]
+  or: [ModelCommentTotalFilterInput]
+  not: ModelCommentTotalFilterInput
 }
 
-input CreateCommentTotalsInput {
+input CreateCommentTotalInput {
   comment_id: ID!
   reactions: Int
-  subs: Int
 }
 
-input UpdateCommentTotalsInput {
+input UpdateCommentTotalInput {
   comment_id: ID!
   reactions: Int
-  subs: Int
 }
 
-input DeleteCommentTotalsInput {
+input DeleteCommentTotalInput {
   comment_id: ID!
 }
 
-input ModelCommentTotalsConditionInput {
+input ModelCommentTotalConditionInput {
   reactions: ModelIntInput
-  subs: ModelIntInput
-  and: [ModelCommentTotalsConditionInput]
-  or: [ModelCommentTotalsConditionInput]
-  not: ModelCommentTotalsConditionInput
+  and: [ModelCommentTotalConditionInput]
+  or: [ModelCommentTotalConditionInput]
+  not: ModelCommentTotalConditionInput
 }
 
 type ModelReactionsConnection @aws_iam @aws_cognito_user_pools {
@@ -1374,6 +1428,7 @@ input ModelGroupFilterInput {
   founder_id: ModelIDInput
   rating: ModelFloatInput
   followed: ModelBooleanInput
+  role_on_group: ModelStringInput
   and: [ModelGroupFilterInput]
   or: [ModelGroupFilterInput]
   not: ModelGroupFilterInput
@@ -1387,6 +1442,7 @@ input CreateGroupInput {
   founder_id: ID!
   rating: Float
   followed: Boolean
+  role_on_group: String
   groupProfileId: ID
   groupCoverId: ID
 }
@@ -1399,6 +1455,7 @@ input UpdateGroupInput {
   founder_id: ID
   rating: Float
   followed: Boolean
+  role_on_group: String
   groupProfileId: ID
   groupCoverId: ID
 }
@@ -1414,22 +1471,23 @@ input ModelGroupConditionInput {
   founder_id: ModelIDInput
   rating: ModelFloatInput
   followed: ModelBooleanInput
+  role_on_group: ModelStringInput
   and: [ModelGroupConditionInput]
   or: [ModelGroupConditionInput]
   not: ModelGroupConditionInput
 }
 
-type ModelGroupIDConnection @aws_iam @aws_cognito_user_pools {
-  items: [GroupID]
+type ModelGroupUsernameConnection @aws_iam @aws_cognito_user_pools {
+  items: [GroupUsername]
   nextToken: String
 }
 
-input ModelGroupIDFilterInput {
+input ModelGroupUsernameFilterInput {
   id: ModelIDInput
-  group_id: ModelIDInput
-  and: [ModelGroupIDFilterInput]
-  or: [ModelGroupIDFilterInput]
-  not: ModelGroupIDFilterInput
+  id_name: ModelIDInput
+  and: [ModelGroupUsernameFilterInput]
+  or: [ModelGroupUsernameFilterInput]
+  not: ModelGroupUsernameFilterInput
 }
 
 type ModelNotificationConnection @aws_iam @aws_cognito_user_pools {

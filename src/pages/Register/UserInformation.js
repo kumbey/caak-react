@@ -10,7 +10,7 @@ import Validate from "../../Utility/Validate";
 import DateSelect from "../../components/input/DateSelect";
 import Auth from "@aws-amplify/auth";
 import API from "@aws-amplify/api";
-import {createUserCustom} from "../../graphql-custom/user/mutation";
+import {createUser} from "../../graphql-custom/user/mutation";
 import {useUser} from "../../context/userContext";
 import {isLogged} from "../../Utility/Authenty";
 import Select from "../../components/input/Select";
@@ -85,9 +85,11 @@ const UserInformation = () => {
 
     useEffect(() => {
         if (state.onlyInfo) {
-            setLastname(user.attributes.middle_name)
-            setFirstname(user.attributes.name)
-            setNickname(user.attributes.middle_name + user.attributes.name)
+            if(user){
+                setLastname(user.attributes.middle_name)
+                setFirstname(user.attributes.name)
+                setNickname(user.attributes.middle_name + user.attributes.name)
+            }
         }
         // eslint-disable-next-line 
     }, [])
@@ -110,6 +112,9 @@ const UserInformation = () => {
             usrData.nickname = nickname
             usrData.birthdate = birthdate
             usrData.gender = gender
+            usrData.status = "ACTIVE"
+            usrData.status = true
+            usrData.verified = false
 
             //do not sign up when its federated sign in
             if (!state.onlyInfo) {
@@ -145,7 +150,7 @@ const UserInformation = () => {
 
     const saveUserData = async (data) => {
         let user = await API.graphql({
-            query: createUserCustom,
+            query: createUser,
             variables: {input: data},
             authMode: 'AWS_IAM'
         });
