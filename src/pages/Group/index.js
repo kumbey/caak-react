@@ -55,9 +55,7 @@ export default function Group() {
     try {
       if (!loading) {
         setLoading(true);
-
         let resp = await nextPosts();
-        console.log(resp)
         if (resp) {
           setData([...data, ...resp]);
         }
@@ -105,7 +103,7 @@ export default function Group() {
       <GroupHeader group={groupData} />
 
       {/* post */}
-      <div className="ph:flex ph:flex-col ph:items-center grid justify-center">
+      <div className="flex flex-col items-center">
         <GroupSubHeader />
         <GroupBody groupPosts={groupPosts} loading={loading} />
       </div>

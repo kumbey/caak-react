@@ -5,13 +5,20 @@ import {
   createReaction,
   deleteReaction,
 } from "../../graphql-custom/post/mutation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "../../context/userContext";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import { getReturnData } from "../../Utility/Util";
 
 const CardFooter = ({ title, totals, items, postId, reacted }) => {
+
   const location = useLocation();
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(reacted);
+  const [subscripTotal, setSubscripTotal] = useState()
+  const [render, setRender] = useState(0)
+  const subscriptions = {}
+
   const updateReaction = async (type) => {
     if (type) {
       totals.reactions += 1;
@@ -45,9 +52,46 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
     // console.log(resp);
   };
 
-  // useEffect(() => {
-  //   // updateReaction(postId, "post", "CAAK", user.sysUser.id);
-  // }, [isReacted]);
+  const subscrip = () => {
+
+      subscriptions.onChangedTotalsBy = API.graphql({
+        query: onChangedTotalsBy,
+        variables: {
+          type: "PostTotal",
+          id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
+        },
+        authMode: "AWS_IAM"
+      }).subscribe({
+        next: (data) => {
+          const onData = getReturnData(data, true)
+          setSubscripTotal(JSON.parse(onData.totals))
+        },
+        error: error => {
+          console.warn(error);
+        }
+      });
+  }
+
+  useEffect(() => {
+
+    subscrip()
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true
+      })
+    }
+    // eslint-disable-next-line
+  },[])
+
+  useEffect(() => {
+    if(subscripTotal){
+        totals.reactions = subscripTotal.reactions
+        setRender(render + 1)
+    }
+    // eslint-disable-next-line
+  },[subscripTotal])
 
   return (
     <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl flex flex-col justify-between h-full px-4 py-2 pb-4">

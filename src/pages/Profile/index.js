@@ -157,7 +157,7 @@ export default function Profile() {
         style={{ height: "220px" }}
         className="ph:h-c22 flex items-center justify-center bg-white border-t"
       >
-        <div className="md:flex sm:grid ph:grid ph:justify-center 2xl:px-cf xl:px-ch lg:px-c12 md:px-c30 justify-between w-full">
+        <div className="w-full grid justify-center md:flex md:justify-around">
           <div className="ph:text-center">
             <div className="ph:grid flex">
               <div className="ph:grid ph:justify-center relative flex items-center justify-center">
@@ -263,7 +263,7 @@ export default function Profile() {
                 className="h-c13 text-4px icon-fi-rs-dots text-caak-generalblack flex items-center justify-center rounded-lg shadow cursor-pointer"
               />
             </div>
-            <div className="ph:mt-4 md:mt-10 ph:justify-center flex justify-end">
+            <div className="md:mt-10 flex justify-center py-4">
               <span
                 style={{ marginInlineEnd: "14px" }}
                 className="icon-fi-rs-ig text-caak-blue cursor-pointer"
@@ -282,12 +282,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* body */}
-      <div className="flex justify-center">
-        {/* post */}
-        <div className="grid_container_container flex flex-col justify-center w-full">
-          {/* navigator */}
-          <div className="md:justify-between mt-c2 ph:justify-center sm:justify-center flex items-center">
+      <div className="w-full mt-c2 justify-around flex items-center">
             <div className="flex">
               <Button className="text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
                 <span className="icon-fi-rs-drag text-20px mr-a1" />
@@ -298,13 +293,16 @@ export default function Profile() {
                 Хадгалсан фостууд
               </Button>
             </div>
-            <select className="ph:hidden sm:hidden md:block text-15px w-c132 text-caak-generalblack font-semibold bg-transparent border-0 cursor-pointer">
+            <select className="hidden md:block text-15px w-c132 text-caak-generalblack font-semibold bg-transparent border-0 cursor-pointer">
               <option>Илүү ихийг</option>
               <option>Илүү ихийг</option>
               <option>Илүү ихийг</option>
             </select>
           </div>
-
+      <div className="flex justify-center">
+        {/* post */}
+        <div className="grid_container_container flex flex-col justify-center w-full">
+          
           {/* contents */}
           <div className="grid-container mt-b5 justify-center">
             {posts.map((data, index) => {

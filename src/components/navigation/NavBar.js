@@ -39,7 +39,7 @@ export default function NavBar() {
       <div className="px-2 px-7 py-1 mx-auto sm:px-6 lg:px-8">
         <div className="flex relative justify-between items-center h-16">
           <div className="flex flex-row items-center">
-            <img className="mr-1 w-auto h-10" src={logo} alt="Caak Logo" />
+            <img onClick={() => history.push({pathname: "/"})} className="mr-1 w-auto h-10 cursor-pointer" src={logo} alt="Caak Logo" />
           </div>
 
           <div className="hidden flex-1 px-1 py-4 mx-4 min-w-0 max-w-xl sm:block md:px-2 lg:px-4 xl:col-span-6">

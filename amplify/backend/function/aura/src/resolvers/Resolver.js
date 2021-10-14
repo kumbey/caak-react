@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 const DB = require("/opt/tables/DB")
-const UserTotalsDB = DB(process.env.API_CAAKMN_USERTOTALSTABLE_NAME, docClient)
+const UserTotalsDB = DB(process.env.API_CAAKMN_USERTOTALTABLE_NAME, docClient)
 
 async function calcAura(ctx){
     try{

@@ -291,7 +291,7 @@ type Notification @aws_iam @aws_cognito_user_pools {
 }
 
 type Mutation {
-  changedTotals(type: String!, id: ID!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
+  changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -348,8 +348,70 @@ type Mutation {
   createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_iam @aws_cognito_user_pools
 }
 
-type ChangedTotalsType {
+type Subscription {
+  onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType @aws_subscribe(mutations: ["changedTotals"]) @aws_iam @aws_cognito_user_pools
+  onCommentByPostItem(post_item_id: ID!): Comment @aws_subscribe(mutations: ["createComment", "updateComment"]) @aws_iam @aws_cognito_user_pools
+  onPostByGroup(group_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
+  onPostByUser(user_id: ID!, status: String!): Post @aws_subscribe(mutations: ["createPost", "updatePost"]) @aws_iam @aws_cognito_user_pools
+  onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
+  onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
+  onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
+  onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
+  onCreateUserCategory: UserCategory @aws_subscribe(mutations: ["createUserCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateUserCategory: UserCategory @aws_subscribe(mutations: ["updateUserCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteUserCategory: UserCategory @aws_subscribe(mutations: ["deleteUserCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreateCategory: Category @aws_subscribe(mutations: ["createCategory"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCategory: Category @aws_subscribe(mutations: ["updateCategory"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCategory: Category @aws_subscribe(mutations: ["deleteCategory"]) @aws_iam @aws_cognito_user_pools
+  onCreatePost: Post @aws_subscribe(mutations: ["createPost"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePost: Post @aws_subscribe(mutations: ["updatePost"]) @aws_iam @aws_cognito_user_pools
+  onDeletePost: Post @aws_subscribe(mutations: ["deletePost"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostItems: PostItems @aws_subscribe(mutations: ["createPostItems"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostItems: PostItems @aws_subscribe(mutations: ["updatePostItems"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostItems: PostItems @aws_subscribe(mutations: ["deletePostItems"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostHistory: PostHistory @aws_subscribe(mutations: ["createPostHistory"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostHistory: PostHistory @aws_subscribe(mutations: ["updatePostHistory"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostHistory: PostHistory @aws_subscribe(mutations: ["deletePostHistory"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostViews: PostViews @aws_subscribe(mutations: ["createPostViews"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostViews: PostViews @aws_subscribe(mutations: ["updatePostViews"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostViews: PostViews @aws_subscribe(mutations: ["deletePostViews"]) @aws_iam @aws_cognito_user_pools
+  onCreatePostShares: PostShares @aws_subscribe(mutations: ["createPostShares"]) @aws_iam @aws_cognito_user_pools
+  onUpdatePostShares: PostShares @aws_subscribe(mutations: ["updatePostShares"]) @aws_iam @aws_cognito_user_pools
+  onDeletePostShares: PostShares @aws_subscribe(mutations: ["deletePostShares"]) @aws_iam @aws_cognito_user_pools
+  onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
+  onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
+  onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
+  onCreateCommentTotal: CommentTotal @aws_subscribe(mutations: ["createCommentTotal"]) @aws_iam @aws_cognito_user_pools
+  onUpdateCommentTotal: CommentTotal @aws_subscribe(mutations: ["updateCommentTotal"]) @aws_iam @aws_cognito_user_pools
+  onDeleteCommentTotal: CommentTotal @aws_subscribe(mutations: ["deleteCommentTotal"]) @aws_iam @aws_cognito_user_pools
+  onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
+  onCreateReportedPost: ReportedPost @aws_subscribe(mutations: ["createReportedPost"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReportedPost: ReportedPost @aws_subscribe(mutations: ["updateReportedPost"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReportedPost: ReportedPost @aws_subscribe(mutations: ["deleteReportedPost"]) @aws_iam @aws_cognito_user_pools
+  onCreateReportType: ReportType @aws_subscribe(mutations: ["createReportType"]) @aws_iam @aws_cognito_user_pools
+  onUpdateReportType: ReportType @aws_subscribe(mutations: ["updateReportType"]) @aws_iam @aws_cognito_user_pools
+  onDeleteReportType: ReportType @aws_subscribe(mutations: ["deleteReportType"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroupUsers: GroupUsers @aws_subscribe(mutations: ["createGroupUsers"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroupUsers: GroupUsers @aws_subscribe(mutations: ["updateGroupUsers"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroupUsers: GroupUsers @aws_subscribe(mutations: ["deleteGroupUsers"]) @aws_iam @aws_cognito_user_pools
+  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
+  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
+  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
+  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"]) @aws_iam @aws_cognito_user_pools
+  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"]) @aws_iam @aws_cognito_user_pools
+  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"]) @aws_iam @aws_cognito_user_pools
+}
+
+type ChangedTotalsType @aws_iam @aws_cognito_user_pools {
   type: String!
+  id: ID!
   totals: String!
 }
 
@@ -566,63 +628,6 @@ input ModelFileConditionInput {
   and: [ModelFileConditionInput]
   or: [ModelFileConditionInput]
   not: ModelFileConditionInput
-}
-
-type Subscription {
-  onCreateFile: File @aws_subscribe(mutations: ["createFile"]) @aws_iam @aws_cognito_user_pools
-  onUpdateFile: File @aws_subscribe(mutations: ["updateFile"]) @aws_iam @aws_cognito_user_pools
-  onDeleteFile: File @aws_subscribe(mutations: ["deleteFile"]) @aws_iam @aws_cognito_user_pools
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_iam @aws_cognito_user_pools
-  onCreateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["createFollowedUsers"]) @aws_iam @aws_cognito_user_pools
-  onUpdateFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["updateFollowedUsers"]) @aws_iam @aws_cognito_user_pools
-  onDeleteFollowedUsers: FollowedUsers @aws_subscribe(mutations: ["deleteFollowedUsers"]) @aws_iam @aws_cognito_user_pools
-  onCreateUserCategory: UserCategory @aws_subscribe(mutations: ["createUserCategory"]) @aws_iam @aws_cognito_user_pools
-  onUpdateUserCategory: UserCategory @aws_subscribe(mutations: ["updateUserCategory"]) @aws_iam @aws_cognito_user_pools
-  onDeleteUserCategory: UserCategory @aws_subscribe(mutations: ["deleteUserCategory"]) @aws_iam @aws_cognito_user_pools
-  onCreateCategory: Category @aws_subscribe(mutations: ["createCategory"]) @aws_iam @aws_cognito_user_pools
-  onUpdateCategory: Category @aws_subscribe(mutations: ["updateCategory"]) @aws_iam @aws_cognito_user_pools
-  onDeleteCategory: Category @aws_subscribe(mutations: ["deleteCategory"]) @aws_iam @aws_cognito_user_pools
-  onCreatePost: Post @aws_subscribe(mutations: ["createPost"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePost: Post @aws_subscribe(mutations: ["updatePost"]) @aws_iam @aws_cognito_user_pools
-  onDeletePost: Post @aws_subscribe(mutations: ["deletePost"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostItems: PostItems @aws_subscribe(mutations: ["createPostItems"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostItems: PostItems @aws_subscribe(mutations: ["updatePostItems"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostItems: PostItems @aws_subscribe(mutations: ["deletePostItems"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostHistory: PostHistory @aws_subscribe(mutations: ["createPostHistory"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostHistory: PostHistory @aws_subscribe(mutations: ["updatePostHistory"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostHistory: PostHistory @aws_subscribe(mutations: ["deletePostHistory"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostViews: PostViews @aws_subscribe(mutations: ["createPostViews"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostViews: PostViews @aws_subscribe(mutations: ["updatePostViews"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostViews: PostViews @aws_subscribe(mutations: ["deletePostViews"]) @aws_iam @aws_cognito_user_pools
-  onCreatePostShares: PostShares @aws_subscribe(mutations: ["createPostShares"]) @aws_iam @aws_cognito_user_pools
-  onUpdatePostShares: PostShares @aws_subscribe(mutations: ["updatePostShares"]) @aws_iam @aws_cognito_user_pools
-  onDeletePostShares: PostShares @aws_subscribe(mutations: ["deletePostShares"]) @aws_iam @aws_cognito_user_pools
-  onCreateComment: Comment @aws_subscribe(mutations: ["createComment"]) @aws_iam @aws_cognito_user_pools
-  onUpdateComment: Comment @aws_subscribe(mutations: ["updateComment"]) @aws_iam @aws_cognito_user_pools
-  onDeleteComment: Comment @aws_subscribe(mutations: ["deleteComment"]) @aws_iam @aws_cognito_user_pools
-  onCreateCommentTotal: CommentTotal @aws_subscribe(mutations: ["createCommentTotal"]) @aws_iam @aws_cognito_user_pools
-  onUpdateCommentTotal: CommentTotal @aws_subscribe(mutations: ["updateCommentTotal"]) @aws_iam @aws_cognito_user_pools
-  onDeleteCommentTotal: CommentTotal @aws_subscribe(mutations: ["deleteCommentTotal"]) @aws_iam @aws_cognito_user_pools
-  onCreateReactions: Reactions @aws_subscribe(mutations: ["createReactions"]) @aws_iam @aws_cognito_user_pools
-  onUpdateReactions: Reactions @aws_subscribe(mutations: ["updateReactions"]) @aws_iam @aws_cognito_user_pools
-  onDeleteReactions: Reactions @aws_subscribe(mutations: ["deleteReactions"]) @aws_iam @aws_cognito_user_pools
-  onCreateReportedPost: ReportedPost @aws_subscribe(mutations: ["createReportedPost"]) @aws_iam @aws_cognito_user_pools
-  onUpdateReportedPost: ReportedPost @aws_subscribe(mutations: ["updateReportedPost"]) @aws_iam @aws_cognito_user_pools
-  onDeleteReportedPost: ReportedPost @aws_subscribe(mutations: ["deleteReportedPost"]) @aws_iam @aws_cognito_user_pools
-  onCreateReportType: ReportType @aws_subscribe(mutations: ["createReportType"]) @aws_iam @aws_cognito_user_pools
-  onUpdateReportType: ReportType @aws_subscribe(mutations: ["updateReportType"]) @aws_iam @aws_cognito_user_pools
-  onDeleteReportType: ReportType @aws_subscribe(mutations: ["deleteReportType"]) @aws_iam @aws_cognito_user_pools
-  onCreateGroupUsers: GroupUsers @aws_subscribe(mutations: ["createGroupUsers"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGroupUsers: GroupUsers @aws_subscribe(mutations: ["updateGroupUsers"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGroupUsers: GroupUsers @aws_subscribe(mutations: ["deleteGroupUsers"]) @aws_iam @aws_cognito_user_pools
-  onCreateGroup: Group @aws_subscribe(mutations: ["createGroup"]) @aws_iam @aws_cognito_user_pools
-  onUpdateGroup: Group @aws_subscribe(mutations: ["updateGroup"]) @aws_iam @aws_cognito_user_pools
-  onDeleteGroup: Group @aws_subscribe(mutations: ["deleteGroup"]) @aws_iam @aws_cognito_user_pools
-  onCreateNotification: Notification @aws_subscribe(mutations: ["createNotification"]) @aws_iam @aws_cognito_user_pools
-  onUpdateNotification: Notification @aws_subscribe(mutations: ["updateNotification"]) @aws_iam @aws_cognito_user_pools
-  onDeleteNotification: Notification @aws_subscribe(mutations: ["deleteNotification"]) @aws_iam @aws_cognito_user_pools
 }
 
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
