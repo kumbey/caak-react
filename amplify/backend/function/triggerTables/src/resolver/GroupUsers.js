@@ -1,7 +1,5 @@
 const { getValuesFromRecord } = require("/opt/util/Util")
-const PostTotal = require("../db/PostTotal")
 const GroupTotal = require("../db/GroupTotal")
-const UserTotal = require("../db/UserTotal")
 
 async function insert(record){
     try{
@@ -34,9 +32,9 @@ async function modify(record){
 
 
         if(newImg.role !== oldImg.role){
-             
-            //UPDATE USER TOTAL
-            await UserTotal.modify(newImg.user_id, [
+
+            //UPDATE GROUP TOTAL
+            await GroupTotal.modify(newImg.group_id, [
                 {
                     field: newImg.role.toLowerCase(),
                     increase: true,
@@ -49,22 +47,6 @@ async function modify(record){
                 }
             ])
 
-            //UPDATE GROUP TOTAL
-            await GroupTotal.modify(newImg.group_id, [
-                {
-                    field: newImg.status.toLowerCase(),
-                    increase: true,
-                    count: 1
-                },
-                {
-                    field: oldImg.status.toLowerCase(),
-                    increase: false,
-                    count: 1
-                }
-            ])
-
-
-            resp.Notification = await writeToNotification(newImg)
         }
 
         return true
@@ -81,21 +63,10 @@ async function remove(record){
     const { OldImage } = record
     const oldImg = getValuesFromRecord(OldImage)
 
-    await PostTotal.remove(oldImg.id)
-
-    //UPDATE USER TOTAL
-    await UserTotal.modify(oldImg.user_id, [
-        {
-            field: oldImg.status.toLowerCase(),
-            increase: false,
-            count: 1
-        }
-    ])
-
     //UPDATE GROUP TOTAL
     await GroupTotal.modify(oldImg.group_id, [
         {
-            field: oldImg.status.toLowerCase(),
+            field: oldImg.role.toLowerCase(),
             increase: false,
             count: 1
         }

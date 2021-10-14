@@ -12,6 +12,7 @@ const group0001 = /* GraphQL */ `{
     founder ${user0001}
     rating
     followed
+    role_on_group
     totals{
         admin
         confirmed

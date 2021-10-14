@@ -10,14 +10,19 @@ async function isReacted(ctx){
 
         const { identity, source } = ctx
 
+        let user_id = "unlogged"
+        if(identity.claims){
+            user_id = identity.claims.sub
+        }
+
         const ids = {
             id: source.id,
-            user_id: identity.username
+            user_id: user_id
         }
 
         let resp = await Reactions.get(ids)
 
-        if(Object.keys(resp).length > 0){
+        if(resp && Object.keys(resp).length > 0){
             return true
         }else{
             return false
@@ -34,14 +39,19 @@ async function isFollowed(ctx){
 
         const { identity, source } = ctx
 
+        let user_id = "unlogged"
+        if(identity.claims){
+            user_id = identity.claims.sub
+        }
+
         const ids = {
             user_id: source.id,
-            followed_user_id: identity.username
+            followed_user_id: user_id
         }
 
         let resp = await FollowedUsers.get(ids)
 
-        if(Object.keys(resp).length > 0){
+        if(resp && Object.keys(resp).length > 0){
             return true
         }else{
             return false
@@ -58,14 +68,18 @@ async function isFollowedGroup(ctx){
 
         const { identity, source } = ctx
 
+        let user_id = "unlogged"
+        if(identity.claims){
+            user_id = identity.claims.sub
+        }
+
         const ids = {
             group_id: source.id,
-            user_id: identity.username
+            user_id: user_id
         }
 
         let resp = await GroupUsers.get(ids)
-
-        if(Object.keys(resp).length > 0){
+        if(resp && Object.keys(resp).length > 0){
             return true
         }else{
             return false
@@ -76,6 +90,7 @@ async function isFollowedGroup(ctx){
         return false
     }
 }
+
 
 module.exports = {
     isReacted: isReacted,
