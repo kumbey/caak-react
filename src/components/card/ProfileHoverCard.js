@@ -6,7 +6,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getFileUrl } from "../../Utility/Util";
 import { Link } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
 
@@ -14,17 +14,20 @@ export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
-
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (userId){
-      if(checkUser(user)){
-        getUserById({ id: userId, setUser: setProfileUser});   
-      }else{
-        getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
+    if (userId) {
+      if (checkUser(user)) {
+        getUserById({ id: userId, setUser: setProfileUser });
+      } else {
+        getUserById({
+          id: userId,
+          setUser: setProfileUser,
+          authMode: "AWS_IAM",
+        });
       }
     }
   }, [userId]);
@@ -74,7 +77,11 @@ export default function ProfileHoverCard({ userId }) {
         <img
           className=" w-12 h-12 border-2 border-white rounded-full"
           alt=""
-          src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
+          src={
+            profileUser.pic
+              ? getFileUrl(profileUser.pic)
+              : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
+          }
         />
         {checkUser(user) && user.sysUser.id !== profileUser.id ? (
           <Button

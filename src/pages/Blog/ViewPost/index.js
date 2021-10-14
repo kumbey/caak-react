@@ -16,7 +16,6 @@ import PostBody from "./PostBody";
 const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [commentInputValue, setCommentInputValue] = useState("");
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
@@ -69,6 +68,7 @@ const ViewPost = () => {
     }
   };
   useEffect(() => {
+    console.log(post);
     if (checkUser(user)) {
       post && createPostView();
     }
@@ -246,11 +246,15 @@ const ViewPost = () => {
             updatedAt={post.updatedAt}
             title={post.title}
           />
-          <PostBody item={post.items.items[activeIndex]} />
+          <PostBody
+            posts={post}
+            activeIndex={activeIndex}
+            post={post.items.items[activeIndex]}
+          />
         </div>
         <AddComment
-          commentInputValue={commentInputValue}
-          setCommentInputValue={setCommentInputValue}
+          posts={post}
+          activeIndex={activeIndex}
           item={post.items.items[activeIndex]}
         />
       </div>

@@ -51,6 +51,7 @@ const post0004 = /* GraphQL */ `
     reacted
     items {
       items {
+        user_id
         id
         title
         reacted

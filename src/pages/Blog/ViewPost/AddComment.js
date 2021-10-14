@@ -3,13 +3,29 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createComment } from "../../../graphql-custom/comment/mutation";
 import { useUser } from "../../../context/userContext";
-import { getFileUrl } from "../../../Utility/Util";
+import { getFileUrl, getReturnData } from "../../../Utility/Util";
 import Dummy from "dummyjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const AddComment = ({ item, commentInputValue, setCommentInputValue }) => {
+const AddComment = ({ item, activeIndex, posts }) => {
   const [loading, setLoading] = useState(false);
+  const [commentInputValue, setCommentInputValue] = useState("");
   const { user } = useUser();
+
+  //Press Enter key to comment
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        addComment();
+      }
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
+  });
   const addComment = async () => {
     setLoading(true);
     try {
@@ -21,13 +37,15 @@ const AddComment = ({ item, commentInputValue, setCommentInputValue }) => {
             status: "ACTIVE",
             type: "PARENT",
             user_id: user.sysUser.id,
+            replyUserID: item.user_id,
           },
         })
       );
-      setLoading(false);
-      console.log(resp.data.createComment);
-      // item.comments.items.push(resp.data.createComment);
       setCommentInputValue("");
+      posts.items.items[activeIndex].comments.items.push(
+        getReturnData(resp, false)
+      );
+      setLoading(false);
     } catch (ex) {
       console.log(ex);
     }
@@ -36,7 +54,7 @@ const AddComment = ({ item, commentInputValue, setCommentInputValue }) => {
   return (
     <div
       className={
-        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3"
+        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 z-2"
       }
     >
       <div className={"flex flex-row justify-center items-center"}>
