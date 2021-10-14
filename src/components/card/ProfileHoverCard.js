@@ -71,7 +71,7 @@ export default function ProfileHoverCard({ userId }) {
   };
   return profileUser.id ? (
     <div
-      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white"
+      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white z-50"
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">

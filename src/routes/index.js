@@ -110,7 +110,7 @@ const Routes = [
     path: "/post/view/:postId",
     exact: true,
     background: true,
-    auth: true,
+    auth: false,
     page: () => <ViewPost />,
   },
   {

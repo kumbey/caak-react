@@ -23,7 +23,18 @@ const ViewPost = () => {
   useEffect(() => {
     try {
       const getPostById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        let resp;
+        if(checkUser(user)) {
+
+        resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        }
+        else {
+          resp = await API.graphql({
+            query: getPostView,
+            variables: {id},
+            authMode: "AWS_IAM"
+          })
+        }
         setPost(resp.data.getPost);
       };
       getPostById(postId);
