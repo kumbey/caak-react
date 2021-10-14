@@ -14,7 +14,6 @@ const GroupSubHeader = () => {
           />
           <div className="2xl:w-cg xl:w-cc md:w-ci ml-c6">
             <p
-              onClick={() => alert("yu ch hiigd bgan")}
               className="text-15px text-caak-darkBlue h-c30 ph:h-c37 bg-caak-liquidnitrogen pl-b1 hover:bg-gray-200 flex items-center w-full rounded-lg cursor-pointer"
             >
               Энэ бүлэгт фост нийтлэх...
