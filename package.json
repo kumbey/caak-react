@@ -17,6 +17,7 @@
     "aws-amplify": "^4.2.9",
     "aws-sdk": "^2.999.0",
     "axios": "^0.23.0",
+    "craco-babel-loader": "^0.1.4",
     "cryptojs": "^2.5.3",
     "luxon": "^2.0.2",
     "masonic": "^3.4.1",
@@ -35,7 +36,7 @@
   "scripts": {
     "start": "set HTTPS=true&&craco start",
     "startm": "HTTPS=true craco start",
-    "build": "NODE_ENV=production craco build",
+    "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
