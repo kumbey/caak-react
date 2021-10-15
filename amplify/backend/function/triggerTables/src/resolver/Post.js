@@ -46,7 +46,7 @@ async function modify(record){
         const oldImg = getValuesFromRecord(OldImage)
 
 
-        if(newImg.status !== oldImg.status){
+        if(newImg.status !== oldImg.status && newImg.status !== "POSTING"){
              
             //UPDATE USER TOTAL
             await UserTotal.modify(newImg.user_id, [
@@ -87,9 +87,7 @@ async function modify(record){
                 seen: false
             }
 
-            if(newImg.status !== "POSTING"){
-                await NoficationDB.insert(notifiData)
-            }
+            await NoficationDB.insert(notifiData)
         
         }
 

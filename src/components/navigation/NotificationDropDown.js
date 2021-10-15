@@ -143,7 +143,7 @@ const NotificationDropDown = ({ isOpen }) => {
             {
               notifications.map((item, index) => {
                 return(
-                  <Notification key={index} item={item} />
+                  <Notification onClick={()=> alert("clicked")} key={index} item={item} />
                 )
               })
             }

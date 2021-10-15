@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { generateFileUrl } from "../../Utility/Util";
 
-const Notification = ({ item }) => {
+const Notification = ({ item, ...props}) => {
 
   const [text] = useState({
     short: "",
@@ -107,7 +107,7 @@ const Notification = ({ item }) => {
     }
   };
   return (
-    <div
+    <div onClick={() => alert(1)}
       className={
         "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
       }
