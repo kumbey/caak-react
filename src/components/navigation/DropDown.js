@@ -15,7 +15,7 @@ const DropDown = ({ items, open, onToggle, className }) => {
     >
       <div onClick={(e) => e.stopPropagation()}>
         {items.map((item) => (
-          <a key={item.name} href={item.href.replace(":userId", user.sysUser.id)}>
+          <a key={item.name} href={item.href.replace(":userId", checkUser(user) && user.sysUser.id)}>
             {item.image}
 
             <p>{item.name}</p>
