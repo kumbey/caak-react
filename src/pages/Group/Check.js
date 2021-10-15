@@ -5,19 +5,21 @@ import { useHistory, useLocation, useParams } from "react-router";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../graphql-custom/post/queries";
-import { closeModal, getFileUrl } from "../../Utility/Util";
+import { closeModal, getFileUrl, getReturnData } from "../../Utility/Util";
 import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { useUser } from "../../context/userContext";
+import { getGroupView } from "../../graphql-custom/group/queries";
 
 export default function Check({ hasApproveButtons }) {
   const { user } = useUser();
   const { postId } = useParams();
-  const [post, setPost] = useState();
+  const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const history = useHistory();
   const { state } = useLocation();
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState([]);
 
   useEffect(() => {
     try {
@@ -25,6 +27,7 @@ export default function Check({ hasApproveButtons }) {
         const resp = await API.graphql(graphqlOperation(getPostView, { id }));
         setPost(resp.data.getPost);
       };
+
       getPostById(postId);
     } catch (ex) {
       console.log(ex);
@@ -46,6 +49,20 @@ export default function Check({ hasApproveButtons }) {
       document.removeEventListener("keydown", handler);
     };
   });
+
+  useEffect(() => {
+    if (post) getUsers(post.group.id);
+  }, [postId]);
+
+  const getUsers = async (id) => {
+    const resp = await API.graphql(
+      graphqlOperation(getGroupView, {
+        id,
+      })
+    );
+
+    setUserRole(getReturnData(resp).role_on_group);
+  };
 
   const nextItem = () => {
     if (activeIndex < post.items.items.length - 1) {
@@ -92,6 +109,7 @@ export default function Check({ hasApproveButtons }) {
       console.log(ex);
     }
   };
+
   return post ? (
     <Backdrop className="sm:items-center flex justify-center">
       <div className="ph:justify-start sm:flex-col md:flex-col lg:flex-row ph:m-0 ph:w-full flex flex-col justify-between m-10">
@@ -184,7 +202,8 @@ export default function Check({ hasApproveButtons }) {
               itemTitle={post.items.items[activeIndex].title}
             />
           </div>
-          {!user.sysUser ? (
+
+          {userRole === "ADMIN" || userRole === "MODERATOR" ? (
             <div className="mt-b4 flex justify-end">
               <Button
                 loading={loading}
