@@ -16,7 +16,7 @@ const MobileMenu = () => {
   return (
     <div
       ref={sideMenuRef}
-      onClick={() => setIsMobileMenuOpen(false)}
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       className={`w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
         isMobileMenuOpen
           ? "transform translate-x-0"
