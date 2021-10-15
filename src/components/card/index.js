@@ -9,6 +9,7 @@ const Card = ({ video, verifiedUser, post }) => {
       <div className={"flex flex-col "}>
         <CardHeader
           postUser={post.user}
+          postId={post.id}
           group={post.group}
           updatedAt={post.updatedAt}
         />

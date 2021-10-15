@@ -3,9 +3,6 @@ import { getPostByUser } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
 import PendingPostItem from "../../components/PendingPost/PendingPostItem";
-import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { updatePost } from "../../graphql-custom/post/mutation";
 import { useUser } from "../../context/userContext";
 
 export default function PostPendingUser() {
@@ -14,9 +11,9 @@ export default function PostPendingUser() {
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
-      user_id:  user.sysUser.id,
+      user_id: user.sysUser.id,
       sortDirection: "DESC",
-      filter: {status: {eq: "PENDING"}},
+      filter: { status: { eq: "PENDING" } },
       limit: 6,
     },
   });
@@ -28,9 +25,9 @@ export default function PostPendingUser() {
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
 
-  const updatePostStatus = async (id, status) => {
-    await API.graphql(graphqlOperation(updatePost, { input: { id, status } }));
-  };
+  // const updatePostStatus = async (id, status) => {
+  //   await API.graphql(graphqlOperation(updatePost, { input: { id, status } }));
+  // };
 
   const fetchUserPosts = async (data, setData) => {
     try {
