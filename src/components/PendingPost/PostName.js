@@ -19,7 +19,7 @@ export default function PostName({title,files, onClick, video}) {
             ) : (
                 <img
                 src={generateFileUrl(files[0].file)}
-                className={"h-c7 w-c33 rounded-lg"}
+                className={"h-c7 w-c33 rounded-lg object-cover"}
                 alt={""}
             />
         )}
