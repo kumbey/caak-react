@@ -1,8 +1,14 @@
+import file0001 from "../../file/fields/file0001";
+
 const post0004 = /* GraphQL */ `
   {
     id
     title
+    commentType
     status
+    user_id
+    group_id
+    category_id
     updatedAt
     user {
       firstname
@@ -14,35 +20,12 @@ const post0004 = /* GraphQL */ `
         followers
       }
       nickname
-      pic {
-        bucket
-        createdAt
-        ext
-        id
-        key
-        level
-        name
-        owner
-        region
-        type
-      }
+      pic ${file0001}
     }
     group {
       id
       name
-      profile {
-        bucket
-        createdAt
-        ext
-        id
-        key
-        level
-        name
-        owner
-        region
-        type
-        updatedAt
-      }
+      profile ${file0001}
     }
 
     totals {
@@ -52,9 +35,12 @@ const post0004 = /* GraphQL */ `
     items {
       items {
         user_id
+        post_id
         id
         title
         reacted
+        file_id
+        file ${file0001}
         comments {
           items {
             comment
@@ -65,48 +51,12 @@ const post0004 = /* GraphQL */ `
             user {
               id
               nickname
-              pic {
-                bucket
-                createdAt
-                ext
-                id
-                key
-                level
-                name
-                owner
-                region
-                type
-                updatedAt
-              }
-              cover_pic {
-                bucket
-                createdAt
-                ext
-                id
-                key
-                level
-                name
-                owner
-                region
-                type
-                updatedAt
-              }
+              pic ${file0001}
+              cover_pic ${file0001}
             }
           }
         }
-        file {
-          bucket
-          createdAt
-          ext
-          id
-          key
-          level
-          name
-          owner
-          region
-          type
-          updatedAt
-        }
+        file ${file0001}
         totals {
           reactions
           comments
