@@ -108,6 +108,7 @@ const Notification = ({ item }) => {
   };
   return (
     <div
+        onClick={()=> console.log("sda")}
       className={
         "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
       }
