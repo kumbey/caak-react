@@ -112,8 +112,18 @@ export default function GroupHeader({ group }) {
                 className="ml-b1 relative bg-white rounded rounded-lg cursor-pointer"
               >
                 <span className="icon-fi-rs-settings text-caak-generalblack text-18px px-b4 py-b1 flex rounded rounded-lg shadow" />
+                {group.totals.pending !== 0 && (
+                  <span
+                    className={
+                      "absolute text-center -top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-primary text-white text-12px"
+                    }
+                  >
+                    {group.totals.pending}
+                  </span>
+                )}
+
                 <GroupInformationDrop
-                  className="shadow-dropdown top-8 absolute right-0"
+                  className="top-8 shadow-dropdown absolute right-0"
                   shadow
                   content={
                     <div
@@ -125,8 +135,8 @@ export default function GroupHeader({ group }) {
                             pathname: `/group/${group.id}/pending`,
                           })
                         }
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
+                        style={{ paddingInlineEnd: "11px" }}
+                        className="hover:bg-caak-liquidnitrogen h-c25 relative flex items-center justify-between cursor-pointer"
                       >
                         <span
                           className={
@@ -136,17 +146,15 @@ export default function GroupHeader({ group }) {
                         <p className="text-14px text-caak-extraBlack font-roboto">
                           Хүлээгдэж буй постууд
                         </p>
-                      </div>
-                      <div
-                        style={{ paddingInlineEnd: "21px" }}
-                        className="hover:bg-caak-liquidnitrogen h-c25 flex items-center cursor-pointer"
-                      >
-                        <span
-                          className={"icon-fi-rs-archive ml-b4 mr-b2 text-16px"}
-                        />
-                        <p className="text-14px text-caak-extraBlack font-roboto">
-                          Архивлагдсан постууд
-                        </p>
+                        {group.totals.pending !== 0 && (
+                          <span
+                            className={
+                              " text-center ml-2 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-primary text-white text-12px"
+                            }
+                          >
+                            {group.totals.pending}
+                          </span>
+                        )}
                       </div>
                       <div
                         style={{ paddingInlineEnd: "21px" }}

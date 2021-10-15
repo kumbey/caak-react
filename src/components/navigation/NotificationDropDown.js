@@ -34,7 +34,7 @@ const NotificationDropDown = ({ isOpen }) => {
         setLoading(true);
 
         let resp = await nextNotification();
-        console.log(resp)
+        // console.log(resp)
         if (resp) {
           setData([...data, ...resp]);
         }
