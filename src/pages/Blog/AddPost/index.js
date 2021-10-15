@@ -11,7 +11,7 @@ import {
   removeKeyFromObj,
 } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 import { useUser } from "../../../context/userContext";
 import { ApiFileUpload } from "../../../Utility/ApiHelper";
 import API from "@aws-amplify/api";

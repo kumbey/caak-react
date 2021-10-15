@@ -4,7 +4,7 @@ import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
 import Backdrop from "../../components/Backdrop";
 import { closeModal, mailNumber } from "../../Utility/Util";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import Validate from "../../Utility/Validate";
 import Consts from "../../Utility/Consts";
 import Auth from "@aws-amplify/auth";
