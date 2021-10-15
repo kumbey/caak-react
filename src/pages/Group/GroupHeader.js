@@ -1,19 +1,20 @@
 import Button from "../../components/button";
 import {
   checkUser,
-  generateFileUrl, getReturnData,
+  generateFileUrl,
+  getReturnData,
   useClickOutSide,
 } from "../../Utility/Util";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
 import { useHistory } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
-import {onChangedTotalsBy} from "../../graphql-custom/totals/subscription";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
-export default function GroupHeader({ group }) {
+export default function GroupHeader({ group, bodyRender, setBodyRender }) {
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
   const [forceRender, setForceRender] = useState(0);
   const [subscriptionTotal, setSubscriptionTotal] = useState();
@@ -46,8 +47,11 @@ export default function GroupHeader({ group }) {
 
   useEffect(() => {
     if (subscriptionTotal) {
-      group.totals.pending = subscriptionTotal.pending;
+      group.totals.pending = parseInt(subscriptionTotal.pending);
       setForceRender(forceRender + 1);
+      if (setForceRender) {
+        setBodyRender(bodyRender + 1);
+      }
     }
     // eslint-disable-next-line
   }, [subscriptionTotal]);
@@ -62,7 +66,6 @@ export default function GroupHeader({ group }) {
     };
     // eslint-disable-next-line
   }, [user]);
-
 
   const totalMembers = () => {
     if (group.totals) {
