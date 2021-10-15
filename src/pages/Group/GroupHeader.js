@@ -13,36 +13,43 @@ import { createGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
 
 export default function GroupHeader({ group }) {
-
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
-  const [forceRender, setForceRender] = useState(0)
+  const [forceRender, setForceRender] = useState(0);
   const history = useHistory();
   const groupAdminRef = useClickOutSide(() => {
     setGroupOptionsMenu(false);
   });
-  const { user } = useUser()
+  const { user } = useUser();
 
   const totalMembers = () => {
-    if(group.totals){
-      return parseInt(group.totals.admin) + parseInt(group.totals.moderator) + parseInt(group.totals.member);
+    if (group.totals) {
+      return (
+        parseInt(group.totals.admin) +
+        parseInt(group.totals.moderator) +
+        parseInt(group.totals.member)
+      );
     }
   };
 
   const followGroup = async () => {
-      try{
-        if(checkUser(user)){
-          await API.graphql(graphqlOperation(createGroupUsers, {input:{
-            group_id: group.id,
-            user_id: user.sysUser.id,
-            role: "MEMBER"
-          }}))
-          group.followed = true
-          group.totals.member += 1
-          setForceRender(forceRender + 1)
-        }
-      }catch(ex){ 
-        console.log(ex)
+    try {
+      if (checkUser(user)) {
+        await API.graphql(
+          graphqlOperation(createGroupUsers, {
+            input: {
+              group_id: group.id,
+              user_id: user.sysUser.id,
+              role: "MEMBER",
+            },
+          })
+        );
+        group.followed = true;
+        group.totals.member += 1;
+        setForceRender(forceRender + 1);
       }
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
   return (
@@ -138,7 +145,7 @@ export default function GroupHeader({ group }) {
                           className={"icon-fi-rs-archive ml-b4 mr-b2 text-16px"}
                         />
                         <p className="text-14px text-caak-extraBlack font-roboto">
-                          Архивлагдсан фостууд
+                          Архивлагдсан постууд
                         </p>
                       </div>
                       <div
