@@ -3,12 +3,15 @@ import { Hub } from "@aws-amplify/core"
 import { useEffect } from "react"
 import { Redirect } from "react-router"
 import { useState } from "react/cjs/react.development"
+import { useUser } from "../../context/userContext"
 
 const Logout = () => {
 
     const [signedOut, setSignedOut] = useState(false)
+    const { setUser } = useUser()
 
     useEffect(() =>{
+        setUser(null)
         logout()
         // eslint-disable-next-line 
     },[])

@@ -30,25 +30,6 @@ import PostPendingUser from "../Group/PostPendingUser";
 import PostArchivedUser from "../Group/PosArchivedUser";
 import { onPostByUser } from "../../graphql-custom/post/subscription";
 
-const data = [
-  {
-    id: 1,
-    icon: <span className="icon-fi-rs-drag text-20px mr-a1" />,
-    title: "Миний постууд",
-  },
-
-  {
-    id: 2,
-    icon: <span className="icon-fi-rs-settings text-22px" />,
-    title: "Хүлээгдэж буй постууд",
-  },
-  {
-    id: 3,
-    icon: <span className="icon-fi-rs-bookmark text-20px mr-a1" />,
-    title: "Архивлагдсан постууд",
-  },
-];
-
 export default function Profile() {
   const [user, setUser] = useState();
   const { userId } = useParams();
@@ -62,7 +43,7 @@ export default function Profile() {
 
   const subscrib = () => {
     let authMode = "AWS_IAM";
-    if (checkUser(user)) {
+    if (checkUser(signedUser)) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
     subscriptions.onPostByGroup = API.graphql({
@@ -75,7 +56,7 @@ export default function Profile() {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        console.log("onData", onData)
+        console.log("onData", onData);
         setSubscriptionPosts(onData);
       },
       error: (error) => {
@@ -84,16 +65,14 @@ export default function Profile() {
     });
   };
 
-  useEffect(()=> {
-    if(setSubscriptionPosts) {
-      if (
-          !posts.find((item) => item.id === subscriptionPosts.id)
-      )
-        console.log(subscriptionPosts)
-        setPosts((prev) => [subscriptionPosts, ...prev]);
+  useEffect(() => {
+    if (setSubscriptionPosts) {
+      if (!posts.find((item) => item.id === subscriptionPosts.id))
+        console.log(subscriptionPosts);
+      setPosts((prev) => [subscriptionPosts, ...prev]);
     }
     // eslint-disable-next-line
-  },[subscriptionPosts])
+  }, [subscriptionPosts]);
 
   useEffect(() => {
     if (userId) subscrib();
@@ -360,21 +339,58 @@ export default function Profile() {
 
       <div className="mt-c2 flex items-center justify-around w-full">
         <div className="flex">
-          {data.map(({ icon, title, id }) => (
-            <Button
-              key={id}
-              onClick={() => setActiveIndex(id)}
-              className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+          <Button
+            key={1}
+            onClick={() => setActiveIndex(1)}
+            className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
-                                      id === activeIndex
+                                      1 === activeIndex
                                         ? "bg-white shadow"
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
-            >
-              {icon}
-              <p className="text-17px ml-b1 font-medium">{title}</p>
-            </Button>
-          ))}
+          >
+            <span className="icon-fi-rs-drag text-20px mr-a1" />
+
+            <p className="text-17px ml-b1 font-medium">
+              {checkUser(signedUser) && userId === signedUser.sysUser.id
+                ? "Миний постууд"
+                : "Хэрэглэгчийн постууд"}
+            </p>
+          </Button>
+          {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+            <>
+              <Button
+                key={2}
+                onClick={() => setActiveIndex(2)}
+                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      2 === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+              >
+                <span className="icon-fi-rs-settings text-22px" />
+                <p className="text-17px ml-b1 font-medium">
+                  Хүлээгдэж буй постууд
+                </p>
+              </Button>
+              <Button
+                key={3}
+                onClick={() => setActiveIndex(3)}
+                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      3 === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+              >
+                <span className="icon-fi-rs-bookmark text-20px mr-a1" />
+                <p className="text-17px ml-b1 font-medium">
+                  Архивлагдсан постууд
+                </p>
+              </Button>
+            </>
+          ) : null}
         </div>
         <select className="md:block text-15px w-c132 text-caak-generalblack hidden font-semibold bg-transparent border-0 cursor-pointer">
           <option>Илүү ихийг</option>
