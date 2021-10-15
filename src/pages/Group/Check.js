@@ -8,11 +8,10 @@ import { getPostView } from "../../graphql-custom/post/queries";
 import { closeModal, getFileUrl, getReturnData } from "../../Utility/Util";
 import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
-import { useUser } from "../../context/userContext";
 import { getGroupView } from "../../graphql-custom/group/queries";
 
 export default function Check({ hasApproveButtons }) {
-  const { user } = useUser();
+
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,6 +51,7 @@ export default function Check({ hasApproveButtons }) {
 
   useEffect(() => {
     if (post) getUsers(post.group.id);
+    // eslint-disable-next-line 
   }, [postId]);
 
   const getUsers = async (id) => {
