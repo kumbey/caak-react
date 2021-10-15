@@ -2,24 +2,70 @@ import Button from "../../components/button";
 import {
   checkUser,
   generateFileUrl,
+  getReturnData,
   useClickOutSide,
 } from "../../Utility/Util";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GroupInformationDrop from "../../components/PendingPost/GroupInformationDrop";
 import { useHistory } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
-export default function GroupHeader({ group }) {
+export default function GroupHeader({ group, bodyRender, setBodyRender }) {
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
   const [forceRender, setForceRender] = useState(0);
+  const [subscriptionTotal, setSubscriptionTotal] = useState();
+  const subscriptions = {};
+
   const history = useHistory();
   const groupAdminRef = useClickOutSide(() => {
     setGroupOptionsMenu(false);
   });
   const { user } = useUser();
+
+  const subscrip = () => {
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: "GroupTotal",
+        id: group.id,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionTotal(JSON.parse(onData.totals));
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (subscriptionTotal) {
+      group.totals.pending = parseInt(subscriptionTotal.pending);
+      setForceRender(forceRender + 1);
+      if (setForceRender) {
+        setBodyRender(bodyRender + 1);
+      }
+    }
+    // eslint-disable-next-line
+  }, [subscriptionTotal]);
+
+  useEffect(() => {
+    subscrip();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [user]);
 
   const totalMembers = () => {
     if (group.totals) {

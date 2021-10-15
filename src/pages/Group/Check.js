@@ -111,35 +111,35 @@ export default function Check({ hasApproveButtons }) {
   };
 
   return post ? (
-    <Backdrop className="sm:items-center flex justify-center">
-      <div className="ph:justify-start sm:flex-col md:flex-col lg:flex-row ph:m-0 ph:w-full flex flex-col justify-between m-10">
-        <div className="sm:hidden py-a1 px-c6 flex justify-between bg-white">
+    <Backdrop className="flex justify-center">
+      <div className="absolute top-1/2 left-1/2 px-0 mt-10 w-full transform -translate-x-1/2 -translate-y-1/2 sm:px-2 md:px-10 lg:w-3/5">
+        <div className="flex relative sticky top-0 justify-between w-full bg-white sm:hidden py-a1 px-c6">
           <span
             onClick={() => closeModal(history, state)}
-            className="icon-fi-rs-back flex items-center"
+            className="flex items-center icon-fi-rs-back"
           />
           <p className="text-20px">Фост шалгах</p>
-          <span className="icon-fi-rs-dots text-4px flex items-center" />
+          <span className="flex items-center icon-fi-rs-dots text-4px" />
         </div>
-        <div>
-          <div className="ph:mt-c6 bg-white rounded-lg">
+        <div className={"w-full"}>
+          <div className="w-full h-screen bg-white rounded-lg sm:h-auto md:h-auto lg:h-auto">
             <p
               style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px text-caak-generalblack flex justify-center font-bold"
+              className="flex justify-center font-bold text-20px text-caak-generalblack"
             >
               {post.title}
             </p>
-            <div className="bg-opacity-80 flex items-center bg-black">
+            <div className="flex items-center h-auto bg-black bg-opacity-80">
               <span
                 style={{ paddingInline: "19px", paddingBlock: "15px" }}
                 onClick={() => prevItem()}
                 className={
-                  "icon-fi-rs-back mx-c2 ph:mx-a1 text-white cursor-pointer bg-white rounded-full bg-opacity-10 hover:bg-opacity-30"
+                  "icon-fi-rs-back mx-c2 text-white cursor-pointer bg-white rounded-full bg-opacity-10 hover:bg-opacity-30"
                 }
               />
               <div
                 className={
-                  "relative flex justify-center items-center bg-black bg-opacity-60"
+                  "relative flex justify-center items-center bg-black bg-opacity-60 w-full"
                 }
               >
                 {post.items.items.map((item, index) => {
@@ -162,7 +162,7 @@ export default function Check({ hasApproveButtons }) {
                     } else {
                       return (
                         <img
-                          style={{ maxWidth: "550px", maxHeight: "600px" }}
+                          className={`block relative max-h-half`}
                           key={index}
                           src={getFileUrl(item.file)}
                           alt={""}
@@ -208,14 +208,14 @@ export default function Check({ hasApproveButtons }) {
               <Button
                 loading={loading}
                 onClick={() => declineHandler(postId)}
-                className="text-caak-generalblack text-15px w-c14 bg-white"
+                className="bg-white text-caak-generalblack text-15px w-c14"
               >
                 Татгалзах
               </Button>
               <Button
                 loading={loading}
                 onClick={() => acceptHandler(postId)}
-                className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
+                className="text-white bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132"
               >
                 Зөвшөөрөх
               </Button>
@@ -224,7 +224,7 @@ export default function Check({ hasApproveButtons }) {
         </div>
         <span
           onClick={() => closeModal(history, state)}
-          className="icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden text-white cursor-pointer"
+          className="text-white cursor-pointer icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden"
         />
       </div>
     </Backdrop>
