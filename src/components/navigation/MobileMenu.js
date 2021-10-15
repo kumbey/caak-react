@@ -11,7 +11,7 @@ const MobileMenu = () => {
   const history = useHistory();
   const location = useLocation();
   const sideMenuRef = useClickOutSide(() => {
-    setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   });
   return (
     <div
