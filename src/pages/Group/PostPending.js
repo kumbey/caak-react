@@ -45,7 +45,6 @@ export default function PostPending({ settt }) {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        console.log(onData);
         setPendingPost(onData);
       },
       error: (error) => {
@@ -58,7 +57,6 @@ export default function PostPending({ settt }) {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         const onData = getReturnData(data, true);
         setConfirmedPost(onData);
       },
@@ -82,17 +80,15 @@ export default function PostPending({ settt }) {
     });
   };
 
-
-  useEffect(()=> {
-    if(groupPendingPosts){
+  useEffect(() => {
+    if (groupPendingPosts) {
       const filtered = groupPendingPosts.filter(
-          (item) => item.id !== archivedPost.id
+        (item) => item.id !== archivedPost.id
       );
-      setGroupPendingPosts([...filtered])
+      setGroupPendingPosts([...filtered]);
     }
     // eslint-disable-next-line
-  },[archivedPost])
-
+  }, [archivedPost]);
 
   useEffect(() => {
     if (groupPendingPosts) {
@@ -106,9 +102,7 @@ export default function PostPending({ settt }) {
 
   useEffect(() => {
     if (pendingPost) {
-      if (
-        !groupPendingPosts.find((item) => item.id === pendingPost.id)
-      )
+      if (!groupPendingPosts.find((item) => item.id === pendingPost.id))
         setGroupPendingPosts((prev) => [pendingPost, ...prev]);
     }
     // eslint-disable-next-line
@@ -183,21 +177,21 @@ export default function PostPending({ settt }) {
 
   return (
     <div className={"w-full"}>
-      <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
+      <div className="flex items-center pr-2 w-full bg-white border-t py-b4">
         {isCheck.length ? (
-          <div className="ml-c34 flex items-center border rounded-lg">
+          <div className="flex items-center rounded-lg border ml-c34">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheck.length}
-              className="w-b4 h-b4 ml-b3 border-caak-darkgray border-2 rounded cursor-pointer"
+              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-b3 border-caak-darkgray"
             />
-            <p className="ml-b3 text-15px text-caak-generalblack font-medium">
+            <p className="font-medium ml-b3 text-15px text-caak-generalblack">
               {isCheck.length} пост сонгогдлоо
             </p>
             <select
               onChange={(e) => onSelectHandler(e)}
-              className="text-15px text-caak-generalblack font-medium border-0"
+              className="font-medium border-0 text-15px text-caak-generalblack"
             >
               <option hidden className="focus:bg-caak-darkBlue">
                 Үйлдэл
@@ -207,15 +201,15 @@ export default function PostPending({ settt }) {
             </select>
           </div>
         ) : (
-          <div className="text-16px text-caak-generalblack flex items-center w-full">
+          <div className="flex items-center w-full text-16px text-caak-generalblack">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheckAll}
-              className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
+              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-c34 border-caak-darkgray"
             />
-            <p className="ml-c2 flex justify-start w-1/3">Фостын нэр</p>
-            <div className="ph:justify-evenly flex justify-between w-2/3">
+            <p className="flex justify-start w-1/3 ml-c2">Фостын нэр</p>
+            <div className="flex justify-between w-2/3 ph:justify-evenly">
               <p>Нийтлэгч</p>
               <p>Хугацаа</p>
               <p
@@ -233,7 +227,7 @@ export default function PostPending({ settt }) {
         return (
           <div
             key={index}
-            className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
+            className="flex items-center bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen"
           >
             <div className="flex items-center w-full">
               <div>
@@ -242,7 +236,7 @@ export default function PostPending({ settt }) {
                   id={data.id}
                   handleClick={handleClick}
                   isChecked={isCheck.includes(data.id)}
-                  className="ml-c34 w-b4 h-b4 border-caak-darkgray border-2 rounded cursor-pointer"
+                  className="rounded border-2 cursor-pointer ml-c34 w-b4 h-b4 border-caak-darkgray"
                 />
               </div>
               <PendingPostItem post={data} className="ph:mb-4 sm:mb-4" />

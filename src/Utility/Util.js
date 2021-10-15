@@ -25,9 +25,9 @@ export const useClickOutSide = (handler) => {
         handler();
       }
     };
-    document.addEventListener("mousedown", checkIfClickedOutside);
+    document.addEventListener("click", checkIfClickedOutside);
     return () => {
-      document.removeEventListener("mousedown", checkIfClickedOutside);
+      document.removeEventListener("click", checkIfClickedOutside);
     };
   });
   return domNode;
