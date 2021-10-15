@@ -3,21 +3,21 @@ import { getPostByUser } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
 import UserPostItem from "../../components/PendingPost/UserPostItem";
-export default function PostPendingUser({ userId }) {
-  const [userPendingPosts, setUserPendingPosts] = useState([]);
+export default function PostArchivedUser({ userId }) {
+  const [userArchivedPosts, setUserArchivedPosts] = useState([]);
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
       user_id: userId,
       sortDirection: "DESC",
-      filter: { status: { eq: "PENDING" } },
+      filter: { status: { eq: "ARCHIVED" } },
       limit: 6,
     },
   });
 
   const [setPostScroll] = useInfiniteScroll(
-    userPendingPosts,
-    setUserPendingPosts
+    userArchivedPosts,
+    setUserArchivedPosts
   );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ export default function PostPendingUser({ userId }) {
   };
 
   useEffect(() => {
-    fetchUserPosts(userPendingPosts, setUserPendingPosts);
+    fetchUserPosts(userArchivedPosts, setUserArchivedPosts);
     setPostScroll(fetchUserPosts);
 
     // eslint-disable-next-line
@@ -56,7 +56,7 @@ export default function PostPendingUser({ userId }) {
           </div>
         </div>
       </div>
-      {userPendingPosts.map((data, index) => {
+      {userArchivedPosts.map((data, index) => {
         return (
           <div
             key={index}

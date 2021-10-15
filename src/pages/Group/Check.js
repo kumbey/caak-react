@@ -8,8 +8,10 @@ import { getPostView } from "../../graphql-custom/post/queries";
 import { closeModal, getFileUrl } from "../../Utility/Util";
 import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
+import { useUser } from "../../context/userContext";
 
-export default function Check() {
+export default function Check({ hasApproveButtons }) {
+  const { user } = useUser();
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
@@ -131,7 +133,7 @@ export default function Check() {
                           controls
                           disablePictureInPicture
                           controlsList="nodownload noremoteplayback noplaybackrate"
-                          style={{maxWidth: "550px", maxHeight: "600px"}}
+                          style={{ maxWidth: "550px", maxHeight: "600px" }}
                         >
                           <source
                             src={getFileUrl(item.file)}
@@ -142,7 +144,7 @@ export default function Check() {
                     } else {
                       return (
                         <img
-                          style={{maxWidth: "550px", maxHeight: "600px"}}
+                          style={{ maxWidth: "550px", maxHeight: "600px" }}
                           key={index}
                           src={getFileUrl(item.file)}
                           alt={""}
@@ -182,22 +184,24 @@ export default function Check() {
               itemTitle={post.items.items[activeIndex].title}
             />
           </div>
-          <div className="mt-b4 flex justify-end">
-            <Button
-              loading={loading}
-              onClick={() => declineHandler(postId)}
-              className="text-caak-generalblack text-15px w-c14 bg-white"
-            >
-              Татгалзах
-            </Button>
-            <Button
-              loading={loading}
-              onClick={() => acceptHandler(postId)}
-              className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
-            >
-              Зөвшөөрөх
-            </Button>
-          </div>
+          {!user.sysUser ? (
+            <div className="mt-b4 flex justify-end">
+              <Button
+                loading={loading}
+                onClick={() => declineHandler(postId)}
+                className="text-caak-generalblack text-15px w-c14 bg-white"
+              >
+                Татгалзах
+              </Button>
+              <Button
+                loading={loading}
+                onClick={() => acceptHandler(postId)}
+                className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
+              >
+                Зөвшөөрөх
+              </Button>
+            </div>
+          ) : null}
         </div>
         <span
           onClick={() => closeModal(history, state)}

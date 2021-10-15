@@ -21,7 +21,13 @@ export const onPostStatusUpdate = /* GraphQL */ `
 
 export const onPostByGroup = /* GraphQL */ `
     subscription OnPostByGroup($group_id: ID!, $status: String!) {
-        onPostByGroup(group_id: $group_id, status: $status) ${post0002}
+        onPostByGroup(group_id: $group_id, status: $status) ${post0004}
+    }
+`;
+
+export const onPostByUser = /* GraphQL */ `
+    subscription OnPostByUser($user_id: ID!, $status: String!) {
+        onPostByUser(user_id: $user_id, status: $status) ${post0004}
     }
 `;
 

@@ -29,7 +29,7 @@ export default function PendingPostUser() {
           <div className="p-c11 flex items-center justify-between">
             <div className="flex items-center">
               <p className="text-18px text-caak-generalblack font-medium">
-                Хүлээгдэж буй фостууд
+                Хүлээгдэж буй постууд
               </p>
               <p
                 style={{ marginLeft: "6px" }}
@@ -39,7 +39,7 @@ export default function PendingPostUser() {
               </p>
             </div>
             <select className="text-15px text-caak-generalblack font-medium border-0 rounded-lg shadow cursor-pointer">
-              <option>Шинэ фостууд</option>
+              <option>Шинэ постууд</option>
               <option>Тйреырбйыр</option>
               <option>йыөүйзшыбаөүк</option>
             </select>
