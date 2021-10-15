@@ -11,7 +11,7 @@ import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "./ProfileHoverCard";
 import {Link} from "react-router-dom";
 
-const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
+const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -81,7 +81,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt }) => {
         <GroupInformationDrop
           className="absolute"
           shadow
-          content={<PostMore />}
+          content={<PostMore postId={postId} postUser={postUser}/>}
           open={isMenuOpen}
         />
       </div>
