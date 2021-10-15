@@ -1,15 +1,15 @@
 import post0001 from "./fields/post0001";
-import post0002 from "./fields/post0002";
+import post0004 from "./fields/post0004";
 
 export const createPost = /* GraphQL */ `
     mutation createPost($input: CreatePostInput!) {
-        createPost(input: $input) ${post0002}
+        createPost(input: $input) ${post0004}
     }
 `;
 
 export const updatePost = /* GraphQL */ `
     mutation updatePost($input: UpdatePostInput!) {
-        updatePost(input: $input) ${post0002}
+        updatePost(input: $input) ${post0004}
     }
 `;
 

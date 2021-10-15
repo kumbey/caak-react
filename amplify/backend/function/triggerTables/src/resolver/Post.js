@@ -87,7 +87,9 @@ async function modify(record){
                 seen: false
             }
 
-            await NoficationDB.insert(notifiData)
+            if(newImg.status !== "POSTING"){
+                await NoficationDB.insert(notifiData)
+            }
         
         }
 

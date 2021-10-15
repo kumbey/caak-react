@@ -13,6 +13,7 @@ import Loader from "../../components/loader";
 import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
 import { useListPager } from "../../Utility/ApiHelper";
+import { onPostUpdateByStatus } from "../../graphql-custom/post/subscription";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 const Feed = () => {
@@ -61,9 +62,13 @@ const Feed = () => {
     },
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
-  //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
-  // const subscriptions = {}
+  const [addedPost, setAddedPost] = useState(0)
+  const [removedPost, setRemovedPost] = useState()
+  const subscriptions = {}
+
+  //FORCE RENDER STATE
+  const [render, setRender] = useState(0)
 
   const listGroups = async () => {
     try {
@@ -110,48 +115,109 @@ const Feed = () => {
     }
   };
 
-  // const subscrip = () => {
-  //   subscriptions.onChangedTotalsBy = API.graphql({
-  //     query: onChangedTotalsBy,
-  //     variables: {
-  //       type: "PostTotal",
-  //       id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
-  //     }
-  //   }).subscribe({
-  //     next: (data) => {
-  //       console.log("data: ", data);
-  //     },
-  //   });
-  // }
+  const subscrip = () => {
 
+    let authMode = "AWS_IAM"
+
+    if(checkUser(user)){
+      authMode = "AMAZON_COGNITO_USER_POOLS"
+    }
+
+    subscriptions.onPostUpdateByStatus = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "CONFIRMED"
+      },
+      authMode: authMode
+    }).subscribe({
+      next: (data) => {
+          console.log(data)
+          setAddedPost(getReturnData(data, true))
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "ARCHIVED"
+      },
+      authMode: authMode
+    }).subscribe({
+      next: (data) => {
+          console.log(data)
+          setRemovedPost(getReturnData(data, true))
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "PENDING"
+      },
+      authMode: authMode
+    }).subscribe({
+      next: (data) => {
+          console.log(data)
+          setRemovedPost(getReturnData(data, true))
+      },
+    });
+  }
 
   useEffect(() => {
     
-    fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
-
-    return () => {
-      setPostScroll(null);
+    if(addedPost){
+        setPosts([addedPost, ...posts])
     }
 
-    // subscrip()
+    // eslint-disable-next-line
+  }, [addedPost]);
 
-    // return () => {
-    //   Object.keys(subscriptions).map((key) => {
-    //     subscriptions[key].unsubscribe();
-    //     return true
-    //   })
-    // }
+  useEffect(() => {
+    
+    if(removedPost){
+
+        let postIndex = posts.findIndex((post, index) => post.id === removedPost.id)
+      
+        if(postIndex > -1){
+          posts.splice(postIndex, 1)
+          setRender(render + 1)
+        }
+
+    }
+
+    // eslint-disable-next-line
+  }, [removedPost]);
+
+  useEffect(() => {
+    
+    fetchPosts(posts, setPosts)
+    setPostScroll(fetchPosts)
+
+    return () => {
+      setPostScroll(null)
+    }
 
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+
     if (checkUser(user)) {
       listGroups();
     } 
+
+    subscrip()
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe()
+        return true
+      })
+    }
+
     // eslint-disable-next-line
   }, [user]);
+
 
 
   return (

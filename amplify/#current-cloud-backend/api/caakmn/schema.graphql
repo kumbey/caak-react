@@ -407,6 +407,10 @@ type Subscription {
     @aws_subscribe(mutations: ["updateUser"])
     @aws_iam
     @aws_cognito_user_pools 
+  onPostUpdateByStatus(status: String!): Post
+    @aws_subscribe(mutations: ["updatePost", "createPost"])
+    @aws_iam
+    @aws_cognito_user_pools 
 }
 
 type NotificationAddedType

@@ -1,4 +1,5 @@
 import post0002 from "./fields/post0002";
+import post0004 from "./fields/post0004";
 
 export const onPostCreate = /* GraphQL */ `
     subscription OnPostCreate {
@@ -27,5 +28,11 @@ export const onPostByGroup = /* GraphQL */ `
 export const onUpdatePost = /* GraphQL */ `
     subscription OnUpdatePost {
         onUpdatePost ${post0002}
+    }
+`;
+
+export const onPostUpdateByStatus = /* GraphQL */ `
+    subscription OnPostUpdateByStatus($status: String!) {
+        onPostUpdateByStatus(status: $status) ${post0004}
     }
 `;
