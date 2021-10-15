@@ -2,7 +2,7 @@ import Auth from "@aws-amplify/auth"
 import { Hub } from "@aws-amplify/core"
 import { useEffect } from "react"
 import { Redirect } from "react-router"
-import { useState } from "react/cjs/react.development"
+import { useState } from "react"
 import { useUser } from "../../context/userContext"
 
 const Logout = () => {

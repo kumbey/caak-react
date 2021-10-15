@@ -1,5 +1,5 @@
 import { useHistory, useLocation } from "react-router"
-import { useEffect } from "react/cjs/react.development"
+import { useEffect } from "react"
 import { useUser } from "../../context/userContext"
 
 const WithAuth = () => {

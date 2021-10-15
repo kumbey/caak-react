@@ -4,7 +4,7 @@ import Input from "../../components/input";
 import Backdrop from "../../components/Backdrop";
 import Button from "../../components/button";
 import {checkUser, checkUsernameType, closeModal} from "../../Utility/Util";
-import {useEffect, useState} from "react/cjs/react.development";
+import {useEffect, useState} from "react";
 import Consts from "../../Utility/Consts";
 import Validate from "../../Utility/Validate";
 import DateSelect from "../../components/input/DateSelect";
