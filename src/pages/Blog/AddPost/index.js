@@ -128,6 +128,7 @@ const AddPost = () => {
 
       let returnPost = {};
 
+      removeKeyFromObj(postData, ["user"]);
       if (postData.id === "new") {
         removeKeyFromObj(postData, ["id"]);
         postData.updated_user_id = user.sysUser.id;

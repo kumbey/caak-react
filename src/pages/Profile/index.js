@@ -28,6 +28,7 @@ import { deleteFile } from "../../graphql-custom/file/mutation";
 import { useUser } from "../../context/userContext";
 import PostPendingUser from "../Group/PostPendingUser";
 import PostArchivedUser from "../Group/PosArchivedUser";
+import { onPostByUser } from "../../graphql-custom/post/subscription";
 
 const data = [
   {
