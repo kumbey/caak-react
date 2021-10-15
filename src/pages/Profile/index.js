@@ -21,6 +21,7 @@ import {
   getFileExt,
   getFileName,
   getFileUrl,
+  getReturnData,
 } from "../../Utility/Util";
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
@@ -54,6 +55,57 @@ export default function Profile() {
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(1);
+
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
+
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroup = API.graphql({
+      query: onPostByUser,
+      variables: {
+        user_id: userId,
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        console.log("onData", onData)
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(()=> {
+    if(setSubscriptionPosts) {
+      if (
+          !posts.find((item) => item.id === subscriptionPosts.id)
+      )
+        console.log(subscriptionPosts)
+        setPosts((prev) => [subscriptionPosts, ...prev]);
+    }
+    // eslint-disable-next-line
+  },[subscriptionPosts])
+
+  useEffect(() => {
+    if (userId) subscrib();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+      setPostScroll(null);
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {

@@ -28,7 +28,6 @@ export default function Group() {
       limit: 6,
     },
   });
-  const subscriptions = {};
   const [setPostScroll] = useInfiniteScroll(groupPosts, setGroupPosts);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -68,6 +67,8 @@ export default function Group() {
       console.log(ex);
     }
   };
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
 
   const subscrib = () => {
     let authMode = "AWS_IAM";
@@ -84,7 +85,7 @@ export default function Group() {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        console.log(onData);
+        setSubscriptionPosts(onData);
       },
       error: (error) => {
         console.warn(error);
@@ -93,13 +94,18 @@ export default function Group() {
   };
 
   useEffect(() => {
-    subscrib();
+    if(subscriptionPosts){
+      if (
+          !groupPosts.find((item) => item.id === subscriptionPosts.id)
+      )
+        console.log(subscriptionPosts)
+      setGroupPosts((prev) => [subscriptionPosts, ...prev]);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionPosts]);
 
-    getGroupDataById();
-
-    fetchGroupPosts(groupPosts, setGroupPosts);
-    setPostScroll(fetchGroupPosts);
-
+  useEffect(() => {
+    if (groupId) subscrib();
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
@@ -107,6 +113,14 @@ export default function Group() {
       });
       setPostScroll(null);
     };
+    // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
+    getGroupDataById();
+
+    fetchGroupPosts(groupPosts, setGroupPosts);
+    setPostScroll(fetchGroupPosts);
 
     // eslint-disable-next-line
   }, [user]);

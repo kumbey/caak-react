@@ -17,8 +17,10 @@ export default function PostPending({ settt }) {
   const [isCheck, setIsCheck] = useState([]);
   const subscriptions = {};
   const [groupPendingPosts, setGroupPendingPosts] = useState([]);
-  const [subscriptionPostStatus, setSubscriptionPostStatus] = useState(null);
-  console.log(subscriptionPostStatus)
+  const [confirmedPost, setConfirmedPost] = useState(null);
+  const [pendingPost, setPendingPost] = useState(null);
+  const [archivedPost, setArchivedPost] = useState(null);
+
   const { user } = useUser();
   const { groupId } = useParams();
   const [nextPosts] = useListPager({
@@ -27,7 +29,7 @@ export default function PostPending({ settt }) {
       filter: { group_id: { eq: groupId } },
       sortDirection: "DESC",
       status: "PENDING",
-      // limit: 6,
+      limit: 6,
     },
   });
 
@@ -36,21 +38,81 @@ export default function PostPending({ settt }) {
     if (checkUser(user)) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
-    subscriptions.onPostByGroup = API.graphql({
+    subscriptions.onPostByGroupPending = API.graphql({
       query: onPostByGroup,
       variables: { group_id: groupId, status: "PENDING" },
       authMode: authMode,
     }).subscribe({
       next: (data) => {
+        const onData = getReturnData(data, true);
+        console.log(onData);
+        setPendingPost(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onPostByGroupConfirmed = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "CONFIRMED" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
         console.log(data);
         const onData = getReturnData(data, true);
-        setSubscriptionPostStatus(onData);
+        setConfirmedPost(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+
+    subscriptions.onPostByGroupArchived = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "ARCHIVED" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setArchivedPost(onData);
       },
       error: (error) => {
         console.warn(error);
       },
     });
   };
+
+
+  useEffect(()=> {
+    if(groupPendingPosts){
+      const filtered = groupPendingPosts.filter(
+          (item) => item.id !== archivedPost.id
+      );
+      setGroupPendingPosts([...filtered])
+    }
+    // eslint-disable-next-line
+  },[archivedPost])
+
+
+  useEffect(() => {
+    if (groupPendingPosts) {
+      const filtered = groupPendingPosts.filter(
+        (item) => item.id !== confirmedPost.id
+      );
+      setGroupPendingPosts([...filtered]);
+    }
+    // eslint-disable-next-line
+  }, [confirmedPost]);
+
+  useEffect(() => {
+    if (pendingPost) {
+      if (
+        !groupPendingPosts.find((item) => item.id === pendingPost.id)
+      )
+        setGroupPendingPosts((prev) => [pendingPost, ...prev]);
+    }
+    // eslint-disable-next-line
+  }, [pendingPost]);
 
   const [setPostScroll] = useInfiniteScroll(
     groupPendingPosts,
@@ -84,7 +146,7 @@ export default function PostPending({ settt }) {
       console.log(ex);
     }
   };
-  const handleSelectAll = (e) => {
+  const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     if (isCheckAll) {
       setIsCheck([]);
@@ -113,7 +175,6 @@ export default function PostPending({ settt }) {
   }, [user]);
 
   useEffect(() => {
-    subscrib();
     fetchGroupPosts(groupPendingPosts, setGroupPendingPosts);
     setPostScroll(fetchGroupPosts);
 
