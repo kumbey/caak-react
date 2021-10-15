@@ -6,13 +6,17 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getReturnData } from "../../Utility/Util";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 export default function PendingPostAdmin() {
   const history = useHistory();
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
+  const [subscriptionTotal, setSubscriptionTotal] = useState();
+  const [reRender, setReRender] = useState(0);
   const { user } = useUser();
+  const subscriptions = {};
   const getGroupDataById = async () => {
     try {
       let resp = await API.graphql(
@@ -23,6 +27,45 @@ export default function PendingPostAdmin() {
       console.log(ex);
     }
   };
+
+  const subscrip = () => {
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: "GroupTotal",
+        id: groupId,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionTotal(JSON.parse(onData.totals));
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (subscriptionTotal) {
+      groupData.totals.pending = subscriptionTotal.pending;
+      setReRender(reRender + 1);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionTotal]);
+
+  useEffect(() => {
+    subscrip();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
   useEffect(() => {
     getGroupDataById();
     // eslint-disable-next-line
