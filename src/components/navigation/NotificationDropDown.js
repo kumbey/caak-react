@@ -8,6 +8,10 @@ import { getNotification, listNotificationByUser } from "../../graphql-custom/no
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
+import { updateNotification } from "../../graphql-custom/notification/mutation";
+import { useHistory, useLocation } from "react-router";
+import { getPostItems } from "../../graphql-custom/postItems/queries";
+import { getComment } from "../../graphql-custom/comment/queries";
 
 const NotificationDropDown = ({ isOpen }) => {
 
@@ -17,6 +21,8 @@ const NotificationDropDown = ({ isOpen }) => {
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState()
   const subscriptions = {}
+  const history = useHistory()
+  const location = useLocation()
 
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
@@ -56,6 +62,52 @@ const NotificationDropDown = ({ isOpen }) => {
       console.log(ex);
     }
   };
+
+  const handleNotificationClick = async (index) => {
+    try{
+      const item = notifications[index]
+      await API.graphql(graphqlOperation(updateNotification, {input: {
+        id: item.id,
+        seen: true
+      }}))
+      
+      if(item.action === "POST_CONFIRMED" || item.action === "REACTION_POST"){
+        history.push({
+          pathname: `/post/view/${item.item_id}`,
+          state: { background: location }
+        })
+      }else if(item.action === "POST_PENDING" || item.action === "POST_ARCHIVED"){
+        history.push({
+          pathname: `/pending/view/${item.item_id}`,
+          state: { background: location }
+        })
+      }else if(item.action === "REACTION_POST_ITEM"){
+          let resp = await API.graphql(graphqlOperation(getPostItems, {id: item.item_id}))
+          resp = getReturnData(resp)
+          console.log(resp)
+          history.push({
+            pathname: `/post/view/${resp.post_id}`,
+            state: { background: location }
+          })
+      }else if(item.action === "COMMENT_WRITED"){
+          let resp = await API.graphql(graphqlOperation(getComment, {id: item.item_id}))
+          resp = getReturnData(resp)
+          resp = await API.graphql(graphqlOperation(getPostItems, {id: resp.post_item_id}))
+          resp = getReturnData(resp)
+          history.push({
+            pathname: `/post/view/${resp.post_id}`,
+            state: { background: location }
+          })
+      }else if(item.action === "USER_FOLLOWED"){
+        history.push({
+          pathname: `/user/${item.item_id}/profile`
+        })
+      }
+
+    }catch(ex){
+      console.log(ex)
+    }
+  }
 
   const subscrip = async () => {
     subscriptions.onNoficationAdded = await API.graphql({
@@ -143,7 +195,7 @@ const NotificationDropDown = ({ isOpen }) => {
             {
               notifications.map((item, index) => {
                 return(
-                  <Notification onClick={()=> alert("clicked")} key={index} item={item} />
+                  <Notification onClick={()=> handleNotificationClick(index)} key={index} item={item} />
                 )
               })
             }

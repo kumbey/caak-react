@@ -161,13 +161,16 @@ export default function NavBar() {
                       isNotificationMenu && "bg-caak-titaniumwhite"
                     } icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite`}
                   />
-                  <span
-                    className={
-                      "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
-                    }
-                  >
-                    {userTotal.unseen}
-                  </span>
+                  {
+                    (parseInt(userTotal.unseen) > 0) ? 
+                      <span
+                        className={
+                        "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
+                      }
+                      >
+                        {userTotal.unseen}
+                      </span> : null
+                  }
                   <NotificationDropDown
                     isOpen={isNotificationMenu}
                     setIsOpen={setIsNotificationMenu}

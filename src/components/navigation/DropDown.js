@@ -1,11 +1,12 @@
 import React from "react";
 import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
 
 const DropDown = ({ items, open, onToggle, className }) => {
 
   const { user } = useUser()
 
-  return (
+  return ( checkUser(user) ?
     <div
       onClick={onToggle}
       className={`dropdown py-2 shadow-dropdown ${open ? "" : "hidden"} ${
@@ -21,7 +22,7 @@ const DropDown = ({ items, open, onToggle, className }) => {
           </a>
         ))}
       </div>
-    </div>
+    </div> : null
   );
 };
 export default DropDown;

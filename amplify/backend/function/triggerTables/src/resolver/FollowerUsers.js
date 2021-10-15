@@ -25,7 +25,7 @@ async function insert(record){
         const notifiData = {
             section: "USER",
             type: "FOLLOWED",
-            item_id: "NONE",
+            item_id: newImg.followed_user_id,
             action: `USER_FOLLOWED`,
             from: newImg.followed_user_id,
             to: newImg.user_id,
