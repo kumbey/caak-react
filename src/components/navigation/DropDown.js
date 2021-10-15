@@ -1,6 +1,10 @@
 import React from "react";
+import { useUser } from "../../context/userContext";
 
 const DropDown = ({ items, open, onToggle, className }) => {
+
+  const { user } = useUser()
+
   return (
     <div
       onClick={onToggle}
@@ -10,7 +14,7 @@ const DropDown = ({ items, open, onToggle, className }) => {
     >
       <div onClick={(e) => e.stopPropagation()}>
         {items.map((item) => (
-          <a key={item.name} href={item.href}>
+          <a key={item.name} href={item.href.replace(":userId", user.sysUser.id)}>
             {item.image}
 
             <p>{item.name}</p>
