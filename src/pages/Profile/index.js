@@ -26,7 +26,8 @@ import {
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
 import { useUser } from "../../context/userContext";
-import { onPostByUser } from "../../graphql-custom/post/subscription";
+import PostPendingUser from "../Group/PostPendingUser";
+import PostArchivedUser from "../Group/PosArchivedUser";
 
 const data = [
   {
@@ -308,7 +309,7 @@ export default function Profile() {
                       style={{ marginInlineStart: "4px" }}
                       className="text-15px text-caak-darkBlue"
                     >
-                      фост
+                      пост
                     </p>
                   </span>
                 </div>
@@ -399,6 +400,32 @@ export default function Profile() {
                 />
               );
             })}
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`flex mt-b5  justify-center ${
+              activeIndex === 2 ? "" : "hidden"
+            }`}
+          >
+            <PostPendingUser userId={userId} />
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`flex mt-b5  justify-center ${
+              activeIndex === 3 ? "" : "hidden"
+            }`}
+          >
+            <PostArchivedUser userId={userId} />
             <Loader
               containerClassName={"self-center"}
               className={`bg-caak-primary ${
