@@ -180,7 +180,7 @@ const NotificationDropDown = ({ isOpen }) => {
               "text-caak-generalblack font-medium text-20px md:text-16px"
             }
           >
-            Сонордуулга
+            Мэдэгдэл
           </span>
           <span className={"text-caak-bleudefrance text-14px font-medium"}>
             Бүгдийг харсан
