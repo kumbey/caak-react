@@ -16,6 +16,7 @@ import Feed from "../pages/Home/Feed";
 import SettingsProfile from "../pages/Profile/Settings";
 import ViewPost from "../pages/Blog/ViewPost";
 import PendingPostUser from "../pages/Group/PendingPostUser";
+import Interests from "../pages/Register/Interests";
 
 const Routes = [
   {
@@ -33,7 +34,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <PendingPostAdmin />,
+    page: () => <Interests />,
   },
   {
     path: "/profile/userconfig",
