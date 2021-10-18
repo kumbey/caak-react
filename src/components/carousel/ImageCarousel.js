@@ -1,7 +1,7 @@
 const ImageCarousel = ({ children }) => {
   return (
-    <div className={"relative h-full"}>
-      <div className={"flex flex-row justify-center items-center h-full"}>
+    <div className={"relative h-full w-full overflow-hidden"}>
+      <div className={"flex flex-nowrap flex-row items-center h-full w-full"}>
         {children}
       </div>
     </div>
