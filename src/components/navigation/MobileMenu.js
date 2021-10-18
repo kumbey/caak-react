@@ -65,7 +65,7 @@ const MobileMenu = ({ setOpen }) => {
               })
             }
           >
-            Бүртгэл үүсгэх
+            Бүртгүүлэх
           </Button>
         </div>
       )}
