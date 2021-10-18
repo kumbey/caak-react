@@ -8,7 +8,6 @@ import Group from "../pages/Group/index";
 import Completed from "../pages/Register/Completed";
 import FederatedLogin from "../pages/Login/FederatedLogin";
 import PendingPostAdmin from "../pages/Group/PendingPostAdmin";
-import Check from "../pages/Group/Check";
 import Profile from "../pages/Profile/index";
 import Activities from "../pages/Profile/Activities";
 import Infromation from "../pages/Group/Infromation";
@@ -16,7 +15,7 @@ import Feed from "../pages/Home/Feed";
 import SettingsProfile from "../pages/Profile/Settings";
 import ViewPost from "../pages/Blog/ViewPost";
 import PendingPostUser from "../pages/Group/PendingPostUser";
-import Interests from "../pages/Register/Interests";
+import Check from "../pages/Group/Check";
 
 const Routes = [
   {
@@ -132,6 +131,7 @@ const Routes = [
     path: "/group/:groupId/pending",
     exact: true,
     background: true,
+    auth: true,
     page: () => <PendingPostAdmin />,
   },
   {
@@ -139,6 +139,12 @@ const Routes = [
     exact: true,
     background: true,
     page: () => <Check />,
+  },
+  {
+    path: "/post/view/pending/:postId",
+    exact: true,
+    background: true,
+    page: () => <ViewPost pending={true} />,
   },
   {
     path: "/user/:userId/profile",

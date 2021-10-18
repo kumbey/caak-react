@@ -67,9 +67,8 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = async () => {
-    let items = notifications;
-    items.map((item, index) => {
-      if (item.seen === false) {
+    return notifications.map((item) => {
+      if (!item.seen) {
         try {
           API.graphql(
             graphqlOperation(updateNotification, {
@@ -83,6 +82,7 @@ const NotificationDropDown = ({ isOpen }) => {
           console.log(error);
         }
       }
+      return null
     });
   };
 
@@ -108,7 +108,7 @@ const NotificationDropDown = ({ isOpen }) => {
         item.action === "POST_ARCHIVED"
       ) {
         history.push({
-          pathname: `/pending/view/${item.item_id}`,
+          pathname: `/post/view/pending/${item.item_id}`,
           state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
