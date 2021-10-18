@@ -15,6 +15,7 @@ import Infromation from "../pages/Group/Infromation";
 import Feed from "../pages/Home/Feed";
 import SettingsProfile from "../pages/Profile/Settings";
 import ViewPost from "../pages/Blog/ViewPost";
+import PendingPostUser from "../pages/Group/PendingPostUser";
 
 const Routes = [
   {
@@ -110,7 +111,7 @@ const Routes = [
     path: "/post/view/:postId",
     exact: true,
     background: true,
-    auth: true,
+    auth: false,
     page: () => <ViewPost />,
   },
   {
@@ -155,6 +156,12 @@ const Routes = [
     exact: true,
     background: true,
     page: () => <SettingsProfile />,
+  },
+  {
+    path: "/user/:userId/pending",
+    exact: true,
+    background: true,
+    page: () => <PendingPostUser />,
   },
 ];
 

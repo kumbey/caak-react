@@ -1,25 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../button";
 import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
-import { getFileUrl } from "../../Utility/Util";
+import {
+  checkUser,
+  getFileUrl,
+  getReturnData,
+  useClickOutSide,
+} from "../../Utility/Util";
 import Dummy from "dummyjs";
 import { useUser } from "../../context/userContext";
-import { checkUser, useClickOutSide } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router";
 import NotificationDropDown from "./NotificationDropDown";
 import MobileMenu from "./MobileMenu";
 import { useWrapper } from "../../context/wrapperContext";
+import API from "@aws-amplify/api";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import { getUserTotal } from "../../graphql-custom/totals/queries";
+import { getUserAura } from "../../graphql-custom/user/queries";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
 
   const { user } = useUser();
   const history = useHistory();
   const location = useLocation();
+
+  const [subscripTotal, setSubscripTotal] = useState();
+  const subscriptions = {};
+  const [userTotal, setUserTotal] = useState({});
+  const [render, setRender] = useState(0);
+  const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -34,22 +48,96 @@ export default function NavBar() {
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
   });
+
+  console.log(isMobileMenuOpen)
+
+  const fetchUserTotal = async () => {
+      try{
+        let resp = await API.graphql(graphqlOperation(getUserTotal, {user_id: user.sysUser.id}))
+        resp = getReturnData(resp)
+        if(resp){
+          setUserTotal(getReturnData(resp))
+        }
+      }catch(ex){
+        console.log(ex)
+      }
+  }
+
+  const fetchUserAura = async () => {
+    try {
+      let resp = await API.graphql(
+        graphqlOperation(getUserAura, { id: user.sysUser.id })
+      );
+      resp = getReturnData(resp);
+      user.sysUser.aura = resp.aura;
+      setRender(render + 1);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
+
+  const subscrip = () => {
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: "UserTotal",
+        id: user.sysUser.id,
+      },
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscripTotal(JSON.parse(onData.totals));
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (checkUser(user)) {
+      fetchUserTotal();
+      subscrip();
+    }
+
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
+    if (subscripTotal) {
+      setUserTotal(subscripTotal);
+      fetchUserAura();
+    }
+    // eslint-disable-next-line
+  }, [subscripTotal]);
+
   return (
     <nav className="bg-white">
-      <div className="px-2 px-7 py-1 mx-auto sm:px-6 lg:px-8">
-        <div className="flex relative justify-between items-center h-16">
+      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
+        <div className="relative flex items-center justify-between h-16">
           <div className="flex flex-row items-center">
-            <img onClick={() => history.push({pathname: "/"})} className="mr-1 w-auto h-10 cursor-pointer" src={logo} alt="Caak Logo" />
+            <img
+              onClick={() => history.push({ pathname: "/" })}
+              className="w-auto h-10 mr-1 cursor-pointer"
+              src={logo}
+              alt="Caak Logo"
+            />
           </div>
 
-          <div className="hidden flex-1 px-1 py-4 mx-4 min-w-0 max-w-xl sm:block md:px-2 lg:px-4 xl:col-span-6">
+          <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
             <SearchInput hideLabel placeholder={"Хайлт хийх"} />
           </div>
           {/* Mobile menu button */}
-          <div className="flex md:hidden lg:hidden">
+          <div className="md:hidden lg:hidden flex">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex justify-center items-center p-2 rounded-md text-caak-generalblack"
+              className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
             >
               <span className="sr-only">Open main menu</span>
               <span className={"icon-fi-sp-hamburger-menu"} />
@@ -88,13 +176,15 @@ export default function NavBar() {
                       isNotificationMenu && "bg-caak-titaniumwhite"
                     } icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite`}
                   />
-                  <span
-                    className={
-                      "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
-                    }
-                  >
-                    3
-                  </span>
+                  {parseInt(userTotal.unseen) > 0 ? (
+                    <span
+                      className={
+                        "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
+                      }
+                    >
+                      {userTotal.unseen}
+                    </span>
+                  ) : null}
                   <NotificationDropDown
                     isOpen={isNotificationMenu}
                     setIsOpen={setIsNotificationMenu}
@@ -115,7 +205,11 @@ export default function NavBar() {
                     <img
                       alt={user.sysUser.nickname}
                       data-dummy="200x200"
-                      src={user.sysUser.pic ? getFileUrl(user.sysUser.pic) : Dummy.img("200x200")}
+                      src={
+                        user.sysUser.pic
+                          ? getFileUrl(user.sysUser.pic)
+                          : Dummy.img("200x200")
+                      }
                       className={"w-full block object-cover rounded-full"}
                     />
                   </div>
@@ -199,7 +293,17 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <MobileMenu />
+      <div
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className={`w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
+          isMobileMenuOpen
+            ? "transform translate-x-0"
+            : "transform translate-x-full"
+        }`}
+        id="mobile-menu"
+      >
+        <MobileMenu setOpen={setIsMobileMenuOpen}/>
+      </div>
     </nav>
   );
 }

@@ -4,8 +4,13 @@ const DB = require("/opt/tables/DB")
 const DBClient = DB(process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME, docClient)
 
 async function insert(data){
-    try{    
+    try{
 
+        const now = new Date().toISOString()
+
+        data["__typename"] = "Notification"
+        data["updatedAt"] = now
+        data["createdAt"] = now
         let resp = await DBClient.create(data)
 
         return resp

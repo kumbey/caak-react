@@ -2,7 +2,7 @@ import { generateTimeAgo } from "../../Utility/Util";
 import ProfileHoverCard from "./ProfileHoverCard";
 import Tooltip from "../tooltip/Tooltip";
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CommentCard = ({ comment, children }) => {
   // useEffect(() => {
@@ -12,30 +12,17 @@ const CommentCard = ({ comment, children }) => {
   //   setCommentInputValue((prev) => `${comment.user.nickname}: ${prev}`);
   // };
   return (
-    <div className={"relative flex flex-col ml-2 justify-between"}>
+    <div className={"relative flex flex-col ml-2 justify-between z-1"}>
       <div className={"cursor-pointer absolute -right-10 z-10 text-caak-blue"}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-          />
-        </svg>
+        <span className={"icon-fi-rs-dots text-4px"} />
       </div>
       <div className={"relative flex flex-row items-center"}>
         <Tooltip content={<ProfileHoverCard userId={comment.user.id} />}>
-            <Link to={`/user/${comment.user.id}/profile`}>
-          <span className={"text-16px font-bold text-caak-generalblack"}>
-            {comment.user.nickname}
-          </span>
-            </Link>
+          <Link to={`/user/${comment.user.id}/profile`}>
+            <span className={"text-16px font-bold text-caak-generalblack"}>
+              {comment.user.nickname}
+            </span>
+          </Link>
         </Tooltip>
 
         <span className={"text-14px text-caak-darkBlue mx-1"}>·</span>

@@ -9,8 +9,9 @@ import GroupHeader from "./GroupHeader";
 import { useListPager } from "../../Utility/ApiHelper";
 import GroupSubHeader from "./GroupSubHeader";
 import GroupBody from "./GroupBody";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getReturnData } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
+import { onPostByGroup } from "../../graphql-custom/post/subscription";
 
 export default function Group() {
   const history = useHistory();
@@ -66,26 +67,60 @@ export default function Group() {
       console.log(ex);
     }
   };
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
 
-  // const subscriptions = () => {
-  //   API.graphql({
-  //     query: onPostStatusUpdate,
-  //   }).subscribe({
-  //     next: (data) => {
-  //       console.log("data: ", data);
-  //     },
-  //   });
-  // };
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroup = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupId,
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if(subscriptionPosts){
+      if (
+          !groupPosts.find((item) => item.id === subscriptionPosts.id)
+      )
+        console.log(subscriptionPosts)
+      setGroupPosts((prev) => [subscriptionPosts, ...prev]);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionPosts]);
+
+  useEffect(() => {
+    if (groupId) subscrib();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+      setPostScroll(null);
+    };
+    // eslint-disable-next-line
+  }, [user]);
 
   useEffect(() => {
     getGroupDataById();
 
     fetchGroupPosts(groupPosts, setGroupPosts);
     setPostScroll(fetchGroupPosts);
-
-    return () => {
-      setPostScroll(null)
-    }
 
     // eslint-disable-next-line
   }, [user]);

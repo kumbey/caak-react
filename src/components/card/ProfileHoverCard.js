@@ -6,7 +6,7 @@ import {
 import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getFileUrl } from "../../Utility/Util";
 import { Link } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
 
@@ -14,19 +14,23 @@ export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
-
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (userId){
-      if(checkUser(user)){
-        getUserById({ id: userId, setUser: setProfileUser});   
-      }else{
-        getUserById({ id: userId, setUser: setProfileUser, authMode: "AWS_IAM" });
+    if (userId) {
+      if (checkUser(user)) {
+        getUserById({ id: userId, setUser: setProfileUser });
+      } else {
+        getUserById({
+          id: userId,
+          setUser: setProfileUser,
+          authMode: "AWS_IAM",
+        });
       }
     }
+    // eslint-disable-next-line
   }, [userId]);
 
   const createFollowUser = async () => {
@@ -40,6 +44,12 @@ export default function ProfileHoverCard({ userId }) {
     profileUser.followed = true;
     setDoRender(doRender + 1);
   };
+
+  useEffect(()=> {
+    return ()=> {
+      setProfileUser(null)
+    }
+  },[])
 
   const deleteFollowUser = async () => {
     await API.graphql({
@@ -67,14 +77,18 @@ export default function ProfileHoverCard({ userId }) {
   };
   return profileUser.id ? (
     <div
-      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white"
+      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white z-50"
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">
         <img
           className=" w-12 h-12 border-2 border-white rounded-full"
           alt=""
-          src={`https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg`}
+          src={
+            profileUser.pic
+              ? getFileUrl(profileUser.pic)
+              : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
+          }
         />
         {checkUser(user) && user.sysUser.id !== profileUser.id ? (
           <Button
@@ -93,8 +107,8 @@ export default function ProfileHoverCard({ userId }) {
           }}
         >
           <div className=" flex items-center">
-            <p className="text-17px font-bold">{profileUser.nickname}</p>
-            <span className="icon-fi-rs-verified text-13px text-caak-buttonblue " />
+            <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
+            <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
           </div>
         </Link>
         <p className="text-15px font-light">{profileUser.about}</p>

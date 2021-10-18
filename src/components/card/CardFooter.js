@@ -11,13 +11,14 @@ import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import { getReturnData } from "../../Utility/Util";
 
 const CardFooter = ({ title, totals, items, postId, reacted }) => {
-
   const location = useLocation();
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(reacted);
-  const [subscripTotal, setSubscripTotal] = useState()
-  const [render, setRender] = useState(0)
-  const subscriptions = {}
+  const [subscripTotal, setSubscripTotal] = useState();
+  const [render, setRender] = useState(0);
+  const subscriptions = {};
+
+  let totalComment = Object.keys(items[0].comments.items).length;
 
   const updateReaction = async (type) => {
     if (type) {
@@ -53,45 +54,43 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
   };
 
   const subscrip = () => {
-
-      subscriptions.onChangedTotalsBy = API.graphql({
-        query: onChangedTotalsBy,
-        variables: {
-          type: "PostTotal",
-          id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
-        },
-        authMode: "AWS_IAM"
-      }).subscribe({
-        next: (data) => {
-          const onData = getReturnData(data, true)
-          setSubscripTotal(JSON.parse(onData.totals))
-        },
-        error: error => {
-          console.warn(error);
-        }
-      });
-  }
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: "PostTotal",
+        id: postId,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscripTotal(JSON.parse(onData.totals));
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
 
   useEffect(() => {
-
-    subscrip()
+    subscrip();
 
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
-        return true
-      })
-    }
+        return true;
+      });
+    };
     // eslint-disable-next-line
-  },[])
+  }, []);
 
   useEffect(() => {
-    if(subscripTotal){
-        totals.reactions = subscripTotal.reactions
-        setRender(render + 1)
+    if (subscripTotal) {
+      totals.reactions = subscripTotal.reactions;
+      setRender(render + 1);
     }
     // eslint-disable-next-line
-  },[subscripTotal])
+  }, [subscripTotal]);
 
   return (
     <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl flex flex-col justify-between h-full px-4 py-2 pb-4">
@@ -129,7 +128,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
             <i className={"icon-fi-rs-comment text-16px mr-1.5"} />
-            <span>{totals.comments}</span>
+            <span>{totalComment}</span>
           </div>
         </div>
         <div className={"flex flex-row items-center cursor-pointer"}>

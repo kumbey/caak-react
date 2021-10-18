@@ -7,7 +7,7 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 
 export default function Login() {
   const history = useHistory();

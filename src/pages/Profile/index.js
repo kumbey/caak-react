@@ -21,10 +21,14 @@ import {
   getFileExt,
   getFileName,
   getFileUrl,
+  getReturnData,
 } from "../../Utility/Util";
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
 import { useUser } from "../../context/userContext";
+import PostPendingUser from "../Group/PostPendingUser";
+import PostArchivedUser from "../Group/PosArchivedUser";
+import { onPostByUser } from "../../graphql-custom/post/subscription";
 
 export default function Profile() {
   const [user, setUser] = useState();
@@ -32,6 +36,56 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(1);
+
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
+
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(signedUser)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroup = API.graphql({
+      query: onPostByUser,
+      variables: {
+        user_id: userId,
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        console.log("onData", onData);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (setSubscriptionPosts) {
+      if (!posts.find((item) => item.id === subscriptionPosts.id))
+        console.log(subscriptionPosts);
+      setPosts((prev) => [subscriptionPosts, ...prev]);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionPosts]);
+
+  useEffect(() => {
+    if (userId) subscrib();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+      setPostScroll(null);
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -235,7 +289,7 @@ export default function Profile() {
                       style={{ marginInlineStart: "4px" }}
                       className="text-15px text-caak-darkBlue"
                     >
-                      фост
+                      пост
                     </p>
                   </span>
                 </div>
@@ -246,7 +300,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="flex justify-end md:justify-center ">
+            <div className="md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -285,14 +339,58 @@ export default function Profile() {
 
       <div className="mt-c2 flex items-center justify-around w-full">
         <div className="flex">
-          <Button className="text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
+          <Button
+            key={1}
+            onClick={() => setActiveIndex(1)}
+            className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      1 === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+          >
             <span className="icon-fi-rs-drag text-20px mr-a1" />
-            Миний фостууд
+
+            <p className="text-17px ml-b1 font-medium">
+              {checkUser(signedUser) && userId === signedUser.sysUser.id
+                ? "Миний постууд"
+                : "Хэрэглэгчийн постууд"}
+            </p>
           </Button>
-          <Button className="text-15px h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
-            <span className="icon-fi-rs-bookmark text-20px mr-a1" />
-            Хадгалсан фостууд
-          </Button>
+          {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
+            <>
+              <Button
+                key={2}
+                onClick={() => setActiveIndex(2)}
+                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      2 === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+              >
+                <span className="icon-fi-rs-settings text-22px" />
+                <p className="text-17px ml-b1 font-medium">
+                  Хүлээгдэж буй постууд
+                </p>
+              </Button>
+              <Button
+                key={3}
+                onClick={() => setActiveIndex(3)}
+                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                                    ${
+                                      3 === activeIndex
+                                        ? "bg-white shadow"
+                                        : "bg-transparent text-caak-generalblack"
+                                    }`}
+              >
+                <span className="icon-fi-rs-bookmark text-20px mr-a1" />
+                <p className="text-17px ml-b1 font-medium">
+                  Архивлагдсан постууд
+                </p>
+              </Button>
+            </>
+          ) : null}
         </div>
         <select className="md:block text-15px w-c132 text-caak-generalblack hidden font-semibold bg-transparent border-0 cursor-pointer">
           <option>Илүү ихийг</option>
@@ -304,7 +402,11 @@ export default function Profile() {
         {/* post */}
         <div className="grid_container_container flex flex-col justify-center w-full">
           {/* contents */}
-          <div className="grid-container mt-b5 justify-center">
+          <div
+            className={`grid-container mt-b5  justify-center ${
+              activeIndex === 1 ? "" : "hidden"
+            }`}
+          >
             {posts.map((data, index) => {
               return (
                 <Card
@@ -315,6 +417,32 @@ export default function Profile() {
                 />
               );
             })}
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`flex mt-b5  justify-center ${
+              activeIndex === 2 ? "" : "hidden"
+            }`}
+          >
+            <PostPendingUser userId={userId} />
+            <Loader
+              containerClassName={"self-center"}
+              className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
+          <div
+            className={`flex mt-b5  justify-center ${
+              activeIndex === 3 ? "" : "hidden"
+            }`}
+          >
+            <PostArchivedUser userId={userId} />
             <Loader
               containerClassName={"self-center"}
               className={`bg-caak-primary ${

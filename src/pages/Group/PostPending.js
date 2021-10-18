@@ -8,11 +8,20 @@ import PendingPostItem from "../../components/PendingPost/PendingPostItem";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../graphql-custom/post/mutation";
+import { checkUser, getReturnData } from "../../Utility/Util";
+import { onPostByGroup } from "../../graphql-custom/post/subscription";
+import { useUser } from "../../context/userContext";
 
 export default function PostPending({ settt }) {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
+  const subscriptions = {};
   const [groupPendingPosts, setGroupPendingPosts] = useState([]);
+  const [confirmedPost, setConfirmedPost] = useState(null);
+  const [pendingPost, setPendingPost] = useState(null);
+  const [archivedPost, setArchivedPost] = useState(null);
+
+  const { user } = useUser();
   const { groupId } = useParams();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
@@ -20,9 +29,85 @@ export default function PostPending({ settt }) {
       filter: { group_id: { eq: groupId } },
       sortDirection: "DESC",
       status: "PENDING",
-      // limit: 6,
+      limit: 6,
     },
   });
+
+  const subscrib = () => {
+    let authMode = "AWS_IAM";
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+    subscriptions.onPostByGroupPending = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "PENDING" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setPendingPost(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onPostByGroupConfirmed = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "CONFIRMED" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setConfirmedPost(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+
+    subscriptions.onPostByGroupArchived = API.graphql({
+      query: onPostByGroup,
+      variables: { group_id: groupId, status: "ARCHIVED" },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setArchivedPost(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (groupPendingPosts) {
+      const filtered = groupPendingPosts.filter(
+        (item) => item.id !== archivedPost.id
+      );
+      setGroupPendingPosts([...filtered]);
+    }
+    // eslint-disable-next-line
+  }, [archivedPost]);
+
+  useEffect(() => {
+    if (groupPendingPosts) {
+      const filtered = groupPendingPosts.filter(
+        (item) => item.id !== confirmedPost.id
+      );
+      setGroupPendingPosts([...filtered]);
+    }
+    // eslint-disable-next-line
+  }, [confirmedPost]);
+
+  useEffect(() => {
+    if (pendingPost) {
+      if (!groupPendingPosts.find((item) => item.id === pendingPost.id))
+        setGroupPendingPosts((prev) => [pendingPost, ...prev]);
+    }
+    // eslint-disable-next-line
+  }, [pendingPost]);
+
   const [setPostScroll] = useInfiniteScroll(
     groupPendingPosts,
     setGroupPendingPosts
@@ -55,7 +140,7 @@ export default function PostPending({ settt }) {
       console.log(ex);
     }
   };
-  const handleSelectAll = (e) => {
+  const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     if (isCheckAll) {
       setIsCheck([]);
@@ -73,28 +158,40 @@ export default function PostPending({ settt }) {
     }
   };
   useEffect(() => {
+    if (groupId) subscrib();
+    return () => {
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
+    // eslint-disable-next-line
+  }, [user]);
+
+  useEffect(() => {
     fetchGroupPosts(groupPendingPosts, setGroupPendingPosts);
     setPostScroll(fetchGroupPosts);
+
     // eslint-disable-next-line
   }, []);
 
   return (
     <div className={"w-full"}>
-      <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
+      <div className="flex items-center pr-2 w-full bg-white border-t py-b4">
         {isCheck.length ? (
-          <div className="ml-c34 flex items-center border rounded-lg">
+          <div className="flex items-center rounded-lg border ml-c34">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheck.length}
-              className="w-b4 h-b4 ml-b3 border-caak-darkgray border-2 rounded cursor-pointer"
+              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-b3 border-caak-darkgray"
             />
-            <p className="ml-b3 text-15px text-caak-generalblack font-medium">
+            <p className="font-medium ml-b3 text-15px text-caak-generalblack">
               {isCheck.length} пост сонгогдлоо
             </p>
             <select
               onChange={(e) => onSelectHandler(e)}
-              className="text-15px text-caak-generalblack font-medium border-0"
+              className="font-medium border-0 text-15px text-caak-generalblack"
             >
               <option hidden className="focus:bg-caak-darkBlue">
                 Үйлдэл
@@ -104,15 +201,15 @@ export default function PostPending({ settt }) {
             </select>
           </div>
         ) : (
-          <div className="text-16px text-caak-generalblack flex items-center w-full">
+          <div className="flex items-center w-full text-16px text-caak-generalblack">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheckAll}
-              className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
+              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-c34 border-caak-darkgray"
             />
-            <p className="ml-c2 flex justify-start w-1/3">Фостын нэр</p>
-            <div className="ph:justify-evenly flex justify-between w-2/3">
+            <p className="flex justify-start w-1/3 ml-c2">Фостын нэр</p>
+            <div className="flex justify-between w-2/3 ph:justify-evenly">
               <p>Нийтлэгч</p>
               <p>Хугацаа</p>
               <p
@@ -130,7 +227,7 @@ export default function PostPending({ settt }) {
         return (
           <div
             key={index}
-            className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
+            className="flex items-center bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen"
           >
             <div className="flex items-center w-full">
               <div>
@@ -139,7 +236,7 @@ export default function PostPending({ settt }) {
                   id={data.id}
                   handleClick={handleClick}
                   isChecked={isCheck.includes(data.id)}
-                  className="ml-c34 w-b4 h-b4 border-caak-darkgray border-2 rounded cursor-pointer"
+                  className="rounded border-2 cursor-pointer ml-c34 w-b4 h-b4 border-caak-darkgray"
                 />
               </div>
               <PendingPostItem post={data} className="ph:mb-4 sm:mb-4" />

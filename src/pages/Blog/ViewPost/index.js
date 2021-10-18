@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import PostHeader from "./PostHeader";
 import { useHistory, useParams } from "react-router-dom";
@@ -16,21 +16,31 @@ import PostBody from "./PostBody";
 const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [commentInputValue, setCommentInputValue] = useState("");
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
+  const addCommentRef = useRef();
 
   useEffect(() => {
     try {
       const getPostById = async (id) => {
-        const resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        let resp;
+        if (checkUser(user)) {
+          resp = await API.graphql(graphqlOperation(getPostView, { id }));
+        } else {
+          resp = await API.graphql({
+            query: getPostView,
+            variables: { id },
+            authMode: "AWS_IAM",
+          });
+        }
         setPost(resp.data.getPost);
       };
       getPostById(postId);
     } catch (ex) {
       console.log(ex);
     }
+    // eslint-disable-next-line
   }, [postId]);
 
   useEffect(() => {
@@ -242,15 +252,21 @@ const ViewPost = () => {
             </div>
           </div>
           <PostHeader
+            addCommentRef={addCommentRef}
             item={post.items.items[activeIndex]}
             updatedAt={post.updatedAt}
             title={post.title}
           />
-          <PostBody item={post.items.items[activeIndex]} />
+          <PostBody
+            posts={post}
+            activeIndex={activeIndex}
+            post={post.items.items[activeIndex]}
+          />
         </div>
         <AddComment
-          commentInputValue={commentInputValue}
-          setCommentInputValue={setCommentInputValue}
+          addCommentRef={addCommentRef}
+          posts={post}
+          activeIndex={activeIndex}
           item={post.items.items[activeIndex]}
         />
       </div>

@@ -2,6 +2,7 @@ const { getValuesFromRecord } = require("/opt/util/Util")
 const PostTotal = require("../db/PostTotal")
 const GroupTotal = require("../db/GroupTotal")
 const UserTotal = require("../db/UserTotal")
+const NoficationDB = require("../db/Notification")
 
 async function insert(record){
     try{
@@ -45,7 +46,7 @@ async function modify(record){
         const oldImg = getValuesFromRecord(OldImage)
 
 
-        if(newImg.status !== oldImg.status){
+        if(newImg.status !== oldImg.status && newImg.status !== "POSTING"){
              
             //UPDATE USER TOTAL
             await UserTotal.modify(newImg.user_id, [
@@ -75,8 +76,19 @@ async function modify(record){
                 }
             ])
 
+            // CREATE NOFICATION
+            const notifiData = {
+                section: "USER",
+                type: "POST",
+                item_id: newImg.id,
+                action: `POST_${newImg.status}`,
+                from: newImg.user_id,
+                to: newImg.user_id,
+                seen: false
+            }
 
-            resp.Notification = await writeToNotification(newImg)
+            await NoficationDB.insert(notifiData)
+        
         }
 
         return true

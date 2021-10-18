@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
-import BottomTabs from "./BottomTabs";
-import { useUser } from "../../context/userContext";
+import {useUser} from "../../context/userContext";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
-import { checkUser, getReturnData } from "../../Utility/Util";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {listGroupsForAddPost} from "../../graphql-custom/group/queries";
+import {checkUser, getReturnData} from "../../Utility/Util";
+import {getPostByStatus} from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import { useListPager } from "../../Utility/ApiHelper";
+import {useListPager} from "../../Utility/ApiHelper";
+import {onPostUpdateByStatus} from "../../graphql-custom/post/subscription";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 const Feed = () => {
@@ -33,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                              id: 3,
-                                                                                                                              type: "Бүлгүүд",
-                                                                                                                              icon: "icon-fi-rs-group",
-                                                                                                                            },
-                                                                                                                            {
-                                                                                                                              id: 4,
-                                                                                                                              type: "Дагасан найзууд",
-                                                                                                                              icon: "icon-fi-rs-following",
-                                                                                                                            },*/
+                                                                                                                                  id: 3,
+                                                                                                                                  type: "Бүлгүүд",
+                                                                                                                                  icon: "icon-fi-rs-group",
+                                                                                                                                },
+                                                                                                                                {
+                                                                                                                                  id: 4,
+                                                                                                                                  type: "Дагасан найзууд",
+                                                                                                                                  icon: "icon-fi-rs-following",
+                                                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -62,32 +62,49 @@ const Feed = () => {
     },
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts);
-  //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
-  const subscriptions = {}
+  const [addedPost, setAddedPost] = useState(0);
+  const [removedPost, setRemovedPost] = useState();
+  const subscriptions = {};
+
+  //FORCE RENDER STATE
+  const [render, setRender] = useState(0);
 
   const listGroups = async () => {
     try {
-      let adminResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
-        filter: {or: [{role_on_group: {eq: "ADMIN"}}, {role_on_group: {eq: "MODERATOR"}}]}
-      }));
+      let adminResp = await API.graphql(
+        graphqlOperation(listGroupsForAddPost, {
+          filter: {
+            or: [
+              { role_on_group: { eq: "ADMIN" } },
+              { role_on_group: { eq: "MODERATOR" } },
+            ],
+          },
+        })
+      );
 
-      let memberResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
-        filter: {role_on_group: {eq: "MEMBER"}}
-      }));
+      let memberResp = await API.graphql(
+        graphqlOperation(listGroupsForAddPost, {
+          filter: { role_on_group: { eq: "MEMBER" } },
+        })
+      );
 
-      let unMemberResp = await API.graphql(graphqlOperation(listGroupsForAddPost, {
-        filter: {and: [
-          {role_on_group: {ne: "ADMIN"}}, 
-          {role_on_group: {ne: "MODERATOR"}},
-          {role_on_group: {ne: "MEMBER"}},
-        ]}
-      }));
+      let unMemberResp = await API.graphql(
+        graphqlOperation(listGroupsForAddPost, {
+          filter: {
+            and: [
+              { role_on_group: { ne: "ADMIN" } },
+              { role_on_group: { ne: "MODERATOR" } },
+              { role_on_group: { ne: "MEMBER" } },
+            ],
+          },
+        })
+      );
 
       setGroupData({
         adminModerator: getReturnData(adminResp).items,
         member: getReturnData(memberResp).items,
-        unMember: getReturnData(unMemberResp).items
+        unMember: getReturnData(unMemberResp).items,
       });
     } catch (ex) {
       console.log(ex);
@@ -111,31 +128,83 @@ const Feed = () => {
     }
   };
 
-  // const subscrip = () => {
-  //   subscriptions.onChangedTotalsBy = API.graphql({
-  //     query: onChangedTotalsBy,
-  //     variables: {
-  //       type: "PostTotal",
-  //       id: "b34b6636-621c-4933-ae43-6f3ee58abda1"
-  //     }
-  //   }).subscribe({
-  //     next: (data) => {
-  //       console.log("data: ", data);
-  //     },
-  //   });
-  // }
+  const subscrip = () => {
+    let authMode = "AWS_IAM";
 
+    if (checkUser(user)) {
+      authMode = "AMAZON_COGNITO_USER_POOLS";
+    }
+
+    subscriptions.onPostUpdateByStatus = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "CONFIRMED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        console.log(data);
+        setAddedPost(getReturnData(data, true));
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "ARCHIVED",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        console.log(data);
+        setRemovedPost(getReturnData(data, true));
+      },
+    });
+
+    subscriptions.onPostUpdateByStatusDeleted = API.graphql({
+      query: onPostUpdateByStatus,
+      variables: {
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        console.log(data);
+        setRemovedPost(getReturnData(data, true));
+      },
+    });
+  };
 
   useEffect(() => {
-    
-    // subscrip()
+    if (addedPost) {
+      setPosts([addedPost, ...posts]);
+    }
+
+    // eslint-disable-next-line
+  }, [addedPost]);
+
+  useEffect(() => {
+    if (removedPost) {
+      let postIndex = posts.findIndex(
+        (post, index) => post.id === removedPost.id
+      );
+
+      if (postIndex > -1) {
+        posts.splice(postIndex, 1);
+        setRender(render + 1);
+      }
+    }
+
+    // eslint-disable-next-line
+  }, [removedPost]);
+
+  useEffect(() => {
+    fetchPosts(posts, setPosts);
+    setPostScroll(fetchPosts);
 
     return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true
-      })
-    }
+      setPostScroll(null);
+    };
 
     // eslint-disable-next-line
   }, []);
@@ -143,13 +212,16 @@ const Feed = () => {
   useEffect(() => {
     if (checkUser(user)) {
       listGroups();
-    } 
-    fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
+    }
+
+    subscrip();
 
     return () => {
-      setPostScroll(null);
-    }
+      Object.keys(subscriptions).map((key) => {
+        subscriptions[key].unsubscribe();
+        return true;
+      });
+    };
 
     // eslint-disable-next-line
   }, [user]);
@@ -199,8 +271,7 @@ const Feed = () => {
               })}
             </div>
             <div className={`pr-6 `}>
-            {
-                (groupData.adminModerator.length > 0 ) ? 
+              {groupData.adminModerator.length > 0 ? (
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                     <span className={"text-15px text-caak-darkBlue"}>
@@ -224,10 +295,9 @@ const Feed = () => {
                       );
                     })}
                   </div>
-                </> : null
-              }
-              {
-                (groupData.member.length > 0 ) ? 
+                </>
+              ) : null}
+              {groupData.member.length > 0 ? (
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                     <span className={"text-15px text-caak-darkBlue"}>
@@ -251,36 +321,35 @@ const Feed = () => {
                       );
                     })}
                   </div>
-                </> : null
-              }
+                </>
+              ) : null}
 
-              {
-                (groupData.unMember.length > 0 ) ? 
-                  <>
-                    <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                      <span className={"text-15px text-caak-darkBlue"}>
-                        {`Бүлгүүд`}
-                      </span>
-                    </div>
-                    <div className={"px-2 pb-5"}>
-                      {groupData.unMember.map((data, index) => {
-                        return (
-                          <Link
-                            key={index}
-                            to={{
-                              pathname: `/group/${data.id}`,
-                            }}
-                          >
-                            <Suggest
-                              item={data}
-                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                            />
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </> : null
-              }
+              {groupData.unMember.length > 0 ? (
+                <>
+                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
+                    <span className={"text-15px text-caak-darkBlue"}>
+                      {`Бүлгүүд`}
+                    </span>
+                  </div>
+                  <div className={"px-2 pb-5"}>
+                    {groupData.unMember.map((data, index) => {
+                      return (
+                        <Link
+                          key={index}
+                          to={{
+                            pathname: `/group/${data.id}`,
+                          }}
+                        >
+                          <Suggest
+                            item={data}
+                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                          />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
             </div>
           </aside>
           <div
@@ -342,9 +411,6 @@ const Feed = () => {
           </div>
         </div>
       </div>
-      <footer className={`block md:hidden sticky bottom-0 z-10`}>
-        <BottomTabs />
-      </footer>
     </div>
   );
 };

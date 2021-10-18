@@ -358,7 +358,8 @@ type Notification @model
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
-  ]){
+  ])
+  @key(name:"byUser", fields:["to","createdAt"], queryField:"listNotificationByUser"){
     id: ID!
     section: String!
     type: String!
@@ -376,11 +377,18 @@ type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @function(name:"totals-${env}")
   @aws_iam
   @aws_cognito_user_pools
+  notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @function(name:"totals-${env}")
+  @aws_iam
+  @aws_cognito_user_pools
 }
 
 type Subscription {
   onChangedTotalsBy(type: String!, id: ID!): ChangedTotalsType
     @aws_subscribe(mutations: ["changedTotals"])
+    @aws_iam
+    @aws_cognito_user_pools
+  onNoficationAdded(section: String!, to: ID!): NotificationAddedType
+    @aws_subscribe(mutations: ["notificationAdded"])
     @aws_iam
     @aws_cognito_user_pools
   onCommentByPostItem(post_item_id: ID!): Comment
@@ -395,6 +403,22 @@ type Subscription {
     @aws_subscribe(mutations: ["createPost","updatePost"])
     @aws_iam
     @aws_cognito_user_pools
+  onUserUpdateByUser(id: ID!): User
+    @aws_subscribe(mutations: ["updateUser"])
+    @aws_iam
+    @aws_cognito_user_pools 
+  onPostUpdateByStatus(status: String!): Post
+    @aws_subscribe(mutations: ["updatePost", "createPost"])
+    @aws_iam
+    @aws_cognito_user_pools 
+}
+
+type NotificationAddedType
+  @aws_iam
+  @aws_cognito_user_pools{
+    section: String!,
+    to: ID!
+    id: ID!
 }
 
 type ChangedTotalsType

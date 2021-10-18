@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useState } from "react/cjs/react.development"
+import { useState } from "react"
 import Select from "./Select"
 
 const DateSelect = ({value, errorMessage, onChange, ...props}) => {

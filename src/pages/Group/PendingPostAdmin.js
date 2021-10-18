@@ -13,6 +13,7 @@ export default function PendingPostAdmin() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState([]);
   const { user } = useUser();
+  const [render, setRender] = useState(0);
   const getGroupDataById = async () => {
     try {
       let resp = await API.graphql(
@@ -23,6 +24,7 @@ export default function PendingPostAdmin() {
       console.log(ex);
     }
   };
+
   useEffect(() => {
     getGroupDataById();
     // eslint-disable-next-line
@@ -39,7 +41,11 @@ export default function PendingPostAdmin() {
           <p className="text- font-medium">Грүпп</p>
           <span className="icon-fi-rs-dots text-4px" />
         </div>
-        <GroupHeader group={groupData} />
+        <GroupHeader
+          group={groupData}
+          bodyRender={render}
+          setBodyRender={setRender}
+        />
 
         {/* body */}
         <div className="flex items-start justify-center w-full">
@@ -51,7 +57,7 @@ export default function PendingPostAdmin() {
             <div className="p-c11 flex items-center justify-between">
               <div className="flex items-center">
                 <p className="text-18px text-caak-generalblack font-medium">
-                  Хүлээгдэж буй фостууд
+                  Хүлээгдэж буй постууд
                 </p>
                 <p
                   style={{ marginLeft: "6px" }}
@@ -61,16 +67,15 @@ export default function PendingPostAdmin() {
                 </p>
               </div>
               <select className="text-15px text-caak-generalblack font-medium border-0 rounded-lg shadow cursor-pointer">
-                <option>Шинэ фостууд</option>
+                <option>Шинэ постууд</option>
                 <option>Тйреырбйыр</option>
                 <option>йыөүйзшыбаөүк</option>
               </select>
             </div>
 
             {/* pending posts */}
-            <div>
-              <PostPending />
-            </div>
+
+            <PostPending />
           </div>
           <div className={"w-1/5 hidden md:block"} />
         </div>

@@ -1,7 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
 
 const DropDown = ({ items, open, onToggle, className }) => {
-  return (
+
+  const { user } = useUser()
+
+  return ( checkUser(user) ?
     <div
       onClick={onToggle}
       className={`dropdown py-2 shadow-dropdown ${open ? "" : "hidden"} ${
@@ -10,14 +16,14 @@ const DropDown = ({ items, open, onToggle, className }) => {
     >
       <div onClick={(e) => e.stopPropagation()}>
         {items.map((item) => (
-          <a key={item.name} href={item.href}>
+          <Link key={item.name} to={item.href.replace(":userId", checkUser(user) && user.sysUser.id)}>
             {item.image}
 
             <p>{item.name}</p>
-          </a>
+          </Link>
         ))}
       </div>
-    </div>
+    </div> : null
   );
 };
 export default DropDown;
