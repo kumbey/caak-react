@@ -4,6 +4,7 @@ import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
+import { Link } from "react-router-dom";
 import {
   checkUser,
   getFileUrl,
@@ -124,7 +125,7 @@ export default function NavBar() {
           <div className="flex flex-row items-center">
             <img
               onClick={() => history.push({ pathname: "/" })}
-              className="w-auto h-10 mr-1 cursor-pointer"
+              className="w-auto h-14 mr-1 cursor-pointer"
               src={logo}
               alt="Caak Logo"
             />
@@ -191,8 +192,6 @@ export default function NavBar() {
                   />
                 </div>
                 <div
-                  ref={menuRef}
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
                   className={"relative flex flex-row mr-6"}
                 >
                   <DropDown
@@ -214,9 +213,24 @@ export default function NavBar() {
                     />
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
-                    <span className={"text-generalblack text-14px font-bold"}>
-                      {user.sysUser.nickname}
-                    </span>
+                    <div className="flex items-center">
+                      <Link 
+                        to={{
+                          pathname: `/user/${user.sysUser.id}/profile`,
+                        }}
+                      >
+                        <span className={"text-generalblack text-14px font-bold cursor-pointer"}>
+                          {user.sysUser.nickname}
+                        </span>
+                      </Link>
+                      <div 
+                        ref={menuRef}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                        className="transform -rotate-90 ml-2 text-14px"
+                      >
+                        <span className="icon-fi-rs-back cursor-pointer"/>
+                      </div>
+                    </div>
                     <div className={"flex flex-row items-center self-start"}>
                       <span className={"icon-fi-rs-auro auroGradient mr-1"} />
                       <span
@@ -255,7 +269,7 @@ export default function NavBar() {
                     })
                   }
                 >
-                  Бүртгэл үүсгэх
+                  Бүртгүүлэх
                 </Button>
               </div>
             )}
