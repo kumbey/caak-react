@@ -25,7 +25,7 @@ export const menu_data = [
   },
   {
     name: "Тохиргоо",
-    href: "#",
+    href: `/user/:userId/settings`,
     image: <span className={" icon-fi-rs-settings text-18px w-5 h-5 mr-2"} />,
   },
   {
