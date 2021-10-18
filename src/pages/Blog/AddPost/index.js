@@ -182,14 +182,22 @@ const AddPost = () => {
       }
 
       await API.graphql(
-        graphqlOperation(updatePost, { input: {
-          id: returnPost.id,
-          status: "PENDING",
-        } })
+        graphqlOperation(updatePost, {
+          input: {
+            id: returnPost.id,
+            status: "PENDING",
+          },
+        })
       );
 
       setLoading(false);
       closeModal(history, state);
+
+      history.push(
+        { pathname: `/user/${user.sysUser.id}/profile` },
+        { index: 2 }
+      );
+      // setActiveIndex(2)
     } catch (ex) {
       setLoading(false);
       console.log(ex);

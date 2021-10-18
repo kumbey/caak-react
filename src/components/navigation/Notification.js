@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { generateFileUrl } from "../../Utility/Util";
 
-const Notification = ({ item, ...props}) => {
-
+const Notification = ({ item, ...props }) => {
   const [text] = useState({
     short: "",
-    long: ""
-  })
+    long: "",
+  });
 
   const button = () => {
     if (item.action === "POST_CONFIRMED") {
-
-      text.short = `таны пост`
-      text.long = `амжилттай нийтлэгдлээ`
+      text.short = `таны пост`;
+      text.long = `амжилттай нийтлэгдлээ`;
 
       return (
         <div
@@ -26,14 +24,16 @@ const Notification = ({ item, ...props}) => {
           />
         </div>
       );
-    } else if (item.action === "POST_PENDING" || item.action === "POST_ARCHIVED") {
-
-      if(item.action === "POST_PENDING"){
-        text.short = `таны пост`
-        text.long = `шалгалдаж байна`
-      }else{
-        text.short = `таны пост`
-        text.long = `архивлагдлаа`
+    } else if (
+      item.action === "POST_PENDING" ||
+      item.action === "POST_ARCHIVED"
+    ) {
+      if (item.action === "POST_PENDING") {
+        text.short = `таны пост`;
+        text.long = `шалгалдаж байна`;
+      } else {
+        text.short = `таны пост`;
+        text.long = `архивлагдлаа`;
       }
 
       return (
@@ -48,14 +48,17 @@ const Notification = ({ item, ...props}) => {
           />
         </div>
       );
-    } else if (item.action === "REACTION_POST" || item.action === "REACTION_COMMENT" || item.action === "REACTION_POST_ITEM") {
-
-      if(item.action === "REACTION_COMMENT"){
-        text.short = `таны сэтгэгдэл`
-        text.long = `дээр саак дарлаа`
-      }else{
-        text.short = `таны пост`
-        text.long = `дээр саак дарлаа`
+    } else if (
+      item.action === "REACTION_POST" ||
+      item.action === "REACTION_COMMENT" ||
+      item.action === "REACTION_POST_ITEM"
+    ) {
+      if (item.action === "REACTION_COMMENT") {
+        text.short = `таны сэтгэгдэл`;
+        text.long = `дээр саак дарлаа`;
+      } else {
+        text.short = `таны пост`;
+        text.long = `дээр саак дарлаа`;
       }
 
       return (
@@ -71,9 +74,8 @@ const Notification = ({ item, ...props}) => {
         </div>
       );
     } else if (item.action === "COMMENT_WRITED") {
-
-      text.short = `таны пост`
-      text.long = `сэтгэгдэл үлдээлээ`
+      text.short = `таны пост`;
+      text.long = `сэтгэгдэл үлдээлээ`;
 
       return (
         <div
@@ -88,9 +90,8 @@ const Notification = ({ item, ...props}) => {
         </div>
       );
     } else if (item.action === "USER_FOLLOWED") {
-
-      text.short = `таныг`
-      text.long = `дагалаа`
+      text.short = `таныг`;
+      text.long = `дагалаа`;
 
       return (
         <div
@@ -107,7 +108,8 @@ const Notification = ({ item, ...props}) => {
     }
   };
   return (
-    <div {...props}
+    <div
+      {...props}
       className={
         "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
       }
@@ -117,7 +119,7 @@ const Notification = ({ item, ...props}) => {
           {!item.seen && (
             <div
               className={
-                "absolute -left-2 top-0 w-2 h-2 bg-caak-bleudefrance rounded-full"
+                "absolute -left-3 top-4  w-2 h-2 bg-caak-bleudefrance rounded-full"
               }
             />
           )}
@@ -146,7 +148,9 @@ const Notification = ({ item, ...props}) => {
           <span className={"text-15px text-caak-generalblack font-medium"}>
             {`${item.from_user.nickname}`}
           </span>
-          <span className={"text-14px text-caak-darkBlue"}>&nbsp;{text.short}</span>
+          <span className={"text-14px text-caak-darkBlue"}>
+            &nbsp;{text.short}
+          </span>
           <span className={"text-14px text-caak-generalblack"}>
             &nbsp;{text.long}
           </span>

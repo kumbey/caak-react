@@ -49,19 +49,21 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-  console.log(isMobileMenuOpen)
+  console.log(isMobileMenuOpen);
 
   const fetchUserTotal = async () => {
-      try{
-        let resp = await API.graphql(graphqlOperation(getUserTotal, {user_id: user.sysUser.id}))
-        resp = getReturnData(resp)
-        if(resp){
-          setUserTotal(getReturnData(resp))
-        }
-      }catch(ex){
-        console.log(ex)
+    try {
+      let resp = await API.graphql(
+        graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
+      );
+      resp = getReturnData(resp);
+      if (resp) {
+        setUserTotal(getReturnData(resp));
       }
-  }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const fetchUserAura = async () => {
     try {
@@ -302,7 +304,7 @@ export default function NavBar() {
         }`}
         id="mobile-menu"
       >
-        <MobileMenu setOpen={setIsMobileMenuOpen}/>
+        <MobileMenu setOpen={setIsMobileMenuOpen} />
       </div>
     </nav>
   );

@@ -122,12 +122,16 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
                 isReacted
                   ? "icon-fr-rs-caak-active text-caak-primary"
                   : "icon-fr-rs-caak"
-              } text-16px mr-1.5`}
+              } text-16px mr-1.5 text-caak-extraBlack`}
             />
             <span>{totals.reactions}</span>
           </div>
           <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
-            <i className={"icon-fi-rs-comment text-16px mr-1.5"} />
+            <i
+              className={
+                "icon-fi-rs-comment text-16px mr-1.5 text-caak-extraBlack"
+              }
+            />
             <span>{totalComment}</span>
           </div>
         </div>
