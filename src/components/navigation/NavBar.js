@@ -122,7 +122,7 @@ export default function NavBar() {
           <div className="flex flex-row items-center">
             <img
               onClick={() => history.push({ pathname: "/" })}
-              className="w-auto h-14 mr-1 cursor-pointer"
+              className="h-14 w-auto mr-1 cursor-pointer"
               src={logo}
               alt="Caak Logo"
             />
@@ -188,9 +188,7 @@ export default function NavBar() {
                     setIsOpen={setIsNotificationMenu}
                   />
                 </div>
-                <div
-                  className={"relative flex flex-row mr-6"}
-                >
+                <div className={"relative flex flex-row mr-6"}>
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
@@ -211,21 +209,25 @@ export default function NavBar() {
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
                     <div className="flex items-center">
-                      <Link 
+                      <Link
                         to={{
                           pathname: `/user/${user.sysUser.id}/profile`,
                         }}
                       >
-                        <span className={"text-generalblack text-14px font-bold cursor-pointer"}>
+                        <span
+                          className={
+                            "text-generalblack text-14px font-bold cursor-pointer"
+                          }
+                        >
                           {user.sysUser.nickname}
                         </span>
                       </Link>
-                      <div 
+                      <div
                         ref={menuRef}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                        className="transform -rotate-90 ml-4 text-14px"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="text-14px ml-4 transform -rotate-90"
                       >
-                        <span className="icon-fi-rs-back cursor-pointer"/>
+                        <span className="icon-fi-rs-back cursor-pointer" />
                       </div>
                     </div>
                     <div className={"flex flex-row items-center self-start"}>

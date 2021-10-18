@@ -12,25 +12,25 @@ import { getReturnData } from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
 import { useClickOutSide } from "../../Utility/Util";
 
-const postMenu =[
+const postMenu = [
   {
     id: 0,
-    title: "Facebook"
+    title: "Facebook",
   },
   {
     id: 1,
-    title: "Twitter"
+    title: "Twitter",
   },
   {
     id: 2,
-    title: "LinkedIn"
+    title: "LinkedIn",
   },
   {
     id: 3,
-    icon: <span className="icon-fi-rs-hide text-16px"/>,
-    title: "Өөр дээрээ"
+    icon: <span className="icon-fi-rs-hide text-16px" />,
+    title: "Өөр дээрээ",
   },
-]
+];
 
 const CardFooter = ({ title, totals, items, postId, reacted }) => {
   const location = useLocation();
@@ -124,7 +124,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
   }, [subscripTotal]);
 
   return (
-    <div className="xs:w-full relative xs:max-w-full sm:w-96 md:96 max-w-8xl flex flex-col justify-between h-full px-4 py-2 pb-4">
+    <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl relative flex flex-col justify-between h-full px-4 py-2 pb-4">
       <Link
         to={{
           pathname: `/post/view/${postId}`,
@@ -153,7 +153,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
                 isReacted
                   ? "icon-fr-rs-caak-active text-caak-primary"
                   : "icon-fr-rs-caak"
-              } text-16px mr-1.5`}
+              } text-16px mr-1.5 text-caak-extraBlack`}
             />
             <span>{totals.reactions}</span>
           </div>
@@ -170,21 +170,29 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
             <span>{totalComment}</span>
           </div>
         </div>
-        <div ref={menuRef} onClick={toggleMenu} className={"flex flex-row items-center cursor-pointer"}>
+        <div
+          ref={menuRef}
+          onClick={toggleMenu}
+          className={"flex flex-row items-center cursor-pointer"}
+        >
           <i className={"icon-fi-rs-share text-15px mr-1.5"} />
           <span>Хуваалцах</span>
-        <GroupInformationDrop
-            className="absolute bottom-12 right-0"
+          <GroupInformationDrop
+            className="bottom-12 absolute right-0"
             open={isMenuOpen}
             onToggle={toggleMenu}
-            content={
-              postMenu.map((data) => (
-                <div key={data.id} style={{height: "36px"}} className="flex items-center px-c6 hover:bg-caak-liquidnitrogen cursor-pointer">
-                  <span className="icon-fi-rs-drag text-14px"/>
-                  <p className="text-14px text-caak-extraBlack ml-b2">{data.title}</p>
-                </div>
-              ))
-            }
+            content={postMenu.map((data) => (
+              <div
+                key={data.id}
+                style={{ height: "36px" }}
+                className="px-c6 hover:bg-caak-liquidnitrogen flex items-center cursor-pointer"
+              >
+                <span className="icon-fi-rs-drag text-14px" />
+                <p className="text-14px text-caak-extraBlack ml-b2">
+                  {data.title}
+                </p>
+              </div>
+            ))}
           />
         </div>
       </div>
