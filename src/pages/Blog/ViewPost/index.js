@@ -15,7 +15,7 @@ import PostBody from "./PostBody";
 import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
 import PostMore from "../../../components/card/PostMore";
 
-const ViewPost = () => {
+const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
   const toggleMenu = () => {
@@ -218,7 +218,6 @@ const ViewPost = () => {
                   }}
                 >
                   <video
-                    key={index}
                     controls
                     disablePictureInPicture
                     controlsList="nodownload noremoteplayback noplaybackrate"
@@ -320,6 +319,9 @@ const ViewPost = () => {
             </div>
           </div>
           <PostHeader
+              postId={post.id}
+            groupId={post.group.id}
+            pending={pending}
             addCommentRef={addCommentRef}
             item={post.items.items[activeIndex]}
             updatedAt={post.updatedAt}
@@ -331,12 +333,14 @@ const ViewPost = () => {
             post={post.items.items[activeIndex]}
           />
         </div>
-        <AddComment
-          addCommentRef={addCommentRef}
-          posts={post}
-          activeIndex={activeIndex}
-          item={post.items.items[activeIndex]}
-        />
+        {!pending && (
+          <AddComment
+            addCommentRef={addCommentRef}
+            posts={post}
+            activeIndex={activeIndex}
+            item={post.items.items[activeIndex]}
+          />
+        )}
       </div>
     </div>
   ) : null;
