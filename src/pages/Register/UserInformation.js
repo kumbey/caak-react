@@ -177,7 +177,7 @@ const UserInformation = () => {
                 </div>
                 <div
                     className={" text-caak-generalblack text-center mb-4 font-bold text-24px"}>
-                    Имайл хаяг/Утасны дугаар <br/> бүртгүүлэх!
+                    Имэйл хаяг/Утасны дугаар <br/> бүртгүүлэх!
                 </div>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <div className="px-c13 ">
@@ -239,7 +239,7 @@ const UserInformation = () => {
                                     name={"username"}
                                     onChange={handleChange}
                                     errorMessage={errors.username}
-                                    placeholder={"Имайл хаяг/Утасны дугаар"}
+                                    placeholder={"Имэйл хаяг/Утасны дугаар"}
                                     type={"text"}
                                     labelStyle={"block text-sm  text-black"}
                                     className={"h-c9 border border-gray-300 bg-caak-titaniumwhite"}

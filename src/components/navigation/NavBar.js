@@ -226,7 +226,7 @@ export default function NavBar() {
                       <div 
                         ref={menuRef}
                         onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                        className="transform -rotate-90 ml-2 text-14px"
+                        className="transform -rotate-90 ml-4 text-14px"
                       >
                         <span className="icon-fi-rs-back cursor-pointer"/>
                       </div>
