@@ -49,19 +49,19 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-  console.log(isMobileMenuOpen)
-
   const fetchUserTotal = async () => {
-      try{
-        let resp = await API.graphql(graphqlOperation(getUserTotal, {user_id: user.sysUser.id}))
-        resp = getReturnData(resp)
-        if(resp){
-          setUserTotal(getReturnData(resp))
-        }
-      }catch(ex){
-        console.log(ex)
+    try {
+      let resp = await API.graphql(
+        graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
+      );
+      resp = getReturnData(resp);
+      if (resp) {
+        setUserTotal(getReturnData(resp));
       }
-  }
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const fetchUserAura = async () => {
     try {
@@ -182,7 +182,7 @@ export default function NavBar() {
                         "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
                       }
                     >
-                      {userTotal.unseen}
+                      {userTotal.unseen > 9 ? "9+" : userTotal.unseen}
                     </span>
                   ) : null}
                   <NotificationDropDown
@@ -302,7 +302,7 @@ export default function NavBar() {
         }`}
         id="mobile-menu"
       >
-        <MobileMenu setOpen={setIsMobileMenuOpen}/>
+        <MobileMenu setOpen={setIsMobileMenuOpen} />
       </div>
     </nav>
   );
