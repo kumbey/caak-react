@@ -338,7 +338,7 @@ export default function Profile() {
       </div>
 
       <div className="mt-c2 flex items-center justify-around w-full">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <Button
             key={1}
             onClick={() => setActiveIndex(1)}

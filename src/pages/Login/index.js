@@ -92,7 +92,7 @@ export default function Login({ type, ...props }) {
               className={"text-caak-generalblack absolute left-c1"}
               icon={faEnvelope}
             />
-            Имайл хаяг / Утасны дугаар
+            Имэйл хаяг / Утасны дугаар
           </Button>
           {/*<div className="flex justify-between">
                 <Button

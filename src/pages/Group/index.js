@@ -12,6 +12,7 @@ import GroupBody from "./GroupBody";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import { onPostByGroup } from "../../graphql-custom/post/subscription";
+import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 export default function Group() {
   const history = useHistory();
@@ -19,6 +20,9 @@ export default function Group() {
   const { groupId } = useParams();
   const [groupData, setGroupData] = useState({});
   const [groupPosts, setGroupPosts] = useState([]);
+  const [subscriptionTotal, setSubscriptionTotal] = useState();
+  const [reRender, setReRender] = useState(0);
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -75,7 +79,7 @@ export default function Group() {
     if (checkUser(user)) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
-    subscriptions.onPostByGroup = API.graphql({
+    subscriptions.onPostByGroupConfirmed = API.graphql({
       query: onPostByGroup,
       variables: {
         group_id: groupId,
@@ -91,18 +95,65 @@ export default function Group() {
         console.warn(error);
       },
     });
+
+    subscriptions.onPostByGroupPending = API.graphql({
+      query: onPostByGroup,
+      variables: {
+        group_id: groupId,
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+
+    subscriptions.onChangedTotalsBy = API.graphql({
+      query: onChangedTotalsBy,
+      variables: {
+        type: "GroupTotal",
+        id: groupId,
+      },
+      authMode: "AWS_IAM",
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionTotal(JSON.parse(onData.totals));
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
   };
 
   useEffect(() => {
-    if(subscriptionPosts){
-      if (
-          !groupPosts.find((item) => item.id === subscriptionPosts.id)
-      )
-        console.log(subscriptionPosts)
-      setGroupPosts((prev) => [subscriptionPosts, ...prev]);
+    if (subscriptionPosts) {
+      if (subscriptionPosts.status === "CONFIRMED") {
+        if (!groupPosts.find((item) => item.id === subscriptionPosts.id))
+          setGroupPosts((prev) => [subscriptionPosts, ...prev]);
+      } else if (subscriptionPosts.status === "PENDING") {
+        const filtered = groupPosts.filter(
+          (item) => item.id !== subscriptionPosts.id
+        );
+        setGroupPosts([...filtered]);
+      }
     }
     // eslint-disable-next-line
   }, [subscriptionPosts]);
+
+  useEffect(() => {
+    if (subscriptionTotal) {
+      groupData.totals.pending = parseInt(subscriptionTotal.pending);
+      setReRender(reRender + 1);
+    }
+
+    // eslint-disable-next-line
+  }, [subscriptionTotal]);
 
   useEffect(() => {
     if (groupId) subscrib();

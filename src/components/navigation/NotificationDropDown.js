@@ -1,10 +1,13 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Notification from "./Notification";
 import ReactDOM from "react-dom";
 import { useUser } from "../../context/userContext";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useListPager } from "../../Utility/ApiHelper";
-import { getNotification, listNotificationByUser } from "../../graphql-custom/notification/queries";
+import {
+  getNotification,
+  listNotificationByUser,
+} from "../../graphql-custom/notification/queries";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
@@ -14,15 +17,14 @@ import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
 
 const NotificationDropDown = ({ isOpen }) => {
-
   const [domReady, setDomReady] = React.useState(false);
-  const [notifications, setNotifications] = useState([])
-  const { user } = useUser()
+  const [notifications, setNotifications] = useState([]);
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [subscripNotifcation, setSubscripNotification] = useState()
-  const subscriptions = {}
-  const history = useHistory()
-  const location = useLocation()
+  const [subscripNotifcation, setSubscripNotification] = useState();
+  const subscriptions = {};
+  const history = useHistory();
+  const location = useLocation();
 
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
@@ -31,8 +33,7 @@ const NotificationDropDown = ({ isOpen }) => {
       sortDirection: "DESC",
       limit: 50,
     },
-  })
-
+  });
 
   const fetchNotifications = async (data, setData) => {
     try {
@@ -55,111 +56,143 @@ const NotificationDropDown = ({ isOpen }) => {
 
   const fetchNotification = async (id) => {
     try {
-        let resp = await API.graphql(graphqlOperation(getNotification, {id: id}))
-        resp = getReturnData(resp)
-        setNotifications([resp, ...notifications])
+      let resp = await API.graphql(
+        graphqlOperation(getNotification, { id: id })
+      );
+      resp = getReturnData(resp);
+      setNotifications([resp, ...notifications]);
     } catch (ex) {
       console.log(ex);
     }
   };
 
+  const handleAllNotifications = async () => {
+    let items = notifications;
+    items.map((item, index) => {
+      if (item.seen === false) {
+        try {
+          API.graphql(
+            graphqlOperation(updateNotification, {
+              input: {
+                id: item.id,
+                seen: true,
+              },
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  };
+
   const handleNotificationClick = async (index) => {
-    try{
-      const item = notifications[index]
-      await API.graphql(graphqlOperation(updateNotification, {input: {
-        id: item.id,
-        seen: true
-      }}))
-      
-      if(item.action === "POST_CONFIRMED" || item.action === "REACTION_POST"){
+    try {
+      const item = notifications[index];
+      await API.graphql(
+        graphqlOperation(updateNotification, {
+          input: {
+            id: item.id,
+            seen: true,
+          },
+        })
+      );
+
+      if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
-          state: { background: location }
-        })
-      }else if(item.action === "POST_PENDING" || item.action === "POST_ARCHIVED"){
+          state: { background: location },
+        });
+      } else if (
+        item.action === "POST_PENDING" ||
+        item.action === "POST_ARCHIVED"
+      ) {
         history.push({
           pathname: `/pending/view/${item.item_id}`,
-          state: { background: location }
-        })
-      }else if(item.action === "REACTION_POST_ITEM"){
-          let resp = await API.graphql(graphqlOperation(getPostItems, {id: item.item_id}))
-          resp = getReturnData(resp)
-          console.log(resp)
-          history.push({
-            pathname: `/post/view/${resp.post_id}`,
-            state: { background: location }
-          })
-      }else if(item.action === "COMMENT_WRITED"){
-          let resp = await API.graphql(graphqlOperation(getComment, {id: item.item_id}))
-          resp = getReturnData(resp)
-          resp = await API.graphql(graphqlOperation(getPostItems, {id: resp.post_item_id}))
-          resp = getReturnData(resp)
-          history.push({
-            pathname: `/post/view/${resp.post_id}`,
-            state: { background: location }
-          })
-      }else if(item.action === "USER_FOLLOWED"){
+          state: { background: location },
+        });
+      } else if (item.action === "REACTION_POST_ITEM") {
+        let resp = await API.graphql(
+          graphqlOperation(getPostItems, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        console.log(resp);
         history.push({
-          pathname: `/user/${item.item_id}/profile`
-        })
+          pathname: `/post/view/${resp.post_id}`,
+          state: { background: location },
+        });
+      } else if (item.action === "COMMENT_WRITED") {
+        let resp = await API.graphql(
+          graphqlOperation(getComment, { id: item.item_id })
+        );
+        resp = getReturnData(resp);
+        resp = await API.graphql(
+          graphqlOperation(getPostItems, { id: resp.post_item_id })
+        );
+        resp = getReturnData(resp);
+        history.push({
+          pathname: `/post/view/${resp.post_id}`,
+          state: { background: location },
+        });
+      } else if (item.action === "USER_FOLLOWED") {
+        history.push({
+          pathname: `/user/${item.item_id}/profile`,
+        });
       }
-
-    }catch(ex){
-      console.log(ex)
+    } catch (ex) {
+      console.log(ex);
     }
-  }
+  };
 
   const subscrip = async () => {
     subscriptions.onNoficationAdded = await API.graphql({
       query: onNoficationAdded,
       variables: {
         section: "USER",
-        to: user.sysUser.id
-      }
+        to: user.sysUser.id,
+      },
     }).subscribe({
       next: (data) => {
-        const onData = getReturnData(data, true)
-        setSubscripNotification(onData)
+        const onData = getReturnData(data, true);
+        setSubscripNotification(onData);
       },
-      error: error => {
+      error: (error) => {
         console.warn(error);
-      }
+      },
     });
-  }
+  };
 
   useEffect(() => {
-    if(domReady && checkUser(user)){
-      fetchNotifications(notifications, setNotifications)
+    if (domReady && checkUser(user)) {
+      fetchNotifications(notifications, setNotifications);
     }
     // eslint-disable-next-line
-  },[domReady, user])
+  }, [domReady, user]);
 
   useEffect(() => {
-
-    if(checkUser(user)){
-      subscrip()
+    if (checkUser(user)) {
+      subscrip();
     }
 
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
-        return true
-      })
-    }
+        return true;
+      });
+    };
     // eslint-disable-next-line
-  },[user])
+  }, [user]);
 
   useEffect(() => {
-    if(subscripNotifcation){
-        fetchNotification(subscripNotifcation.id)
+    if (subscripNotifcation) {
+      fetchNotification(subscripNotifcation.id);
     }
     // eslint-disable-next-line
-  },[subscripNotifcation])
+  }, [subscripNotifcation]);
 
   useEffect(() => {
     setDomReady(true);
   }, []);
-
 
   return (
     domReady &&
@@ -180,9 +213,14 @@ const NotificationDropDown = ({ isOpen }) => {
               "text-caak-generalblack font-medium text-20px md:text-16px"
             }
           >
-            Сонордуулга
+            Мэдэгдэл
           </span>
-          <span className={"text-caak-bleudefrance text-14px font-medium"}>
+          <span
+            onClick={() => handleAllNotifications()}
+            className={
+              "text-caak-bleudefrance cursor-pointer text-14px font-medium"
+            }
+          >
             Бүгдийг харсан
           </span>
         </div>
@@ -192,13 +230,15 @@ const NotificationDropDown = ({ isOpen }) => {
           >
             Шинэ
           </span>
-            {
-              notifications.map((item, index) => {
-                return(
-                  <Notification onClick={()=> handleNotificationClick(index)} key={index} item={item} />
-                )
-              })
-            }
+          {notifications.map((item, index) => {
+            return (
+              <Notification
+                onClick={() => handleNotificationClick(index)}
+                key={index}
+                item={item}
+              />
+            );
+          })}
           {/* <span
             className={"font-medium text-caak-darkBlue text-14px px-3.5 py-1.5"}
           >

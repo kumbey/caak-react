@@ -13,29 +13,8 @@ import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
 import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
-
-const postMenu =[
-  {
-    id: 0,
-    icon: <span className="icon-fi-rs-add-group-f text-18px"/>,
-    title: "Бүлгийг дагах"
-  },
-  {
-    id: 1,
-    icon: <span className="icon-fi-rs-bookmark text-16px"/>,
-    title: "Фостыг хадгалах"
-  },
-  {
-    id: 2,
-    icon: <span className="icon-fi-rs-report text-16px"/>,
-    title: "Зөрчилтэй мэдээлэл"
-  },
-  {
-    id: 3,
-    icon: <span className="icon-fi-rs-hide text-16px"/>,
-    title: "Дахин харагдуулахгүй"
-  },
-]
+import PostMore from "../../../components/card/PostMore";
+import { useClickOutSide } from "../../../Utility/Util";
 
 const ViewPost = () => {
   const [post, setPost] = useState();
@@ -43,7 +22,9 @@ const ViewPost = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { postId } = useParams();
   const history = useHistory();
@@ -243,6 +224,7 @@ const ViewPost = () => {
       >
         <div>
           <div
+            ref={menuRef}
             className={
               "flex justify-center items-center absolute right-4 top-6 z-10"
             }
@@ -254,12 +236,7 @@ const ViewPost = () => {
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={
-              postMenu.map((data) => (
-                <div style={{height: "36px"}} className="flex items-center px-c6 hover:bg-caak-liquidnitrogen cursor-pointer">
-                  {data.icon}
-                  <p className="text-14px text-caak-extraBlack ml-b2">{data.title}</p>
-                </div>
-              ))
+              <PostMore postId={postId} postUser={user}/>
             }
           />
           <div className={"relative flex flex-row px-7"}>

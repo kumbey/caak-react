@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { generateFileUrl } from "../../Utility/Util";
+import Dummy from "dummyjs";
 
 const Notification = ({ item, ...props}) => {
 
@@ -125,7 +126,7 @@ const Notification = ({ item, ...props}) => {
           <div className={"flex justify-center items-center  w-10 h-10"}>
             <img
               className={"rounded-full w-full h-full"}
-              src={generateFileUrl(item.from_user.pic)}
+              src={item.from_user.pic ? generateFileUrl(item.from_user.pic) : Dummy.image('50x50')}
               alt={""}
             />
           </div>

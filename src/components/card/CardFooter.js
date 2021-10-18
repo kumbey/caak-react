@@ -1,11 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import {
   createReaction,
   deleteReaction,
 } from "../../graphql-custom/post/mutation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../../context/userContext";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import { getReturnData } from "../../Utility/Util";
@@ -34,6 +34,7 @@ const postMenu =[
 
 const CardFooter = ({ title, totals, items, postId, reacted }) => {
   const location = useLocation();
+  const history = useHistory();
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(reacted);
   const [subscripTotal, setSubscripTotal] = useState();
@@ -156,7 +157,15 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
             />
             <span>{totals.reactions}</span>
           </div>
-          <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
+          <div
+            onClick={() =>
+              history.push({
+                pathname: `/post/view/${postId}`,
+                state: { background: location },
+              })
+            }
+            className={"flex flex-row items-center mr-4 cursor-pointer"}
+          >
             <i className={"icon-fi-rs-comment text-16px mr-1.5"} />
             <span>{totalComment}</span>
           </div>
@@ -170,7 +179,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
             onToggle={toggleMenu}
             content={
               postMenu.map((data) => (
-                <div style={{height: "36px"}} className="flex items-center px-c6 hover:bg-caak-liquidnitrogen cursor-pointer">
+                <div key={data.id} style={{height: "36px"}} className="flex items-center px-c6 hover:bg-caak-liquidnitrogen cursor-pointer">
                   <span className="icon-fi-rs-drag text-14px"/>
                   <p className="text-14px text-caak-extraBlack ml-b2">{data.title}</p>
                 </div>
