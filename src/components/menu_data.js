@@ -1,57 +1,37 @@
 export const menu_data = [
   {
-    name: "Миний нүүр хуудас",
+    name: "Миний профайл",
     href: `/user/:userId/profile`,
     image: <span className={"icon-fi-rs-profile text-18px5 w-5 h-5 mr-2"} />,
     user: true,
   },
   {
-    name: "Миний бүлгүүд",
+    name: "Бүлгүүд",
     href: "#",
     image: <span className={"icon-fi-rs-group text-18px5 w-5 h-5 mr-2"} />,
     user: true,
   },
   {
-    name: "Хадгалсан постууд",
+    name: "Шөнийн горим",
     href: "#",
-    image: <span className={"icon-fi-rs-bookmark text-18px5 w-5 h-5 mr-2"} />,
+    image: <span className={"icon-fi-rs-view text-18px5 w-5 h-5 mr-2"} />,
+    user: true,
+  },
+  {
+    name: "Шинэчлэлт",
+    href: "#",
+    image: <span className={"icon-fi-rs-resend text-18px w-5 h-5 mr-2"} />,
     user: true,
   },
   {
     name: "Тохиргоо",
     href: "#",
-    image: <span className={"icon-fi-rs-settings-f text-18px w-5 h-5 mr-2"} />,
-    user: true,
+    image: <span className={" icon-fi-rs-settings text-18px w-5 h-5 mr-2"} />,
   },
   {
-    name: "Шинэ саак тухай",
+    name: "Тусламж",
     href: "#",
-    image: <span className={"icon-fi-rs-about text-18px w-5 h-5 mr-2"} />,
-  },
-  {
-    name: "Аура гэж юу вэ?",
-    href: "#",
-    image: <span className={"icon-fi-rs-auro text-18px w-5 h-5 mr-2"} />,
-  },
-  {
-    name: "Блог",
-    href: "#",
-    image: <span className={"icon-fi-rs-document-signed text-18px w-5 h-5 mr-2"} />,
-  },
-  {
-    name: "Сурталчилгаа",
-    href: "#",
-    image: <span className={"icon-fi-rs-megaphone text-18px w-5 h-5 mr-2"} />,
-  },
-  {
-    name: "Нууцлалын бодлого",
-    href: "#",
-    image: <span className={"icon-fi-rs-shield-exclamation text-18px w-5 h-5 mr-2"} />,
-  },
-  {
-    name: "Үйлчилгээний нөхцөл",
-    href: "#",
-    image: <span className={"icon-fi-rs-document-signed text-18px w-5 h-5 mr-2"} />,
+    image: <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />,
   },
   {
     name: "Гарах",
