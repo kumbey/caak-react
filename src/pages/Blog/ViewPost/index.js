@@ -40,7 +40,6 @@ const postMenu =[
 const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
-  console.log(post)
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
