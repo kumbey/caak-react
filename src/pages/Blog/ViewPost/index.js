@@ -12,10 +12,40 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
+import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
+
+const postMenu =[
+  {
+    id: 0,
+    icon: <span className="icon-fi-rs-add-group-f text-18px"/>,
+    title: "Бүлгийг дагах"
+  },
+  {
+    id: 1,
+    icon: <span className="icon-fi-rs-bookmark text-16px"/>,
+    title: "Фостыг хадгалах"
+  },
+  {
+    id: 2,
+    icon: <span className="icon-fi-rs-report text-16px"/>,
+    title: "Зөрчилтэй мэдээлэл"
+  },
+  {
+    id: 3,
+    icon: <span className="icon-fi-rs-hide text-16px"/>,
+    title: "Дахин харагдуулахгүй"
+  },
+]
 
 const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
+  console.log(post)
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
@@ -268,8 +298,21 @@ const ViewPost = () => {
               "flex justify-center items-center absolute right-4 top-6 z-10"
             }
           >
-            <span className={"cursor-pointer icon-fi-rs-dots text-4px mr-2"} />
+            <span onClick={toggleMenu} className={"cursor-pointer icon-fi-rs-dots text-4px mr-2"} />
           </div>
+          <GroupInformationDrop
+            className="absolute right-5"
+            open={isMenuOpen}
+            onToggle={toggleMenu}
+            content={
+              postMenu.map((data) => (
+                <div style={{height: "36px"}} className="flex items-center px-c6 hover:bg-caak-liquidnitrogen cursor-pointer">
+                  {data.icon}
+                  <p className="text-14px text-caak-extraBlack ml-b2">{data.title}</p>
+                </div>
+              ))
+            }
+          />
           <div className={"relative flex flex-row px-7"}>
             <div className={"relative"}>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}

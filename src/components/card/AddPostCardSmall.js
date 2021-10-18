@@ -14,7 +14,7 @@ const AddPostCardSmall = ({ post, setPost }) => {
         icon={
           <span
             className={
-              "icon-fi-rs-close text-caak-generalblack text-20px mb-1 rounded-full bg-white p-3 shadow-card"
+              "icon-fi-rs-add text-caak-generalblack text-20px mb-1 rounded-full bg-white p-3 shadow-card"
             }
           />
         }

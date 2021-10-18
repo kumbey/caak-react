@@ -16,12 +16,12 @@ const DropZoneWithCaption = ({
         <textarea
           rows={1}
           onChange={onChangeText}
-          maxLength={"60"}
+          maxLength={"200"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
           className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
         />
         <span className={"absolute right-8 text-14px text-caak-generalblack"}>
-          {textCount}/60
+          {textCount}/200
         </span>
       </div>
       <div
