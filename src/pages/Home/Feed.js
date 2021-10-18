@@ -52,6 +52,7 @@ const Feed = () => {
     unMember: [],
   });
   const [posts, setPosts] = useState([]);
+  console.log("asdasdasd",posts[3].items.items[0].comments)
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
