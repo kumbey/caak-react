@@ -52,13 +52,10 @@ export default function NavBar() {
 
   const fetchUserTotal = async () => {
     try {
-      let resp = await API.graphql(
+      const resp = await API.graphql(
         graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
       );
-      resp = getReturnData(resp);
-      if (resp) {
         setUserTotal(getReturnData(resp));
-      }
     } catch (ex) {
       console.log(ex);
     }
