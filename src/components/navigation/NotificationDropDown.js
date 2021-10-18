@@ -213,7 +213,7 @@ const NotificationDropDown = ({ isOpen }) => {
               "text-caak-generalblack font-medium text-20px md:text-16px"
             }
           >
-            Сонордуулга
+            Мэдэгдэл
           </span>
           <span
             onClick={() => handleAllNotifications()}

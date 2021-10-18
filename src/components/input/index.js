@@ -37,7 +37,7 @@ const Input = ({
       />
 
       {!hideError && (
-        <p className="error" id="email-error">
+        <p className="error w-80" id="email-error">
           {errorMessage}
         </p>
       )}
