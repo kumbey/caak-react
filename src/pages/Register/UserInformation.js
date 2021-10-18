@@ -180,7 +180,7 @@ const UserInformation = () => {
                     Имайл хаяг/Утасны дугаар <br/> бүртгүүлэх!
                 </div>
                 <form onSubmit={(e) => e.preventDefault()}>
-                    <div className=" px-c13 ">
+                    <div className="px-c13 ">
                         <div className="flex ph:grid">
                             <Input
                                 value={lastname || ""}
