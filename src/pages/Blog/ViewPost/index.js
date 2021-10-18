@@ -5,7 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../../graphql-custom/post/queries";
-import { checkUser, getFileUrl } from "../../../Utility/Util";
+import { checkUser, getFileUrl, useClickOutSide } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import useScrollBlock from "../../../Utility/useScrollBlock";
 import { createPostViews } from "../../../graphql-custom/postViews/mutation";
@@ -14,7 +14,6 @@ import AddComment from "./AddComment";
 import PostBody from "./PostBody";
 import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
 import PostMore from "../../../components/card/PostMore";
-import { useClickOutSide } from "../../../Utility/Util";
 
 const ViewPost = () => {
   const [post, setPost] = useState();
@@ -274,21 +273,21 @@ const ViewPost = () => {
       >
         <div>
           <div
+            onClick={toggleMenu}
             ref={menuRef}
             className={
-              "flex justify-center items-center absolute right-4 top-6 z-10"
+              "flex justify-center p-3 rounded-full items-center absolute right-4 top-6 z-10 cursor-pointer "
             }
           >
-            <span onClick={toggleMenu} className={"cursor-pointer icon-fi-rs-dots text-4px mr-2"} />
+            <span className={"icon-fi-rs-dots text-4px"} />
+            <GroupInformationDrop
+              className="right-1 top-4 absolute"
+              open={isMenuOpen}
+              onToggle={toggleMenu}
+              content={<PostMore postId={postId} postUser={user} />}
+            />
           </div>
-          <GroupInformationDrop
-            className="absolute right-5"
-            open={isMenuOpen}
-            onToggle={toggleMenu}
-            content={
-              <PostMore postId={postId} postUser={user}/>
-            }
-          />
+
           <div className={"relative flex flex-row px-7"}>
             <div className={"relative"}>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
