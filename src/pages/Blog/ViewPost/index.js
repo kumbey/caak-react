@@ -79,7 +79,7 @@ const ViewPost = ({ pending }) => {
 
   const createPostView = async () => {
     try {
-      if(checkUser(user)){
+      if (checkUser(user)) {
         await API.graphql(
           graphqlOperation(createPostViews, {
             input: { post_id: post.id, user_id: user.sysUser.id },
@@ -321,7 +321,7 @@ const ViewPost = ({ pending }) => {
             </div>
           </div>
           <PostHeader
-              postId={post.id}
+            postId={post.id}
             groupId={post.group.id}
             pending={pending}
             addCommentRef={addCommentRef}

@@ -34,16 +34,19 @@ const UserInformation = () => {
       value: firstname,
       type: Consts.typeRequired,
       onChange: setFirstname,
+      ignoreOn: true,
     },
     lastname: {
       value: lastname,
       type: Consts.typeRequired,
       onChange: setLastname,
+      ignoreOn: true,
     },
     nickname: {
       value: nickname,
       type: Consts.typeRequired,
       onChange: setNickname,
+      ignoreOn: true,
     },
     gender: {
       value: gender,
@@ -59,16 +62,19 @@ const UserInformation = () => {
       value: username,
       type: Consts.typeUsername,
       onChange: setUsername,
+      ignoreOn: true,
     },
     password: {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
+      ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
+      ignoreOn: true,
     },
   };
 

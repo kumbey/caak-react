@@ -1,4 +1,3 @@
-import Button from "../button";
 import {
   createFollowedUsers,
   deleteFollowedUsers,
@@ -45,11 +44,11 @@ export default function ProfileHoverCard({ userId }) {
     setDoRender(doRender + 1);
   };
 
-  useEffect(()=> {
-    return ()=> {
-      setProfileUser(null)
-    }
-  },[])
+  useEffect(() => {
+    return () => {
+      setProfileUser(null);
+    };
+  }, []);
 
   const deleteFollowUser = async () => {
     await API.graphql({
@@ -77,7 +76,7 @@ export default function ProfileHoverCard({ userId }) {
   };
   return profileUser.id ? (
     <div
-      className="w-max rounded-square shadow-dropdown pl-7 pt-3 pb-3 pr-6 bg-white z-50"
+      className="w-max rounded-square shadow-dropdown pl-7 z-50 pt-3 pb-3 pr-6 bg-white"
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">
@@ -91,13 +90,9 @@ export default function ProfileHoverCard({ userId }) {
           }
         />
         {checkUser(user) && user.sysUser.id !== profileUser.id ? (
-          <Button
-            className="text-15px w-c19 h-c24 font-bold"
-            // disabled={postUser.followed}
-            onClick={handleClick}
-          >
+          <button onClick={handleClick} className={"button small"}>
             {profileUser.followed ? "Дагасан" : "Дагах"}
-          </Button>
+          </button>
         ) : null}
       </div>
       <div className="mb-b1">
