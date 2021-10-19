@@ -33,7 +33,7 @@ const Routes = [
     path: "/purwee",
     exact: true,
     background: true,
-    page: () => <PendingPostAdmin />,
+    page: () => <Interests />,
   },
   {
     path: "/profile/userconfig",
