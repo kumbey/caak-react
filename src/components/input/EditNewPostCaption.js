@@ -17,7 +17,7 @@ const EditNewPostCaption = ({
   const [sortedArray, setSortedArray] = useState()
   const [data, setData] = useState([...post.items])
   const [current, setCurrent] = useState(currentEditingIndex)
-  const [maxTextLength] = useState(60)
+  const [maxTextLength] = useState(500)
 
   const featuredPostHandler = (e, index) => {
     e.stopPropagation();
@@ -71,8 +71,8 @@ const EditNewPostCaption = ({
               rows={2}
               value={data[current].title}
               onChange={captionHandler}
-              maxLength={"60"}
-              placeholder={"Нийтлэлийн тайлбар оруулах..."}
+              maxLength={"500"}
+              placeholder={"Зургийн тайлбар оруулах..."}
               className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
             />
             <span

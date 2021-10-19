@@ -89,7 +89,7 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Имайл хаяг/Утасны дугаар <br /> нэвтрэх!
+          Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8 ">
@@ -99,7 +99,7 @@ export default function Login() {
               type={"text"}
               errorMessage={errors.username}
               onChange={handleChange}
-              placeholder={"Имайл хаяг эсвэл Утасны дугаар"}
+              placeholder={"Имэйл хаяг эсвэл Утасны дугаар"}
               className={
                 "border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"
               }

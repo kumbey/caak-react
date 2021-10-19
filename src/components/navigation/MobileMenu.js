@@ -1,6 +1,6 @@
 import { menu_data } from "../menu_data";
 import Button from "../button";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 import { checkUser } from "../../Utility/Util";
 
@@ -28,15 +28,18 @@ const MobileMenu = ({ setOpen }) => {
       </div>
       <div className={`relative p-2`}>
         {menu_data.map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
+          <Link
             className="hover:bg-gray-50 flex flex-row items-center px-3 py-2 pr-5 text-left transition duration-150 ease-in-out rounded-md"
+            key={item.name}
+            to={item.href.replace(
+              ":userId",
+              checkUser(user) && user.sysUser.id
+            )}
           >
             {item.image}
 
             <p className="text-base font-medium text-gray-900">{item.name}</p>
-          </a>
+          </Link>
         ))}
       </div>
       {!checkUser(user) && (
@@ -65,7 +68,7 @@ const MobileMenu = ({ setOpen }) => {
               })
             }
           >
-            Бүртгэл үүсгэх
+            Бүртгүүлэх
           </Button>
         </div>
       )}

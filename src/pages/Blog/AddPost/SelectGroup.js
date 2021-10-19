@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import DropDownSelect from "../../../components/input/DropDownSelect";
 import { generateFileUrl } from "../../../Utility/Util";
+import {useUser} from "../../../context/userContext";
 
 const SelectGroup = ({
   setIsGroupVisible,
@@ -13,6 +14,7 @@ const SelectGroup = ({
   groupData,
   containerClassName,
 }) => {
+  const {user} = useUser()
   return (
     <div
       className={`flex flex-col ${containerClassName}`}
@@ -20,7 +22,7 @@ const SelectGroup = ({
       <div className={"flex flex-row items-center px-7"}>
         <img
           data-dummy="100x100"
-          src={Dummy.img("100x100")}
+          src={user? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
           className={"w-12 h-12 rounded-full object-cover mr-2"}
           alt={""}
         />

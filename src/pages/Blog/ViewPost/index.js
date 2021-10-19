@@ -5,21 +5,31 @@ import { useHistory, useParams } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../../graphql-custom/post/queries";
-import { checkUser, getFileUrl } from "../../../Utility/Util";
+import { checkUser, getFileUrl, useClickOutSide } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import useScrollBlock from "../../../Utility/useScrollBlock";
 import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
+import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
+import PostMore from "../../../components/card/PostMore";
 
-const ViewPost = () => {
+const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { postId } = useParams();
   const history = useHistory();
   const { user } = useUser();
   const addCommentRef = useRef();
+  const [touchPosition, setTouchPosition] = useState(null);
 
   useEffect(() => {
     try {
@@ -99,6 +109,34 @@ const ViewPost = () => {
       setActiveIndex(post.items.items.length - 1);
     }
   };
+
+  //Swipe left, right on mobile screen
+  const handleTouchStart = (e) => {
+    const touchDown = e.touches[0].clientX;
+    setTouchPosition(touchDown);
+  };
+
+  const handleTouchMove = (e) => {
+    const touchDown = touchPosition;
+
+    if (touchDown === null) {
+      return;
+    }
+
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchDown - currentTouch;
+
+    if (diff > 5) {
+      nextItem();
+    }
+
+    if (diff < -5) {
+      prevItem();
+    }
+
+    setTouchPosition(null);
+  };
+
   return post ? (
     <div
       className={
@@ -166,11 +204,20 @@ const ViewPost = () => {
 
         <ImageCarousel>
           {post.items.items.map((item, index) => {
-            if (activeIndex === index)
-              if (item.file.type.startsWith("video")) {
-                return (
+            if (item.file.type.startsWith("video")) {
+              return (
+                <div
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  key={index}
+                  className={
+                    "w-full flex justify-center flex-shrink-0 transition duration-300"
+                  }
+                  style={{
+                    transform: `translateX(-${activeIndex * 100}%)`,
+                  }}
+                >
                   <video
-                    key={index}
                     controls
                     disablePictureInPicture
                     controlsList="nodownload noremoteplayback noplaybackrate"
@@ -178,18 +225,29 @@ const ViewPost = () => {
                   >
                     <source src={getFileUrl(item.file)} type="video/mp4" />
                   </video>
-                );
-              } else {
-                return (
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  // onTouchMove={(e) => swiperHandler(e)}
+                  key={index}
+                  className={"w-full flex-shrink-0 transition duration-300"}
+                  style={{
+                    transform: `translateX(-${activeIndex * 100}%)`,
+                  }}
+                >
                   <img
                     className={`w-full max-h-half lg:max-h-full md:h-full sm:max-h-half object-contain z-0`}
                     key={index}
                     src={getFileUrl(item.file)}
                     alt={""}
                   />
-                );
-              }
-            return null;
+                </div>
+              );
+            }
           })}
         </ImageCarousel>
         <div className={"flex flex-row absolute bottom-6"}>
@@ -214,12 +272,21 @@ const ViewPost = () => {
       >
         <div>
           <div
+            onClick={toggleMenu}
+            ref={menuRef}
             className={
-              "flex justify-center items-center absolute right-4 top-6 z-10"
+              "flex justify-center p-3 rounded-full items-center absolute right-4 top-6 z-10 cursor-pointer "
             }
           >
-            <span className={"cursor-pointer icon-fi-rs-dots text-4px mr-2"} />
+            <span className={"icon-fi-rs-dots text-4px"} />
+            <GroupInformationDrop
+              className="right-1 top-4 absolute"
+              open={isMenuOpen}
+              onToggle={toggleMenu}
+              content={<PostMore postId={postId} postUser={user} />}
+            />
           </div>
+
           <div className={"relative flex flex-row px-7"}>
             <div className={"relative"}>
               {/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -252,6 +319,9 @@ const ViewPost = () => {
             </div>
           </div>
           <PostHeader
+              postId={post.id}
+            groupId={post.group.id}
+            pending={pending}
             addCommentRef={addCommentRef}
             item={post.items.items[activeIndex]}
             updatedAt={post.updatedAt}
@@ -263,12 +333,14 @@ const ViewPost = () => {
             post={post.items.items[activeIndex]}
           />
         </div>
-        <AddComment
-          addCommentRef={addCommentRef}
-          posts={post}
-          activeIndex={activeIndex}
-          item={post.items.items[activeIndex]}
-        />
+        {!pending && (
+          <AddComment
+            addCommentRef={addCommentRef}
+            posts={post}
+            activeIndex={activeIndex}
+            item={post.items.items[activeIndex]}
+          />
+        )}
       </div>
     </div>
   ) : null;

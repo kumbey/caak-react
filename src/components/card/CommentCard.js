@@ -12,7 +12,7 @@ const CommentCard = ({ comment, children }) => {
   //   setCommentInputValue((prev) => `${comment.user.nickname}: ${prev}`);
   // };
   return (
-    <div className={"relative flex flex-col ml-2 justify-between z-1"}>
+    <div className={"relative flex flex-col ml-2 justify-between"}>
       <div className={"cursor-pointer absolute -right-10 z-10 text-caak-blue"}>
         <span className={"icon-fi-rs-dots text-4px"} />
       </div>

@@ -4,6 +4,7 @@ import logo from "../../assets/images/logo.png";
 import SearchInput from "../input/SearchInput";
 import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
+import { Link } from "react-router-dom";
 import {
   checkUser,
   getFileUrl,
@@ -49,19 +50,16 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-  console.log(isMobileMenuOpen)
-
   const fetchUserTotal = async () => {
-      try{
-        let resp = await API.graphql(graphqlOperation(getUserTotal, {user_id: user.sysUser.id}))
-        resp = getReturnData(resp)
-        if(resp){
-          setUserTotal(getReturnData(resp))
-        }
-      }catch(ex){
-        console.log(ex)
-      }
-  }
+    try {
+      const resp = await API.graphql(
+        graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
+      );
+        setUserTotal(getReturnData(resp));
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const fetchUserAura = async () => {
     try {
@@ -124,7 +122,7 @@ export default function NavBar() {
           <div className="flex flex-row items-center">
             <img
               onClick={() => history.push({ pathname: "/" })}
-              className="w-auto h-10 mr-1 cursor-pointer"
+              className="h-14 w-auto mr-1 cursor-pointer"
               src={logo}
               alt="Caak Logo"
             />
@@ -182,7 +180,7 @@ export default function NavBar() {
                         "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
                       }
                     >
-                      {userTotal.unseen}
+                      {userTotal.unseen > 9 ? "9+" : userTotal.unseen}
                     </span>
                   ) : null}
                   <NotificationDropDown
@@ -190,11 +188,7 @@ export default function NavBar() {
                     setIsOpen={setIsNotificationMenu}
                   />
                 </div>
-                <div
-                  ref={menuRef}
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={"relative flex flex-row mr-6"}
-                >
+                <div className={"relative flex flex-row mr-6"}>
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
@@ -214,9 +208,28 @@ export default function NavBar() {
                     />
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
-                    <span className={"text-generalblack text-14px font-bold"}>
-                      {user.sysUser.nickname}
-                    </span>
+                    <div className="flex items-center">
+                      <Link
+                        to={{
+                          pathname: `/user/${user.sysUser.id}/profile`,
+                        }}
+                      >
+                        <span
+                          className={
+                            "text-generalblack text-14px font-bold cursor-pointer"
+                          }
+                        >
+                          {user.sysUser.nickname}
+                        </span>
+                      </Link>
+                      <div
+                        ref={menuRef}
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        className="text-14px ml-4 transform -rotate-90"
+                      >
+                        <span className="icon-fi-rs-back cursor-pointer" />
+                      </div>
+                    </div>
                     <div className={"flex flex-row items-center self-start"}>
                       <span className={"icon-fi-rs-auro auroGradient mr-1"} />
                       <span
@@ -255,7 +268,7 @@ export default function NavBar() {
                     })
                   }
                 >
-                  Бүртгэл үүсгэх
+                  Бүртгүүлэх
                 </Button>
               </div>
             )}
@@ -302,7 +315,7 @@ export default function NavBar() {
         }`}
         id="mobile-menu"
       >
-        <MobileMenu setOpen={setIsMobileMenuOpen}/>
+        <MobileMenu setOpen={setIsMobileMenuOpen} />
       </div>
     </nav>
   );

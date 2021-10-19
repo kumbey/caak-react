@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Button from "../../components/button";
 import Card from "../../components/card";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "../Home/useFetch";
 import { Link } from "react-router-dom";
@@ -36,7 +36,10 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(1);
+  const temp = useLocation();
+  const [activeIndex, setActiveIndex] = useState(
+    temp.state ? temp.state.index : 1
+  );
 
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
@@ -338,7 +341,7 @@ export default function Profile() {
       </div>
 
       <div className="mt-c2 flex items-center justify-around w-full">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           <Button
             key={1}
             onClick={() => setActiveIndex(1)}
