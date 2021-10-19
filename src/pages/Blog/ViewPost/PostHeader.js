@@ -30,7 +30,6 @@ const PostHeader = ({
   const [userRole, setUserRole] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  // const location = useLocation();
   const { state } = useLocation();
 
   const getUsers = async (id) => {
@@ -91,7 +90,7 @@ const PostHeader = ({
     } else {
       history.push({
         pathname: "/login",
-        // state: { background: location },
+        state: state,
       });
     }
   };
