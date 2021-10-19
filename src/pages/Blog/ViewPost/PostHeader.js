@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  checkUser,
   closeModal,
   extractDate,
   generateTimeAgo,
@@ -32,13 +33,15 @@ const PostHeader = ({
   const { state } = useLocation();
 
   const getUsers = async (id) => {
-    const resp = await API.graphql(
-      graphqlOperation(getGroupView, {
-        id,
-      })
-    );
-
-    setUserRole(getReturnData(resp).role_on_group);
+    if(checkUser(user)){
+      const resp = await API.graphql(
+        graphqlOperation(getGroupView, {
+          id,
+        })
+      );
+  
+      setUserRole(getReturnData(resp).role_on_group);
+    }
   };
 
   useEffect(() => {
