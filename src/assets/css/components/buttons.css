@@ -25,3 +25,12 @@
 .button.circular {
     @apply rounded-full
 }
+.dark .button {
+  @apply text-gray-900 bg-gray-500;
+
+  
+
+  &:hover {
+    @apply text-gray-900;
+  }
+}

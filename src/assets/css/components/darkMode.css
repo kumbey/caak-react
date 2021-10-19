@@ -1,0 +1,11 @@
+
+.containerDiv.dark {
+    @apply  bg-gray-900;
+  }
+  
+  
+.containerDiv.light  {
+    @apply bg-caak-bleachedsilk;
+  }
+
+

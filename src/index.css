@@ -6,6 +6,7 @@
 @import "./assets/css/components/dropdown.css";
 @import "./assets/css/components/basic.css";
 @import "./assets/css/icon-fonts.css";
+@import "./assets/css/components/darkMode.css"
 
 @layer base {
     html {
@@ -16,6 +17,7 @@
         @apply bg-caak-bleachedsilk
     }
 }
+
 /*Custom sizing class*/
 @layer utilities {
     .h-22px {

@@ -22,6 +22,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import { getUserTotal } from "../../graphql-custom/totals/queries";
 import { getUserAura } from "../../graphql-custom/user/queries";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function NavBar() {
   const [userTotal, setUserTotal] = useState({});
   const [render, setRender] = useState(0);
   const { isMobileMenuOpen, setIsMobileMenuOpen } = useWrapper();
+  const { theme, changeTheme } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -55,7 +57,7 @@ export default function NavBar() {
       const resp = await API.graphql(
         graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
       );
-        setUserTotal(getReturnData(resp));
+      setUserTotal(getReturnData(resp));
     } catch (ex) {
       console.log(ex);
     }
@@ -116,7 +118,7 @@ export default function NavBar() {
   }, [subscripTotal]);
 
   return (
-    <nav className="bg-white">
+    <nav className={`${theme==="dark" ? "bg-gray-700":"bg-white"}`}>
       <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex flex-row items-center">
@@ -189,6 +191,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div className={"relative flex flex-row mr-6"}>
+                  <button onClick={() => changeTheme()}>DARK HORSE</button>
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
