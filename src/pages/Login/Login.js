@@ -47,6 +47,7 @@ export default function Login() {
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
+      console.log(ex);
       setLoading(false);
       if (ex.code === "UserNotConfirmedException") {
         history.replace({
@@ -59,6 +60,8 @@ export default function Login() {
         });
       } else if (ex.code === "NotAuthorizedException") {
         setError("Нэврэх нэр эсвэл нууц үг буруу байна");
+      } else if (ex.code === "UserNotFoundException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       }
     }
   }
