@@ -6,11 +6,14 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
+import Auth from "@aws-amplify/auth";
 
 export default function ForgotPassword() {
   const history = useHistory();
   const { state } = useLocation();
   const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const validate = {
     username: {
@@ -22,14 +25,28 @@ export default function ForgotPassword() {
 
   const { handleChange, errors, handleSubmit } = Validate(validate);
 
-  function doSubmit() {
-    history.replace({
-      pathname: "/forgotpassword/confirmation/",
-      state: {
-        ...state,
-        username: checkUsername(username),
-      },
-    });
+  async function doSubmit() {
+    try {
+      setLoading(true);
+      await Auth.forgotPassword(username);
+      setLoading(false);
+      history.replace({
+        pathname: "/forgotpassword/confirmation/",
+        state: {
+          ...state,
+          username: checkUsername(username),
+        },
+      });
+    } catch (ex) {
+      setLoading(false);
+      if (ex.code === "UserNotFoundException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "InvalidParameterException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "LimitExceededException") {
+        setError("Дахин код авах лимит хэтэрсэн");
+      }
+    }
   }
 
   return (
@@ -59,6 +76,7 @@ export default function ForgotPassword() {
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8 ">
+            <p className="error">{error}</p>
             <Input
               name="username"
               type="text"
@@ -72,6 +90,7 @@ export default function ForgotPassword() {
           </div>
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
             <Button
+              loading={loading}
               onClick={() => handleSubmit(doSubmit)}
               className={
                 "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"

@@ -42,14 +42,23 @@ export default function PassConfirmation() {
   };
 
   useEffect(() => {
-    doGetCode();
+    Auth.forgotPassword(state.username);
   }, []);
 
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
   const doGetCode = async () => {
-    await Auth.forgotPassword(state.username);
+    try {
+      setLoading(true);
+      await Auth.forgotPassword(state.username);
+      setError("Сэргээх код амжилттай илгээгдлээ");
+      setLoading(false);
+    } catch (ex) {
+      if (ex.code === "LimitExceededException") {
+        setError("Дахин код авах лимит хэтэрсэн");
+      }
+    }
   };
 
   const doConfirm = async () => {
@@ -67,6 +76,10 @@ export default function PassConfirmation() {
           pathname: "/forgotpassword/",
           state: { ...state, errors: { password: "Нууц үг буруу байна" } },
         });
+      } else if (ex.code === "UserNotFoundException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "InvalidParameterException") {
+        setError("Имэйл хаяг буруу байна");
       } else {
         console.log(ex);
       }
@@ -108,11 +121,11 @@ export default function PassConfirmation() {
             <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
               Баталгаажуулах код ирсэнгүй
             </div>
-            <div className="mb-8 flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer">
-              <span
-                onClick={doGetCode}
-                className={"icon-fi-rs-resend text-13px mr-1"}
-              />
+            <div
+              onClick={() => doGetCode()}
+              className="mb-8 flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer"
+            >
+              <span className={"icon-fi-rs-resend text-13px mr-1"} />
               Дахин илгээх
             </div>
             <div className="px-c8">
