@@ -17,6 +17,7 @@ import ViewPost from "../pages/Blog/ViewPost";
 import PendingPostUser from "../pages/Group/PendingPostUser";
 import Check from "../pages/Group/Check";
 import Interests from "../pages/Register/Interests";
+import ForgotPassword from "../pages/ForgotPassword";
 
 const Routes = [
   {
@@ -68,6 +69,13 @@ const Routes = [
     background: true,
     unAuth: true,
     page: () => <Login />,
+  },
+  {
+    path: "/qwe",
+    exact: true,
+    background: true,
+    unAuth: true,
+    page: () => <ForgotPassword />,
   },
   {
     path: "/register/main",

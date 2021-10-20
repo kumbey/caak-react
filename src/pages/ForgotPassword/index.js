@@ -9,7 +9,7 @@ import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
 import { useEffect } from "react";
 
-export default function Login() {
+export default function ForgotPassword() {
   const history = useHistory();
   const { state } = useLocation();
 
@@ -75,9 +75,7 @@ export default function Login() {
             className="flex items-center"
           >
             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">
-              Нэвтрэх сонголт руу буцах
-            </p>
+            <p className="text-caak-generalblack text-13px">Нэвтрэх</p>
           </div>
           <span
             onClick={() => closeModal(history, state)}
@@ -89,7 +87,7 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
+          Нууц үг мартсан
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8 ">
@@ -104,40 +102,17 @@ export default function Login() {
                 "border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"
               }
             />
-            <Input
-              name={"password"}
-              type={"password"}
-              errorMessage={errors.password}
-              onChange={handleChange}
-              placeholder={"Нууц үг"}
-              className={
-                "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-              }
-            />
           </div>
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
             <Button
               loading={loading}
               onClick={() => handleSubmit(doSignIn)}
               className={
-                "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
+                "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
               }
             >
-              Нэвтрэх
+              Сэргээх код авах
             </Button>
-            <div className="text-caak-blue text-15px">
-              <span
-                onClick={() =>
-                  history.replace({
-                    pathname: "/qwe/",
-                    state,
-                  })
-                }
-                className="ml- cursor-pointer"
-              >
-                Нууц үгээ мартсан уу?
-              </span>
-            </div>
           </div>
         </form>
         {/*Footer*/}
@@ -147,7 +122,7 @@ export default function Login() {
           }
         >
           <div className="text-caak-blue text-15px">
-            <span>Шинэ хэрэглэгч бол </span>
+            <span>Бүртгэлтэй хэрэглэгч бол </span>
             <span
               onClick={() =>
                 history.replace({
@@ -157,7 +132,7 @@ export default function Login() {
               }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
-              Бүртгүүлэх
+              Нэврэх
             </span>
           </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
