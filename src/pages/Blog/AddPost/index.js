@@ -66,9 +66,6 @@ const AddPost = () => {
     // eslint-disable-next-line
   }, []);
 
-  // useEffect(() => {
-  //   console.log(post);
-  // }, [post]);
 
   useEffect(() => {
     if (groupData && selectedGroupId) {
@@ -191,11 +188,11 @@ const AddPost = () => {
       );
 
       setLoading(false);
-      closeModal(history, state);
+      // closeModal(history, state);
 
       history.push(
-        { pathname: `/user/${user.sysUser.id}/profile` },
-        { index: 2 }
+          { pathname: `/user/${user.sysUser.id}/profile` },
+          { index: 2 }
       );
       // setActiveIndex(2)
     } catch (ex) {

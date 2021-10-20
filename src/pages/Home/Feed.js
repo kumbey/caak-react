@@ -33,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                                  id: 3,
-                                                                                                                                  type: "Бүлгүүд",
-                                                                                                                                  icon: "icon-fi-rs-group",
-                                                                                                                                },
-                                                                                                                                {
-                                                                                                                                  id: 4,
-                                                                                                                                  type: "Дагасан найзууд",
-                                                                                                                                  icon: "icon-fi-rs-following",
-                                                                                                                                },*/
+                                                                                                                                      id: 3,
+                                                                                                                                      type: "Бүлгүүд",
+                                                                                                                                      icon: "icon-fi-rs-group",
+                                                                                                                                    },
+                                                                                                                                    {
+                                                                                                                                      id: 4,
+                                                                                                                                      type: "Дагасан найзууд",
+                                                                                                                                      icon: "icon-fi-rs-following",
+                                                                                                                                    },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -142,7 +142,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setAddedPost(getReturnData(data, true));
       },
     });
@@ -155,7 +154,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setRemovedPost(getReturnData(data, true));
       },
     });
@@ -168,7 +166,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setRemovedPost(getReturnData(data, true));
       },
     });
@@ -248,14 +245,14 @@ const Feed = () => {
                   <Button
                     key={id}
                     onClick={() => setActiveIndex(id)}
-                    className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
+                    className={`w-56 min-w-max ${
                       id === activeIndex
                         ? "white shadow-button mb-2"
                         : "transparent mb-2"
                     }`}
                     iconPosition={"left"}
                     icon={
-                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                      <div className={"w-5 mr-a1 ph:w-4 ph:mr-2"}>
                         <i
                           className={`${icon}${
                             id === activeIndex ? "" : "-o"

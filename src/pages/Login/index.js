@@ -28,8 +28,8 @@ export default function Login({ type, ...props }) {
   };
 
   return (
-    <Backdrop className={"flex justify-center"}>
-      <div className="min-w-max max-h-96 relative mx-auto my-auto bg-white rounded-lg shadow-xl">
+    <Backdrop className={"flex justify-center items-center"}>
+      <div className="popup absolute bg-white rounded-lg shadow-xl">
         <div
           onClick={() => closeModal(history, state)}
           className="pt-c6 pr-c6 absolute top-0 right-0"
@@ -134,7 +134,7 @@ export default function Login({ type, ...props }) {
           }
         >
           {type === "signUp" ? (
-            <div className=" text-caak-blue text-15px">
+            <div className="text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
                 onClick={() =>
@@ -150,7 +150,7 @@ export default function Login({ type, ...props }) {
               </span>
             </div>
           ) : (
-            <div className=" text-caak-blue text-15px">
+            <div className="text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
                 onClick={() =>

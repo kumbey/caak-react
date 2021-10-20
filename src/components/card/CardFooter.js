@@ -8,9 +8,8 @@ import {
 import { useEffect, useState } from "react";
 import { useUser } from "../../context/userContext";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
-import { getReturnData } from "../../Utility/Util";
+import { checkUser, getReturnData, useClickOutSide } from "../../Utility/Util";
 import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
-import { useClickOutSide } from "../../Utility/Util";
 
 const postMenu = [
   {
@@ -51,37 +50,41 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
 
   let totalComment = Object.keys(items[0].comments.items).length;
 
-  const updateReaction = async (type) => {
-    if (type) {
-      totals.reactions += 1;
+  const reactionHandler = async (type) => {
+    if (checkUser(user)) {
+      if (type) {
+        totals.reactions += 1;
+      } else {
+        totals.reactions -= 1;
+      }
+      setIsReacted(!isReacted);
+      if (type) {
+        await API.graphql(
+          graphqlOperation(createReaction, {
+            input: {
+              id: postId,
+              on_to: "POST",
+              type: "CAAK",
+              user_id: user.sysUser.id,
+            },
+          })
+        );
+      } else {
+        await API.graphql(
+          graphqlOperation(deleteReaction, {
+            input: {
+              id: postId,
+              user_id: user.sysUser.id,
+            },
+          })
+        );
+      }
     } else {
-      totals.reactions -= 1;
+      history.push({
+        pathname: "/login",
+        state: { background: location },
+      });
     }
-    console.log(totals);
-    setIsReacted(!isReacted);
-    if (type) {
-      await API.graphql(
-        graphqlOperation(createReaction, {
-          input: {
-            id: postId,
-            on_to: "POST",
-            type: "CAAK",
-            user_id: user.sysUser.id,
-          },
-        })
-      );
-    } else {
-      await API.graphql(
-        graphqlOperation(deleteReaction, {
-          input: {
-            id: postId,
-            user_id: user.sysUser.id,
-          },
-        })
-      );
-    }
-
-    // console.log(resp);
   };
 
   const subscrip = () => {
@@ -143,7 +146,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
       >
         <div className={"flex flex-row"}>
           <div
-            onClick={() => updateReaction(!isReacted)}
+            onClick={() => reactionHandler(!isReacted)}
             className={
               "flex flex-row group items-center mr-4 cursor-pointer hover:text-caak-primary hover:bg-caak-peachbreeze rounded-full p-2 h-7 w-7"
             }

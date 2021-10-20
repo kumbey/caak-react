@@ -1,5 +1,5 @@
 import Auth from "@aws-amplify/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
@@ -7,7 +7,6 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
-import { useEffect } from "react";
 
 export default function Login() {
   const history = useHistory();
@@ -65,8 +64,8 @@ export default function Login() {
   }
 
   return (
-    <Backdrop className={"flex items-center"}>
-      <div className="w-96 min-w-max mx-auto my-auto bg-white rounded-lg shadow-xl">
+    <Backdrop className={"flex justify-center items-center"}>
+      <div className="popup absolute bg-white rounded-lg shadow-xl">
         <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
           <div
             onClick={() =>
@@ -92,7 +91,7 @@ export default function Login() {
           Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
-          <div className="px-c8 ">
+          <div className="px-c8">
             <p className="error">{error}</p>
             <Input
               name={"username"}

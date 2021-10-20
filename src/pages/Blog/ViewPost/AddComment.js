@@ -3,19 +3,17 @@ import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createComment } from "../../../graphql-custom/comment/mutation";
 import { useUser } from "../../../context/userContext";
-import { getFileUrl, getReturnData } from "../../../Utility/Util";
+import { checkUser, getFileUrl, getReturnData } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 
-const AddComment = ({
-  item,
-  activeIndex,
-  posts,
-  addCommentRef,
-}) => {
+const AddComment = ({ item, activeIndex, posts, addCommentRef }) => {
   const [loading, setLoading] = useState(false);
   const [commentInputValue, setCommentInputValue] = useState("");
   const { user } = useUser();
+  const history = useHistory();
+  const location = useLocation();
 
   //Press Enter key to comment
   useEffect(() => {
@@ -34,22 +32,30 @@ const AddComment = ({
   const addComment = async () => {
     setLoading(true);
     try {
-      const resp = await API.graphql(
-        graphqlOperation(createComment, {
-          input: {
-            comment: commentInputValue,
-            post_item_id: item.id,
-            status: "ACTIVE",
-            type: "PARENT",
-            user_id: user.sysUser.id,
-            replyUserID: item.user_id,
-          },
-        })
-      );
-      setCommentInputValue("");
-      posts.items.items[activeIndex].comments.items.push(
-        getReturnData(resp, false)
-      );
+      if (checkUser(user)) {
+        const resp = await API.graphql(
+          graphqlOperation(createComment, {
+            input: {
+              comment: commentInputValue,
+              post_item_id: item.id,
+              status: "ACTIVE",
+              type: "PARENT",
+              user_id: user.sysUser.id,
+              replyUserID: item.user_id,
+            },
+          })
+        );
+        setCommentInputValue("");
+        posts.items.items[activeIndex].comments.items.push(
+          getReturnData(resp, false)
+        );
+      } else {
+        history.push({
+          pathname: "/login",
+          state: { background: { location } },
+        });
+      }
+
       setLoading(false);
     } catch (ex) {
       console.log(ex);
