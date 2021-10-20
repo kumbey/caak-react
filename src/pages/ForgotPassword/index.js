@@ -1,107 +1,35 @@
-import API from "@aws-amplify/api";
-import Auth from "@aws-amplify/auth";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import Consts from "../../Utility/Consts";
-import { checkUsernameType, closeModal } from "../../Utility/Util";
-import { isLogged } from "../../Utility/Authenty";
-import { useUser } from "../../context/userContext";
+import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
-import { useEffect } from "react";
 
 export default function ForgotPassword() {
   const history = useHistory();
   const { state } = useLocation();
-  const { user, setUser } = useUser();
-
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
   const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const validate = {
-    password: {
-      value: password,
-      type: Consts.typePassword,
-      onChange: setPassword,
-      ignoreOn: true,
-    },
-    passwordRepeat: {
-      value: passwordRepeat,
-      type: Consts.typePasswordRepeat,
-      onChange: setPasswordRepeat,
-      ignoreOn: true,
+    username: {
+      value: username,
+      type: Consts.typeUsername,
+      onChange: setUsername,
     },
   };
 
-  //   if (state.onlyInfo) {
-  //     delete validate["username"];
-  //     delete validate["password"];
-  //     delete validate["passwordRepeat"];
-  //   }
-
-  const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
-
-  useEffect(() => {
-    if (state.onlyInfo) {
-      if (user) {
-        if (password === passwordRepeat) setPassword(user.attributes.password);
-      }
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  const doChangePassword = async () => {
-    try {
-      setLoading(true);
-      let usr = {};
-
-      if (checkUsernameType(username) === Consts.typeEmail) {
-        usr.username = username;
-      } else {
-        usr.username = "+976" + username;
-      }
-      usr.password = password;
-
-      let usrData = {};
-
-      //   await saveUserData(usrData);
-      setLoading(false);
-
-      if (!state.onlyInfo) {
-        history.replace({
-          pathname: "/register/confirmation/",
-          state: { ...state, password: usr.password },
-        });
-      } else {
-        isLogged(user, setUser);
-        history.replace({ pathname: "/register/completed/", state });
-      }
-    } catch (ex) {
-      setLoading(false);
-      if (ex.code === "UsernameExistsException") {
-        setErrors({ ...errors, username: "Дээрхи хэрэглэгч бүртгэлтэй байна" });
-      } else {
-        console.log(ex);
-      }
-    }
-  };
-  //   const saveUserData = async (data) => {
-  //     let user = await API.graphql({
-  //       query: createUser,
-  //       variables: { input: data },
-  //       authMode: "AWS_IAM",
-  //     });
-
-  //     console.log(user);
-  //   };
+  const { handleChange, errors, handleSubmit } = Validate(validate);
 
   function doSubmit() {
-    history.replace({ pathname: "/forgotpassword/confirmation/" });
+    history.replace({
+      pathname: "/forgotpassword/confirmation/",
+      state: {
+        ...state,
+        username: checkUsername(username),
+      },
+    });
   }
 
   return (
@@ -131,10 +59,9 @@ export default function ForgotPassword() {
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8 ">
-            <p className="error">{error}</p>
             <Input
-              name={"username"}
-              type={"text"}
+              name="username"
+              type="text"
               errorMessage={errors.username}
               onChange={handleChange}
               placeholder={"Имэйл хаяг эсвэл Утасны дугаар"}
@@ -145,8 +72,7 @@ export default function ForgotPassword() {
           </div>
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
             <Button
-              loading={loading}
-              onClick={() => doSubmit()}
+              onClick={() => handleSubmit(doSubmit)}
               className={
                 "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
               }

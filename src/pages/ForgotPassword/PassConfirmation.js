@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
 import Backdrop from "../../components/Backdrop";
-import { closeModal, mailNumber } from "../../Utility/Util";
+import { closeModal } from "../../Utility/Util";
 import { useState } from "react";
 import Validate from "../../Utility/Validate";
 import Consts from "../../Utility/Consts";
 import Auth from "@aws-amplify/auth";
+import Input from "../../components/input";
 
 export default function PassConfirmation() {
   const history = useHistory();
@@ -15,6 +16,9 @@ export default function PassConfirmation() {
 
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
 
   const validate = {
     code: {
@@ -23,18 +27,37 @@ export default function PassConfirmation() {
       onChange: setCode,
       ignoreOn: true,
     },
+    password: {
+      value: password,
+      type: Consts.typePassword,
+      onChange: setPassword,
+      ignoreOn: true,
+    },
+    passwordRepeat: {
+      value: passwordRepeat,
+      type: Consts.typePasswordRepeat,
+      onChange: setPasswordRepeat,
+      ignoreOn: true,
+    },
   };
+
+  useEffect(() => {
+    doGetCode();
+  }, []);
 
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
+  const doGetCode = async () => {
+    await Auth.forgotPassword(state.username);
+  };
+
   const doConfirm = async () => {
     try {
       setLoading(true);
-      await Auth.confirmSignUp(state.username, code);
-      await Auth.signIn(state.username, state.password);
+      await Auth.forgotPasswordSubmit(state.username, code, password);
       setLoading(false);
-      history.replace({ pathname: "/forgotpassword/completed/", state });
+      history.replace({ pathname: "/login/main/", state });
     } catch (ex) {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
@@ -50,18 +73,10 @@ export default function PassConfirmation() {
     }
   };
 
-  function doSubmit() {
-    history.replace({ pathname: "/forgotpassword/completed/" });
-  }
-
   return (
     <Backdrop className="flex justify-center items-center">
       <div className="ph:w-full bg-white rounded-lg shadow-xl">
-        <div className="flex px-c6 justify-between pt-c6 items-center  cursor-pointer ">
-          <div className="flex items-center">
-            {/* <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1"/>
-                            <p  className="text-caak-generalblack text-13px">Бүртгүүлэх хэсэг рүү буцах</p> */}
-          </div>
+        <div className="flex px-c6 justify-end pt-c6 items-center  cursor-pointer ">
           <span
             onClick={() => closeModal(history, state)}
             className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex justify-center items-center rounded rounded-full cursor-pointer"
@@ -82,7 +97,7 @@ export default function PassConfirmation() {
           баталгаажуулах код илгээгдсэн болно.
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
-          <div className="mt-c11">
+          <div className="mt-c11 ">
             <OtpInput
               errorMessage={errors.code}
               name={"code"}
@@ -90,29 +105,57 @@ export default function PassConfirmation() {
             />
           </div>
           <div className={" flex flex-col "}>
-            <div className=" flex justify-center text-14px text-caak-darkBlue mt-c20">
+            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
               Баталгаажуулах код ирсэнгүй
             </div>
-            <div className=" flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer">
-              <span className={"icon-fi-rs-resend text-13px mr-1"} />
+            <div className="mb-8 flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer">
+              <span
+                onClick={doGetCode}
+                className={"icon-fi-rs-resend text-13px mr-1"}
+              />
               Дахин илгээх
             </div>
-            <Button
-              loading={loading}
-              onClick={() => doSubmit()}
-              round
-              className={`font-bold 
+            <div className="px-c8">
+              <p className="error">{error}</p>
+              <Input
+                value={password}
+                name={"password"}
+                type={"password"}
+                errorMessage={errors.password}
+                onChange={handleChange}
+                placeholder={"Шинэ нууц үг"}
+                className={
+                  "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                }
+              />
+              <Input
+                value={passwordRepeat}
+                name={"passwordRepeat"}
+                type={"password"}
+                errorMessage={errors.passwordRepeat}
+                onChange={handleChange}
+                placeholder={"Шинэ нууц үг давтах"}
+                className={
+                  "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                }
+              />
+              <Button
+                loading={loading}
+                onClick={() => handleSubmit(doConfirm)}
+                round
+                className={`font-bold 
                       ${
                         isValid
                           ? "bg-caak-primary text-white"
                           : "bg-caak-titaniumwhite text-caak-shit"
                       }
-                      mt-c6 mx-c13 
+                      mt-c6 w-full
                       h-c9 
                       text-17px`}
-            >
-              Үргэлжлүүлэх
-            </Button>
+              >
+                Үргэлжлүүлэх
+              </Button>
+            </div>
           </div>
         </form>
 

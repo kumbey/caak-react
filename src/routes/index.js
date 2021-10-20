@@ -19,7 +19,6 @@ import Check from "../pages/Group/Check";
 import Interests from "../pages/Register/Interests";
 import ForgotPassword from "../pages/ForgotPassword";
 import PassConfirmation from "../pages/ForgotPassword/PassConfirmation";
-import PassCompleted from "../pages/ForgotPassword/PassCompleted";
 
 const Routes = [
   {
@@ -107,13 +106,6 @@ const Routes = [
     background: true,
     unAuth: true,
     page: () => <PassConfirmation />,
-  },
-  {
-    path: "/forgotpassword/completed",
-    exact: true,
-    background: true,
-    unAuth: true,
-    page: () => <PassCompleted />,
   },
   {
     path: "/federated/login/:type",
