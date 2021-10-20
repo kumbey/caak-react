@@ -79,7 +79,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
       >
         <span className="icon-fi-rs-dots text-4px" />
         <GroupInformationDrop
-          className="absolute"
+          className="absolute shadow-dropdown"
           shadow
           content={<PostMore postId={postId} postUser={postUser}/>}
           open={isMenuOpen}

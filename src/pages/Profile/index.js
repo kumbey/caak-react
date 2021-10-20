@@ -59,7 +59,6 @@ export default function Profile() {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        console.log("onData", onData);
         setSubscriptionPosts(onData);
       },
       error: (error) => {
@@ -71,7 +70,6 @@ export default function Profile() {
   useEffect(() => {
     if (setSubscriptionPosts) {
       if (!posts.find((item) => item.id === subscriptionPosts.id))
-        console.log(subscriptionPosts);
       setPosts((prev) => [subscriptionPosts, ...prev]);
     }
     // eslint-disable-next-line
