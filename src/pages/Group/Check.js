@@ -10,8 +10,7 @@ import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { getGroupView } from "../../graphql-custom/group/queries";
 
-export default function Check({ hasApproveButtons }) {
-
+export default function Check() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -51,7 +50,7 @@ export default function Check({ hasApproveButtons }) {
 
   useEffect(() => {
     if (post) getUsers(post.group.id);
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [postId]);
 
   const getUsers = async (id) => {
@@ -112,7 +111,7 @@ export default function Check({ hasApproveButtons }) {
 
   return post ? (
     <Backdrop className="flex justify-center">
-      <div className="absolute top-1/2 left-1/2 px-0 mt-10 w-full transform -translate-x-1/2 -translate-y-1/2 sm:px-2 md:px-10 lg:w-3/5">
+      <div className="absolute flex top-1/2 left-1/2 px-0 mt-10 w-full transform -translate-x-1/2 -translate-y-1/2 sm:px-2 md:px-10 lg:w-3/5">
         <div className="flex relative sticky top-0 justify-between w-full bg-white sm:hidden py-a1 px-c6">
           <span
             onClick={() => closeModal(history, state)}
