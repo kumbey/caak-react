@@ -1,10 +1,13 @@
+import API from "@aws-amplify/api";
 import Auth from "@aws-amplify/auth";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
 import Consts from "../../Utility/Consts";
-import { checkUsername, closeModal } from "../../Utility/Util";
+import { checkUsernameType, closeModal } from "../../Utility/Util";
+import { isLogged } from "../../Utility/Authenty";
+import { useUser } from "../../context/userContext";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
 import { useEffect } from "react";
@@ -12,62 +15,99 @@ import { useEffect } from "react";
 export default function ForgotPassword() {
   const history = useHistory();
   const { state } = useLocation();
+  const { user, setUser } = useUser();
 
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const validate = {
-    username: {
-      value: username,
-      type: Consts.typeUsername,
-      onChange: setUsername,
-    },
     password: {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
+      ignoreOn: true,
+    },
+    passwordRepeat: {
+      value: passwordRepeat,
+      type: Consts.typePasswordRepeat,
+      onChange: setPasswordRepeat,
+      ignoreOn: true,
     },
   };
+
+  //   if (state.onlyInfo) {
+  //     delete validate["username"];
+  //     delete validate["password"];
+  //     delete validate["passwordRepeat"];
+  //   }
 
   const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
 
   useEffect(() => {
-    if (state.errors) {
-      setErrors(state.errors);
+    if (state.onlyInfo) {
+      if (user) {
+        if (password === passwordRepeat) setPassword(user.attributes.password);
+      }
     }
     // eslint-disable-next-line
   }, []);
 
-  async function doSignIn() {
+  const doChangePassword = async () => {
     try {
       setLoading(true);
+      let usr = {};
 
-      await Auth.signIn(checkUsername(username), password);
+      if (checkUsernameType(username) === Consts.typeEmail) {
+        usr.username = username;
+      } else {
+        usr.username = "+976" + username;
+      }
+      usr.password = password;
+
+      let usrData = {};
+
+      //   await saveUserData(usrData);
       setLoading(false);
-      closeModal(history, state);
-    } catch (ex) {
-      setLoading(false);
-      if (ex.code === "UserNotConfirmedException") {
+
+      if (!state.onlyInfo) {
         history.replace({
           pathname: "/register/confirmation/",
-          state: {
-            ...state,
-            username: checkUsername(username),
-            password: password,
-          },
+          state: { ...state, password: usr.password },
         });
-      } else if (ex.code === "NotAuthorizedException") {
-        setError("Нэврэх нэр эсвэл нууц үг буруу байна");
+      } else {
+        isLogged(user, setUser);
+        history.replace({ pathname: "/register/completed/", state });
+      }
+    } catch (ex) {
+      setLoading(false);
+      if (ex.code === "UsernameExistsException") {
+        setErrors({ ...errors, username: "Дээрхи хэрэглэгч бүртгэлтэй байна" });
+      } else {
+        console.log(ex);
       }
     }
+  };
+  //   const saveUserData = async (data) => {
+  //     let user = await API.graphql({
+  //       query: createUser,
+  //       variables: { input: data },
+  //       authMode: "AWS_IAM",
+  //     });
+
+  //     console.log(user);
+  //   };
+
+  function doSubmit() {
+    history.replace({ pathname: "/forgotpassword/confirmation/" });
   }
 
   return (
-    <Backdrop className={"flex items-center"}>
-      <div className="w-96 min-w-max mx-auto my-auto bg-white rounded-lg shadow-xl">
-        <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
+    <Backdrop className={"flex items-center justify-center"}>
+      <div className="popup absolute bg-white rounded-lg shadow-xl">
+        <div className=" px-c6 pt-c6 flex items-center justify-between cursor-pointer">
           <div
             onClick={() =>
               history.replace({ pathname: "/login", state: state })
@@ -106,7 +146,7 @@ export default function ForgotPassword() {
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
             <Button
               loading={loading}
-              onClick={() => handleSubmit(doSignIn)}
+              onClick={() => doSubmit()}
               className={
                 "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
               }

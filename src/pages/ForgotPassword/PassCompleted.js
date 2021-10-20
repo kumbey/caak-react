@@ -7,8 +7,9 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
+import Checkbox from "../../components/checkbox/Checkbox";
 
-export default function Login() {
+export default function PassCompleted() {
   const history = useHistory();
   const { state } = useLocation();
 
@@ -16,6 +17,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
 
   const validate = {
     username: {
@@ -32,52 +34,52 @@ export default function Login() {
 
   const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
 
-  useEffect(() => {
-    if (state.errors) {
-      setErrors(state.errors);
-    }
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   if (state.errors) {
+  //     setErrors(state.errors);
+  //   }
+  //   // eslint-disable-next-line
+  // }, []);
 
-  async function doSignIn() {
-    try {
-      setLoading(true);
+  // async function doSignIn() {
+  //   try {
+  //     setLoading(true);
 
-      await Auth.signIn(checkUsername(username), password);
-      setLoading(false);
-      closeModal(history, state);
-    } catch (ex) {
-      setLoading(false);
-      if (ex.code === "UserNotConfirmedException") {
-        history.replace({
-          pathname: "/register/confirmation/",
-          state: {
-            ...state,
-            username: checkUsername(username),
-            password: password,
-          },
-        });
-      } else if (ex.code === "NotAuthorizedException") {
-        setError("Нэврэх нэр эсвэл нууц үг буруу байна");
-      }
-    }
+  //     await Auth.signIn(checkUsername(username), password);
+  //     setLoading(false);
+  //     closeModal(history, state);
+  //   } catch (ex) {
+  //     setLoading(false);
+  //     if (ex.code === "UserNotConfirmedException") {
+  //       history.replace({
+  //         pathname: "/forgotpassword/confirmation/",
+  //         state: {
+  //           ...state,
+  //           username: checkUsername(username),
+  //           password: password,
+  //         },
+  //       });
+  //     } else if (ex.code === "NotAuthorizedException") {
+  //       setError("Нэврэх нэр эсвэл нууц үг буруу байна");
+  //     }
+  //   }
+  // }
+
+  function changePassword() {
+    history.replace({
+      pathname: "/login/main/",
+    });
+  }
+
+  function handleCheck() {
+    console.log("checked");
+    setIsCheck(!isCheck);
   }
 
   return (
     <Backdrop className={"flex justify-center items-center"}>
       <div className="popup absolute bg-white rounded-lg shadow-xl">
-        <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
-          <div
-            onClick={() =>
-              history.replace({ pathname: "/login", state: state })
-            }
-            className="flex items-center"
-          >
-            <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">
-              Нэвтрэх сонголт руу буцах
-            </p>
-          </div>
+        <div className="px-c6 pt-c6 flex items-center justify-end cursor-pointer">
           <span
             onClick={() => closeModal(history, state)}
             className="icon-fi-rs-close text-caak-generalblack text-12px bg-caak-titaniumwhite w-c3 h-c3 flex items-center justify-center rounded-full cursor-pointer"
@@ -88,19 +90,20 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
+          Нууц үгээ сэргээх
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8">
             <p className="error">{error}</p>
+
             <Input
-              name={"username"}
-              type={"text"}
-              errorMessage={errors.username}
+              name={"password"}
+              type={"password"}
+              errorMessage={errors.password}
               onChange={handleChange}
-              placeholder={"Имэйл хаяг эсвэл Утасны дугаар"}
+              placeholder={"Шинэ нууц үг"}
               className={
-                "border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"
+                "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
               }
             />
             <Input
@@ -108,35 +111,33 @@ export default function Login() {
               type={"password"}
               errorMessage={errors.password}
               onChange={handleChange}
-              placeholder={"Нууц үг"}
+              placeholder={"Шинэ нууц үг давтах"}
               className={
                 "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
               }
             />
           </div>
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
+            <div className="text-caak-generalblack text-14px  ">
+              <Checkbox
+                id="selectAll"
+                handleClick={handleCheck}
+                isChecked={isCheck.length}
+                className="rounded border-2 cursor-pointer w-b4 h-b4 ${
+                 bg-caak-primary
+                "
+              />
+              <span className=" ml-1  ">Намайг сана</span>
+            </div>
             <Button
               loading={loading}
-              onClick={() => handleSubmit(doSignIn)}
+              onClick={() => changePassword()}
               className={
                 "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
               }
             >
-              Нэвтрэх
+              Баталгаажуулах
             </Button>
-            <div className="text-caak-blue text-15px">
-              <span
-                onClick={() =>
-                  history.replace({
-                    pathname: "/forgotpassword/",
-                    state,
-                  })
-                }
-                className="ml- cursor-pointer"
-              >
-                Нууц үгээ мартсан уу?
-              </span>
-            </div>
           </div>
         </form>
         {/*Footer*/}
@@ -146,17 +147,17 @@ export default function Login() {
           }
         >
           <div className="text-caak-blue text-15px">
-            <span>Шинэ хэрэглэгч бол </span>
+            <span>Бүртгэлтэй хэрэглэгч бол </span>
             <span
               onClick={() =>
                 history.replace({
-                  pathname: "/register/",
+                  pathname: "/login/",
                   state,
                 })
               }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
-              Бүртгүүлэх
+              Нэвтрэх
             </span>
           </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />

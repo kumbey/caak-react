@@ -18,6 +18,8 @@ import PendingPostUser from "../pages/Group/PendingPostUser";
 import Check from "../pages/Group/Check";
 import Interests from "../pages/Register/Interests";
 import ForgotPassword from "../pages/ForgotPassword";
+import PassConfirmation from "../pages/ForgotPassword/PassConfirmation";
+import PassCompleted from "../pages/ForgotPassword/PassCompleted";
 
 const Routes = [
   {
@@ -70,13 +72,7 @@ const Routes = [
     unAuth: true,
     page: () => <Login />,
   },
-  {
-    path: "/qwe",
-    exact: true,
-    background: true,
-    unAuth: true,
-    page: () => <ForgotPassword />,
-  },
+
   {
     path: "/register/main",
     exact: true,
@@ -97,6 +93,27 @@ const Routes = [
     background: true,
     unAuth: true,
     page: () => <Completed />,
+  },
+  {
+    path: "/forgotpassword",
+    exact: true,
+    background: true,
+    unAuth: true,
+    page: () => <ForgotPassword />,
+  },
+  {
+    path: "/forgotpassword/confirmation",
+    exact: true,
+    background: true,
+    unAuth: true,
+    page: () => <PassConfirmation />,
+  },
+  {
+    path: "/forgotpassword/completed",
+    exact: true,
+    background: true,
+    unAuth: true,
+    page: () => <PassCompleted />,
   },
   {
     path: "/federated/login/:type",
