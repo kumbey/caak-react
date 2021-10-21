@@ -95,7 +95,7 @@ export default function ProfileHoverCard({ userId }) {
           </button>
         ) : null}
       </div>
-      <div className="mb-b1">
+      <div className="mb-px-10">
         <Link
           to={{
             pathname: `/user/${profileUser.id}/profile`,
