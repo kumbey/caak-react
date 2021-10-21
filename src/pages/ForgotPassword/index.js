@@ -45,6 +45,8 @@ export default function ForgotPassword() {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       } else if (ex.code === "LimitExceededException") {
         setError("Дахин код авах лимит хэтэрсэн");
+      } else {
+        console.log(ex);
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
@@ -19,6 +19,8 @@ export default function PassConfirmation() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [disabled, setDisabled] = useState(false);
+  const [message, setMessage] = useState("Баталгаажуулах код ирсэнгүй");
 
   const validate = {
     code: {
@@ -41,24 +43,28 @@ export default function PassConfirmation() {
     },
   };
 
-  useEffect(() => {
-    Auth.forgotPassword(state.username);
-  }, []);
-
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
   const doGetCode = async () => {
-    try {
-      setLoading(true);
-      await Auth.forgotPassword(state.username);
-      setError("Сэргээх код амжилттай илгээгдлээ");
-      setLoading(false);
-    } catch (ex) {
-      if (ex.code === "LimitExceededException") {
-        setError("Дахин код авах лимит хэтэрсэн");
+    setDisabled(true);
+    setTimeout(() => {
+      setMessage("Баталгаажуулах код ирсэнгүй");
+      setDisabled(false);
+    }, 60000);
+    if (!disabled)
+      try {
+        setLoading(true);
+        await Auth.forgotPassword(state.username);
+        setMessage("Сэргээх код амжилттай илгээгдлээ");
+        setLoading(false);
+      } catch (ex) {
+        if (ex.code === "LimitExceededException") {
+          setError("Дахин код авах лимит хэтэрсэн");
+        } else {
+          console.log(ex);
+        }
       }
-    }
   };
 
   const doConfirm = async () => {
@@ -71,11 +77,6 @@ export default function PassConfirmation() {
       setLoading(false);
       if (ex.code === "CodeMismatchException") {
         setErrors({ ...errors, code: "Баталгаажуулах код буруу байна" });
-      } else if (ex.code === "NotAuthorizedException") {
-        history.replace({
-          pathname: "/forgotpassword/",
-          state: { ...state, errors: { password: "Нууц үг буруу байна" } },
-        });
       } else if (ex.code === "UserNotFoundException") {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       } else if (ex.code === "InvalidParameterException") {
@@ -118,16 +119,21 @@ export default function PassConfirmation() {
             />
           </div>
           <div className={" flex flex-col "}>
-            <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
-              Баталгаажуулах код ирсэнгүй
+            <div className="px-c8 ">
+              <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
+                {message && message}
+              </div>
+              <div
+                onClick={() => doGetCode()}
+                className={`${
+                  disabled ? "disabled" : "cursor-pointer"
+                } mb-8 w-full flex justify-center items-center  text-14px  text-caak-primary  bg-transparent shadow-none font-bold `}
+              >
+                <span className={"icon-fi-rs-resend text-13px mr-1"} />
+                Дахин илгээх
+              </div>
             </div>
-            <div
-              onClick={() => doGetCode()}
-              className="mb-8 flex justify-center items-center text-14px text-caak-primary font-bold cursor-pointer"
-            >
-              <span className={"icon-fi-rs-resend text-13px mr-1"} />
-              Дахин илгээх
-            </div>
+
             <div className="px-c8">
               <p className="error">{error}</p>
               <Input
@@ -153,6 +159,7 @@ export default function PassConfirmation() {
                 }
               />
               <Button
+                disabled={isValid ? false : true}
                 loading={loading}
                 onClick={() => handleSubmit(doConfirm)}
                 round
