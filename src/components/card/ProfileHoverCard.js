@@ -6,7 +6,7 @@ import API from "@aws-amplify/api";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
 import { checkUser, getFileUrl } from "../../Utility/Util";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
 import Loader from "../loader";
 
@@ -15,14 +15,16 @@ export default function ProfileHoverCard({ userId }) {
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  const location = useLocation();
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (checkUser(user)) {
-      setLoading(true);
-      if (userId) {
+    setLoading(true);
+    if (userId)
+      if (checkUser(user)) {
         getUserById({ id: userId, setUser: setProfileUser }).then(() =>
           setLoading(false)
         );
@@ -33,7 +35,7 @@ export default function ProfileHoverCard({ userId }) {
           authMode: "AWS_IAM",
         }).then(() => setLoading(false));
       }
-    }
+
     // eslint-disable-next-line
   }, [userId]);
 
@@ -77,16 +79,21 @@ export default function ProfileHoverCard({ userId }) {
       } else if (profileUser.followed) {
         deleteFollowUser();
       }
+    } else {
+      history.push({
+        pathname: `/login`,
+        state: { background: location },
+      });
     }
   };
   return !loading && profileUser.id ? (
     <div
-      className="pl-7 w-ch h-px-154 rounded-square shadow-dropdown z-50 pt-3 pb-3 pr-6 bg-white"
+      className="pt-3 pr-6 pb-3 pl-7 bg-white w-ch h-px-154 rounded-square shadow-dropdown"
       // style={{ top: "45px" }}
     >
-      <div className="flex flex-row items-center justify-between w-full">
+      <div className="flex flex-row justify-between items-center w-full">
         <img
-          className="w-12 h-12 border-2 border-white rounded-full"
+          className="w-12 h-12 rounded-full border-2 border-white"
           alt=""
           src={
             profileUser.pic
@@ -94,11 +101,19 @@ export default function ProfileHoverCard({ userId }) {
               : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
           }
         />
-        {checkUser(user) && user.sysUser.id !== profileUser.id ? (
+        {/*If no user is logged, show only follow button*/}
+        {/*And If user is there show follow or unfollow button*/}
+        {checkUser(user) ? (
+          user.sysUser.id !== profileUser.id ? (
+            <button onClick={handleClick} className={"button small"}>
+              {profileUser.followed ? "Дагасан" : "Дагах"}
+            </button>
+          ) : null
+        ) : (
           <button onClick={handleClick} className={"button small"}>
-            {profileUser.followed ? "Дагасан" : "Дагах"}
+            Дагах
           </button>
-        ) : null}
+        )}
       </div>
       <div className="mb-px-10">
         <Link
@@ -111,20 +126,20 @@ export default function ProfileHoverCard({ userId }) {
             <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
           </div>
         </Link>
-        <p className="text-15px font-light">{profileUser.about}</p>
+        <p className="font-light text-15px">{profileUser.about}</p>
       </div>
-      <div className="pr-14 flex flex-row items-center justify-between">
+      <div className="flex flex-row justify-between items-center pr-14">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
-          <p className="text-18px mr-1 font-medium">{profileUser.aura}</p>
-          <p className="text-15px text-caak-darkBlue font-roboto font-light">
+          <p className="mr-1 font-medium text-18px">{profileUser.aura}</p>
+          <p className="font-light text-15px text-caak-darkBlue font-roboto">
             Аура
           </p>
         </div>
         <div className="flex items-center">
-          <p className="text-18px mr-1 font-medium">
+          <p className="mr-1 font-medium text-18px">
             {profileUser.totals?.followers}
           </p>
-          <p className="text-15px text-caak-darkBlue font-light"> дагагчид</p>
+          <p className="font-light text-15px text-caak-darkBlue"> дагагчид</p>
         </div>
       </div>
     </div>
