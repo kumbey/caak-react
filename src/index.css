@@ -241,3 +241,8 @@
     min-width: 320px;
     width: clamp(320px, 100%, 450px);
 }
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: transparent;
+}
