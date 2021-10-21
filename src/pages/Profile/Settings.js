@@ -3,7 +3,6 @@ import { useHistory, useParams } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
-import BottomTabs from "../Home/BottomTabs";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
@@ -305,9 +304,6 @@ export default function Settings() {
           </div>
         </div>
       </div>
-      <footer className={` block md:hidden sticky bottom-0 z-10`}>
-        <BottomTabs />
-      </footer>
     </div>
   ) : null;
 }
