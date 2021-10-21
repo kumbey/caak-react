@@ -1,10 +1,10 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 @import "./assets/css/components/buttons.css";
-@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/dropdown.css";
+@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/basic.css";
+@tailwind utilities;
 @import "./assets/css/icon-fonts.css";
 
 @layer base {
