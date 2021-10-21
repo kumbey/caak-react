@@ -8,25 +8,30 @@ import { useEffect, useState } from "react";
 import { checkUser, getFileUrl } from "../../Utility/Util";
 import { Link } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
+import Loader from "../loader";
 
 export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
   const [doRender, setDoRender] = useState(0);
   const [profileUser, setProfileUser] = useState({});
+  const [loading, setLoading] = useState(false);
   // useEffect(() => {
   //   console.log("FOLLOW: ", postUser.followed);
   // }, [postUser.followed]);
 
   useEffect(() => {
-    if (userId) {
-      if (checkUser(user)) {
-        getUserById({ id: userId, setUser: setProfileUser });
+    if (checkUser(user)) {
+      setLoading(true);
+      if (userId) {
+        getUserById({ id: userId, setUser: setProfileUser }).then(() =>
+          setLoading(false)
+        );
       } else {
         getUserById({
           id: userId,
           setUser: setProfileUser,
           authMode: "AWS_IAM",
-        });
+        }).then(() => setLoading(false));
       }
     }
     // eslint-disable-next-line
@@ -74,14 +79,14 @@ export default function ProfileHoverCard({ userId }) {
       }
     }
   };
-  return profileUser.id ? (
+  return !loading && profileUser.id ? (
     <div
-      className="w-max rounded-square shadow-dropdown pl-7 z-50 pt-3 pb-3 pr-6 bg-white"
+      className="pl-7 w-ch h-px-154 rounded-square shadow-dropdown z-50 pt-3 pb-3 pr-6 bg-white"
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row items-center justify-between w-full">
         <img
-          className=" w-12 h-12 border-2 border-white rounded-full"
+          className="w-12 h-12 border-2 border-white rounded-full"
           alt=""
           src={
             profileUser.pic
@@ -101,14 +106,14 @@ export default function ProfileHoverCard({ userId }) {
             pathname: `/user/${profileUser.id}/profile`,
           }}
         >
-          <div className=" flex items-center">
+          <div className="flex items-center">
             <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
             <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
           </div>
         </Link>
         <p className="text-15px font-light">{profileUser.about}</p>
       </div>
-      <div className=" pr-14 flex flex-row items-center justify-between">
+      <div className="pr-14 flex flex-row items-center justify-between">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
           <p className="text-18px mr-1 font-medium">{profileUser.aura}</p>
           <p className="text-15px text-caak-darkBlue font-roboto font-light">
@@ -123,5 +128,12 @@ export default function ProfileHoverCard({ userId }) {
         </div>
       </div>
     </div>
-  ) : null;
+  ) : (
+    <Loader
+      containerClassName={
+        "flex items-center justify-center w-ch h-px-154 rounded-square shadow-dropdown pl-7 z-50 pt-3 pb-3 pr-6 bg-white"
+      }
+      className={`bg-caak-primary`}
+    />
+  );
 }
