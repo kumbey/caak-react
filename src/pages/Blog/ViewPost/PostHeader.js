@@ -151,11 +151,11 @@ const PostHeader = ({
           </div>
         </div>
       ) : userRole === "ADMIN" || userRole === "MODERATOR" ? (
-        <div className="mt-b4 px-7 flex items-center">
+        <div className="px-7 mt-b4 flex items-center">
           <Button
             loading={loading}
             onClick={() => handler(postId, "CONFIRMED")}
-            className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
+            className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
           >
             Зөвшөөрөх
           </Button>

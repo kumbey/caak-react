@@ -127,14 +127,14 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
   }, [subscripTotal]);
 
   return (
-    <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl relative flex flex-col justify-between h-full px-4 py-2 pb-4">
+    <div className="flex relative flex-col justify-between px-4 py-2 pb-4 h-full xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl">
       <Link
         to={{
           pathname: `/post/view/${postId}`,
           state: { background: location },
         }}
       >
-        <p className="text-generalblack text-17px font-bold leading-5 break-words">
+        <p className="font-bold leading-5 break-words text-generalblack text-17px">
           {title}
         </p>
       </Link>
@@ -181,17 +181,17 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
           <i className={"icon-fi-rs-share text-15px mr-1.5"} />
           <span>Хуваалцах</span>
           <GroupInformationDrop
-            className="bottom-12 absolute right-0"
+            className="absolute right-0 bottom-12"
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={postMenu.map((data) => (
               <div
                 key={data.id}
                 style={{ height: "36px" }}
-                className="px-c6 hover:bg-caak-liquidnitrogen flex items-center cursor-pointer"
+                className="flex items-center cursor-pointer px-c6 hover:bg-caak-liquidnitrogen"
               >
                 <span className="icon-fi-rs-drag text-14px" />
-                <p className="text-14px text-caak-extraBlack ml-b2">
+                <p className="text-14px text-caak-extraBlack ml-px-12">
                   {data.title}
                 </p>
               </div>

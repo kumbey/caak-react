@@ -1,10 +1,10 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 @import "./assets/css/components/buttons.css";
-@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/dropdown.css";
+@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/basic.css";
+@tailwind utilities;
 @import "./assets/css/icon-fonts.css";
 
 @layer base {
@@ -84,16 +84,16 @@
 }
 
 .backdrop {
-  z-index: 2;
-  position: fixed;
-  overflow: scroll;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  min-width: max-content;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(6px);
+    z-index: 50;
+    position: fixed;
+    overflow: scroll;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    min-width: max-content;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
 }
 
 .spinner {

@@ -96,7 +96,7 @@ export default function Informations({ currentUser }) {
                 style={{ paddingBlock: "14px" }}
                 className="text-14px sm:text-16px flex items-center w-full border-b"
               >
-                <p className="my-a4 w-32 font-medium">{setting.text}</p>
+                <p className="my-px-9 w-32 font-medium">{setting.text}</p>
                 {showInput && index === currentIndex ? (
                   <div className="flex">
                     <input
