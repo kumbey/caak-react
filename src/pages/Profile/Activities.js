@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfileBack from "../../components/Sidebar/ProfileBack";
 import PostPending from "../Group/PostPending";
-import { useState } from "react";
 import { types } from "./data";
 import { useHistory } from "react-router";
 
@@ -58,7 +57,7 @@ export default function Activities() {
                       Аура
                     </p>
                   </span>
-                  <span className="mx-c11 ph:mx-a2 flex items-center">
+                  <span className="mx-c11 ph:mx-px-8 flex items-center">
                     <p className="text-18px text-caak-generalblack font-medium">
                       47.2 сая
                     </p>{" "}
@@ -83,7 +82,7 @@ export default function Activities() {
                 </div>
               </div>
             </div>
-            <p className="text-15px text-caak-generalblack mt-a2 sm:mt-c11">
+            <p className="text-15px text-caak-generalblack mt-px-8 sm:mt-c11">
               energy never lies 🍓
             </p>
           </div>
@@ -93,7 +92,7 @@ export default function Activities() {
                 onClick={() => history.push({ pathname: "/profile/settings" })}
                 className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer"
               >
-                <span className="pr-a1 icon-fi-rs-settings text-18px" />
+                <span className="pr-px-6 icon-fi-rs-settings text-18px" />
                 <p className="text-15px font-medium">Тохиргоо</p>
               </div>
               <span
@@ -135,7 +134,7 @@ export default function Activities() {
             <div>
               {types.map((list) => (
                 <div
-                  className="py-a1  flex items-center rounded-lg cursor-pointer"
+                  className="py-px-6 flex items-center rounded-lg cursor-pointer"
                   key={list.title}
                   onClick={() => handleColor(list)}
                   style={{
@@ -153,7 +152,7 @@ export default function Activities() {
         </div>
 
         {/* post */}
-        <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18 lg:left-c12 lg:right-c12 sm:left-b1 sm:right-b1  bg-white border rounded-lg">
+        <div className="mt-c11 2xl:absolute 2xl:left-cf 2xl:right-cf xl:absolute xl:left-c18 xl:right-c18 lg:left-c12 lg:right-c12 sm:left-px-10 sm:right-px-10 bg-white border rounded-lg">
           <p
             style={{ margin: "28px" }}
             className="text-18px text-caak-generalblack font-medium"

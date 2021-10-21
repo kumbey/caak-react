@@ -57,7 +57,7 @@ export default function PendingPostItem({ post, onClick, className }) {
       <div className="ph:w-full ph:mt-3 w-1/2">
         <Poster user={post.user} updatedAt={post.updatedAt} />
       </div>
-      <div className="2xl:flex sm:block md:block lg:block xl:mr-c24 sm:mr-b1 relative flex items-center justify-end hidden">
+      <div className="2xl:flex sm:block md:block lg:block xl:mr-c24 sm:mr-px-10 relative flex items-center justify-end hidden">
         <PendingPostMenuDrop
           setIsMenuOpen={setIsMenuOpen}
           toggleMenu={toggleMenu}

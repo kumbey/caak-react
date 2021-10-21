@@ -178,7 +178,7 @@ export default function Group() {
 
   return (
     <div>
-      <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
+      <div className="sm:hidden px-c6 py-px-11 flex items-center justify-between bg-white border-t border-b">
         <span
           onClick={() => history.goBack()}
           className="icon-fi-rs-back text-20px cursour-pointer"

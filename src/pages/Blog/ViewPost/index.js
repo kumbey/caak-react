@@ -13,7 +13,7 @@ import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
 import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
-import PostMore from "../../../components/card/PostMore";
+import PostMoreMenu from "../../../components/card/PostMoreMenu";
 
 const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
@@ -285,7 +285,7 @@ const ViewPost = ({ pending }) => {
               className="right-1 top-4 absolute"
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={<PostMore postId={postId} postUser={user} />}
+              content={<PostMoreMenu postId={postId} postUser={user} />}
             />
           </div>
 

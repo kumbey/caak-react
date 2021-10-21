@@ -1,12 +1,18 @@
-.dropdown {
-  @apply w-max bg-white rounded-square -right-2 absolute z-50 mt-3 overflow-hidden;
-}
-.dropdown > div {
-  @apply relative flex flex-col self-start w-full align-baseline bg-white;
-}
-.dropdown a {
-  @apply hover:bg-caak-liquidnitrogen flex flex-row items-center px-4 py-2 pr-5 text-left;
-}
-.dropdown p {
-  @apply text-14px text-caak-extraBlack font-medium;
+@layer components {
+    .dropdown {
+        @apply absolute -right-2 mt-3 w-max bg-white rounded-square z-2;
+    }
+
+    .dropdown > .dropdown-item-wrapper {
+        @apply flex relative flex-col self-start w-full align-baseline bg-white z-1;
+    }
+
+    .dropdown .dropdown-items {
+        @apply flex flex-row items-center px-4 py-2 pr-5 text-left hover:bg-caak-liquidnitrogen;
+    }
+
+    .dropdown p {
+        @apply font-medium text-14px text-caak-extraBlack;
+    }
+
 }
