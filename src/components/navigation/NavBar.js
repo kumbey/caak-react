@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../button";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 import SearchInput from "../input/SearchInput";
 import DropDown from "./DropDown";
 import { Link } from "react-router-dom";
@@ -117,12 +117,12 @@ export default function NavBar() {
 
   return (
     <nav className="z-3 sticky top-0 bg-white shadow-sm">
-      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
+      <div className="px-7 sm:px-6 lg:px-c13 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex flex-row items-center">
             <img
               onClick={() => history.push({ pathname: "/" })}
-              className="h-14 w-auto mr-1 cursor-pointer"
+              className="h-c25 w-auto mr-1 cursor-pointer"
               src={logo}
               alt="Caak Logo"
             />
@@ -199,13 +199,14 @@ export default function NavBar() {
                   <div className={"w-45px h-45px mr-2 cursor-pointer"}>
                     <img
                       alt={user.sysUser.nickname}
-                      data-dummy="200x200"
                       src={
                         user.sysUser.pic
                           ? getFileUrl(user.sysUser.pic)
                           : Dummy.img("200x200")
                       }
-                      className={"w-full block object-cover rounded-full"}
+                      className={
+                        "block w-px-45 h-px-45 object-cover rounded-full"
+                      }
                     />
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
