@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../button";
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.svg";
 import SearchInput from "../input/SearchInput";
-import { menu_data } from "../menu_data";
 import DropDown from "./DropDown";
 import { Link } from "react-router-dom";
 import {
@@ -22,6 +21,7 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import { getUserTotal } from "../../graphql-custom/totals/queries";
 import { getUserAura } from "../../graphql-custom/user/queries";
+import NavBarMenu from "./NavBarMenu";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,7 +55,7 @@ export default function NavBar() {
       const resp = await API.graphql(
         graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
       );
-        setUserTotal(getReturnData(resp));
+      setUserTotal(getReturnData(resp));
     } catch (ex) {
       console.log(ex);
     }
@@ -116,20 +116,20 @@ export default function NavBar() {
   }, [subscripTotal]);
 
   return (
-    <nav className="bg-white">
-      <div className="px-7 sm:px-6 lg:px-8 px-2 py-1 mx-auto">
+    <nav className="z-3 sticky top-0 bg-white shadow-sm">
+      <div className="px-7 sm:px-6 lg:px-c13 px-2 py-1 mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex flex-row items-center">
             <img
               onClick={() => history.push({ pathname: "/" })}
-              className="h-14 w-auto mr-1 cursor-pointer"
+              className="h-c25 w-auto mr-1 cursor-pointer"
               src={logo}
               alt="Caak Logo"
             />
           </div>
 
           <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
-            <SearchInput hideLabel placeholder={"Хайлт хийх"} />
+            <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
           </div>
           {/* Mobile menu button */}
           <div className="md:hidden lg:hidden flex">
@@ -192,51 +192,63 @@ export default function NavBar() {
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
-                    items={menu_data}
-                    className={"top-10 right-10"}
+                    content={<NavBarMenu />}
+                    // items={menu_data}
+                    className={"top-10 -right-4"}
                   />
                   <div className={"w-45px h-45px mr-2 cursor-pointer"}>
                     <img
                       alt={user.sysUser.nickname}
-                      data-dummy="200x200"
                       src={
                         user.sysUser.pic
                           ? getFileUrl(user.sysUser.pic)
                           : Dummy.img("200x200")
                       }
-                      className={"w-full block object-cover rounded-full"}
+                      className={
+                        "block w-px-45 h-px-45 object-cover rounded-full"
+                      }
                     />
                   </div>
                   <div className={"flex flex-col items-center justify-center"}>
-                    <div className="flex items-center">
-                      <Link
-                        to={{
-                          pathname: `/user/${user.sysUser.id}/profile`,
-                        }}
-                      >
-                        <span
-                          className={
-                            "text-generalblack text-14px font-bold cursor-pointer"
-                          }
+                    <div
+                      className={"flex flex-row justify-center items-center"}
+                    >
+                      <div className="flex flex-col items-center">
+                        <Link
+                          to={{
+                            pathname: `/user/${user.sysUser.id}/profile`,
+                          }}
                         >
-                          {user.sysUser.nickname}
-                        </span>
-                      </Link>
+                          <span
+                            className={
+                              "text-generalblack text-14px font-bold cursor-pointer"
+                            }
+                          >
+                            {user.sysUser.nickname}
+                          </span>
+                        </Link>
+                        <div
+                          className={"flex flex-row items-center self-start"}
+                        >
+                          <span
+                            className={"icon-fi-rs-auro auroGradient mr-1"}
+                          />
+                          <span
+                            className={
+                              "text-14px text-caak-darkBlue font-medium"
+                            }
+                          >
+                            {user.sysUser.aura}
+                          </span>
+                        </div>
+                      </div>
                       <div
                         ref={menuRef}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="text-14px ml-4 transform -rotate-90"
+                        className="text-12px hover:bg-caak-liquidnitrogen flex items-center justify-center w-6 h-6 ml-1 text-center transition duration-100 ease-linear transform -rotate-90 rounded-full cursor-pointer"
                       >
-                        <span className="icon-fi-rs-back cursor-pointer" />
+                        <span className="icon-fi-rs-back" />
                       </div>
-                    </div>
-                    <div className={"flex flex-row items-center self-start"}>
-                      <span className={"icon-fi-rs-auro auroGradient mr-1"} />
-                      <span
-                        className={"text-14px text-caak-darkBlue font-medium"}
-                      >
-                        {user.sysUser.aura}
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -274,32 +286,22 @@ export default function NavBar() {
             )}
             {!checkUser(user) && (
               <div ref={menuRef} className={"relative"}>
-                <Button
+                <div
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  skin="secondary"
-                  icon={
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                      />
-                    </svg>
+                  className={
+                    "flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
                   }
-                  circular
-                  className={"p-1"}
-                />
+                >
+                  <span
+                    className={
+                      "icon-fi-rs-dots text-caak-generalblack text-4px"
+                    }
+                  />
+                </div>
                 <DropDown
                   open={isMenuOpen}
                   onToggle={toggleMenu}
-                  items={menu_data}
+                  content={<NavBarMenu />}
                 />
               </div>
             )}
@@ -308,7 +310,7 @@ export default function NavBar() {
       </div>
       <div
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className={`w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
+        className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
           isMobileMenuOpen
             ? "transform translate-x-0"
             : "transform translate-x-full"

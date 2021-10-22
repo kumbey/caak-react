@@ -1,5 +1,4 @@
-import Auth from "@aws-amplify/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
@@ -7,15 +6,14 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
+import Auth from "@aws-amplify/auth";
 
-export default function Login() {
+export default function ForgotPassword() {
   const history = useHistory();
   const { state } = useLocation();
-
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const validate = {
     username: {
@@ -23,53 +21,40 @@ export default function Login() {
       type: Consts.typeUsername,
       onChange: setUsername,
     },
-    password: {
-      value: password,
-      type: Consts.typePassword,
-      onChange: setPassword,
-    },
   };
 
-  const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
+  const { handleChange, errors, handleSubmit } = Validate(validate);
 
-  useEffect(() => {
-    if (state.errors) {
-      setErrors(state.errors);
-    }
-    // eslint-disable-next-line
-  }, []);
-
-  async function doSignIn() {
+  async function doSubmit() {
     try {
       setLoading(true);
-
-      await Auth.signIn(checkUsername(username), password);
+      await Auth.forgotPassword(username);
       setLoading(false);
-      closeModal(history, state);
+      history.replace({
+        pathname: "/forgotpassword/confirmation/",
+        state: {
+          ...state,
+          username: checkUsername(username),
+        },
+      });
     } catch (ex) {
-      console.log(ex);
       setLoading(false);
-      if (ex.code === "UserNotConfirmedException") {
-        history.replace({
-          pathname: "/register/confirmation/",
-          state: {
-            ...state,
-            username: checkUsername(username),
-            password: password,
-          },
-        });
-      } else if (ex.code === "NotAuthorizedException") {
-        setError("Нэвтрэх нэр эсвэл нууц үг буруу байна");
-      } else if (ex.code === "UserNotFoundException") {
+      if (ex.code === "UserNotFoundException") {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "InvalidParameterException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "LimitExceededException") {
+        setError("Дахин код авах лимит хэтэрсэн");
+      } else {
+        console.log(ex);
       }
     }
   }
 
   return (
-    <Backdrop className={"flex justify-center items-center"}>
+    <Backdrop className={"flex items-center justify-center"}>
       <div className="popup absolute bg-white rounded-lg shadow-xl">
-        <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
+        <div className=" px-c6 pt-c6 flex items-center justify-between cursor-pointer">
           <div
             onClick={() =>
               history.replace({ pathname: "/login", state: state })
@@ -89,14 +74,14 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Нэвтрэх!
+          Нууц үг мартсан
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
-          <div className="px-c8">
+          <div className="px-c8 ">
             <p className="error">{error}</p>
             <Input
-              name={"username"}
-              type={"text"}
+              name="username"
+              type="text"
               errorMessage={errors.username}
               onChange={handleChange}
               placeholder={"Имэйл хаяг эсвэл Утасны дугаар"}
@@ -104,40 +89,17 @@ export default function Login() {
                 "border border-caak-titaniumwhite h-c9 bg-caak-liquidnitrogen"
               }
             />
-            <Input
-              name={"password"}
-              type={"password"}
-              errorMessage={errors.password}
-              onChange={handleChange}
-              placeholder={"Нууц үг"}
-              className={
-                "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-              }
-            />
           </div>
           <div className="px-c8 ph:px-c2 text-caak-generalblack text-14px flex items-center justify-between mt-5">
             <Button
               loading={loading}
-              onClick={() => handleSubmit(doSignIn)}
+              onClick={() => handleSubmit(doSubmit)}
               className={
-                "rounded-md w-c10 h-c9 text-17px font-bold bg-caak-secondprimary"
+                "rounded-md w-full h-c9 text-17px font-bold bg-caak-secondprimary"
               }
             >
-              Нэвтрэх
+              Сэргээх код авах
             </Button>
-            <div className="text-caak-blue text-15px">
-              <span
-                onClick={() =>
-                  history.replace({
-                    pathname: "/forgotpassword/",
-                    state,
-                  })
-                }
-                className="ml- cursor-pointer"
-              >
-                Нууц үгээ мартсан уу?
-              </span>
-            </div>
           </div>
         </form>
         {/*Footer*/}
@@ -147,7 +109,7 @@ export default function Login() {
           }
         >
           <div className="text-caak-blue text-15px">
-            <span>Шинэ хэрэглэгч бол </span>
+            <span>Бүртгэлтэй хэрэглэгч бол </span>
             <span
               onClick={() =>
                 history.replace({
@@ -157,7 +119,7 @@ export default function Login() {
               }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
-              Бүртгүүлэх
+              Нэвтрэх
             </span>
           </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />

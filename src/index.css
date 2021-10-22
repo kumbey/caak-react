@@ -1,10 +1,10 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 @import "./assets/css/components/buttons.css";
-@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/dropdown.css";
+@import "./assets/css/components/inputs.css";
 @import "./assets/css/components/basic.css";
+@tailwind utilities;
 @import "./assets/css/icon-fonts.css";
 
 @layer base {
@@ -84,7 +84,7 @@
 }
 
 .backdrop {
-    z-index: 2;
+    z-index: 50;
     position: fixed;
     overflow: scroll;
     top: 0;
@@ -161,9 +161,18 @@
 
 }
 
-.fullscreen_header_size {
-    height: calc(100vh - 72px)
+
+.fullscreen_footer_size {
+    height: 100vh;
 }
+
+@media (max-width: 768px) {
+    .fullscreen_footer_size {
+        height: calc(100vh - 50px) !important;
+    }
+}
+
+
 
 .auroGradient {
     background: transparent conic-gradient(from 264deg at 50% 50%, rgba(244, 173, 87, 1) 0.00%, rgba(247, 88, 49, 1) 30.32%, rgba(108, 65, 228, 1) 50.32%, rgba(80, 121, 241, 1) 66.97%, rgba(45, 235, 217, 1) 80.51%, rgba(244, 173, 87, 1) 100.00%) 0 0 no-repeat padding-box;
@@ -226,4 +235,14 @@
 
 .image_size {
     aspect-ratio: 1/1;
+}
+
+.popup {
+    min-width: 320px;
+    width: clamp(320px, 100%, 450px);
+}
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: transparent;
 }

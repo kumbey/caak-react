@@ -12,7 +12,7 @@ import { checkUser, getReturnData } from "../../Utility/Util";
 import { onPostByGroup } from "../../graphql-custom/post/subscription";
 import { useUser } from "../../context/userContext";
 
-export default function PostPending({ settt }) {
+export default function PostPending() {
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
   const subscriptions = {};
@@ -177,21 +177,21 @@ export default function PostPending({ settt }) {
 
   return (
     <div className={"w-full"}>
-      <div className="flex items-center pr-2 w-full bg-white border-t py-b4">
+      <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
         {isCheck.length ? (
-          <div className="flex items-center rounded-lg border ml-c34">
+          <div className="ml-c34 flex items-center border rounded-lg">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheck.length}
-              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-b3 border-caak-darkgray"
+              className="w-b4 h-b4 ml-px-11 border-caak-darkgray border-2 rounded cursor-pointer"
             />
-            <p className="font-medium ml-b3 text-15px text-caak-generalblack">
+            <p className="ml-px-11 text-15px text-caak-generalblack font-medium">
               {isCheck.length} пост сонгогдлоо
             </p>
             <select
               onChange={(e) => onSelectHandler(e)}
-              className="font-medium border-0 text-15px text-caak-generalblack"
+              className="text-15px text-caak-generalblack font-medium border-0"
             >
               <option hidden className="focus:bg-caak-darkBlue">
                 Үйлдэл
@@ -201,24 +201,18 @@ export default function PostPending({ settt }) {
             </select>
           </div>
         ) : (
-          <div className="flex items-center w-full text-16px text-caak-generalblack">
+          <div className="text-16px text-caak-generalblack flex items-center w-full">
             <Checkbox
               id="selectAll"
               handleClick={handleSelectAll}
               isChecked={isCheckAll}
-              className="rounded border-2 cursor-pointer w-b4 h-b4 ml-c34 border-caak-darkgray"
+              className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
             />
-            <p className="flex justify-start w-1/3 ml-c2">Фостын нэр</p>
-            <div className="flex justify-between w-2/3 ph:justify-evenly">
+            <p className="ml-c2 flex justify-start w-1/3">Фостын нэр</p>
+            <div className="ph:justify-evenly flex justify-between w-2/3">
               <p>Нийтлэгч</p>
               <p>Хугацаа</p>
-              <p
-                className={`${
-                  settt ? "mr-c24" : "2xl:mr-c18 xl:mr-c14"
-                } ph:hidden`}
-              >
-                Үйлдэл
-              </p>
+              <p>Үйлдэл</p>
             </div>
           </div>
         )}
@@ -227,7 +221,7 @@ export default function PostPending({ settt }) {
         return (
           <div
             key={index}
-            className="flex items-center bg-white border-t hover:shadow hover:bg-caak-liquidnitrogen"
+            className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
           >
             <div className="flex items-center w-full">
               <div>
@@ -236,7 +230,7 @@ export default function PostPending({ settt }) {
                   id={data.id}
                   handleClick={handleClick}
                   isChecked={isCheck.includes(data.id)}
-                  className="rounded border-2 cursor-pointer ml-c34 w-b4 h-b4 border-caak-darkgray"
+                  className="ml-c34 w-b4 h-b4 border-caak-darkgray border-2 rounded cursor-pointer"
                 />
               </div>
               <PendingPostItem post={data} className="ph:mb-4 sm:mb-4" />

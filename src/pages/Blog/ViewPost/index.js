@@ -13,7 +13,7 @@ import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
 import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
-import PostMore from "../../../components/card/PostMore";
+import PostMoreMenu from "../../../components/card/PostMoreMenu";
 
 const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
@@ -79,7 +79,7 @@ const ViewPost = ({ pending }) => {
 
   const createPostView = async () => {
     try {
-      if(checkUser(user)){
+      if (checkUser(user)) {
         await API.graphql(
           graphqlOperation(createPostViews, {
             input: { post_id: post.id, user_id: user.sysUser.id },
@@ -142,7 +142,7 @@ const ViewPost = ({ pending }) => {
   return post ? (
     <div
       className={
-        "z-50 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "z-4 fullscreen_footer_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
@@ -285,7 +285,7 @@ const ViewPost = ({ pending }) => {
               className="right-1 top-4 absolute"
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={<PostMore postId={postId} postUser={user} />}
+              content={<PostMoreMenu postId={postId} postUser={user} />}
             />
           </div>
 
@@ -321,7 +321,7 @@ const ViewPost = ({ pending }) => {
             </div>
           </div>
           <PostHeader
-              postId={post.id}
+            postId={post.id}
             groupId={post.group.id}
             pending={pending}
             addCommentRef={addCommentRef}

@@ -3,7 +3,6 @@ import { useHistory, useParams } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
-import BottomTabs from "../Home/BottomTabs";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
@@ -108,7 +107,7 @@ export default function Settings() {
                                     }`}
             >
               {icon}
-              <p className="text-17px ml-b1 font-medium">{title}</p>
+              <p className="text-17px ml-px-10 font-medium">{title}</p>
             </div>
           ))}
         </div>
@@ -297,15 +296,14 @@ export default function Settings() {
                 className="text-caak-red px-c3 flex items-center justify-end cursor-pointer"
               >
                 <span className="icon-fi-rs-delete text-15px" />
-                <p className="text-15px ml-a1 font-medium">Бүртгэлээ устгах</p>
+                <p className="text-15px ml-px-6 font-medium">
+                  Бүртгэлээ устгах
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <footer className={` block md:hidden sticky bottom-0 z-10`}>
-        <BottomTabs />
-      </footer>
     </div>
   ) : null;
 }

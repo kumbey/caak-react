@@ -33,13 +33,13 @@ const PostHeader = ({
   const { state } = useLocation();
 
   const getUsers = async (id) => {
-    if(checkUser(user)){
+    if (checkUser(user)) {
       const resp = await API.graphql(
         graphqlOperation(getGroupView, {
           id,
         })
       );
-  
+
       setUserRole(getReturnData(resp).role_on_group);
     }
   };
@@ -55,12 +55,12 @@ const PostHeader = ({
     // eslint-disable-next-line
   }, [item]);
 
-  const acceptHandler = async (id) => {
+  const handler = async (id, status) => {
     setLoading(true);
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "CONFIRMED" },
+          input: { id, status },
         })
       );
       setLoading(false);
@@ -70,18 +70,28 @@ const PostHeader = ({
     }
   };
 
-  const declineHandler = async (id) => {
-    setLoading(true);
-    try {
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: { id, status: "ARCHIVED" },
-        })
-      );
-      setLoading(false);
-      closeModal(history, state);
-    } catch (ex) {
-      console.log(ex);
+  const reactionHandler = () => {
+    if (checkUser(user)) {
+      updateReaction({
+        item,
+        isReacted,
+        setIsReacted,
+        deleteReactionInput: {
+          id: item.id,
+          user_id: user.sysUser.id,
+        },
+        createReactionInput: {
+          id: item.id,
+          on_to: "POST_ITEM",
+          type: "CAAK",
+          user_id: user.sysUser.id,
+        },
+      });
+    } else {
+      history.push({
+        pathname: "/login",
+        state: state,
+      });
     }
   };
 
@@ -108,24 +118,7 @@ const PostHeader = ({
               className={"flex flex-row items-center mr-4 cursor-pointer group"}
             >
               <div
-                onClick={() =>
-                  !pending &&
-                  updateReaction({
-                    item,
-                    isReacted,
-                    setIsReacted,
-                    deleteReactionInput: {
-                      id: item.id,
-                      user_id: user.sysUser.id,
-                    },
-                    createReactionInput: {
-                      id: item.id,
-                      on_to: "POST_ITEM",
-                      type: "CAAK",
-                      user_id: user.sysUser.id,
-                    },
-                  })
-                }
+                onClick={() => !pending && reactionHandler()}
                 className={
                   "flex justify-center items-center group-hover:bg-caak-peachbreeze group-hover:text-caak-primary rounded-full p-2 h-8 w-8"
                 }
@@ -158,17 +151,17 @@ const PostHeader = ({
           </div>
         </div>
       ) : userRole === "ADMIN" || userRole === "MODERATOR" ? (
-        <div className="mt-b4 px-7 flex items-center">
+        <div className="px-7 mt-b4 flex items-center">
           <Button
             loading={loading}
-            onClick={() => acceptHandler(postId)}
-            className="bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132 text-white"
+            onClick={() => handler(postId, "CONFIRMED")}
+            className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
           >
             Зөвшөөрөх
           </Button>
           <Button
             loading={loading}
-            onClick={() => declineHandler(postId)}
+            onClick={() => handler(postId, "ARCHIVED")}
             className="text-caak-generalblack text-15px w-c14 bg-white"
           >
             Татгалзах

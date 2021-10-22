@@ -35,9 +35,22 @@ export const getPostByStatus = /* GraphQL */ `
 `;
 
 export const getPostByUser = /* GraphQL */ `
-    query GetPostByUser($user_id: ID!,  $filter: ModelPostFilterInput) {
-        getPostByUser(user_id: $user_id, filter: $filter) {
+    query GetPostByUser(
+        $user_id: ID!, 
+        $sortDirection: ModelSortDirection,  
+        $filter: ModelPostFilterInput,  
+        $limit: Int,
+        $nextToken: String) {
+        getPostByUser(
+            user_id: $user_id,
+            sortDirection: $sortDirection, 
+            filter: $filter,  
+            limit: $limit,
+            nextToken: $nextToken
+        )
+        {
             items ${post0004}
+            nextToken
         }
 
     }
