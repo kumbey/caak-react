@@ -108,7 +108,7 @@ export default function Settings() {
                                     }`}
             >
               {icon}
-              <p className="text-17px ml-b1 font-medium">{title}</p>
+              <p className="text-17px ml-px-10 font-medium">{title}</p>
             </div>
           ))}
         </div>
@@ -297,7 +297,9 @@ export default function Settings() {
                 className="text-caak-red px-c3 flex items-center justify-end cursor-pointer"
               >
                 <span className="icon-fi-rs-delete text-15px" />
-                <p className="text-15px ml-a1 font-medium">Бүртгэлээ устгах</p>
+                <p className="text-15px ml-px-6 font-medium">
+                  Бүртгэлээ устгах
+                </p>
               </div>
             </div>
           </div>

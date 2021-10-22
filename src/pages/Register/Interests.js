@@ -7,57 +7,46 @@ import { useHistory, useLocation } from "react-router";
 
 const items = [
     {
-        id: 1,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-ig",
         title: "Спорт"
     },
     {
-        id: 2,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-fb",
         title: "Технологи"
     },
     {
-        id: 3,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-tiktok",
         title: "Хөгжилтэй"
     },
     {
-        id: 4,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-social",
         title: "Хоол"
     },
     {
-        id: 5,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-lock-f",
         title: "Аялал"
     },
     {
-        id: 6,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-star",
         title: "Түүх"
     },
     {
-        id: 7,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-auro",
         title: "Шинжлэх ухаан"
     },
     {
-        id: 8,
-        icon: "icon-fi-rs-world",
+        icon: "icon-fi-rs-image",
         title: "Гоо сайхан"
     },
     {
-        id: 9,
         icon: "icon-fi-rs-world",
         title: "Урлаг"
     },
     {
-        id: 10,
         icon: "icon-fi-rs-add",
         title: "Дуу хөгжим"
     },
     {
-        id: 11,
         icon: "icon-fi-rs-back",
         title: "Авто машин"
     }
@@ -67,22 +56,23 @@ export default function Interests() {
     const history = useHistory();
     const { state } = useLocation();
     const [selected, setSelected] = useState([])
+
     useEffect(() => {
         console.log(selected)
     }, [selected])
 
-    const selectHandler = (index, title)=> {
-        setSelected([...selected, title])
-        selected.map((item) => {
-            if(item === title){
-                const filtered =  selected.filter(item=>item !== title)
-                setSelected(filtered)
-            }
-            else {
-                setSelected([...selected, title])
-            }
-        })
+    const selectHandler = (index, title) => {
+
+        if(selected.length === 0) setSelected([...selected, title])
+
+        if(selected.includes(title)){
+            setSelected(selected.filter(item => item !== title))
+        }
+        else {
+            setSelected([...selected, title])
+        }
     }
+    
     return (
         <Backdrop className="flex justify-center items-center">
             <div className="bg-white rounded-lg shadow-xl w-screen sm:w-cc">
@@ -96,21 +86,33 @@ export default function Interests() {
                     <div style={{maxWidth: '360px'}} className={"flex text-caak-darkBlue mb-c2 text-15px text-center"}>
                         Та өөрийн дуртай сонирхлуудыг сонгосноор өөрийн хүрээллийг хурдан олох боломжтой.
                     </div>
-                    <div className="flex flex-row flex-wrap items-center justify-center">
+                    <div className="flex flex-row flex-wrap items-center justify-center gap-3">
                         {
                             items.map((data, index) => {
                                 return (
-                                    <div key={index} onClick={(e) => selectHandler(index, data.title)} className={`mt-3 ml-2 flex border py-a2 rounded-full justify-center cursor-pointer px-b5 ${selected.find((item)=> item===data.title) ? "bg-caak-primary text-white" : ""}`}>
-                                    <span className={`mr-1.5 text-20px ${data.icon}`}/>
-                                    <p className="text-15px font-medium">{data.title}</p>
-                                </div>
+                                    <div 
+                                        key={index} 
+                                        onClick={(e) => selectHandler(index, data.title)} 
+                                        className={`
+                                            flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
+                                            ${selected.find((item)=> item===data.title) ? "bg-caak-primary text-white" : ""}
+                                        `}
+                                    >
+                                        {selected.find((item)=> item===data.title)
+                                            ? 
+                                            <span className="icon-fi-rs-check text-12px mr-1.5" /> 
+                                            : 
+                                            <span className={`mr-1.5 text-18px ${data.icon}`}/>
+                                        }
+                                        <p className="text-15px font-medium">{data.title}</p>
+                                    </div>
                                 )
-                            }
-                            
-                            )
+                            })
                         }
                     </div>
-                    <p className="text-center mt-5 text-caak-primary text-15px">Хамгийн багадаа 3-ыг сонгоно уу!</p>
+                
+                         <p className={`${selected.length < 3 ? "opacity-100" : "opacity-0"} text-center mt-5 text-caak-primary text-15px`}>Хамгийн багадаа 3-ыг сонгоно уу!</p>
+                
                     <div
                         className={
                             "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20"

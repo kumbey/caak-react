@@ -6,12 +6,12 @@ const GroupBody = ({ groupPosts, loading }) => {
   return (
     <div>
       {/* navigator */}
-      <div className="mt-c2 flex items-center justify-between ph:justify-center">
+      <div className="mt-c2 ph:justify-center flex items-center justify-between">
         <div className="flex">
-          <Button className="text-15px w-c31 h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
+          <Button className="text-15px w-c31 h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
             Трэнд
           </Button>
-          <Button className="text-15px w-c7 h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
+          <Button className="text-15px w-c7 h-c32 text-caak-generalblack mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
             Шинэ
           </Button>
           <Button className="text-15px w-c7 h-c32 text-caak-generalblack hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">

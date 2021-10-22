@@ -4,12 +4,12 @@ import {
   getFileUrl,
   useClickOutSide,
 } from "../../Utility/Util";
-import GroupInformationDrop from "../PendingPost/GroupInformationDrop";
-import PostMore from "./PostMore";
 import Dummy from "dummyjs";
 import Tooltip from "../tooltip/Tooltip";
 import ProfileHoverCard from "./ProfileHoverCard";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import DropDown from "../navigation/DropDown";
+import PostMoreMenu from "./PostMoreMenu";
 
 const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
   const toggleMenu = () => {
@@ -19,9 +19,9 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
     setIsMenuOpen(false);
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  return ( group ?
-    <div className="h-14 relative flex items-center justify-between px-4">
-      <div className="flex items-center justify-between py-4">
+  return group ? (
+    <div className="flex relative justify-between items-center px-4 h-14">
+      <div className="flex justify-between items-center py-4">
         <div className={"relative"}>
           <img
             className="w-34px m-34px rounded-square"
@@ -42,9 +42,9 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
         <div className="ml-3">
           <div className={"flex flex-row  items-center"}>
             <Link to={`/group/${group.id}`}>
-            <span className="text-generalblack text-14px mr-1 font-bold cursor-pointer">
-              {group.name}
-            </span>
+              <span className="mr-1 font-bold cursor-pointer text-generalblack text-14px">
+                {group.name}
+              </span>
             </Link>
             {verifiedUser ? (
               <i
@@ -57,13 +57,22 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
             )}
           </div>
 
-          <div className={"flex flex-row   items-center"}>
-            <Tooltip content={<ProfileHoverCard userId={postUser.id} postUser={postUser}/>}>
-              <p
-                className="hover:underline text-generalblack text-12px cursor-pointer"
+          <div className={"flex flex-row items-center"}>
+            
+            <Tooltip
+              content={
+                <ProfileHoverCard userId={postUser.id} postUser={postUser} />
+              }
+            >
+              <Link 
+                to={{
+                  pathname: `/user/${postUser.id}/profile`,
+                }}
               >
-                @{postUser.nickname}
-              </p>
+                <p className="cursor-pointer hover:underline text-generalblack text-12px">
+                  @{postUser.nickname}
+                </p>
+              </Link>
             </Tooltip>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
@@ -75,18 +84,18 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
       <div
         ref={menuRef}
         onClick={toggleMenu}
-        className={"cursor-pointer relative"}
+        className={`flex justify-center w-c8 h-c8 transition ease-linear duration-100 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
       >
         <span className="icon-fi-rs-dots text-4px" />
-        <GroupInformationDrop
-          className="absolute shadow-dropdown"
-          shadow
-          content={<PostMore postId={postId} postUser={postUser}/>}
+        <DropDown
           open={isMenuOpen}
+          onToggle={toggleMenu}
+          content={<PostMoreMenu groupId={group.id} postId={postId} postUser={postUser} />}
+          className={"top-6 -right-6"}
         />
       </div>
-    </div> : null
-  );
+    </div>
+  ) : null;
 };
 
 export default CardHeader;

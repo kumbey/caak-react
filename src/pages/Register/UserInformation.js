@@ -239,7 +239,7 @@ const UserInformation = () => {
             </Select>
 
             <DateSelect
-                startYear={1900}
+              startYear={1900}
               value={birthdate}
               errorMessage={errors.birthdate}
               name={"birthdate"}
@@ -247,7 +247,7 @@ const UserInformation = () => {
             />
 
             {!state.onlyInfo ? (
-              <div className="mt-b2">
+              <div className="mt-px-12">
                 <Input
                   value={username}
                   name={"username"}
@@ -303,7 +303,7 @@ const UserInformation = () => {
             >
               Бүртгүүлэх
             </Button>
-            <p className="text-12px pt-b1 text-caak-aleutian">
+            <p className="text-12px pt-px-10 text-caak-aleutian">
               Таны овог нэр, Төрсөн он сар болон Нууц үг нийтэд харагдахгүй
               болно!
             </p>
