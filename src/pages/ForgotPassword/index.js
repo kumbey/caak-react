@@ -62,7 +62,7 @@ export default function ForgotPassword() {
             className="flex items-center"
           >
             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">Нэвтрэх</p>
+            <p className="text-caak-generalblack text-13px">Буцах</p>
           </div>
           <span
             onClick={() => closeModal(history, state)}
@@ -119,7 +119,7 @@ export default function ForgotPassword() {
               }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
-              Нэврэх
+              Нэвтрэх
             </span>
           </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue" />
