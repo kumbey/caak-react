@@ -104,7 +104,7 @@ const UploadedMediaEdit = ({
           rows={1}
           onChange={onChangeText}
           value={post.title}
-          maxLength={"60"}
+          maxLength={"200"}
           placeholder={"Нийтлэлийн тайлбар оруулах..."}
           className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
         />
@@ -113,7 +113,7 @@ const UploadedMediaEdit = ({
             "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
           }
         >
-          {post.title.length}/60
+          {post.title.length}/200
         </span>
       </div>
       <div
