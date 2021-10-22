@@ -9,7 +9,7 @@ export default function PendingPostUser() {
 
   return checkUser(user) ? (
     <div>
-      <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
+      <div className="sm:hidden px-c6 py-px-11 flex items-center justify-between bg-white border-t border-b">
         <span
           onClick={() => history.goBack()}
           className="icon-fi-rs-back text-20px cursour-pointer"
@@ -33,7 +33,7 @@ export default function PendingPostUser() {
               </p>
               <p
                 style={{ marginLeft: "6px" }}
-                className="bg-opacity-20 text-13px px-b3 bg-caak-bleudefrance text-caak-bleudefrance rounded-full"
+                className="bg-opacity-20 text-13px px-px-11 bg-caak-bleudefrance text-caak-bleudefrance rounded-full"
               >
                 {/*{groupData.totals?.pending}*/}
               </p>

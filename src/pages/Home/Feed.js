@@ -1,18 +1,18 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {listGroupsForAddPost} from "../../graphql-custom/group/queries";
-import {checkUser, getReturnData} from "../../Utility/Util";
-import {getPostByStatus} from "../../graphql-custom/post/queries";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
+import { checkUser, getReturnData } from "../../Utility/Util";
+import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import {useListPager} from "../../Utility/ApiHelper";
-import {onPostUpdateByStatus} from "../../graphql-custom/post/subscription";
+import { useListPager } from "../../Utility/ApiHelper";
+import { onPostUpdateByStatus } from "../../graphql-custom/post/subscription";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 const Feed = () => {
@@ -33,15 +33,15 @@ const Feed = () => {
       icon: "icon-fi-rs-top",
     },
     /*{
-                                                                                                                                      id: 3,
-                                                                                                                                      type: "Бүлгүүд",
-                                                                                                                                      icon: "icon-fi-rs-group",
-                                                                                                                                    },
-                                                                                                                                    {
-                                                                                                                                      id: 4,
-                                                                                                                                      type: "Дагасан найзууд",
-                                                                                                                                      icon: "icon-fi-rs-following",
-                                                                                                                                    },*/
+                                                                                                                                          id: 3,
+                                                                                                                                          type: "Бүлгүүд",
+                                                                                                                                          icon: "icon-fi-rs-group",
+                                                                                                                                        },
+                                                                                                                                        {
+                                                                                                                                          id: 4,
+                                                                                                                                          type: "Дагасан найзууд",
+                                                                                                                                          icon: "icon-fi-rs-following",
+                                                                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -222,6 +222,10 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
+
+  useEffect(()=> {
+    setActiveIndex(null)
+  },[])
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>
@@ -252,7 +256,7 @@ const Feed = () => {
                     }`}
                     iconPosition={"left"}
                     icon={
-                      <div className={"w-5 mr-a1 ph:w-4 ph:mr-2"}>
+                      <div className={"w-5 mr-px-6 ph:w-4 ph:mr-2"}>
                         <i
                           className={`${icon}${
                             id === activeIndex ? "" : "-o"

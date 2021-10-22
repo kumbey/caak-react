@@ -3,6 +3,7 @@ import { getPostByUser } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
 import UserPostItem from "../../components/PendingPost/UserPostItem";
+import Loader from "../../components/loader";
 export default function PostArchivedUser({ userId }) {
   const [userArchivedPosts, setUserArchivedPosts] = useState([]);
   const [nextPosts] = useListPager({
@@ -68,6 +69,12 @@ export default function PostArchivedUser({ userId }) {
           </div>
         );
       })}
+      <Loader
+          containerClassName={"self-center"}
+          className={`bg-caak-primary ${
+              loading ? "opacity-100" : "opacity-0"
+          }`}
+      />
     </div>
   );
 }
