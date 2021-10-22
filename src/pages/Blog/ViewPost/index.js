@@ -79,11 +79,13 @@ const ViewPost = ({ pending }) => {
 
   const createPostView = async () => {
     try {
-      await API.graphql(
-        graphqlOperation(createPostViews, {
-          input: { post_id: post.id, user_id: user.sysUser.id },
-        })
-      );
+      if (checkUser(user)) {
+        await API.graphql(
+          graphqlOperation(createPostViews, {
+            input: { post_id: post.id, user_id: user.sysUser.id },
+          })
+        );
+      }
     } catch (ex) {
       console.log(ex);
     }
@@ -319,7 +321,7 @@ const ViewPost = ({ pending }) => {
             </div>
           </div>
           <PostHeader
-              postId={post.id}
+            postId={post.id}
             groupId={post.group.id}
             pending={pending}
             addCommentRef={addCommentRef}

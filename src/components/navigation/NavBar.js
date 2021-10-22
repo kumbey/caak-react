@@ -55,7 +55,7 @@ export default function NavBar() {
       const resp = await API.graphql(
         graphqlOperation(getUserTotal, { user_id: user.sysUser.id })
       );
-        setUserTotal(getReturnData(resp));
+      setUserTotal(getReturnData(resp));
     } catch (ex) {
       console.log(ex);
     }
@@ -129,7 +129,7 @@ export default function NavBar() {
           </div>
 
           <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
-            <SearchInput hideLabel placeholder={"Хайлт хийх"} />
+            <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
           </div>
           {/* Mobile menu button */}
           <div className="md:hidden lg:hidden flex">

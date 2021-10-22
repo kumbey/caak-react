@@ -13,7 +13,7 @@ const DropDown = ({ items, open, onToggle, className }) => {
         className && className
       }`}
     >
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         {items.map((item) => (
           <Link
             key={item.name}

@@ -26,6 +26,8 @@ const NotificationDropDown = ({ isOpen }) => {
   const history = useHistory();
   const location = useLocation();
 
+  let localNotifications = notifications;
+
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
     variables: {
@@ -67,8 +69,9 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = async () => {
-    return notifications.map((item) => {
+    return notifications.map((item, index) => {
       if (!item.seen) {
+        localNotifications[index].seen = true;
         try {
           API.graphql(
             graphqlOperation(updateNotification, {
@@ -82,11 +85,11 @@ const NotificationDropDown = ({ isOpen }) => {
           console.log(error);
         }
       }
-      return null
+      return null;
     });
   };
 
-  const handleNotificationClick = async (index) => {
+  const handleNotificationClick = async (item, index) => {
     try {
       const item = notifications[index];
       await API.graphql(
@@ -97,6 +100,7 @@ const NotificationDropDown = ({ isOpen }) => {
           },
         })
       );
+      if (!item.seen) localNotifications[index].seen = true;
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
@@ -230,10 +234,10 @@ const NotificationDropDown = ({ isOpen }) => {
           >
             Шинэ
           </span>
-          {notifications.map((item, index) => {
+          {localNotifications.map((item, index) => {
             return (
               <Notification
-                onClick={() => handleNotificationClick(index)}
+                onClick={() => handleNotificationClick(item, index)}
                 key={index}
                 item={item}
               />
