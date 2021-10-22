@@ -1,30 +1,21 @@
-import { Fragment, useState } from "react";
+import {Fragment, useEffect, useState} from "react";
 import Backdrop from "../../../components/Backdrop";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import {
-  closeModal,
-  getReturnData,
-  removeKeyFromObj,
-} from "../../../Utility/Util";
-import { useHistory, useLocation, useParams } from "react-router";
-import { useEffect } from "react";
-import { useUser } from "../../../context/userContext";
-import { ApiFileUpload } from "../../../Utility/ApiHelper";
+import {closeModal, getReturnData, removeKeyFromObj,} from "../../../Utility/Util";
+import {useHistory, useLocation, useParams} from "react-router";
+import {useUser} from "../../../context/userContext";
+import {ApiFileUpload} from "../../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
-import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
-import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
-import { getPost } from "../../../graphql-custom/post/queries";
-import {
-  createPostItems,
-  deletePostItems,
-  updatePostItems,
-} from "../../../graphql-custom/postItems/mutation";
-import { createPostHistory } from "../../../graphql-custom/postHistory/mutation";
+import {graphqlOperation} from "@aws-amplify/api-graphql";
+import {listGroupsForAddPost} from "../../../graphql-custom/group/queries";
+import {createPost, updatePost} from "../../../graphql-custom/post/mutation";
+import {getPost} from "../../../graphql-custom/post/queries";
+import {createPostItems, deletePostItems, updatePostItems,} from "../../../graphql-custom/postItems/mutation";
+import {createPostHistory} from "../../../graphql-custom/postHistory/mutation";
 
 const AddPost = () => {
   const history = useHistory();
@@ -111,8 +102,7 @@ const AddPost = () => {
       for (let i = 0; i < post.items.length; i++) {
         let item = post.items[i];
         if (!item.id) {
-          let resp = await ApiFileUpload(item.file);
-          item.file = resp;
+          item.file = await ApiFileUpload(item.file);
         }
       }
 
