@@ -9,6 +9,8 @@ import { closeModal, getFileUrl, getReturnData } from "../../Utility/Util";
 import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { getGroupView } from "../../graphql-custom/group/queries";
+import { useUser } from "../../context/userContext";
+import { updateStatus } from "../../apis/post/updateStatus";
 
 export default function Check({ hasApproveButtons }) {
   const { postId } = useParams();
@@ -18,7 +20,7 @@ export default function Check({ hasApproveButtons }) {
   const { state } = useLocation();
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState([]);
-
+  const { user } = useUser();
   useEffect(() => {
     try {
       const getPostById = async (id) => {
@@ -51,7 +53,7 @@ export default function Check({ hasApproveButtons }) {
   useEffect(() => {
     if (post) getUsers(post.group.id);
     // eslint-disable-next-line
-  }, [postId]);
+  }, [post]);
 
   const getUsers = async (id) => {
     const resp = await API.graphql(
@@ -59,7 +61,6 @@ export default function Check({ hasApproveButtons }) {
         id,
       })
     );
-
     setUserRole(getReturnData(resp).role_on_group);
   };
 
@@ -79,33 +80,24 @@ export default function Check({ hasApproveButtons }) {
     }
   };
 
-  const acceptHandler = async (id) => {
+  const postHandler = async (id, status) => {
     setLoading(true);
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "CONFIRMED" },
+          input: { id, status, expectedVersion: post.version },
         })
       );
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  const declineHandler = async (id) => {
-    setLoading(true);
-    try {
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: { id, status: "ARCHIVED" },
-        })
-      );
-      setLoading(false);
-      closeModal(history, state);
-    } catch (ex) {
-      console.log(ex);
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        updateStatus(post, user.sysUser.id, status);
+        setLoading(false);
+        closeModal(history, state);
+      }
     }
   };
 
@@ -206,14 +198,14 @@ export default function Check({ hasApproveButtons }) {
             <div className="mt-b4 flex justify-end">
               <Button
                 loading={loading}
-                onClick={() => declineHandler(postId)}
+                onClick={() => postHandler(postId, "CONFIRMED")}
                 className="text-caak-generalblack text-15px w-c14 bg-white"
               >
                 Татгалзах
               </Button>
               <Button
                 loading={loading}
-                onClick={() => acceptHandler(postId)}
+                onClick={() => postHandler(postId, "ARCHIVED")}
                 className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
               >
                 Зөвшөөрөх
