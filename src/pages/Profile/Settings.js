@@ -392,6 +392,7 @@ export default function Settings() {
                     </div>
 
                     <button
+                      loading={loading}
                       onClick={() => handleSubmit(doConfirm)}
                       className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
                     />
