@@ -58,14 +58,21 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
           </div>
 
           <div className={"flex flex-row items-center"}>
+            
             <Tooltip
               content={
                 <ProfileHoverCard userId={postUser.id} postUser={postUser} />
               }
             >
-              <p className="cursor-pointer hover:underline text-generalblack text-12px">
-                @{postUser.nickname}
-              </p>
+              <Link 
+                to={{
+                  pathname: `/user/${postUser.id}/profile`,
+                }}
+              >
+                <p className="cursor-pointer hover:underline text-generalblack text-12px">
+                  @{postUser.nickname}
+                </p>
+              </Link>
             </Tooltip>
             <span className={"text-darkblue text-12px mx-1"}>•</span>
             <span className={"text-darkblue text-12px"}>
