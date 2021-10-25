@@ -24,7 +24,6 @@ const NotificationDropDown = ({ isOpen }) => {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [subscripNotifcation, setSubscripNotification] = useState();
-  const [selectedNotification, setSelectedNotification] = useState([]);
   const subscriptions = {};
   const history = useHistory();
   const location = useLocation();
