@@ -25,7 +25,9 @@ const Input = ({
         {type === "password" ? (
           <span
             onClick={() => setShowPassword(!showPassword)}
-            className="right-2 top-1/2 icon-fi-rs-view text-caak-darkBlue absolute transform -translate-y-1/2 cursor-pointer"
+            className={`${
+              showPassword ? "icon-fi-rs-view text-sm" : "icon-fi-rs-hide"
+            } right-2 top-1/2  text-caak-darkBlue absolute transform -translate-y-1/2 cursor-pointer`}
           />
         ) : null}
         <input
