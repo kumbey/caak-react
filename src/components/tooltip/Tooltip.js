@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Tooltip.css";
 
-const Tooltip = ({ children, content }) => {
+const Tooltip = ({ children, content, className }) => {
   const [active, setActive] = useState(false);
 
   const showTip = () => {
@@ -22,7 +22,7 @@ const Tooltip = ({ children, content }) => {
       {/* Wrapping */}
       {children}
       {active && (
-        <div className={`Tooltip-Tip`}>
+        <div className={`Tooltip-Tip ${className}`}>
           {/* Content */}
           {content}
         </div>
