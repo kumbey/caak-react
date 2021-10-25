@@ -51,10 +51,14 @@ export default function PostArchivedUser({ userId }) {
   return (
     <div className={"w-full"}>
       <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
-        <div className="text-16px text-caak-generalblack flex items-center w-full">
-          <p className="ml-c2 flex justify-start w-full">Постын нэр</p>
-          <div className=" pr-7 flex justify-between w-full">
+        <div className="text-16px flex items-center w-full">
+          <div className="w-1/2 text-center">
+            <p>Постын нэр</p>
+          </div>
+          <div className="w-1/4">
             <p>Нийтлэгч</p>
+          </div>
+          <div className="w-1/4">
             <p>Хугацаа</p>
           </div>
         </div>

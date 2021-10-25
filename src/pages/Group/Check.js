@@ -92,6 +92,9 @@ export default function Check() {
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
+      if(ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"){
+        
+      }
       console.log(ex);
     }
   };
