@@ -6,25 +6,16 @@ import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
 import {
-  closeModal,
-  getReturnData,
-  removeKeyFromObj,
+  closeModal
 } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useEffect } from "react";
 import { useUser } from "../../../context/userContext";
-import { ApiFileUpload } from "../../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
-import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
-import {
-  createPostItems,
-  deletePostItems,
-  updatePostItems,
-} from "../../../graphql-custom/postItems/mutation";
-import { createPostHistory } from "../../../graphql-custom/postHistory/mutation";
+import { crtPost, pdtPost } from "../../../apis/post";
 
 const AddPost = () => {
   const history = useHistory();
@@ -49,9 +40,6 @@ const AddPost = () => {
     user_id: user.sysUser.id,
     group_id: "",
     category_id: "",
-    items: [],
-  });
-  const [oldPost, setOldPost] = useState({
     items: [],
   });
 
@@ -98,7 +86,6 @@ const AddPost = () => {
         setPermissionDenied(false);
         setSelectedGroupId(data.group_id);
         setPost({ ...data, items: items.items });
-        setOldPost({ ...data, items: items.items });
       }
     } catch (ex) {
       console.log(ex);
@@ -108,84 +95,12 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-      for (let i = 0; i < post.items.length; i++) {
-        let item = post.items[i];
-        if (!item.id) {
-          let resp = await ApiFileUpload(item.file);
-          item.file = resp;
-        }
+     
+      if(post.id === "new"){
+        await crtPost(post, user.sysUser.id)
+      }else{
+        await pdtPost(post, user.sysUser.id)
       }
-
-      const { items, ...postData } = { ...post };
-      postData.group_id = selectedGroup.id;
-      postData.category_id = selectedGroup.category_id;
-      postData.status = "POSTING";
-
-      const oldItems = [...oldPost.items];
-
-      let returnPost = {};
-
-      removeKeyFromObj(postData, ["user"]);
-      if (postData.id === "new") {
-        removeKeyFromObj(postData, ["id"]);
-        postData.updated_user_id = user.sysUser.id;
-        postData.user_id = user.sysUser.id;
-        returnPost = await API.graphql(
-          graphqlOperation(createPost, { input: postData })
-        );
-        returnPost = getReturnData(returnPost);
-      } else {
-        await API.graphql(
-          graphqlOperation(createPostHistory, {
-            input: {
-              post_id: oldPost.id,
-              post: JSON.stringify(oldPost),
-            },
-          })
-        );
-        postData.updated_user_id = user.sysUser.id;
-        returnPost = await API.graphql(
-          graphqlOperation(updatePost, { input: postData })
-        );
-        returnPost = getReturnData(returnPost);
-      }
-
-      //DELETE OLD ITEMS
-      for (let i = 0; i < oldItems.length; i++) {
-        let oldItem = oldItems[i];
-        if (!items.find((item) => item.id === oldItem.id)) {
-          await API.graphql(
-            graphqlOperation(deletePostItems, { input: { id: oldItem.id } })
-          );
-        }
-      }
-
-      //CREATE UPDATE NEW ITEMS
-      for (let i = 0; i < items.length; i++) {
-        const { file, ...postItem } = items[i];
-        postItem.file_id = file.id;
-        postItem.order = i;
-        postItem.post_id = returnPost.id;
-        postItem.user_id = user.sysUser.id;
-        if (postItem.id) {
-          await API.graphql(
-            graphqlOperation(updatePostItems, { input: postItem })
-          );
-        } else {
-          await API.graphql(
-            graphqlOperation(createPostItems, { input: postItem })
-          );
-        }
-      }
-
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: {
-            id: returnPost.id,
-            status: "PENDING",
-          },
-        })
-      );
 
       setLoading(false);
       // closeModal(history, state);

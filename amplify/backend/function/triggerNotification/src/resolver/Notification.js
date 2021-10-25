@@ -55,7 +55,7 @@ async function modify(record){
         const oldImg = getValuesFromRecord(OldImage)
 
 
-        if(newImg.seen !== oldImg.seen && newImg.seen){
+        if(newImg.seen && !oldImg.seen){
              
             //UPDATE USER TOTAL
             if(newImg.section === "USER"){

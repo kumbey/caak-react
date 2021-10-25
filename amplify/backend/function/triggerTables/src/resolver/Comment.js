@@ -29,7 +29,8 @@ async function insert(record){
             action: `COMMENT_WRITED`,
             from: newImg.user_id,
             to: newImg.replyUserID,
-            seen: false
+            seen: false,
+            version: 1
         }
 
         await NotificationDB.insert(notifiData)

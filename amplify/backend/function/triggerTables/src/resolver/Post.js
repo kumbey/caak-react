@@ -84,7 +84,8 @@ async function modify(record){
                 action: `POST_${newImg.status}`,
                 from: newImg.user_id,
                 to: newImg.user_id,
-                seen: false
+                seen: false,
+                version: 1
             }
 
             await NoficationDB.insert(notifiData)
