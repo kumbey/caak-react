@@ -213,7 +213,7 @@ const NotificationDropDown = ({ isOpen }) => {
         // onClick={(e) => e.stopPropagation()}
         className={`${
           !isOpen && "hidden"
-        } dropdown overflow-auto pb-c20 fixed z-2 mt-0 md:z-50 top-0 right-0 h-full w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-96 cursor-auto  `}
+        } notificationMobile dropdown overflow-y-scroll pb-c20 absolute md:fixed sm:absolute z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
       >
         <div
           className={
