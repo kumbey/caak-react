@@ -368,7 +368,7 @@ type Notification @model @versioned
     from: ID!
     from_user: User @connection(fields:["from"])
     to: ID!
-    seen: Boolean!
+    seen: String!
     updatedAt: AWSDateTime
     createdAt: AWSDateTime
 }
@@ -378,6 +378,9 @@ type Mutation {
   @aws_iam
   @aws_cognito_user_pools
   notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @function(name:"totals-${env}")
+  @aws_iam
+  @aws_cognito_user_pools
+  notification(user_id: ID!, method: String!): Boolean @function(name:"notification-${env}")
   @aws_iam
   @aws_cognito_user_pools
 }
