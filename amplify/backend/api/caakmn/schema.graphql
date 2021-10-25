@@ -132,7 +132,7 @@ type Category @model
   icon: String!
 }
 
-type Post @model
+type Post @model @versioned
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
@@ -354,7 +354,7 @@ type GroupUsername @model(mutations: null)
      group: Group @connection(fields:["id"])
 }
 
-type Notification @model
+type Notification @model @versioned
   @auth(rules: [
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}

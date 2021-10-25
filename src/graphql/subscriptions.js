@@ -205,6 +205,7 @@ export const onCommentByPostItem = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -255,6 +256,7 @@ export const onPostByGroup = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -522,6 +524,7 @@ export const onPostByUser = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -887,6 +890,7 @@ export const onPostUpdateByStatus = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -1616,6 +1620,7 @@ export const onCreatePost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -1883,6 +1888,7 @@ export const onUpdatePost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -2150,6 +2156,7 @@ export const onDeletePost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -2440,6 +2447,7 @@ export const onCreatePostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -2569,6 +2577,7 @@ export const onUpdatePostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -2698,6 +2707,7 @@ export const onDeletePostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -3081,6 +3091,7 @@ export const onCreateComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -3303,6 +3314,7 @@ export const onUpdateComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -3525,6 +3537,7 @@ export const onDeleteComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -3716,6 +3729,7 @@ export const onCreateReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -3883,6 +3897,7 @@ export const onUpdateReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -4050,6 +4065,7 @@ export const onDeleteReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -5143,6 +5159,7 @@ export const onCreateNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname
@@ -5228,6 +5245,7 @@ export const onUpdateNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname
@@ -5313,6 +5331,7 @@ export const onDeleteNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname

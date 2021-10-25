@@ -100,9 +100,7 @@ const PageSwitch = (props) => {
       })}
       <Route path="/" component={null} />
       <QueryModals />
-        <footer className={`block md:hidden sticky bottom-0`}>
-            <BottomTabs />
-        </footer>
+      <BottomTabs />
     </UserProvider>
   );
 };

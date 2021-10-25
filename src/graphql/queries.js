@@ -695,6 +695,7 @@ export const getPost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -967,6 +968,7 @@ export const listPosts = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1067,6 +1069,7 @@ export const getPostByStatus = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1167,6 +1170,7 @@ export const getPostByGroup = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1267,6 +1271,7 @@ export const getPostByUser = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1375,6 +1380,7 @@ export const getPostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1509,6 +1515,7 @@ export const listPostItems = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -1888,6 +1895,7 @@ export const getComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -2255,6 +2263,7 @@ export const getReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -2376,6 +2385,7 @@ export const listReportedPosts = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         type {
           id
@@ -3125,6 +3135,7 @@ export const getNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname
@@ -3215,6 +3226,7 @@ export const listNotifications = /* GraphQL */ `
         seen
         updatedAt
         createdAt
+        version
         from_user {
           id
           firstname
@@ -3266,6 +3278,7 @@ export const listNotificationByUser = /* GraphQL */ `
         seen
         updatedAt
         createdAt
+        version
         from_user {
           id
           firstname

@@ -171,9 +171,7 @@ const UserInformation = () => {
             className="flex items-center"
           >
             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">
-              Бүртгүүлэх сонголт руу буцах
-            </p>
+            <p className="text-caak-generalblack text-13px">Буцах</p>
           </div>
           <span
             onClick={() => closeModal(history, state)}
@@ -185,7 +183,7 @@ const UserInformation = () => {
             " text-caak-generalblack text-center mb-4 font-bold text-24px"
           }
         >
-          Имэйл хаяг/Утасны дугаар <br /> бүртгүүлэх!
+          Бүртгүүлэх!
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c13 xs:px-2">

@@ -142,7 +142,7 @@ const ViewPost = ({ pending }) => {
   return post ? (
     <div
       className={
-        "z-50 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "z-4 fullscreen_footer_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
