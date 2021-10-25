@@ -15,7 +15,7 @@ export default function BottomTabs() {
   return createPortal(
     <div
       style={{ height: "50px" }}
-      className="z-2 justify-evenly md:hidden border-caak-liquidnitrogen relative sticky bottom-0 flex items-center block w-full bg-white border-t"
+      className="bottomTabs z-2 justify-evenly md:hidden border-caak-liquidnitrogen relative sticky bottom-0 flex items-center block w-full bg-white border-t"
     >
       <span className="icon-fi-sp-home-f text-caak-generalblack text-24px px-b5 py-px-8 rounded-lg" />
       <span className="icon-fi-fi-sp-hamburger-menu text-caak-blue text-24px px-b5 py-px-8 rounded-lg" />

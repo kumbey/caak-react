@@ -2,4 +2,173 @@
     p.error {
         @apply mt-2 text-sm text-red-600 text-left
     }
+
+    .bottomTabs {
+        margin-top: calc(100vh - 72px - 50px);
+    }
+
+    .backdrop {
+        z-index: 50;
+        position: fixed;
+        overflow: scroll;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        min-width: max-content;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
+    }
+
+    .spinner {
+        width: max-content;
+        text-align: center;
+    }
+
+    .spinner > div {
+        width: 9px;
+        height: 9px;
+        margin-left: 2px;
+        margin-right: 2px;
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+
+    @keyframes sk-bouncedelay {
+        0%, 80%, 100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+        }
+    }
+
+    .my-masonry-grid {
+        display: -webkit-box; /* Not needed if autoprefixing */
+        display: -ms-flexbox; /* Not needed if autoprefixing */
+        display: flex;
+        width: auto;
+    }
+
+    .my-masonry-grid_column {
+        /*padding-left: 4px; !* gutter size *!*/
+        background-clip: padding-box;
+        margin-right: 4px;
+    }
+
+    /* Style your items */
+    .my-masonry-grid_column > div { /* change div to reference your elements you put in <Masonry> */
+        @apply max-h-80;
+
+    }
+
+
+    .fullscreen_footer_size {
+        height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+        .fullscreen_footer_size {
+            height: calc(100vh - 50px) !important;
+        }
+    }
+
+
+
+    .auroGradient {
+        background: transparent conic-gradient(from 264deg at 50% 50%, rgba(244, 173, 87, 1) 0.00%, rgba(247, 88, 49, 1) 30.32%, rgba(108, 65, 228, 1) 50.32%, rgba(80, 121, 241, 1) 66.97%, rgba(45, 235, 217, 1) 80.51%, rgba(244, 173, 87, 1) 100.00%) 0 0 no-repeat padding-box;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .vjs-default-skin.vjs-paused .vjs-big-play-button {
+        display: none !important;
+    }
+
+    .video-js .vjs-big-play-button {
+        display: none !important;
+    }
+
+    .vjs-afterglow-skin .vjs-big-play-button:before {
+        content: "" !important;
+    }
+
+    :not(.vjs-has-started) .vjs-control-bar {
+        display: flex;
+    }
+
+    .backBlur {
+        background: rgba(0, 0, 0, 0.9);
+    }
+
+    .backBlur::before {
+        background: rgba(0, 0, 0, 0.8);
+        content: '';
+        filter: blur(20px);
+        z-index: -1;
+    }
+
+    .nonBlur {
+        -webkit-filter: blur(0);
+        -moz-filter: blur(0);
+        -o-filter: blur(0);
+        -ms-filter: blur(0);
+        filter: blur(0);
+    }
+
+    :root {
+        --card-width: 384px;
+        --card-grid-gap: 16px;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-auto-columns: auto;
+        grid-template-columns: repeat(auto-fit, minmax(var(--card-width), max-content));
+        grid-gap: var(--card-grid-gap);
+        padding: initial;
+    }
+
+    .grid_container_container {
+        max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);
+    }
+
+    .image_size {
+        aspect-ratio: 1/1;
+    }
+
+    .popup {
+        min-width: 320px;
+        width: clamp(320px, 100%, 450px);
+    }
+    .disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        background: transparent;
+    }
+
 }
