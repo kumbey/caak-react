@@ -77,18 +77,18 @@ async function modify(record){
             ])
 
             // CREATE NOFICATION
-            const notifiData = {
+            const react = {
                 section: "USER",
                 type: "POST",
                 item_id: newImg.id,
                 action: `POST_${newImg.status}`,
                 from: newImg.user_id,
                 to: newImg.user_id,
-                seen: false,
+                seen: "FALSE",
                 version: 1
             }
 
-            await NoficationDB.insert(notifiData)
+            await NoficationDB.insert(react)
         
         }
 

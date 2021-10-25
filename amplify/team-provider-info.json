@@ -50,7 +50,7 @@
         },
         "triggerTables": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerTables-6b36775261765936325a-build.zip"
+          "s3Key": "amplify-builds/triggerTables-4464314c304e4c2f5436-build.zip"
         },
         "totals": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
@@ -62,11 +62,15 @@
         },
         "triggerNotification": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/triggerNotification-7039577a316f3649785a-build.zip"
+          "s3Key": "amplify-builds/triggerNotification-4c646c6b4f4f6b44334c-build.zip"
         },
         "fixTableData": {
           "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
-          "s3Key": "amplify-builds/fixTableData-75535865636d7a437743-build.zip"
+          "s3Key": "amplify-builds/fixTableData-702b6b2f72304f46764b-build.zip"
+        },
+        "notification": {
+          "deploymentBucketName": "amplify-caakmn-devs-100650-deployment",
+          "s3Key": "amplify-builds/notification-79614f6551412b4f4f48-build.zip"
         }
       }
     }

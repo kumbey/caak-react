@@ -216,23 +216,23 @@
         }
       ]
     },
-    "Notification": {
+    "notification": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": [
         {
-          "category": "function",
-          "resourceName": "caakmnlayerAPI",
-          "attributes": [
-            "Arn"
-          ]
-        },
-        {
           "category": "api",
           "resourceName": "caakmn",
           "attributes": [
             "GraphQLAPIIdOutput"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "caakmnlayerAPI",
+          "attributes": [
+            "Arn"
           ]
         }
       ]

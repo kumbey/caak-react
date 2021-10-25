@@ -55,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "Notification",
+            "notification",
             {
               "Fn::Join": [
                 "",
                 [
-                  "Notification",
+                  "notification",
                   "-",
                   {
                     "Ref": "env"
@@ -130,12 +130,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "caakmnLambdaRole56aa93aa",
+            "caakmnLambdaRole1f2f50a9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "caakmnLambdaRole56aa93aa",
+                  "caakmnLambdaRole1f2f50a9",
                   "-",
                   {
                     "Ref": "env"

@@ -1,44 +1,54 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-async function fixVersion(event, context) {
+async function seenALL(event) {
+
     let tableContents;
     try{
         
+        const { user_id } = event.arguments
+
         //get items from dynamo
         const params = {
             TableName: process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME,
+            IndexName: "byUserAndSeen",
+            KeyConditionExpression: "to = :to and seen = :seen",
+            ExpressionAttributeValues: {
+                ":to": user_id,
+                ":seen": "FALSE"
+            },
         };
-        tableContents = await scanDB(params);
+        tableContents = await queryDB(params);
         
     }catch(err){
         console.log(err);
-        return err;
+        return false
     }
     
     let calls = [];
     tableContents.forEach(function(value){
         let params = {
             ExpressionAttributeValues: {
-                ":version": 1,
+                ":seen": "TRUE",
             },
             Key: {
                 "id": value.id
             },
-            TableName: process.env.API_CAAKMN_POSTTABLE_NAME,
-            UpdateExpression: "SET version = :version",
+            TableName: process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME,
+            UpdateExpression: "SET seen = :seen",
             };
         calls.push(docClient.update(params).promise());
     });
-    let response;
+
     try{
-        response = await Promise.all(calls);
+        await Promise.all(calls);
     }catch(err){
         console.log(err);
+        return false
     }
-    return response;
+    return true;
 }
-async function scanDB(params) {
+async function queryDB(params) {
     let dynamoContents = [];
     let items;
     do{
@@ -50,5 +60,5 @@ async function scanDB(params) {
 };
 
 module.exports = {
-    fixVersion: fixVersion
+    seenAll: seenALL
 }

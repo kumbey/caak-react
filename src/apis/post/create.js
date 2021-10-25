@@ -11,6 +11,7 @@ export const create = async (newPost, userId) => {
         let {items , ...post} = {...newPost}
         post = _objectWithoutKeys(post, ["id"])
         post.status = "POSTING"
+        post.updated_user_id = userId
 
         post = getReturnData(await API.graphql(graphqlOperation(createPost, {input: post})))
 
