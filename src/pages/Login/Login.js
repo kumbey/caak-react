@@ -61,7 +61,7 @@ export default function Login() {
           },
         });
       } else if (ex.code === "NotAuthorizedException") {
-        setError("Нэврэх нэр эсвэл нууц үг буруу байна");
+        setError("Нэвтрэх нэр эсвэл нууц үг буруу байна");
       } else if (ex.code === "UserNotFoundException") {
         setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       }
@@ -79,9 +79,7 @@ export default function Login() {
             className="flex items-center"
           >
             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">
-              Нэвтрэх сонголт руу буцах
-            </p>
+            <p className="text-caak-generalblack text-13px">Буцах</p>
           </div>
           <span
             onClick={() => closeModal(history, state)}
@@ -93,7 +91,7 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
+          Нэвтрэх!
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="px-c8">

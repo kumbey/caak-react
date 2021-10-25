@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import PostHeader from "./PostHeader";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../../graphql-custom/post/queries";
@@ -321,9 +321,15 @@ const ViewPost = ({ pending }) => {
               <span className={"text-caak-generalblack font-bold text-18px"}>
                 {post.group.name}
               </span>
-              <span className={"text-caak-generalblack text-15px"}>
-                {post.user.nickname}
-              </span>
+              <Link
+                to={{
+                  pathname: `/user/${post.user.id}/profile`,
+                }}
+              >
+                <span className={"text-caak-generalblack text-15px"}>
+                  {post.user.nickname}
+                </span>
+              </Link>
             </div>
           </div>
           <PostHeader

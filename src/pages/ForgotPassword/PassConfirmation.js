@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import OtpInput from "../../components/input/OtpInput";
 import Backdrop from "../../components/Backdrop";
-import { closeModal } from "../../Utility/Util";
+import { closeModal, mailNumber } from "../../Utility/Util";
 import { useState } from "react";
 import Validate from "../../Utility/Validate";
 import Consts from "../../Utility/Consts";
@@ -19,8 +19,7 @@ export default function PassConfirmation() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const [disabled, setDisabled] = useState(false);
-  const [message, setMessage] = useState("Баталгаажуулах код ирсэнгүй");
+  const [counter, setCounter] = useState();
 
   const validate = {
     code: {
@@ -46,25 +45,27 @@ export default function PassConfirmation() {
   const { handleChange, errors, setErrors, handleSubmit, isValid } =
     Validate(validate);
 
+  useEffect(() => {
+    const timer =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    return () => clearInterval(timer);
+  }, [counter]);
+
   const doGetCode = async () => {
-    setDisabled(true);
-    setTimeout(() => {
-      setMessage("Баталгаажуулах код ирсэнгүй");
-      setDisabled(false);
-    }, 60000);
-    if (!disabled)
-      try {
-        setLoading(true);
-        await Auth.forgotPassword(state.username);
-        setMessage("Сэргээх код амжилттай илгээгдлээ");
-        setLoading(false);
-      } catch (ex) {
-        if (ex.code === "LimitExceededException") {
-          setError("Дахин код авах лимит хэтэрсэн");
-        } else {
-          console.log(ex);
-        }
+    setCounter(60);
+
+    try {
+      setLoading(true);
+      await Auth.forgotPassword(state.username);
+
+      setLoading(false);
+    } catch (ex) {
+      if (ex.code === "LimitExceededException") {
+        setError("Дахин код авах лимит хэтэрсэн");
+      } else {
+        console.log(ex);
       }
+    }
   };
 
   const doConfirm = async () => {
@@ -106,8 +107,7 @@ export default function PassConfirmation() {
           Сэргээх код <br /> илгээгдлээ!
         </div>
         <div className="text-center text-15px text-caak-darkBlue mt-c3">
-          Таны утасны дугаар болох <br />
-          {/* {mailNumber(state.username.replace("+976", ""))} руу <br />{" "} */}
+          Таны {mailNumber(state.username.replace("+976", ""))} руу <br />{" "}
           баталгаажуулах код илгээгдсэн болно.
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
@@ -121,17 +121,30 @@ export default function PassConfirmation() {
           <div className={" flex flex-col "}>
             <div className="px-c8 ">
               <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
-                {message && message}
+                {counter > 0 ? (
+                  <p className="text-green-600">
+                    Сэргээх код амжилттай илгээгдлээ
+                  </p>
+                ) : (
+                  <p>Баталгаажуулах код ирсэнгүй</p>
+                )}
               </div>
-              <div
-                onClick={() => doGetCode()}
-                className={`${
-                  disabled ? "disabled" : "cursor-pointer"
-                } mb-8 w-full flex justify-center items-center  text-14px  text-caak-primary  bg-transparent shadow-none font-bold `}
-              >
-                <span className={"icon-fi-rs-resend text-13px mr-1"} />
-                Дахин илгээх
-              </div>
+              {counter > 0 ? (
+                <div
+                  className="                 
+                   mb-8 w-full flex justify-center items-center  text-14px   bg-transparent shadow-none  "
+                >
+                  <p className="flex justify-center">{counter}</p>
+                </div>
+              ) : (
+                <div
+                  onClick={() => doGetCode()}
+                  className="cursor-pointer mb-8 w-full flex justify-center items-center  text-14px text-caak-primary bg-transparent shadow-none font-bold "
+                >
+                  <span className={"icon-fi-rs-resend text-13px mr-1"} />
+                  Дахин илгээх
+                </div>
+              )}
             </div>
 
             <div className="px-c8">
@@ -182,7 +195,7 @@ export default function PassConfirmation() {
         {/*Footer*/}
         <div
           className={
-            "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+            "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm mb-c1"
           }
         >
           <div className="text-caak-blue text-15px">

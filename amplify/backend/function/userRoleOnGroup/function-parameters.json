@@ -3,9 +3,9 @@
     {
       "type": "ProjectLayer",
       "resourceName": "caakmnlayerAPI",
+      "env": "devs",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "devs"
+      "isLatestVersionSelected": true
     }
   ],
   "permissions": {
