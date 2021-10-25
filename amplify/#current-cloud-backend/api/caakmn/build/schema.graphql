@@ -116,6 +116,7 @@ type Post @aws_iam @aws_cognito_user_pools {
   reacted: Boolean
   updatedAt: AWSDateTime!
   createdAt: AWSDateTime!
+  version: Int!
   user: User @aws_iam @aws_cognito_user_pools
   updated_user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
@@ -287,6 +288,7 @@ type Notification @aws_iam @aws_cognito_user_pools {
   seen: Boolean!
   updatedAt: AWSDateTime
   createdAt: AWSDateTime
+  version: Int!
   from_user: User @aws_iam @aws_cognito_user_pools
 }
 
@@ -944,10 +946,12 @@ input UpdatePostInput {
   category_id: ID
   reacted: Boolean
   updatedAt: AWSDateTime
+  expectedVersion: Int!
 }
 
 input DeletePostInput {
   id: ID!
+  expectedVersion: Int!
 }
 
 input ModelPostConditionInput {
@@ -1551,10 +1555,12 @@ input UpdateNotificationInput {
   seen: Boolean
   updatedAt: AWSDateTime
   createdAt: AWSDateTime
+  expectedVersion: Int!
 }
 
 input DeleteNotificationInput {
   id: ID!
+  expectedVersion: Int!
 }
 
 input ModelNotificationConditionInput {

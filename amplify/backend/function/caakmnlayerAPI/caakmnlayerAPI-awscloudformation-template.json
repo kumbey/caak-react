@@ -20,23 +20,19 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion2341aff4": {
+    "LambdaLayerVersionab5cdb44": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": {
-          "Ref": "runtimes"
-        },
+        "CompatibleRuntimes": [
+          "nodejs14.x"
+        ],
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": {
-            "Ref": "s3Key"
-          }
+          "S3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersionab5cdb44-build.zip"
         },
-        "Description": {
-          "Ref": "description"
-        },
+        "Description": "Updated layer version 2021-10-13T10:48:03.059Z",
         "LayerName": {
           "Fn::Sub": [
             "caakmnlayerAPI-${env}",
@@ -51,13 +47,48 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate2341aff4": {
+    "LambdaLayerPermissionPrivateab5cdb44": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Ref": "LambdaLayerVersion2341aff4"
+        "LayerVersionArn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:42",
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerVersiona2449d8e": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "CompatibleRuntimes": [
+          "nodejs14.x"
+        ],
+        "Content": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": "amplify-builds/caakmnlayerAPI-LambdaLayerVersiona2449d8e-build.zip"
         },
+        "Description": "Updated layer version 2021-10-13T08:50:26.621Z",
+        "LayerName": {
+          "Fn::Sub": [
+            "caakmnlayerAPI-${env}",
+            {
+              "env": {
+                "Ref": "env"
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "LambdaLayerPermissionPrivatea2449d8e": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:ap-southeast-1:699925983689:layer:caakmnlayerAPI-devs:38",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -67,7 +98,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion2341aff4"
+        "Ref": "LambdaLayerVersionab5cdb44"
       }
     }
   }

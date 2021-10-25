@@ -182,7 +182,7 @@ export default function PassConfirmation() {
         {/*Footer*/}
         <div
           className={
-            "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm "
+            "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm mb-c1"
           }
         >
           <div className="text-caak-blue text-15px">

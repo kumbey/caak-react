@@ -17,7 +17,9 @@ const Consts = {
     SS_UserKey: "user",
     signInUp: "signInUp",
     signIn: "signIn",
-    signUp: "signUp"
+    signUp: "signUp",
+    loggedUserAuth: "AMAZON_COGNITO_USER_POOLS",
+    publicUserAuth: "AWS_IAM",
 }
 
 export default Consts

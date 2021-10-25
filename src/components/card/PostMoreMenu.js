@@ -3,6 +3,7 @@ import { checkUser } from "../../Utility/Util";
 import { useHistory, useLocation } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
+import Consts from "../../Utility/Consts";
 import {
   createGroupUsers,
   deleteGroupUsers,
@@ -20,16 +21,22 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
 
   const getGroupFollow = async () => {
     setLoading(true);
-    const resp = await API.graphql(
-      graphqlOperation(getGroupFollowed, { id: groupId })
-    );
+    const resp = await API.graphql({
+      query: getGroupFollowed,
+      authMode: `${
+        checkUser(user) ? Consts.loggedUserAuth : Consts.publicUserAuth
+      }`,
+      variables: {
+        id: groupId,
+      },
+    });
     setGroupFollowed(resp.data.getGroup.followed);
     setLoading(false);
   };
 
   useEffect(() => {
     getGroupFollow();
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const joinGroup = async () => {

@@ -222,6 +222,10 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
+
+  useEffect(()=> {
+    setActiveIndex(null)
+  },[])
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>
