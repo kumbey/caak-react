@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Checkbox from "../../components/checkbox/Checkbox";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
@@ -20,6 +20,7 @@ export default function PostPending() {
   const [confirmedPost, setConfirmedPost] = useState(null);
   const [pendingPost, setPendingPost] = useState(null);
   const [archivedPost, setArchivedPost] = useState(null);
+  const pendingPostRef = useRef();
 
   const { user } = useUser();
   const { groupId } = useParams();
@@ -110,7 +111,8 @@ export default function PostPending() {
 
   const [setPostScroll] = useInfiniteScroll(
     groupPendingPosts,
-    setGroupPendingPosts
+    setGroupPendingPosts,
+    pendingPostRef
   );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
