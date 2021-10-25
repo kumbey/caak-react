@@ -12,7 +12,7 @@ import { getGroupView } from "../../graphql-custom/group/queries";
 import { useUser } from "../../context/userContext";
 import { updateStatus } from "../../apis/post/updateStatus";
 
-export default function Check({ hasApproveButtons }) {
+export default function Check() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -103,7 +103,7 @@ export default function Check({ hasApproveButtons }) {
 
   return post ? (
     <Backdrop className="flex justify-center">
-      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute flex w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
         <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
           <span
             onClick={() => closeModal(history, state)}

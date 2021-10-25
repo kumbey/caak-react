@@ -372,7 +372,7 @@ export default function Profile() {
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
               >
-                <span className="icon-fi-rs-settings text-22px" />
+                <span className="icon-fi-rs-pending text-22px" />
                 <p className="text-17px ml-px-10 font-medium">
                   Хүлээгдэж буй постууд
                 </p>
@@ -387,7 +387,7 @@ export default function Profile() {
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
               >
-                <span className="icon-fi-rs-bookmark text-20px mr-px-6" />
+                <span className="icon-fi-rs-shield-exclamation text-20px mr-px-6" />
                 <p className="text-17px ml-px-10 font-medium">
                   Архивлагдсан постууд
                 </p>
