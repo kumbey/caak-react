@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
+import Input from "../../components/input";
 
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
@@ -99,9 +100,12 @@ export default function Informations({ currentUser }) {
                 <p className="my-px-9 w-32 font-medium">{setting.text}</p>
                 {showInput && index === currentIndex ? (
                   <div className="flex">
-                    <input
+                    <Input
                       name={setting.name}
-                      className="w-full"
+                      // errorMessage={errors.oldPassword}
+                      className={
+                        "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                      }
                       readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
