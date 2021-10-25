@@ -39,7 +39,6 @@ export default function PendingPostItem({ post, onClick, className }) {
         className ? className : ""
       }`}
     >
-      <div>
         <Link
           to={{
             pathname: `/pending/view/${post.id}`,
@@ -53,7 +52,6 @@ export default function PendingPostItem({ post, onClick, className }) {
             title={post.title}
           />
         </Link>
-      </div>
       <div className="ph:w-full ph:mt-3 w-1/2">
         <Poster user={post.user} updatedAt={post.updatedAt} />
       </div>

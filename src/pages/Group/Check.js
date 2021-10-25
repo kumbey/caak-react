@@ -10,7 +10,7 @@ import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { getGroupView } from "../../graphql-custom/group/queries";
 
-export default function Check({ hasApproveButtons }) {
+export default function Check() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -32,6 +32,8 @@ export default function Check({ hasApproveButtons }) {
     }
   }, [postId]);
 
+  console.log(post)
+
   useEffect(() => {
     const handler = (e) => {
       if (e.keyCode === 39) {
@@ -51,7 +53,7 @@ export default function Check({ hasApproveButtons }) {
   useEffect(() => {
     if (post) getUsers(post.group.id);
     // eslint-disable-next-line
-  }, [postId]);
+  }, [post]);
 
   const getUsers = async (id) => {
     const resp = await API.graphql(
@@ -84,7 +86,7 @@ export default function Check({ hasApproveButtons }) {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "CONFIRMED" },
+          input: { id, status: "CONFIRMED", expectedVersion: post.version},
         })
       );
       setLoading(false);
@@ -99,7 +101,7 @@ export default function Check({ hasApproveButtons }) {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "ARCHIVED" },
+          input: { id, status: "ARCHIVED", expectedVersion: post.version },
         })
       );
       setLoading(false);
@@ -111,7 +113,7 @@ export default function Check({ hasApproveButtons }) {
 
   return post ? (
     <Backdrop className="flex justify-center">
-      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 flex absolute w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
         <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
           <span
             onClick={() => closeModal(history, state)}
