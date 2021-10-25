@@ -1,10 +1,22 @@
 @layer components {
+    :root {
+        --card-width: 384px;
+        --card-grid-gap: 16px;
+        --bottomTabSize: 50px;
+        --topBarSize: 72px;
+    }
+
     p.error {
         @apply mt-2 text-sm text-red-600 text-left
     }
 
     .bottomTabs {
-        margin-top: calc(100vh - 72px - 50px);
+        margin-top: calc(100vh - var(--topBarSize) - var(--bottomTabSize));
+    }
+
+    .notificationMobile {
+        padding-top: var(--topBarSize);
+        padding-bottom: var(--bottomTabSize);
     }
 
     .backdrop {
@@ -140,10 +152,7 @@
         filter: blur(0);
     }
 
-    :root {
-        --card-width: 384px;
-        --card-grid-gap: 16px;
-    }
+
 
     .grid-container {
         display: grid;
@@ -165,6 +174,7 @@
         min-width: 320px;
         width: clamp(320px, 100%, 450px);
     }
+
     .disabled {
         opacity: 0.6;
         cursor: not-allowed;
