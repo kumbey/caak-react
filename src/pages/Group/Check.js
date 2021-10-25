@@ -51,7 +51,7 @@ export default function Check({ hasApproveButtons }) {
   useEffect(() => {
     if (post) getUsers(post.group.id);
     // eslint-disable-next-line
-  }, [postId]);
+  }, [post]);
 
   const getUsers = async (id) => {
     const resp = await API.graphql(
@@ -84,7 +84,7 @@ export default function Check({ hasApproveButtons }) {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "CONFIRMED" },
+          input: { id, status: "CONFIRMED", expectedVersion: post.version },
         })
       );
       setLoading(false);

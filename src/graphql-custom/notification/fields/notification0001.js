@@ -1,4 +1,4 @@
-import file0001 from "../../file/fields/file0001"
+import file0001 from "../../file/fields/file0001";
 
 const notification0001 = /* GraphQL */ `{
     action
@@ -11,11 +11,12 @@ const notification0001 = /* GraphQL */ `{
     to
     type
     updatedAt
+    version
     from_user {
         about
         nickname
         pic ${file0001}
     }
-}`
+}`;
 
-export default notification0001
+export default notification0001;
