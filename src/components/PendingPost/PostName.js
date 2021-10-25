@@ -3,7 +3,7 @@ import VideoJS from "../card/VideoJS"
 export default function PostName({title,files, onClick, video}) {
 
     return (
-        <div onClick={onClick} className='flex items-center cursor-pointer'>
+        <div style={{marginLeft: "25px"}} onClick={onClick} className='flex items-center cursor-pointer'>
 
         {video ? (
             <VideoJS
@@ -13,7 +13,7 @@ export default function PostName({title,files, onClick, video}) {
                 ? 
             <img
                 src={"https://images-na.ssl-images-amazon.com/images/I/31OQNoCuVdL.png"}
-                className={"h-c7 w-c33 rounded-lg"}
+                className={"h-c7 w-c33 rounded-lg "}
                 alt={""}
             /> : null
             ) : (
