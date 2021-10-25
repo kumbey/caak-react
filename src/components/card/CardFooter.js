@@ -182,10 +182,15 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
           </div>
           <div
             onClick={() =>
-              history.push({
-                pathname: `/post/view/${postId}`,
-                state: { background: location },
-              })
+              checkUser(user)
+                ? history.push({
+                    pathname: `/post/view/${postId}`,
+                    state: { background: location },
+                  })
+                : history.push({
+                    pathname: "/login",
+                    state: { background: location },
+                  })
             }
             className={"flex flex-row items-center mr-4 cursor-pointer"}
           >
