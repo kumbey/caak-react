@@ -13,24 +13,25 @@ export const crtPost = async (newPost, userId) => {
         let {items , ...post} = {...newPost}
         post = _objectWithoutKeys(post, ["id"])
         post.status = "POSTING"
+        post.updated_user_id = userId
 
-        post = getReturnData(await API.graphql(graphqlOperation(createPost, {input: post})))
+        const savedPost = getReturnData(await API.graphql(graphqlOperation(createPost, {input: post})))
 
-        for (let i = 0; i < post.items.length; i++) {
-            const item = post.items[i];
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
             const resp = await ApiFileUpload(item.file);
             const postItem = _objectWithoutKeys(item, ["file"])
             postItem.file_id = resp.id;
             postItem.order = i;
-            postItem.post_id = post.id;
+            postItem.post_id = savedPost.id;
             postItem.user_id = userId
-
+            
             await API.graphql(graphqlOperation(createPostItems, { input: postItem }));
         }
 
         post = await API.graphql(graphqlOperation(updatePost, {input: {
-            id: post.id,
-            expectedVersion: post.version,
+            id: savedPost.id,
+            expectedVersion: savedPost.version,
             status: "PENDING"
         }}))
 

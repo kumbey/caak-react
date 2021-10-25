@@ -9,7 +9,6 @@ import {
   closeModal
 } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
-import { useEffect } from "react";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -63,6 +62,14 @@ const AddPost = () => {
   }, [selectedGroupId]);
 
   useEffect(() => {
+    if (selectedGroup) {
+      post.group_id = selectedGroup.id
+      post.category_id = selectedGroup.category_id
+    }
+    // eslint-disable-next-line
+  }, [selectedGroup]);
+
+  useEffect(() => {
     if (groupData && selectedGroupId) {
       setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
     }
@@ -95,7 +102,7 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-     
+
       if(post.id === "new"){
         await crtPost(post, user.sysUser.id)
       }else{

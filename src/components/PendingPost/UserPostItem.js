@@ -21,7 +21,7 @@ export default function UserPostItem({ post, onClick, className }) {
           }}
         >
           <PostName
-            video={post.items.items[0].file.type.startsWith("video")}
+            video={post.items.items.length > 0 && post.items.items[0].file.type.startsWith("video")}
             onClick={onClick}
             files={post.items.items}
             title={post.title}

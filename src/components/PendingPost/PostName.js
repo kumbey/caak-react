@@ -18,7 +18,7 @@ export default function PostName({title,files, onClick, video}) {
             /> : null
             ) : (
                 <img
-                src={generateFileUrl(files[0].file)}
+                src={generateFileUrl(files.length > 0 && files[0].file)}
                 className={"h-c7 w-c33 rounded-lg object-cover"}
                 alt={""}
             />

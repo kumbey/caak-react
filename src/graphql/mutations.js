@@ -19,6 +19,11 @@ export const notificationAdded = /* GraphQL */ `
     }
   }
 `;
+export const notification = /* GraphQL */ `
+  mutation Notification($user_id: ID!, $method: String!) {
+    notification(user_id: $user_id, method: $method)
+  }
+`;
 export const createFile = /* GraphQL */ `
   mutation CreateFile(
     $input: CreateFileInput!
