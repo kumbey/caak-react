@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getPostByUser } from "../../graphql-custom/post/queries";
 import { useListPager } from "../../Utility/ApiHelper";
 import useInfiniteScroll from "../Home/useFetch";
@@ -6,6 +6,7 @@ import UserPostItem from "../../components/PendingPost/UserPostItem";
 import Loader from "../../components/loader";
 export default function PostPendingUser({ userId }) {
   const [userPendingPosts, setUserPendingPosts] = useState([]);
+  const itemRef = useRef();
   const [nextPosts] = useListPager({
     query: getPostByUser,
     variables: {
@@ -18,7 +19,8 @@ export default function PostPendingUser({ userId }) {
 
   const [setPostScroll] = useInfiniteScroll(
     userPendingPosts,
-    setUserPendingPosts
+    setUserPendingPosts,
+    itemRef
   );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
@@ -69,12 +71,14 @@ export default function PostPendingUser({ userId }) {
           </div>
         );
       })}
-      <Loader
-          containerClassName={"self-center"}
-          className={`bg-caak-primary ${
-              loading ? "opacity-100" : "opacity-0"
-          }`}
-      />
+      <div ref={itemRef} className={"flex justify-center items-center"}>
+        <Loader
+            containerClassName={"self-center"}
+            className={`bg-caak-primary ${
+                loading ? "opacity-100" : "opacity-0"
+            }`}
+        />
+      </div>
     </div>
   );
 }

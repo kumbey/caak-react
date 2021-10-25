@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../../components/button";
 import Card from "../../components/card";
 import { useLocation, useParams } from "react-router";
@@ -42,6 +42,7 @@ export default function Profile() {
   );
 
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const profilePostRef = useRef();
   const subscriptions = {};
 
   const subscrib = () => {
@@ -77,6 +78,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (userId) subscrib();
+    setPostScroll(fetchPosts);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
@@ -152,7 +154,7 @@ export default function Profile() {
     // eslint-disable-next-line
   }, [profilePictureDropZone]);
 
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts);
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, profilePostRef);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
 
@@ -176,11 +178,11 @@ export default function Profile() {
     }
   }, [signedUser, userId]);
 
-  useEffect(() => {
-    fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   // fetchPosts(posts, setPosts);
+  //   setPostScroll(fetchPosts);
+  //   // eslint-disable-next-line
+  // }, []);
 
   const fetchPosts = async (data, setData) => {
     try {
@@ -410,15 +412,18 @@ export default function Profile() {
           >
             {posts.map((data, index) => {
               return (
-                <Card
-                  key={index}
-                  video={data.items.items[0].file.type.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                />
+                data && (
+                  <Card
+                    key={index}
+                    video={data.items.items[0].file.type.startsWith("video")}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
+                )
               );
             })}
           </div>
+
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 2 ? "" : "hidden"
@@ -434,10 +439,17 @@ export default function Profile() {
             <PostArchivedUser userId={userId} />
           </div>
         </div>
-        <Loader
-          containerClassName={"self-center"}
-          className={`bg-caak-primary ${loading ? "opacity-100" : "opacity-0"}`}
-        />
+        <div
+          ref={profilePostRef}
+          className={"flex justify-center items-center"}
+        >
+          <Loader
+            containerClassName={"self-center"}
+            className={`bg-caak-primary ${
+              loading ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
       </div>
     </div>
   ) : null;

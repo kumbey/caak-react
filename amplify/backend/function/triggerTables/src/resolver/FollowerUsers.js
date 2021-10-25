@@ -29,7 +29,8 @@ async function insert(record){
             action: `USER_FOLLOWED`,
             from: newImg.followed_user_id,
             to: newImg.user_id,
-            seen: false
+            seen: false,
+            version: 1
         }
 
         await NoficationDB.insert(notifiData)

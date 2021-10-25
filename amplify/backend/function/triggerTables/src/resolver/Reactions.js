@@ -58,7 +58,8 @@ async function changeReactions(newImg, increase){
         const notifiData = {
             section: "USER",
             type: "REACTION",
-            seen: false
+            seen: false,
+            version: 1
         }
 
         if(newImg.on_to === "POST"){

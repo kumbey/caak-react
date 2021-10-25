@@ -10,6 +10,7 @@ const post0002 = /* GraphQL */ `{
     group_id
     category_id
     updatedAt
+    version
     user {
         firstname
         pic ${file0001}
