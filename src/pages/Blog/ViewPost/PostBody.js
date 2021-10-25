@@ -1,6 +1,5 @@
 import CommentCard from "../../../components/card/CommentCard";
-import { getFileUrl, getReturnData } from "../../../Utility/Util";
-import Dummy from "dummyjs";
+import { getReturnData } from "../../../Utility/Util";
 import API from "@aws-amplify/api";
 import { useEffect, useState } from "react";
 import { onCommentByPostItem } from "../../../graphql-custom/comment/subscriptions";
