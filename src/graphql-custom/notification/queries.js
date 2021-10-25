@@ -17,6 +17,7 @@ export const listNotificationByUser = /* GraphQL */ `
             nextToken: $nextToken
         ) {
             items ${notification0001}
+            nextToken
         }
     }
 `;

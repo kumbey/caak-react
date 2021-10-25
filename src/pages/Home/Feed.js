@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
 import { useUser } from "../../context/userContext";
@@ -32,19 +32,9 @@ const Feed = () => {
       type: "Шилдэг",
       icon: "icon-fi-rs-top",
     },
-    /*{
-                                                                                                                                          id: 3,
-                                                                                                                                          type: "Бүлгүүд",
-                                                                                                                                          icon: "icon-fi-rs-group",
-                                                                                                                                        },
-                                                                                                                                        {
-                                                                                                                                          id: 4,
-                                                                                                                                          type: "Дагасан найзууд",
-                                                                                                                                          icon: "icon-fi-rs-following",
-                                                                                                                                        },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const feedRef = useRef();
   const { user } = useUser();
   const [groupData, setGroupData] = useState({
     adminModerator: [],
@@ -60,7 +50,7 @@ const Feed = () => {
       limit: 6,
     },
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts);
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
   const [addedPost, setAddedPost] = useState(0);
   const [removedPost, setRemovedPost] = useState();
@@ -123,6 +113,7 @@ const Feed = () => {
         setLoading(false);
       }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
@@ -195,7 +186,7 @@ const Feed = () => {
   }, [removedPost]);
 
   useEffect(() => {
-    fetchPosts(posts, setPosts);
+    // fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
 
     return () => {
@@ -222,10 +213,11 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
-
-  useEffect(()=> {
-    setActiveIndex(null)
-  },[])
+  useEffect(() => {
+    return () => {
+      setActiveIndex(null);
+    };
+  }, []);
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>
@@ -402,12 +394,14 @@ const Feed = () => {
                 );
               })}
             </div>
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
+            <div ref={feedRef} className={"flex justify-center items-center"}>
+              <Loader
+                containerClassName={"self-center"}
+                className={`bg-caak-primary ${
+                  loading ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
           </div>
         </div>
       </div>
