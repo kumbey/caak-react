@@ -1,8 +1,17 @@
 {
   "permissions": {
     "storage": {
-      "UserTotal:@model(appsync)": [
-        "read"
+      "Post:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "Notification:@model(appsync)": [
+        "create",
+        "read",
+        "update",
+        "delete"
       ]
     }
   },

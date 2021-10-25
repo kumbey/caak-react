@@ -31,8 +31,9 @@ const CommentCard = ({ comment, children }) => {
         </span>
       </div>
       <span
+        style={{maxWidth: "430px"}}
         className={
-          "text-15px text-caak-generalblack leading-4  tracking-normal pt-2"
+          "text-15px text-caak-generalblack leading-4 tracking-normal pt-2"
         }
       >
         {comment.comment}
