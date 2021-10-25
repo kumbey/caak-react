@@ -42,9 +42,9 @@ export default function NavBar() {
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
 
-  // const notificationRef = useClickOutSide(() => {
-  //   setIsNotificationMenu(false);
-  // });
+  const notificationRef = useClickOutSide(() => {
+    setIsNotificationMenu(false);
+  });
 
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
@@ -163,7 +163,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div
-                  // ref={notificationRef}
+                  ref={notificationRef}
                   onClick={() => {
                     setIsNotificationMenu((oldState) => !oldState);
                   }}
