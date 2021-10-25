@@ -22,11 +22,13 @@ export default function Login() {
       value: username,
       type: Consts.typeUsername,
       onChange: setUsername,
+      ignoreOn: true
     },
     password: {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
+      ignoreOn: true
     },
   };
 

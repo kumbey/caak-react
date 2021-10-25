@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import PostHeader from "./PostHeader";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -12,8 +12,8 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
-import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
 import PostMoreMenu from "../../../components/card/PostMoreMenu";
+import DropDown from "../../../components/navigation/DropDown";
 
 const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
@@ -280,12 +280,18 @@ const ViewPost = ({ pending }) => {
               "flex justify-center p-3 rounded-full items-center absolute right-4 top-6 z-10 cursor-pointer "
             }
           >
-            <span className={"icon-fi-rs-dots text-4px"} />
-            <GroupInformationDrop
-              className="right-1 top-4 absolute"
+            <span className="icon-fi-rs-dots text-4px" />
+            <DropDown
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={<PostMoreMenu postId={postId} postUser={user} />}
+              content={
+                <PostMoreMenu
+                  groupId={post.group.id}
+                  postId={postId}
+                  postUser={user}
+                />
+              }
+              className={"top-6 -right-2"}
             />
           </div>
 

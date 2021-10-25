@@ -127,6 +127,7 @@ module.exports = {
         roboto: ["Roboto"],
       },
       spacing: {
+        "px-2": "2px",
         "px-6": "6px",
         "px-7": "7px",
         "px-8": "8px",

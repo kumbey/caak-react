@@ -2,7 +2,7 @@ import Button from "../../components/button";
 import Card from "../../components/card";
 import Loader from "../../components/loader";
 
-const GroupBody = ({ groupPosts, loading }) => {
+const GroupBody = ({ groupPosts, loading, groupFeedRef }) => {
   return (
     <div>
       {/* navigator */}
@@ -37,9 +37,13 @@ const GroupBody = ({ groupPosts, loading }) => {
             );
           })}
         </div>
-        <Loader
-          className={`bg-caak-primary ${loading ? "opacity-100" : "opacity-0"}`}
-        />
+        <div ref={groupFeedRef} className={"flex justify-center items-center"}>
+          <Loader
+            className={`${
+              loading ? "opacity-100" : "opacity-0"
+            } bg-caak-primary `}
+          />
+        </div>
       </div>
     </div>
   );

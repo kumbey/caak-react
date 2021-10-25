@@ -60,6 +60,7 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
           <div className={"flex flex-row items-center"}>
             
             <Tooltip
+                className={"-left-14 top-4"}
               content={
                 <ProfileHoverCard userId={postUser.id} postUser={postUser} />
               }
