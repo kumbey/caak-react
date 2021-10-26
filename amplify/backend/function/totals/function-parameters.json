@@ -39,7 +39,7 @@
       "resourceName": "caakmnlayerAPI",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "prod"
+      "env": "devs"
     }
   ]
 }

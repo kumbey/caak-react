@@ -180,7 +180,7 @@ export default function NavBar() {
                         "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
                       }
                     >
-                      {userTotal.unseen > 9 ? "9+" : userTotal.unseen}
+                      {parseInt(userTotal.unseen) > 9 ? "9+" : userTotal.unseen}
                     </span>
                   ) : null}
                   <NotificationDropDown
