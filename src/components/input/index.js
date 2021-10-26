@@ -15,7 +15,7 @@ const Input = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className={`input relative ${containerStyle}`}>
+    <div className={`w-full input relative ${containerStyle}`}>
       {hideLabel ? null : (
         <label htmlFor={id} className={`${labelStyle}`}>
           {label}
@@ -33,14 +33,14 @@ const Input = ({
         <input
           type={showPassword ? "text" : type}
           {...props}
-          className={`${className} ${
+          className={` ${className} ${
             errorMessage ? `border border-caak-red` : ``
           }`}
         />
       </div>
 
       {!hideError && (
-        <p className="w-80 text-13px error text-left" id="email-error">
+        <p className=" text-13px error text-left" id="email-error">
           {errorMessage}
         </p>
       )}
