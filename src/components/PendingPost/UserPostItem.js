@@ -16,20 +16,20 @@ export default function UserPostItem({ post, onClick, className }) {
       <div>
         <Link
           to={{
-            pathname: `/pending/view/${post.id}`,
+            pathname: `/pending/view/${post?.id}`,
             state: { background: location },
           }}
         >
           <PostName
-            video={post.items.items[0].file.type.startsWith("video")}
+            video={post?.items?.items[0].file.type.startsWith("video")}
             onClick={onClick}
-            files={post.items.items}
-            title={post.title}
+            files={post?.items?.items}
+            title={post?.title}
           />
         </Link>
       </div>
       <div className="ph:w-full ph:mt-3 w-1/2">
-        <Poster user={post.user} updatedAt={post.updatedAt} />
+        <Poster user={post?.user} updatedAt={post?.updatedAt} />
       </div>
     </div>
   );

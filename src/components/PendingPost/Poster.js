@@ -8,10 +8,10 @@ export default function Poster({ user, updatedAt }) {
       <div className="flex items-center w-1/2">
         <img
           className="ph:w-c2 ph:h-c2 w-8 h-8 rounded-full"
-          src={user.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
+          src={user?.pic ? getFileUrl(user?.pic) : Dummy.img("100x100")}
           alt=""
         />
-        <p className="text-15px ml-px-7">{user.firstname}</p>
+        <p className="text-15px ml-px-7">{user?.firstname}</p>
       </div>
 
       <div className="flex items-center w-1/2">
