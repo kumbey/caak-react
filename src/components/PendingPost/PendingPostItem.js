@@ -9,6 +9,8 @@ import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { useState } from "react";
 import DropDown from "../navigation/DropDown";
+import { useUser } from "../../context/userContext";
+import { updateStatus } from "../../apis/post/updateStatus";
 
 export default function PendingPostItem({ post, onClick, className }) {
   const location = useLocation();

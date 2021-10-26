@@ -1,6 +1,6 @@
 import { generateFileUrl } from "../../Utility/Util";
 import VideoJS from "../card/VideoJS";
-
+export default function PostName({files, title,video, onClick}){
     return (
         <div 
             style={{overflow: "clip"}} 
