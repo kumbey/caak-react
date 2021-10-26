@@ -7,38 +7,43 @@ import PendingPostMenuDrop from "../../pages/Group/PendingPostMenuDrop";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../graphql-custom/post/mutation";
-import GroupInformationDrop from "./GroupInformationDrop";
 import { useState } from "react";
+import DropDown from "../navigation/DropDown";
 
 export default function PendingPostItem({ post, onClick, className }) {
   const location = useLocation();
+  const { user } = useUser();
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const acceptHandler = async () => {
-    await API.graphql(
-      graphqlOperation(updatePost, {
-        input: { id: post.id, status: "CONFIRMED" },
-      })
-    );
+
+  const postHandler = async (id, status) => {
+    try {
+      await API.graphql(
+        graphqlOperation(updatePost, {
+          input: { id, status, expectedVersion: post.version },
+        })
+      );
+    } catch (ex) {
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        updateStatus(post, user.sysUser.id, status);
+      }
+    }
   };
 
-  const declineHandler = async () => {
-    await API.graphql(
-      graphqlOperation(updatePost, {
-        input: { id: post.id, status: "ARCHIVED" },
-      })
-    );
-  };
   return (
     <div
-      style={{ paddingBlock: "20px", marginLeft: "25px" }}
-      className={`flex ph:grid w-full justify-between items-center ${
+      style={{ paddingBlock: "20px"}}
+      className={`flex ph:grid w-full items-center ${
         className ? className : ""
       }`}
-    >
+    > 
+      <div className="w-1/2">
         <Link
           to={{
             pathname: `/pending/view/${post.id}`,
@@ -52,29 +57,29 @@ export default function PendingPostItem({ post, onClick, className }) {
             title={post.title}
           />
         </Link>
-      <div className="ph:w-full ph:mt-3 w-1/2">
-        <Poster user={post.user} updatedAt={post.updatedAt} />
-      </div>
-      <div className="2xl:flex sm:block md:block lg:block xl:mr-c24 sm:mr-px-10 relative flex items-center justify-end hidden">
+        </div>
+      <div className="ph:w-full flex w-1/2 ph:mt-3 justify-between relative">
+        <div className="w-2/3">
+          <Poster user={post.user} updatedAt={post.updatedAt} />
+        </div>
         <PendingPostMenuDrop
           setIsMenuOpen={setIsMenuOpen}
           toggleMenu={toggleMenu}
-          containerClassName={"sm:block md:block lg:block"}
         >
-          <GroupInformationDrop
-            className="block"
+          <DropDown
+            className="absolute"
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={
-              <div className="sm:block md:block lg:block flex flex-col items-center justify-center hidden w-full p-2">
+              <div className="flex flex-col w-full p-2">
                 <Button
-                  onClick={() => acceptHandler()}
+                  onClick={() => postHandler(post.id, "CONFIRMED")}
                   className="bg-caak-bleudefrance text-15px w-full mb-2 mr-2 text-white"
                 >
                   Зөвшөөрөх
                 </Button>
                 <Button
-                  onClick={() => declineHandler()}
+                  onClick={() => postHandler(post.id, "ARCHIVED")}
                   className="text-caak-generalblack text-15px w-full bg-white border"
                 >
                   Татгалзах

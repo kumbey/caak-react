@@ -1,9 +1,11 @@
-import { generateFileUrl } from "../../Utility/Util"
-import VideoJS from "../card/VideoJS"
-export default function PostName({title,files, onClick, video}) {
+import { generateFileUrl } from "../../Utility/Util";
+import VideoJS from "../card/VideoJS";
 
     return (
-        <div style={{marginLeft: "25px"}} onClick={onClick} className='flex items-center cursor-pointer'>
+        <div 
+            style={{overflow: "clip"}} 
+            onClick={onClick} 
+            className='flex items-center cursor-pointer pl-6 mr-5'>
 
         {video ? (
             <VideoJS
@@ -23,8 +25,7 @@ export default function PostName({title,files, onClick, video}) {
                 alt={""}
             />
         )}
-            
-            <p style={{marginInline: "20px"}}>{title}</p>
+        <p className="text-15px" style={{marginInline: "20px"}}>{title}</p>
         </div>
     )
 }

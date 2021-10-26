@@ -16,7 +16,7 @@ export default function UserPostItem({ post, onClick, className }) {
       >
         <div
           style={{ paddingBlock: "20px"}}
-          className={`flex ph:grid w-full justify-between items-center ${
+          className={`flex ph:grid w-full items-center ${
             className ? className : ""
           }`}
         >
@@ -28,7 +28,7 @@ export default function UserPostItem({ post, onClick, className }) {
                 title={post.title}
               />
           </div>
-          <div className="ph:w-full ph:mt-3 w-1/2">
+          <div className="ph:w-full ph:mt-3 w-1/3">
             <Poster user={post.user} updatedAt={post.updatedAt} />
           </div>
         </div>

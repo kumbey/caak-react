@@ -167,6 +167,8 @@ const AddPost = () => {
                   setIsGroupVisible={setIsGroupVisible}
                   selectedGroup={selectedGroup}
                   setSelectedGroup={setSelectedGroup}
+                  setPost={setPost}
+                  post={post}
                 />
                 <UploadedMediaEdit
                   setPost={setPost}
@@ -220,6 +222,8 @@ const AddPost = () => {
                 setIsGroupVisible={setIsGroupVisible}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                setPost={setPost}
+                post={post}
               />
               <DropZoneWithCaption post={post} setPost={setPost} />
             </Fragment>

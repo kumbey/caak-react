@@ -42,9 +42,9 @@ export default function NavBar() {
 
   const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
 
-  // const notificationRef = useClickOutSide(() => {
-  //   setIsNotificationMenu(false);
-  // });
+  const notificationRef = useClickOutSide(() => {
+    setIsNotificationMenu(false);
+  });
 
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
@@ -163,7 +163,7 @@ export default function NavBar() {
                   />
                 </div>
                 <div
-                  // ref={notificationRef}
+                  ref={notificationRef}
                   onClick={() => {
                     setIsNotificationMenu((oldState) => !oldState);
                   }}
@@ -196,7 +196,7 @@ export default function NavBar() {
                     // items={menu_data}
                     className={"top-10 -right-4"}
                   />
-                  <div className={"w-45px h-45px mr-2"}>
+                  <div className={"w-45px h-45px mr-2 cursor-pointer"}>
                     <img
                       alt={user.sysUser.nickname}
                       src={
@@ -209,7 +209,7 @@ export default function NavBar() {
                       }
                     />
                   </div>
-                  <div className={"flex flex-col items-center justify-center "}>
+                  <div className={"flex flex-col items-center justify-center"}>
                     <div
                       className={"flex flex-row justify-center items-center"}
                     >

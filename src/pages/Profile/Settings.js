@@ -354,7 +354,7 @@ export default function Settings() {
                 </p>
                 {showInput ? (
                   <div className="flex">
-                    <div className="flex flex-col ">
+                    <div className=" flex flex-col">
                       <p className="error">{error}</p>
                       <Input
                         value={oldPassword}

@@ -50,7 +50,7 @@ export default function Profile() {
     if (checkUser(signedUser)) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
-    subscriptions.onPostByGroup = API.graphql({
+    subscriptions.onPostByUserConfirmed = API.graphql({
       query: onPostByUser,
       variables: {
         user_id: userId,
@@ -66,12 +66,34 @@ export default function Profile() {
         console.warn(error);
       },
     });
+    subscriptions.onPostByUserPending = API.graphql({
+      query: onPostByUser,
+      variables: {
+        user_id: userId,
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
   };
 
   useEffect(() => {
     if (setSubscriptionPosts) {
-      if (!posts.find((item) => item.id === subscriptionPosts.id))
+      if (!posts.find((item) => item?.id === subscriptionPosts?.id)) {
         setPosts((prev) => [subscriptionPosts, ...prev]);
+      } else {
+        const filtered = posts.filter(
+          (item) => item?.id !== subscriptionPosts.id
+        );
+        setPosts([...filtered]);
+      }
     }
     // eslint-disable-next-line
   }, [subscriptionPosts]);

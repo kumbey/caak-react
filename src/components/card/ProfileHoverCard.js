@@ -116,16 +116,16 @@ export default function ProfileHoverCard({ userId }) {
         )}
       </div>
       <div className="mb-px-10">
-        <div className="flex items-center">
-          <Link
-            to={{
-              pathname: `/user/${profileUser.id}/profile`,
-            }}
-          >
-            <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>  
-          </Link>
-          <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
-        </div>
+        <Link
+          to={{
+            pathname: `/user/${profileUser.id}/profile`,
+          }}
+        >
+          <div className="flex items-center">
+            <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
+            <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
+          </div>
+        </Link>
         <p className="font-light text-15px">{profileUser.about}</p>
       </div>
       <div className="flex flex-row justify-between items-center pr-14">
