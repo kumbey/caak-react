@@ -51,10 +51,10 @@ const NotificationDropDown = ({ isOpen }) => {
         setLoading(true);
 
         let resp = await nextNotification();
+
         if (resp) {
           setData([...data, ...resp]);
         }
-
         setLoading(false);
       }
     } catch (ex) {
@@ -69,27 +69,34 @@ const NotificationDropDown = ({ isOpen }) => {
         graphqlOperation(getNotification, { id: id })
       );
       resp = getReturnData(resp);
+
       setNotifications([resp, ...notifications]);
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  const handleAllNotifications = async () => {
-    return notifications.map((item, index) => {
-      if (!item.seen) {
-        localNotifications[index].seen = true;
+  const handleAllNotifications = () => {
+    notifications.map(async (item, index) => {
+      if (item.seen === "FALSE") {
+        localNotifications[index].seen = "TRUE";
         try {
-          API.graphql(
+          await API.graphql(
             graphqlOperation(updateNotification, {
               input: {
                 id: item.id,
-                seen: true,
+                seen: "TRUE",
+                expectedVersion: item.version,
               },
             })
           );
-        } catch (error) {
-          console.log(error);
+        } catch (ex) {
+          if (
+            ex.errors[0].errorType ===
+            "DynamoDB:ConditionalCheckFailedException"
+          ) {
+            console.log("ALREADY UPDATED");
+          } else console.log(ex);
         }
       }
       return null;
@@ -99,15 +106,17 @@ const NotificationDropDown = ({ isOpen }) => {
   const handleNotificationClick = async (item, index) => {
     try {
       const item = notifications[index];
+
       await API.graphql(
         graphqlOperation(updateNotification, {
           input: {
             id: item.id,
-            seen: true,
+            seen: "TRUE",
+            expectedVersion: item.version,
           },
         })
       );
-      if (!item.seen) localNotifications[index].seen = true;
+      if (item.seen === "FALSE") localNotifications[index].seen = "TRUE";
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
@@ -150,7 +159,12 @@ const NotificationDropDown = ({ isOpen }) => {
         });
       }
     } catch (ex) {
-      console.log(ex);
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        console.log("ALREADY UPDATED");
+        localNotifications[index].seen = "TRUE";
+      } else console.log(ex);
     }
   };
 

@@ -1,13 +1,11 @@
-import {Fragment, useEffect, useState} from "react";
+import { Fragment, useEffect, useState } from "react";
 import Backdrop from "../../../components/Backdrop";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import {
-  closeModal
-} from "../../../Utility/Util";
+import { closeModal } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
@@ -53,7 +51,6 @@ const AddPost = () => {
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
     if (groupData && selectedGroupId) {
       setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
@@ -63,8 +60,8 @@ const AddPost = () => {
 
   useEffect(() => {
     if (selectedGroup) {
-      post.group_id = selectedGroup.id
-      post.category_id = selectedGroup.category_id
+      post.group_id = selectedGroup.id;
+      post.category_id = selectedGroup.category_id;
     }
     // eslint-disable-next-line
   }, [selectedGroup]);
@@ -103,18 +100,18 @@ const AddPost = () => {
     try {
       setLoading(true);
 
-      if(post.id === "new"){
-        await crtPost(post, user.sysUser.id)
-      }else{
-        await pdtPost(post, user.sysUser.id)
+      if (post.id === "new") {
+        await crtPost(post, user.sysUser.id);
+      } else {
+        await pdtPost(post, user.sysUser.id);
       }
 
       setLoading(false);
       // closeModal(history, state);
 
       history.push(
-          { pathname: `/user/${user.sysUser.id}/profile` },
-          { index: 2 }
+        { pathname: `/user/${user.sysUser.id}/profile` },
+        { index: 2 }
       );
       // setActiveIndex(2)
     } catch (ex) {

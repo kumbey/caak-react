@@ -85,7 +85,7 @@ export default function Check() {
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status, expectedVersion: post.version },
+          input: { id, status: "CONFIRMED", expectedVersion: post.version },
         })
       );
       setLoading(false);
@@ -94,9 +94,6 @@ export default function Check() {
       if (
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        updateStatus(post, user.sysUser.id, status);
-        setLoading(false);
-        closeModal(history, state);
       }
     }
   };
