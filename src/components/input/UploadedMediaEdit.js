@@ -75,9 +75,6 @@ const UploadedMediaEdit = ({
   loading,
   uploadPost,
 }) => {
-  const onChangeText = (e) => {
-    setPost({ ...post, title: e.target.value });
-  };
 
   return (
     <div>
