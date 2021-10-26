@@ -3,7 +3,6 @@ import PostName from "./PostName";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router";
 import Button from "../button";
-import PendingPostMenuDrop from "../../pages/Group/PendingPostMenuDrop";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updatePost } from "../../graphql-custom/post/mutation";
@@ -11,10 +10,14 @@ import { useState } from "react";
 import DropDown from "../navigation/DropDown";
 import { useUser } from "../../context/userContext";
 import { updateStatus } from "../../apis/post/updateStatus";
+import { useClickOutSide } from "../../Utility/Util";
 
 export default function PendingPostItem({ post, onClick, className }) {
   const location = useLocation();
   const { user } = useUser();
+  const menuRef = useClickOutSide(() => {
+    setIsMenuOpen(false);
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,11 +43,11 @@ export default function PendingPostItem({ post, onClick, className }) {
 
   return (
     <div
-      style={{ paddingBlock: "20px"}}
+      style={{ paddingBlock: "20px" }}
       className={`flex ph:grid w-full items-center ${
         className ? className : ""
       }`}
-    > 
+    >
       <div className="w-1/2">
         <Link
           to={{
@@ -59,21 +62,23 @@ export default function PendingPostItem({ post, onClick, className }) {
             title={post.title}
           />
         </Link>
-        </div>
-      <div className="ph:w-full flex w-1/2 ph:mt-3 justify-between relative">
+      </div>
+      <div className="ph:w-full ph:mt-3 relative flex justify-between w-1/2">
         <div className="w-2/3">
           <Poster user={post.user} updatedAt={post.updatedAt} />
         </div>
-        <PendingPostMenuDrop
-          setIsMenuOpen={setIsMenuOpen}
-          toggleMenu={toggleMenu}
+        <div
+          onClick={toggleMenu}
+          ref={menuRef}
+          className={`flex justify-center w-c8 h-c8 items-center cursor-pointer relative hover:bg-caak-liquidnitrogen rounded-full`}
         >
+          <span className="icon-fi-rs-dots text-4px" />
           <DropDown
-            className="absolute"
+            className={"top-5"}
             open={isMenuOpen}
             onToggle={toggleMenu}
             content={
-              <div className="flex flex-col w-full p-2">
+              <div className="dropdown-item-wrapper flex flex-col w-full p-2">
                 <Button
                   onClick={() => postHandler(post.id, "CONFIRMED")}
                   className="bg-caak-bleudefrance text-15px w-full mb-2 mr-2 text-white"
@@ -89,7 +94,7 @@ export default function PendingPostItem({ post, onClick, className }) {
               </div>
             }
           />
-        </PendingPostMenuDrop>
+        </div>
       </div>
     </div>
   );
