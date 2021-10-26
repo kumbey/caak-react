@@ -210,8 +210,8 @@ export default function PostPending() {
               isChecked={isCheckAll}
               className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
             />
-            <p className="ml-c2 flex justify-start w-1/3">Фостын нэр</p>
-            <div className="ph:justify-evenly flex justify-between w-2/3">
+            <p className="ml-c2 flex justify-center w-1/2">Фостын нэр</p>
+            <div className="ph:justify-evenly flex justify-between w-1/2">
               <p>Нийтлэгч</p>
               <p>Хугацаа</p>
               <p>Үйлдэл</p>
@@ -225,18 +225,14 @@ export default function PostPending() {
             key={index}
             className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
           >
-            <div className="flex items-center w-full">
-              <div>
-                <Checkbox
-                  key={data.id}
-                  id={data.id}
-                  handleClick={handleClick}
-                  isChecked={isCheck.includes(data.id)}
-                  className="ml-c34 w-b4 h-b4 border-caak-darkgray border-2 rounded cursor-pointer"
-                />
-              </div>
-              <PendingPostItem post={data} className="ph:mb-4 sm:mb-4" />
-            </div>
+              <Checkbox
+                key={data.id}
+                id={data.id}
+                handleClick={handleClick}
+                isChecked={isCheck.includes(data.id)}
+                className="ml-c34 w-b4 h-b4 border-caak-darkgray border-2 rounded cursor-pointer"
+              />
+              <PendingPostItem post={data} className="mb-4" />
           </div>
         );
       })}

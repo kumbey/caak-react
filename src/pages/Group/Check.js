@@ -32,8 +32,6 @@ export default function Check() {
     }
   }, [postId]);
 
-  console.log(post)
-
   useEffect(() => {
     const handler = (e) => {
       if (e.keyCode === 39) {
@@ -126,10 +124,10 @@ export default function Check() {
           <span className="icon-fi-rs-dots text-4px flex items-center" />
         </div>
         <div className={"w-full"}>
-          <div className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
+          <div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
             <p
               style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px text-caak-generalblack flex justify-center font-bold"
+              className="text-20px flex justify-center font-bold"
             >
               {post.title}
             </p>
