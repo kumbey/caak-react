@@ -12,26 +12,30 @@ import DropDown from "../navigation/DropDown";
 
 export default function PendingPostItem({ post, onClick, className }) {
   const location = useLocation();
+  const { user } = useUser();
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const acceptHandler = async () => {
-    await API.graphql(
-      graphqlOperation(updatePost, {
-        input: { id: post.id, status: "CONFIRMED" },
-      })
-    );
+
+  const postHandler = async (id, status) => {
+    try {
+      await API.graphql(
+        graphqlOperation(updatePost, {
+          input: { id, status, expectedVersion: post.version },
+        })
+      );
+    } catch (ex) {
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        updateStatus(post, user.sysUser.id, status);
+      }
+    }
   };
 
-  const declineHandler = async () => {
-    await API.graphql(
-      graphqlOperation(updatePost, {
-        input: { id: post.id, status: "ARCHIVED" },
-      })
-    );
-  };
   return (
     <div
       style={{ paddingBlock: "20px"}}
@@ -69,13 +73,13 @@ export default function PendingPostItem({ post, onClick, className }) {
             content={
               <div className="flex flex-col w-full p-2">
                 <Button
-                  onClick={() => acceptHandler()}
+                  onClick={() => postHandler(post.id, "CONFIRMED")}
                   className="bg-caak-bleudefrance text-15px w-full mb-2 mr-2 text-white"
                 >
                   Зөвшөөрөх
                 </Button>
                 <Button
-                  onClick={() => declineHandler()}
+                  onClick={() => postHandler(post.id, "ARCHIVED")}
                   className="text-caak-generalblack text-15px w-full bg-white border"
                 >
                   Татгалзах

@@ -97,14 +97,18 @@ const PostHeader = ({
 
   return (
     <div className={"flex flex-col"}>
-      <div className={"font-bold text-20px text-caak-generalblack pt-2 px-7"}>
+      <div
+        className={
+          "break-words font-bold text-20px text-caak-generalblack pt-2 px-7 "
+        }
+      >
         {title} {pending ? "(Хүлээгдэж байгаа пост.)" : ""}
       </div>
       <div className={"text-caak-darkBlue text-14px pt-2 px-7"}>
         {generateTimeAgo(updatedAt)} ·{" "}
         {`${date.year}/${date.month}/${date.day}`}
       </div>
-      <div className={"text-15px text-caak-generalblack pt-2 px-7"}>
+      <div className={"break-words text-15px text-caak-generalblack pt-2 px-7"}>
         {item.title}
       </div>
       {!pending ? (

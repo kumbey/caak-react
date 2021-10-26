@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Dummy from "dummyjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import DropDownSelect from "../../../components/input/DropDownSelect";
 import { generateFileUrl } from "../../../Utility/Util";
-import {useUser} from "../../../context/userContext";
+import { useUser } from "../../../context/userContext";
 
 const SelectGroup = ({
   setIsGroupVisible,
@@ -13,16 +13,27 @@ const SelectGroup = ({
   setSelectedGroup,
   groupData,
   containerClassName,
+  setPost,
+  post,
 }) => {
-  const {user} = useUser()
+  const { user } = useUser();
+  const textareaRef = useRef();
+  const onChangeText = (e) => {
+    setPost({ ...post, title: e.target.value });
+  };
+
+  useEffect(() => {
+    textareaRef.current.style.height = "0px";
+    const scrollHeight = textareaRef.current.scrollHeight;
+    textareaRef.current.style.height = scrollHeight + "px";
+  }, [post.title]);
+
   return (
-    <div
-      className={`flex flex-col ${containerClassName}`}
-    >
+    <div className={`flex flex-col ${containerClassName}`}>
       <div className={"flex flex-row items-center px-7"}>
         <img
           data-dummy="100x100"
-          src={user? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
+          src={user ? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
           className={"w-12 h-12 rounded-full object-cover mr-2"}
           alt={""}
         />
@@ -69,6 +80,24 @@ const SelectGroup = ({
             className={"-top-3 left-0 right-0 bg-white rounded-square w-full"}
           />
         </div>
+      </div>
+      <div className={"relative flex flex-row mt-2 items-center px-7"}>
+        <textarea
+          // rows={2}
+          ref={textareaRef}
+          onChange={onChangeText}
+          value={post.title}
+          maxLength={"200"}
+          placeholder={"Нийтлэлийн тайлбар оруулах..."}
+          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded"
+        />
+        <span
+          className={
+            "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
+          }
+        >
+          {post.title.length}/200
+        </span>
       </div>
     </div>
   );

@@ -354,7 +354,7 @@ export default function Settings() {
                 </p>
                 {showInput ? (
                   <div className="flex">
-                    <div className="flex flex-col ">
+                    <div className=" flex flex-col">
                       <p className="error">{error}</p>
                       <Input
                         value={oldPassword}
@@ -392,6 +392,7 @@ export default function Settings() {
                     </div>
 
                     <button
+                      disabled={loading}
                       onClick={() => handleSubmit(doConfirm)}
                       className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
                     />

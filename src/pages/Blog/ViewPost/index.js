@@ -308,7 +308,7 @@ const ViewPost = ({ pending }) => {
                 alt={post.group?.profile?.name}
               />
               <img
-                className="-bottom-2 -right-3 w-9 absolute border-2 border-white rounded-full"
+                className="-bottom-2 -right-3 w-9 h-9 absolute border-2 border-white rounded-full"
                 src={
                   post.user.pic
                     ? getFileUrl(post.user.pic)

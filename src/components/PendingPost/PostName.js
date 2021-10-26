@@ -1,6 +1,5 @@
-import { generateFileUrl } from "../../Utility/Util"
-import VideoJS from "../card/VideoJS"
-export default function PostName({title,files, onClick, video}) {
+import { generateFileUrl } from "../../Utility/Util";
+import VideoJS from "../card/VideoJS";
 
     return (
         <div 

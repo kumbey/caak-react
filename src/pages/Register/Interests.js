@@ -58,7 +58,7 @@ export default function Interests() {
     const [selected, setSelected] = useState([])
 
     useEffect(() => {
-        console.log([selected])
+        console.log(selected)
     }, [selected])
 
     const selectHandler = (index, title) => {
@@ -94,15 +94,15 @@ export default function Interests() {
                                         key={index} 
                                         onClick={(e) => selectHandler(index, data.title)} 
                                         className={`
-                                            flex items-center border h-11 rounded-full justify-center cursor-pointer px-b5 
+                                            flex items-center border py-px-6 rounded-full justify-center cursor-pointer px-c6 
                                             ${selected.find((item)=> item===data.title) ? "bg-caak-primary text-white" : ""}
                                         `}
                                     >
                                         {selected.find((item)=> item===data.title)
                                             ? 
-                                            <span className="icon-fi-rs-check text-12px pr-px-11" /> 
+                                            <span className="icon-fi-rs-check text-12px mr-1.5" /> 
                                             : 
-                                            <span className={`text-18px pr-px-11 ${data.icon}`}/>
+                                            <span className={`mr-1.5 text-18px ${data.icon}`}/>
                                         }
                                         <p className="text-15px font-medium">{data.title}</p>
                                     </div>
@@ -110,7 +110,9 @@ export default function Interests() {
                             })
                         }
                     </div>
-                        <p className={`${selected.length < 3 ? "opacity-100" : "opacity-0"} text-center mt-5 text-caak-primary text-15px`}>Хамгийн багадаа 3-ыг сонгоно уу!</p> 
+                
+                         <p className={`${selected.length < 3 ? "opacity-100" : "opacity-0"} text-center mt-5 text-caak-primary text-15px`}>Хамгийн багадаа 3-ыг сонгоно уу!</p>
+                
                     <div
                         className={
                             "signFooter flex self-end justify-center border-t items-center divide-x divide-gray-primary mt-c8 pt-4 divide-opacity-20"
