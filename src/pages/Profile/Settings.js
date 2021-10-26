@@ -154,15 +154,15 @@ export default function Settings() {
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
-          style={{ marginTop: "34px", height: "217px" }}
+          style={{ marginTop: "34px" }}
           className=" pl-c3 pr-c60 bg-white rounded-lg"
         >
           {data.map(({ icon, title, id }) => (
             <div
               key={id}
               onClick={() => setActiveIndex(id)}
-              style={{ marginTop: "24px" }}
-              className={`flex items-center cursor-pointer
+              style={{ marginTop: "24px", marginBottom: "24px" }}
+              className={`flex items-center cursor-pointer 
                                     ${
                                       id === activeIndex
                                         ? "text-caak-primary"
@@ -176,7 +176,7 @@ export default function Settings() {
         </div>
         <div
           style={{ marginTop: "34px" }}
-          className=" md:ml-c11 bg-white rounded-lg"
+          className="settingsPanel md:ml-c11 bg-white rounded-lg"
         >
           <div
             style={{ paddingBottom: "65px" }}
@@ -186,9 +186,7 @@ export default function Settings() {
           </div>
           <div
             style={{ paddingBottom: "65px" }}
-            className={`lg:w-cl md:w-iw sm:w-cb ph:w-72 ${
-              activeIndex === 2 ? "block" : "hidden"
-            }`}
+            className={` ${activeIndex === 2 ? "block" : "hidden"}`}
           >
             <p
               className="font-medium"
@@ -297,10 +295,7 @@ export default function Settings() {
             >
               Сайтын тохиргоо
             </p>
-            <div
-              style={{ marginTop: "21px" }}
-              className="lg:w-cl md:w-iw sm:w-cb ph:w-72 border-b"
-            >
+            <div style={{ marginTop: "21px" }} className=" border-b">
               <div
                 style={{ paddingBlock: "14px" }}
                 className="px-c3 flex items-center justify-between w-full border-b"
@@ -323,10 +318,7 @@ export default function Settings() {
             >
               Нууцлал
             </p>
-            <div
-              style={{ marginTop: "21px" }}
-              className="lg:w-cl md:w-iw sm:w-cb ph:w-72"
-            >
+            <div style={{ marginTop: "21px" }} className="">
               <div
                 style={{ paddingBlock: "14px" }}
                 className="px-c3 flex items-center justify-between w-full border-b"
@@ -349,12 +341,12 @@ export default function Settings() {
                 style={{ paddingBlock: "14px" }}
                 className="flex items-center justify-between w-full border-b"
               >
-                <p className="text-16px px-c3 font-medium">
+                <p className="text-16px pl-c3 font-medium">
                   Нууц үгээ шинэчлэх
                 </p>
                 {showInput ? (
-                  <div className="flex">
-                    <div className=" flex flex-col">
+                  <div className="flex w-full">
+                    <div className="flex flex-col w-full">
                       <p className="error">{error}</p>
                       <Input
                         value={oldPassword}
@@ -364,7 +356,7 @@ export default function Settings() {
                         onChange={handleChange}
                         placeholder={"Хуучин нууц үгээ оруулах"}
                         className={
-                          "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                         }
                       />
                       <Input
@@ -375,7 +367,7 @@ export default function Settings() {
                         onChange={handleChange}
                         placeholder={"Шинэ нууц үг"}
                         className={
-                          "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                         }
                       />
                       <Input
@@ -386,7 +378,7 @@ export default function Settings() {
                         onChange={handleChange}
                         placeholder={"Шинэ нууц үг давтах"}
                         className={
-                          "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                         }
                       />
                     </div>
@@ -394,16 +386,18 @@ export default function Settings() {
                     <button
                       loading={loading}
                       onClick={() => handleSubmit(doConfirm)}
-                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                      className="px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
                     />
                   </div>
                 ) : (
-                  <p className="text-green-500">{message}</p>
+                  <>
+                    <p className="text-green-500">{message}</p>
+                    <span
+                      onClick={() => handleClick()}
+                      className="px-c3 icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"
+                    />
+                  </>
                 )}
-                <span
-                  onClick={() => handleClick()}
-                  className="px-c3 icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"
-                />
               </div>
               <div
                 style={{ marginTop: "60px", paddingBottom: "22px" }}

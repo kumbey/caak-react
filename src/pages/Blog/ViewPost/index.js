@@ -236,13 +236,13 @@ const ViewPost = ({ pending }) => {
                   onTouchMove={handleTouchMove}
                   // onTouchMove={(e) => swiperHandler(e)}
                   key={index}
-                  className={"w-full flex-shrink-0 transition duration-300"}
+                  className={"w-full h-full flex-shrink-0 transition duration-300"}
                   style={{
                     transform: `translateX(-${activeIndex * 100}%)`,
                   }}
                 >
                   <img
-                    className={`w-full max-h-half lg:max-h-full md:h-full sm:max-h-half object-contain z-0`}
+                    className={`block w-full h-full max-w-full max-h-full object-contain z-0`}
                     key={index}
                     src={getFileUrl(item.file)}
                     alt={""}
