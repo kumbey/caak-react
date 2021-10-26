@@ -1,18 +1,18 @@
-import {useEffect, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import Card from "../../components/card";
 import Button from "../../components/button";
-import {useUser} from "../../context/userContext";
+import { useUser } from "../../context/userContext";
 import API from "@aws-amplify/api";
-import {graphqlOperation} from "@aws-amplify/api-graphql";
-import {listGroupsForAddPost} from "../../graphql-custom/group/queries";
-import {checkUser, getReturnData} from "../../Utility/Util";
-import {getPostByStatus} from "../../graphql-custom/post/queries";
+import { graphqlOperation } from "@aws-amplify/api-graphql";
+import { listGroupsForAddPost } from "../../graphql-custom/group/queries";
+import { checkUser, getReturnData } from "../../Utility/Util";
+import { getPostByStatus } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "./useFetch";
 import Loader from "../../components/loader";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Suggest from "../../components/Sidebar/Suggest";
-import {useListPager} from "../../Utility/ApiHelper";
-import {onPostUpdateByStatus} from "../../graphql-custom/post/subscription";
+import { useListPager } from "../../Utility/ApiHelper";
+import { onPostUpdateByStatus } from "../../graphql-custom/post/subscription";
 // import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 const Feed = () => {
@@ -32,19 +32,9 @@ const Feed = () => {
       type: "Шилдэг",
       icon: "icon-fi-rs-top",
     },
-    /*{
-                                                                                                                                  id: 3,
-                                                                                                                                  type: "Бүлгүүд",
-                                                                                                                                  icon: "icon-fi-rs-group",
-                                                                                                                                },
-                                                                                                                                {
-                                                                                                                                  id: 4,
-                                                                                                                                  type: "Дагасан найзууд",
-                                                                                                                                  icon: "icon-fi-rs-following",
-                                                                                                                                },*/
   ];
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const feedRef = useRef();
   const { user } = useUser();
   const [groupData, setGroupData] = useState({
     adminModerator: [],
@@ -60,7 +50,7 @@ const Feed = () => {
       limit: 6,
     },
   });
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts);
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
   const [addedPost, setAddedPost] = useState(0);
   const [removedPost, setRemovedPost] = useState();
@@ -123,6 +113,7 @@ const Feed = () => {
         setLoading(false);
       }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
@@ -142,7 +133,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setAddedPost(getReturnData(data, true));
       },
     });
@@ -155,7 +145,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setRemovedPost(getReturnData(data, true));
       },
     });
@@ -168,7 +157,6 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        console.log(data);
         setRemovedPost(getReturnData(data, true));
       },
     });
@@ -198,7 +186,7 @@ const Feed = () => {
   }, [removedPost]);
 
   useEffect(() => {
-    fetchPosts(posts, setPosts);
+    // fetchPosts(posts, setPosts);
     setPostScroll(fetchPosts);
 
     return () => {
@@ -225,6 +213,11 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
+  useEffect(() => {
+    return () => {
+      setActiveIndex(null);
+    };
+  }, []);
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>
@@ -248,14 +241,14 @@ const Feed = () => {
                   <Button
                     key={id}
                     onClick={() => setActiveIndex(id)}
-                    className={`h-12 ph:h-c24 ph:w-c38 w-56 min-w-max ${
+                    className={`w-56 min-w-max ${
                       id === activeIndex
                         ? "white shadow-button mb-2"
                         : "transparent mb-2"
                     }`}
                     iconPosition={"left"}
                     icon={
-                      <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
+                      <div className={"w-5 mr-px-6 ph:w-4 ph:mr-2"}>
                         <i
                           className={`${icon}${
                             id === activeIndex ? "" : "-o"
@@ -401,12 +394,14 @@ const Feed = () => {
                 );
               })}
             </div>
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
+            <div ref={feedRef} className={"flex justify-center items-center"}>
+              <Loader
+                containerClassName={"self-center"}
+                className={`bg-caak-primary ${
+                  loading ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            </div>
           </div>
         </div>
       </div>

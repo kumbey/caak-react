@@ -1,21 +1,19 @@
-import Button from "../../../components/button";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { createComment } from "../../../graphql-custom/comment/mutation";
 import { useUser } from "../../../context/userContext";
-import { getFileUrl, getReturnData } from "../../../Utility/Util";
+import { checkUser, getFileUrl, getReturnData } from "../../../Utility/Util";
 import Dummy from "dummyjs";
 import { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import Button from "../../../components/button";
 
-const AddComment = ({
-  item,
-  activeIndex,
-  posts,
-  addCommentRef,
-}) => {
+const AddComment = ({ item, activeIndex, posts, addCommentRef }) => {
   const [loading, setLoading] = useState(false);
   const [commentInputValue, setCommentInputValue] = useState("");
   const { user } = useUser();
+  const history = useHistory();
+  const location = useLocation();
 
   //Press Enter key to comment
   useEffect(() => {
@@ -34,22 +32,30 @@ const AddComment = ({
   const addComment = async () => {
     setLoading(true);
     try {
-      const resp = await API.graphql(
-        graphqlOperation(createComment, {
-          input: {
-            comment: commentInputValue,
-            post_item_id: item.id,
-            status: "ACTIVE",
-            type: "PARENT",
-            user_id: user.sysUser.id,
-            replyUserID: item.user_id,
-          },
-        })
-      );
-      setCommentInputValue("");
-      posts.items.items[activeIndex].comments.items.push(
-        getReturnData(resp, false)
-      );
+      if (checkUser(user)) {
+        const resp = await API.graphql(
+          graphqlOperation(createComment, {
+            input: {
+              comment: commentInputValue,
+              post_item_id: item.id,
+              status: "ACTIVE",
+              type: "PARENT",
+              user_id: user.sysUser.id,
+              replyUserID: item.user_id,
+            },
+          })
+        );
+        setCommentInputValue("");
+        posts.items.items[activeIndex].comments.items.push(
+          getReturnData(resp, false)
+        );
+      } else {
+        history.push({
+          pathname: "/login",
+          state: { background: { location } },
+        });
+      }
+
       setLoading(false);
     } catch (ex) {
       console.log(ex);
@@ -59,21 +65,22 @@ const AddComment = ({
   return (
     <div
       className={
-        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 z-2"
+        "bg-white sticky bottom-0 right-0 left-0 flex flex-row justify-between items-center py-3 pl-c11 z-2"
       }
     >
-      <div className={"flex flex-row justify-center items-center"}>
-        <img
-          className="border-caak-primary w-10 h-10 ml-5 border-2 rounded-full"
-          src={
-            user?.sysUser?.pic
-              ? getFileUrl(user.sysUser.pic)
-              : Dummy.image("50x50")
-          }
-          alt="Alex"
-        />
-      </div>
-      <div className={"relative flex w-3/5 justify-center items-center"}>
+      {checkUser(user) ? (
+
+          <img
+            className="border-caak-primary w-10 h-10 border-2 rounded-full"
+            src={
+              user?.sysUser?.pic
+                ? getFileUrl(user.sysUser.pic)
+                : Dummy.image("50x50")
+            }
+            alt="Alex"
+          />
+      ) : null}
+      <div className={"relative flex w-full justify-center items-center px-2"}>
         <textarea
           ref={addCommentRef}
           value={commentInputValue || ""}
@@ -83,6 +90,13 @@ const AddComment = ({
           }
           placeholder={"Сэтгэгдэл үлдээх"}
           onChange={(e) => setCommentInputValue(e.target.value)}
+          onFocus={() =>
+            !checkUser(user) &&
+            history.push({
+              pathname: "/login",
+              state: { background: location },
+            })
+          }
         />
         {/*TODO Emoji, File upload*/}
         {/*<div*/}
@@ -99,7 +113,7 @@ const AddComment = ({
         loading={loading}
         onClick={() => addComment()}
         className={
-          "bg-white text-caak-primary py-2 text-15px font-medium h-full mx-2 border-0 shadow-none"
+          "bg-white text-caak-primary py-2 text-15px font-medium h-full border-0 shadow-none"
         }
       >
         Илгээх

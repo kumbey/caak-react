@@ -112,12 +112,12 @@ const Notification = ({ item, ...props }) => {
     <div
       {...props}
       className={
-        "flex flex-row justify-between items-center bg-white pl-5 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
+        "flex flex-row justify-between items-center bg-white pl-7 pr-3.5 py-2 cursor-pointer hover:bg-caak-titaniumwhite"
       }
     >
       <div className={"flex flex-row"}>
         <div className={"avatar relative"}>
-          {!item.seen && (
+          {item.seen === "FALSE" && (
             <div
               className={
                 "absolute -left-3 top-4  w-2 h-2 bg-caak-bleudefrance rounded-full"
@@ -128,7 +128,11 @@ const Notification = ({ item, ...props }) => {
           <div className={"flex justify-center items-center  w-10 h-10"}>
             <img
               className={"rounded-full w-full h-full"}
-              src={item.from_user.pic ? generateFileUrl(item.from_user.pic) : Dummy.image('50x50')}
+              src={
+                item.from_user.pic
+                  ? generateFileUrl(item.from_user.pic)
+                  : Dummy.image("50x50")
+              }
               alt={""}
             />
           </div>

@@ -22,17 +22,18 @@ async function insert(record){
             }
         ])
 
-        const notifiData = {
+        const react = {
             section: "USER",
             type: "COMMENT",
             item_id: newImg.id,
             action: `COMMENT_WRITED`,
             from: newImg.user_id,
             to: newImg.replyUserID,
-            seen: false
+            seen: "FALSE",
+            version: 1
         }
 
-        await NotificationDB.insert(notifiData)
+        await NotificationDB.insert(react)
 
         return true
 

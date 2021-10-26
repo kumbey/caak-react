@@ -282,6 +282,19 @@ export function getReturnData(data, isSubscription){
     return retData
 }
 
+export function _objectWithoutKeys(obj, keys){
+
+    let target = {}
+
+    for(let key in obj){
+      if (keys.indexOf(key) < 0){
+        target[key] = obj[key]
+      } 
+    }
+
+    return target
+}
+
 
 const object = {
   useQuery,
@@ -298,5 +311,6 @@ const object = {
   closeModal,
   getFileUrl,
   getReturnData,
+  _objectWithoutKeys
 };
 export default object;

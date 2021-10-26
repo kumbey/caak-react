@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../../components/button";
 import Card from "../../components/card";
 import { useLocation, useParams } from "react-router";
@@ -42,6 +42,7 @@ export default function Profile() {
   );
 
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const profilePostRef = useRef();
   const subscriptions = {};
 
   const subscrib = () => {
@@ -49,7 +50,7 @@ export default function Profile() {
     if (checkUser(signedUser)) {
       authMode = "AMAZON_COGNITO_USER_POOLS";
     }
-    subscriptions.onPostByGroup = API.graphql({
+    subscriptions.onPostByUserConfirmed = API.graphql({
       query: onPostByUser,
       variables: {
         user_id: userId,
@@ -59,7 +60,22 @@ export default function Profile() {
     }).subscribe({
       next: (data) => {
         const onData = getReturnData(data, true);
-        console.log("onData", onData);
+        setSubscriptionPosts(onData);
+      },
+      error: (error) => {
+        console.warn(error);
+      },
+    });
+    subscriptions.onPostByUserPending = API.graphql({
+      query: onPostByUser,
+      variables: {
+        user_id: userId,
+        status: "PENDING",
+      },
+      authMode: authMode,
+    }).subscribe({
+      next: (data) => {
+        const onData = getReturnData(data, true);
         setSubscriptionPosts(onData);
       },
       error: (error) => {
@@ -70,15 +86,21 @@ export default function Profile() {
 
   useEffect(() => {
     if (setSubscriptionPosts) {
-      if (!posts.find((item) => item.id === subscriptionPosts.id))
-        console.log(subscriptionPosts);
-      setPosts((prev) => [subscriptionPosts, ...prev]);
+      if (!posts.find((item) => item?.id === subscriptionPosts?.id)) {
+        setPosts((prev) => [subscriptionPosts, ...prev]);
+      } else {
+        const filtered = posts.filter(
+          (item) => item?.id !== subscriptionPosts.id
+        );
+        setPosts([...filtered]);
+      }
     }
     // eslint-disable-next-line
   }, [subscriptionPosts]);
 
   useEffect(() => {
     if (userId) subscrib();
+    setPostScroll(fetchPosts);
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
@@ -154,7 +176,7 @@ export default function Profile() {
     // eslint-disable-next-line
   }, [profilePictureDropZone]);
 
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts);
+  const [setPostScroll] = useInfiniteScroll(posts, setPosts, profilePostRef);
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
 
@@ -178,11 +200,11 @@ export default function Profile() {
     }
   }, [signedUser, userId]);
 
-  useEffect(() => {
-    fetchPosts(posts, setPosts);
-    setPostScroll(fetchPosts);
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //   // fetchPosts(posts, setPosts);
+  //   setPostScroll(fetchPosts);
+  //   // eslint-disable-next-line
+  // }, []);
 
   const fetchPosts = async (data, setData) => {
     try {
@@ -273,7 +295,7 @@ export default function Profile() {
                       Аура
                     </p>
                   </span>
-                  <span className="mx-c11 ph:mx-a2 flex items-center">
+                  <span className="mx-c11 ph:mx-px-8 flex items-center">
                     <p className="text-18px text-caak-generalblack font-medium">
                       {user.totals.followers}
                     </p>{" "}
@@ -298,7 +320,7 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            <p className="text-15px text-caak-generalblack mt-a2 sm:mt-c11">
+            <p className="text-15px text-caak-generalblack mt-px-8 sm:mt-c11">
               {user.about}
             </p>
           </div>
@@ -311,7 +333,7 @@ export default function Profile() {
                   }}
                 >
                   <div className="h-c13 px-c1 flex items-center rounded-lg shadow cursor-pointer">
-                    <span className="pr-a1 icon-fi-rs-settings text-18px" />
+                    <span className="pr-px-6 icon-fi-rs-settings text-18px" />
                     <p className="text-15px font-medium">Тохиргоо</p>
                   </div>
                 </Link>
@@ -341,20 +363,20 @@ export default function Profile() {
       </div>
 
       <div className="mt-c2 flex items-center justify-around w-full">
-        <div className="flex flex-col md:flex-row">
+        <div className="md:flex-row flex flex-col">
           <Button
             key={1}
             onClick={() => setActiveIndex(1)}
-            className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+            className={`text-15px h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
                                       1 === activeIndex
                                         ? "bg-white shadow"
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
           >
-            <span className="icon-fi-rs-drag text-20px mr-a1" />
+            <span className="icon-fi-rs-drag text-20px mr-px-6" />
 
-            <p className="text-17px ml-b1 font-medium">
+            <p className="text-17px ml-px-10 font-medium">
               {checkUser(signedUser) && userId === signedUser.sysUser.id
                 ? "Миний постууд"
                 : "Хэрэглэгчийн постууд"}
@@ -365,30 +387,30 @@ export default function Profile() {
               <Button
                 key={2}
                 onClick={() => setActiveIndex(2)}
-                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                className={`text-15px h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
                                       2 === activeIndex
                                         ? "bg-white shadow"
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
               >
-                <span className="icon-fi-rs-settings text-22px" />
-                <p className="text-17px ml-b1 font-medium">
+                <span className="icon-fi-rs-pending text-22px" />
+                <p className="text-17px ml-px-10 font-medium">
                   Хүлээгдэж буй постууд
                 </p>
               </Button>
               <Button
                 key={3}
                 onClick={() => setActiveIndex(3)}
-                className={`text-15px h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                className={`text-15px h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
                                       3 === activeIndex
                                         ? "bg-white shadow"
                                         : "bg-transparent text-caak-generalblack"
                                     }`}
               >
-                <span className="icon-fi-rs-bookmark text-20px mr-a1" />
-                <p className="text-17px ml-b1 font-medium">
+                <span className="icon-fi-rs-shield-exclamation text-20px mr-px-6" />
+                <p className="text-17px ml-px-10 font-medium">
                   Архивлагдсан постууд
                 </p>
               </Button>
@@ -401,7 +423,7 @@ export default function Profile() {
           <option>Илүү ихийг</option>
         </select>
       </div>
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center justify-center">
         {/* post */}
         <div className="grid_container_container flex flex-col justify-center w-full">
           {/* contents */}
@@ -412,33 +434,24 @@ export default function Profile() {
           >
             {posts.map((data, index) => {
               return (
-                <Card
-                  key={index}
-                  video={data.items.items[0].file.type.startsWith("video")}
-                  post={data}
-                  className="ph:mb-4 sm:mb-4"
-                />
+                data && (
+                  <Card
+                    key={index}
+                    video={data.items.items[0].file.type.startsWith("video")}
+                    post={data}
+                    className="ph:mb-4 sm:mb-4"
+                  />
+                )
               );
             })}
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
           </div>
+
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 2 ? "" : "hidden"
             }`}
           >
             <PostPendingUser userId={userId} />
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
           </div>
           <div
             className={`flex mt-b5  justify-center ${
@@ -446,13 +459,18 @@ export default function Profile() {
             }`}
           >
             <PostArchivedUser userId={userId} />
-            <Loader
-              containerClassName={"self-center"}
-              className={`bg-caak-primary ${
-                loading ? "opacity-100" : "opacity-0"
-              }`}
-            />
           </div>
+        </div>
+        <div
+          ref={profilePostRef}
+          className={"flex justify-center items-center"}
+        >
+          <Loader
+            containerClassName={"self-center"}
+            className={`bg-caak-primary ${
+              loading ? "opacity-100" : "opacity-0"
+            }`}
+          />
         </div>
       </div>
     </div>

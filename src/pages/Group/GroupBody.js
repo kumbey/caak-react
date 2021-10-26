@@ -2,16 +2,16 @@ import Button from "../../components/button";
 import Card from "../../components/card";
 import Loader from "../../components/loader";
 
-const GroupBody = ({ groupPosts, loading }) => {
+const GroupBody = ({ groupPosts, loading, groupFeedRef }) => {
   return (
     <div>
       {/* navigator */}
-      <div className="mt-c2 flex items-center justify-between ph:justify-center">
+      <div className="mt-c2 ph:justify-center flex items-center justify-between">
         <div className="flex">
-          <Button className="text-15px w-c31 h-c32 text-caak-primary mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
+          <Button className="text-15px w-c31 h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-white rounded-lg shadow">
             Трэнд
           </Button>
-          <Button className="text-15px w-c7 h-c32 text-caak-generalblack mr-a1 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
+          <Button className="text-15px w-c7 h-c32 text-caak-generalblack mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
             Шинэ
           </Button>
           <Button className="text-15px w-c7 h-c32 text-caak-generalblack hover:bg-caak-titaniumwhite flex items-center justify-center font-bold bg-transparent rounded-lg">
@@ -37,9 +37,13 @@ const GroupBody = ({ groupPosts, loading }) => {
             );
           })}
         </div>
-        <Loader
-          className={`bg-caak-primary ${loading ? "opacity-100" : "opacity-0"}`}
-        />
+        <div ref={groupFeedRef} className={"flex justify-center items-center"}>
+          <Loader
+            className={`${
+              loading ? "opacity-100" : "opacity-0"
+            } bg-caak-primary `}
+          />
+        </div>
       </div>
     </div>
   );

@@ -9,9 +9,10 @@ import { closeModal, getFileUrl, getReturnData } from "../../Utility/Util";
 import CheckHeader from "./CheckHeader";
 import { updatePost } from "../../graphql-custom/post/mutation";
 import { getGroupView } from "../../graphql-custom/group/queries";
+import { useUser } from "../../context/userContext";
+import { updateStatus } from "../../apis/post/updateStatus";
 
-export default function Check({ hasApproveButtons }) {
-
+export default function Check() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,7 +20,7 @@ export default function Check({ hasApproveButtons }) {
   const { state } = useLocation();
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState([]);
-
+  const { user } = useUser();
   useEffect(() => {
     try {
       const getPostById = async (id) => {
@@ -51,8 +52,8 @@ export default function Check({ hasApproveButtons }) {
 
   useEffect(() => {
     if (post) getUsers(post.group.id);
-    // eslint-disable-next-line 
-  }, [postId]);
+    // eslint-disable-next-line
+  }, [post]);
 
   const getUsers = async (id) => {
     const resp = await API.graphql(
@@ -60,7 +61,6 @@ export default function Check({ hasApproveButtons }) {
         id,
       })
     );
-
     setUserRole(getReturnData(resp).role_on_group);
   };
 
@@ -80,56 +80,47 @@ export default function Check({ hasApproveButtons }) {
     }
   };
 
-  const acceptHandler = async (id) => {
+  const postHandler = async (id, status) => {
     setLoading(true);
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status: "CONFIRMED" },
+          input: { id, status, expectedVersion: post.version },
         })
       );
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
-      console.log(ex);
-    }
-  };
-
-  const declineHandler = async (id) => {
-    setLoading(true);
-    try {
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: { id, status: "ARCHIVED" },
-        })
-      );
-      setLoading(false);
-      closeModal(history, state);
-    } catch (ex) {
-      console.log(ex);
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        updateStatus(post, user.sysUser.ID,status)
+        setLoading(false)
+        closeModal(history, state)
+      }
     }
   };
 
   return post ? (
     <Backdrop className="flex justify-center">
-      <div className="absolute top-1/2 left-1/2 px-0 mt-10 w-full transform -translate-x-1/2 -translate-y-1/2 sm:px-2 md:px-10 lg:w-3/5">
-        <div className="flex relative sticky top-0 justify-between w-full bg-white sm:hidden py-a1 px-c6">
+      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute flex w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
           <span
             onClick={() => closeModal(history, state)}
-            className="flex items-center icon-fi-rs-back"
+            className="icon-fi-rs-back flex items-center"
           />
           <p className="text-20px">Фост шалгах</p>
-          <span className="flex items-center icon-fi-rs-dots text-4px" />
+          <span className="icon-fi-rs-dots text-4px flex items-center" />
         </div>
         <div className={"w-full"}>
-          <div className="w-full h-screen bg-white rounded-lg sm:h-auto md:h-auto lg:h-auto">
+          <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
             <p
               style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="flex justify-center font-bold text-20px text-caak-generalblack"
+              className="text-20px flex justify-center font-bold px-6"
             >
               {post.title}
             </p>
-            <div className="flex items-center h-auto bg-black bg-opacity-80">
+            <div className="bg-opacity-80 flex items-center h-auto bg-black">
               <span
                 style={{ paddingInline: "19px", paddingBlock: "15px" }}
                 onClick={() => prevItem()}
@@ -192,7 +183,7 @@ export default function Check({ hasApproveButtons }) {
                 style={{ paddingInline: "19px", paddingBlock: "15px" }}
                 onClick={() => nextItem()}
                 className={
-                  "icon-fi-rs-back mx-c2 ph:mx-a1 text-white transform rotate-180 cursor-pointer bg-white rounded-full bg-opacity-10 hover:bg-opacity-30"
+                  "icon-fi-rs-back mx-c2 ph:mx-px-6 text-white transform rotate-180 cursor-pointer bg-white rounded-full bg-opacity-10 hover:bg-opacity-30"
                 }
               />
             </div>
@@ -207,15 +198,15 @@ export default function Check({ hasApproveButtons }) {
             <div className="mt-b4 flex justify-end">
               <Button
                 loading={loading}
-                onClick={() => declineHandler(postId)}
-                className="bg-white text-caak-generalblack text-15px w-c14"
+                onClick={() => postHandler(postId, "ARCHIVED")}
+                className="text-caak-generalblack text-15px w-c14 bg-white"
               >
                 Татгалзах
               </Button>
               <Button
                 loading={loading}
-                onClick={() => acceptHandler(postId)}
-                className="text-white bg-caak-bleudefrance text-15px ml-b1 mr-c11 w-c132"
+                onClick={() => postHandler(postId, "CONFIRMED")}
+                className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
               >
                 Зөвшөөрөх
               </Button>
@@ -224,7 +215,7 @@ export default function Check({ hasApproveButtons }) {
         </div>
         <span
           onClick={() => closeModal(history, state)}
-          className="text-white cursor-pointer icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden"
+          className="icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden text-white cursor-pointer"
         />
       </div>
     </Backdrop>

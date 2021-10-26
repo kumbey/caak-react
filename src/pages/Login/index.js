@@ -1,7 +1,12 @@
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebook,
+  faGoogle,
+  faTwitter,
+  faApple,
+} from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { closeModal } from "../../Utility/Util";
 import Backdrop from "../../components/Backdrop";
@@ -28,8 +33,8 @@ export default function Login({ type, ...props }) {
   };
 
   return (
-    <Backdrop className={"flex justify-center"}>
-      <div className="min-w-max max-h-96 relative mx-auto my-auto bg-white rounded-lg shadow-xl">
+    <Backdrop className={"flex justify-center items-center"}>
+      <div className="popup absolute bg-white rounded-lg shadow-xl">
         <div
           onClick={() => closeModal(history, state)}
           className="pt-c6 pr-c6 absolute top-0 right-0"
@@ -46,18 +51,25 @@ export default function Login({ type, ...props }) {
         {/*Social Buttons*/}
         <div className={"flex flex-col items-center px-c13 "}>
           <Button
-            onClick={() => openWindow("google")}
+            onClick={() => {
+              type === "signUp"
+                ? history.replace({
+                    pathname: "/register/main",
+                    state: state,
+                  })
+                : history.replace({ pathname: "/login/main", state: state });
+            }}
             round
             className={
-              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+              "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md  mb-2.5 text-caak-generalblack text-16px bg-white relative"
             }
           >
             <FontAwesomeIcon
               size={"lg"}
-              className={"text-caak-primary absolute left-c1"}
-              icon={faGoogle}
+              className={"text-caak-generalblack absolute left-c1"}
+              icon={faEnvelope}
             />
-            <p className="">Google</p>
+            Имэйл хаяг / Утасны дугаар
           </Button>
           <Button
             onClick={() => openWindow("facebook")}
@@ -74,57 +86,52 @@ export default function Login({ type, ...props }) {
             Facebook
           </Button>
           <Button
-            onClick={() => {
-              type === "signUp"
-                ? history.replace({
-                    pathname: "/register/main",
-                    state: state,
-                  })
-                : history.replace({ pathname: "/login/main", state: state });
-            }}
+            onClick={() => openWindow("google")}
             round
             className={
-              "hover:bg-gray-100 border border-gray-200  w-80 h-11 font-bold rounded-md text-caak-generalblack text-16px bg-white relative"
+              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
             }
           >
             <FontAwesomeIcon
               size={"lg"}
-              className={"text-caak-generalblack absolute left-c1"}
-              icon={faEnvelope}
+              className={"text-caak-primary absolute left-c1"}
+              icon={faGoogle}
             />
-            Имэйл хаяг / Утасны дугаар
+            <p className="">Google</p>
           </Button>
-          {/*<div className="flex justify-between">
-                <Button
-                onClick={() => null}
-                round
-                className={
-                    "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2.5 rounded-md text-caak-generalblack text-16px bg-white"
-                }
-                >
-                    <div className="px-16">
-                    <FontAwesomeIcon
-                    size={"lg"}
-                    className={"text-caak-twitter"}
-                    icon={faTwitter}
-                    />
-                    </div>
-                </Button>
-                <Button
-                onClick={() => null}
-                round
-                className={
-                    "hover:bg-gray-100 border border-gray-200  justify-center text-base font-bold mb-2.5 rounded-md text-black bg-white"
-                }
-                >
-                    <div className="px-16">
-                    <FontAwesomeIcon
-                    size={"lg"}
-                    icon={faApple}
-                    />
-                    </div>
-                </Button>
-                </div>*/}
+
+          <Button
+            onClick={() => null}
+            round
+            className={
+              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            }
+          >
+            <div className="px-16">
+              <FontAwesomeIcon
+                size={"lg"}
+                className={"text-caak-twitter absolute left-c1"}
+                icon={faTwitter}
+              />
+              <p className="">Twitter</p>
+            </div>
+          </Button>
+          <Button
+            onClick={() => null}
+            round
+            className={
+              "hover:bg-gray-100 border border-gray-200 w-80 h-11  font-bold mb-2.5 rounded-lg text-caak-generalblack text-16px bg-white relative"
+            }
+          >
+            <div className="px-16">
+              <FontAwesomeIcon
+                size={"lg"}
+                className={"text-caak-generalblack absolute left-c1"}
+                icon={faApple}
+              />
+              <p className="">Apple</p>
+            </div>
+          </Button>
         </div>
 
         {/*Footer*/}
@@ -134,7 +141,7 @@ export default function Login({ type, ...props }) {
           }
         >
           {type === "signUp" ? (
-            <div className=" text-caak-blue text-15px">
+            <div className="text-caak-blue text-15px">
               <span>Бүртгэлтэй хэрэглэгч бол </span>
               <span
                 onClick={() =>
@@ -150,7 +157,7 @@ export default function Login({ type, ...props }) {
               </span>
             </div>
           ) : (
-            <div className=" text-caak-blue text-15px">
+            <div className="text-caak-blue text-15px">
               <span>Шинэ хэрэглэгч бол </span>
               <span
                 onClick={() =>

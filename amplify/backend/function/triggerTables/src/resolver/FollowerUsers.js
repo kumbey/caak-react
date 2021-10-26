@@ -22,17 +22,18 @@ async function insert(record){
             }
         ])
 
-        const notifiData = {
+        const react = {
             section: "USER",
             type: "FOLLOWED",
             item_id: newImg.followed_user_id,
             action: `USER_FOLLOWED`,
             from: newImg.followed_user_id,
             to: newImg.user_id,
-            seen: false
+            seen: "FALSE",
+            version: 1
         }
 
-        await NoficationDB.insert(notifiData)
+        await NoficationDB.insert(react)
 
         return true
 

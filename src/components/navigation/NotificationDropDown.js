@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import Notification from "./Notification";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 import { useUser } from "../../context/userContext";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useListPager } from "../../Utility/ApiHelper";
@@ -15,9 +15,11 @@ import { updateNotification } from "../../graphql-custom/notification/mutation";
 import { useHistory, useLocation } from "react-router";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
+import Loader from "../loader";
+import useInfiniteScroll from "../../pages/Home/useFetch";
 
 const NotificationDropDown = ({ isOpen }) => {
-  const [domReady, setDomReady] = React.useState(false);
+  const [domReady, setDomReady] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
@@ -25,15 +27,23 @@ const NotificationDropDown = ({ isOpen }) => {
   const subscriptions = {};
   const history = useHistory();
   const location = useLocation();
+  let localNotifications = notifications;
+  const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
     query: listNotificationByUser,
     variables: {
       to: user.sysUser.id,
       sortDirection: "DESC",
-      limit: 50,
+      limit: 20,
     },
   });
+
+  const [setNotificationScroll] = useInfiniteScroll(
+    notifications,
+    setNotifications,
+    notificationRef
+  );
 
   const fetchNotifications = async (data, setData) => {
     try {
@@ -41,11 +51,10 @@ const NotificationDropDown = ({ isOpen }) => {
         setLoading(true);
 
         let resp = await nextNotification();
-        // console.log(resp)
+
         if (resp) {
           setData([...data, ...resp]);
         }
-
         setLoading(false);
       }
     } catch (ex) {
@@ -60,43 +69,54 @@ const NotificationDropDown = ({ isOpen }) => {
         graphqlOperation(getNotification, { id: id })
       );
       resp = getReturnData(resp);
+
       setNotifications([resp, ...notifications]);
     } catch (ex) {
       console.log(ex);
     }
   };
 
-  const handleAllNotifications = async () => {
-    return notifications.map((item) => {
-      if (!item.seen) {
+  const handleAllNotifications = () => {
+    notifications.map(async (item, index) => {
+      if (item.seen === "FALSE") {
+        localNotifications[index].seen = "TRUE";
         try {
-          API.graphql(
+          await API.graphql(
             graphqlOperation(updateNotification, {
               input: {
                 id: item.id,
-                seen: true,
+                seen: "TRUE",
+                expectedVersion: item.version,
               },
             })
           );
-        } catch (error) {
-          console.log(error);
+        } catch (ex) {
+          if (
+            ex.errors[0].errorType ===
+            "DynamoDB:ConditionalCheckFailedException"
+          ) {
+            console.log("ALREADY UPDATED");
+          } else console.log(ex);
         }
       }
-      return null
+      return null;
     });
   };
 
-  const handleNotificationClick = async (index) => {
+  const handleNotificationClick = async (item, index) => {
     try {
       const item = notifications[index];
+
       await API.graphql(
         graphqlOperation(updateNotification, {
           input: {
             id: item.id,
-            seen: true,
+            seen: "TRUE",
+            expectedVersion: item.version,
           },
         })
       );
+      if (item.seen === "FALSE") localNotifications[index].seen = "TRUE";
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
@@ -116,7 +136,6 @@ const NotificationDropDown = ({ isOpen }) => {
           graphqlOperation(getPostItems, { id: item.item_id })
         );
         resp = getReturnData(resp);
-        console.log(resp);
         history.push({
           pathname: `/post/view/${resp.post_id}`,
           state: { background: location },
@@ -140,7 +159,12 @@ const NotificationDropDown = ({ isOpen }) => {
         });
       }
     } catch (ex) {
-      console.log(ex);
+      if (
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+      ) {
+        console.log("ALREADY UPDATED");
+        localNotifications[index].seen = "TRUE";
+      } else console.log(ex);
     }
   };
 
@@ -165,9 +189,10 @@ const NotificationDropDown = ({ isOpen }) => {
   useEffect(() => {
     if (domReady && checkUser(user)) {
       fetchNotifications(notifications, setNotifications);
+      setNotificationScroll(fetchNotifications);
     }
     // eslint-disable-next-line
-  }, [domReady, user]);
+  }, [domReady]);
 
   useEffect(() => {
     if (checkUser(user)) {
@@ -196,12 +221,13 @@ const NotificationDropDown = ({ isOpen }) => {
 
   return (
     domReady &&
-    ReactDOM.createPortal(
+    createPortal(
       <div
+        id={"notificationDropdown"}
         // onClick={(e) => e.stopPropagation()}
-        className={`dropdown overflow-auto pb-c20 fixed z-2 mt-0 md:z-50 top-0 right-0 h-full w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-96 cursor-auto  ${
+        className={`${
           !isOpen && "hidden"
-        }`}
+        } notificationMobile dropdown overflow-y-scroll pb-c20 absolute md:fixed sm:absolute z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
       >
         <div
           className={
@@ -230,10 +256,10 @@ const NotificationDropDown = ({ isOpen }) => {
           >
             Шинэ
           </span>
-          {notifications.map((item, index) => {
+          {localNotifications.map((item, index) => {
             return (
               <Notification
-                onClick={() => handleNotificationClick(index)}
+                onClick={() => handleNotificationClick(item, index)}
                 key={index}
                 item={item}
               />
@@ -252,12 +278,15 @@ const NotificationDropDown = ({ isOpen }) => {
           <Notification type={"request"} />
           <Notification type={"request"} /> */}
         </div>
-        <div className={"notification_footer border-t bg-caak-washme p-0"}>
-          <span
-            className={"text-caak-generalblack text-16px text-center py-1.5"}
-          >
-            Илүү ихийг харах
-          </span>
+        <div
+          ref={notificationRef}
+          className={"flex justify-center items-center"}
+        >
+          <Loader
+            className={`${
+              loading ? "opacity-100" : "opacity-0"
+            } bg-caak-primary `}
+          />
         </div>
       </div>,
       document.getElementById("root")

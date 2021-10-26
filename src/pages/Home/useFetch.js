@@ -1,37 +1,22 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
+import useObserver from "./useObserver";
 
-const useInfiniteScroll = (data, setData) => {
-
-  const callbackRef = useRef()
-  const [curData, setCurData] = useState([])
-
-  useEffect(() => {
-    setData([...data, ...curData])
-    // eslint-disable-next-line
-  },[curData])
+const useInfiniteScroll = (data, setData, itemRef) => {
+  const callbackRef = useRef();
 
   const _setCallback = (func) => {
-    callbackRef.current = func
-  }
+    callbackRef.current = func;
+  };
+  const onScreen = useObserver(itemRef);
 
   useEffect(() => {
-
-    window.addEventListener("scroll", eventlistner);
-    return () => window.removeEventListener("scroll", eventlistner);
-    // eslint-disable-next-line
-  }, []);
-
-  const eventlistner = useCallback(() => {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
-      if(callbackRef.current){
-        callbackRef.current(curData, setCurData)
+    if (onScreen) {
+      if (callbackRef.current) {
+        callbackRef.current(data, setData);
       }
-      return true
-    }else{
-      return false
     }
     // eslint-disable-next-line
-  },[curData, setCurData])
+  }, [onScreen]);
 
   return [_setCallback];
 };

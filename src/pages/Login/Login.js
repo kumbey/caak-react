@@ -1,5 +1,5 @@
 import Auth from "@aws-amplify/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import Button from "../../components/button";
 import Input from "../../components/input";
@@ -7,7 +7,6 @@ import Consts from "../../Utility/Consts";
 import { checkUsername, closeModal } from "../../Utility/Util";
 import Validate from "../../Utility/Validate";
 import Backdrop from "../../components/Backdrop";
-import { useEffect } from "react";
 
 export default function Login() {
   const history = useHistory();
@@ -23,11 +22,13 @@ export default function Login() {
       value: username,
       type: Consts.typeUsername,
       onChange: setUsername,
+      ignoreOn: true
     },
     password: {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
+      ignoreOn: true
     },
   };
 
@@ -48,6 +49,7 @@ export default function Login() {
       setLoading(false);
       closeModal(history, state);
     } catch (ex) {
+      console.log(ex);
       setLoading(false);
       if (ex.code === "UserNotConfirmedException") {
         history.replace({
@@ -59,14 +61,16 @@ export default function Login() {
           },
         });
       } else if (ex.code === "NotAuthorizedException") {
-        setError("Нэврэх нэр эсвэл нууц үг буруу байна");
+        setError("Нэвтрэх нэр эсвэл нууц үг буруу байна");
+      } else if (ex.code === "UserNotFoundException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
       }
     }
   }
 
   return (
-    <Backdrop className={"flex items-center"}>
-      <div className="w-96 min-w-max mx-auto my-auto bg-white rounded-lg shadow-xl">
+    <Backdrop className={"flex justify-center items-center"}>
+      <div className="popup absolute bg-white rounded-lg shadow-xl">
         <div className="px-c6 pt-c6 flex items-center justify-between cursor-pointer">
           <div
             onClick={() =>
@@ -75,9 +79,7 @@ export default function Login() {
             className="flex items-center"
           >
             <span className="icon-fi-rs-back text-15px text-caak-extraBlack pr-1" />
-            <p className="text-caak-generalblack text-13px">
-              Нэвтрэх сонголт руу буцах
-            </p>
+            <p className="text-caak-generalblack text-13px">Буцах</p>
           </div>
           <span
             onClick={() => closeModal(history, state)}
@@ -89,10 +91,10 @@ export default function Login() {
             "flex text-caak-generalblack justify-center text-center align-center pt-c2 pb-c2 font-bold text-24px"
           }
         >
-          Имэйл хаяг/Утасны дугаар <br /> нэвтрэх!
+          Нэвтрэх!
         </div>
         <form onSubmit={(e) => e.preventDefault()}>
-          <div className="px-c8 ">
+          <div className="px-c8">
             <p className="error">{error}</p>
             <Input
               name={"username"}
@@ -125,7 +127,19 @@ export default function Login() {
             >
               Нэвтрэх
             </Button>
-            <p className="ml- cursor-pointer">Нууц үгээ мартсан уу?</p>
+            <div className="text-caak-blue text-15px">
+              <span
+                onClick={() =>
+                  history.replace({
+                    pathname: "/forgotpassword/",
+                    state,
+                  })
+                }
+                className="ml- cursor-pointer"
+              >
+                Нууц үгээ мартсан уу?
+              </span>
+            </div>
           </div>
         </form>
         {/*Footer*/}
@@ -145,7 +159,6 @@ export default function Login() {
               }
               className="text-caak-primary text-15px font-bold cursor-pointer"
             >
-              {" "}
               Бүртгүүлэх
             </span>
           </div>

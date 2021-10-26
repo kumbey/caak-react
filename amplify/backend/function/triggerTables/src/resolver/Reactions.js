@@ -55,10 +55,11 @@ async function changeReactions(newImg, increase){
             }
         ]
 
-        const notifiData = {
+        const react = {
             section: "USER",
             type: "REACTION",
-            seen: false
+            seen: "FALSE",
+            version: 1
         }
 
         if(newImg.on_to === "POST"){
@@ -69,10 +70,10 @@ async function changeReactions(newImg, increase){
             items[0].field = "post_reactions"
             await UserTotal.modify(post.user_id, items)
             
-            notifiData.item_id = post.id
-            notifiData.action = `REACTION_${newImg.on_to}`
-            notifiData.from = newImg.user_id
-            notifiData.to = post.user_id
+            react.item_id = post.id
+            react.action = `REACTION_${newImg.on_to}`
+            react.from = newImg.user_id
+            react.to = post.user_id
 
         }else if(newImg.on_to === "POST_ITEM"){
 
@@ -84,10 +85,10 @@ async function changeReactions(newImg, increase){
             items[0].field = "post_items_reactions"
             await UserTotal.modify(post.user_id, items)
 
-            notifiData.item_id = postItem.id
-            notifiData.action = `REACTION_${newImg.on_to}`
-            notifiData.from = newImg.user_id
-            notifiData.to = post.user_id
+            react.item_id = postItem.id
+            react.action = `REACTION_${newImg.on_to}`
+            react.from = newImg.user_id
+            react.to = post.user_id
 
         }else if(newImg.on_to === "COMMENT"){
             
@@ -96,15 +97,15 @@ async function changeReactions(newImg, increase){
             items[0].field = "comment_reactions"
             await UserTotal.modify(comment.user_id)
 
-            notifiData.item_id = comment.id
-            notifiData.action = `REACTION_${newImg.on_to}`
-            notifiData.from = newImg.user_id
-            notifiData.to = comment.user_id
+            react.item_id = comment.id
+            react.action = `REACTION_${newImg.on_to}`
+            react.from = newImg.user_id
+            react.to = comment.user_id
 
         }
         
         if(increase){
-            await NotificationDB.insert(notifiData)
+            await NotificationDB.insert(react)
         }
 
         return true

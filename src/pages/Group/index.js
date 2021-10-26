@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostByStatus } from "../../graphql-custom/post/queries";
@@ -22,7 +22,7 @@ export default function Group() {
   const [groupPosts, setGroupPosts] = useState([]);
   const [subscriptionTotal, setSubscriptionTotal] = useState();
   const [reRender, setReRender] = useState(0);
-
+  const groupFeedRef = useRef();
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -32,7 +32,11 @@ export default function Group() {
       limit: 6,
     },
   });
-  const [setPostScroll] = useInfiniteScroll(groupPosts, setGroupPosts);
+  const [setPostScroll] = useInfiniteScroll(
+    groupPosts,
+    setGroupPosts,
+    groupFeedRef
+  );
   //FORCE RENDER STATE
   const [loading, setLoading] = useState(false);
 
@@ -178,7 +182,7 @@ export default function Group() {
 
   return (
     <div>
-      <div className="sm:hidden px-c6 py-b3 flex items-center justify-between bg-white border-t border-b">
+      <div className="sm:hidden px-c6 py-px-11 flex items-center justify-between bg-white border-t border-b">
         <span
           onClick={() => history.goBack()}
           className="icon-fi-rs-back text-20px cursour-pointer"
@@ -191,7 +195,11 @@ export default function Group() {
       {/* post */}
       <div className="flex flex-col items-center">
         <GroupSubHeader />
-        <GroupBody groupPosts={groupPosts} loading={loading} />
+        <GroupBody
+          groupFeedRef={groupFeedRef}
+          groupPosts={groupPosts}
+          loading={loading}
+        />
       </div>
     </div>
   );

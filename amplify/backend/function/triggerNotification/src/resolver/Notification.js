@@ -55,7 +55,7 @@ async function modify(record){
         const oldImg = getValuesFromRecord(OldImage)
 
 
-        if(newImg.seen !== oldImg.seen && newImg.seen){
+        if(newImg.seen === "TRUE" && oldImg.seen === "FALSE"){
              
             //UPDATE USER TOTAL
             if(newImg.section === "USER"){
@@ -92,7 +92,7 @@ async function remove(record){
     const { OldImage } = record
     const oldImg = getValuesFromRecord(OldImage)
 
-    if(!oldImg.seen){
+    if(oldImg.seen === "FALSE"){
         if(oldImg.section === "USER"){
             await UserTotal.modify(oldImg.to, [
                 {

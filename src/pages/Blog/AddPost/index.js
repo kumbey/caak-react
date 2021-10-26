@@ -1,30 +1,18 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Backdrop from "../../../components/Backdrop";
 import DropZoneWithCaption from "../../../components/input/DropZoneWithCaption";
 import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import {
-  closeModal,
-  getReturnData,
-  removeKeyFromObj,
-} from "../../../Utility/Util";
+import { closeModal } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
-import { useEffect } from "react";
 import { useUser } from "../../../context/userContext";
-import { ApiFileUpload } from "../../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
-import { createPost, updatePost } from "../../../graphql-custom/post/mutation";
 import { getPost } from "../../../graphql-custom/post/queries";
-import {
-  createPostItems,
-  deletePostItems,
-  updatePostItems,
-} from "../../../graphql-custom/postItems/mutation";
-import { createPostHistory } from "../../../graphql-custom/postHistory/mutation";
+import { crtPost, pdtPost } from "../../../apis/post";
 
 const AddPost = () => {
   const history = useHistory();
@@ -51,9 +39,6 @@ const AddPost = () => {
     category_id: "",
     items: [],
   });
-  const [oldPost, setOldPost] = useState({
-    items: [],
-  });
 
   useEffect(() => {
     getGroups();
@@ -66,16 +51,20 @@ const AddPost = () => {
     // eslint-disable-next-line
   }, []);
 
-  // useEffect(() => {
-  //   console.log(post);
-  // }, [post]);
-
   useEffect(() => {
     if (groupData && selectedGroupId) {
       setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
     }
     // eslint-disable-next-line
   }, [selectedGroupId]);
+
+  useEffect(() => {
+    if (selectedGroup) {
+      post.group_id = selectedGroup.id;
+      post.category_id = selectedGroup.category_id;
+    }
+    // eslint-disable-next-line
+  }, [selectedGroup]);
 
   useEffect(() => {
     if (groupData && selectedGroupId) {
@@ -101,7 +90,6 @@ const AddPost = () => {
         setPermissionDenied(false);
         setSelectedGroupId(data.group_id);
         setPost({ ...data, items: items.items });
-        setOldPost({ ...data, items: items.items });
       }
     } catch (ex) {
       console.log(ex);
@@ -111,87 +99,15 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-      for (let i = 0; i < post.items.length; i++) {
-        let item = post.items[i];
-        if (!item.id) {
-          let resp = await ApiFileUpload(item.file);
-          item.file = resp;
-        }
-      }
 
-      const { items, ...postData } = { ...post };
-      postData.group_id = selectedGroup.id;
-      postData.category_id = selectedGroup.category_id;
-      postData.status = "POSTING";
-
-      const oldItems = [...oldPost.items];
-
-      let returnPost = {};
-
-      removeKeyFromObj(postData, ["user"]);
-      if (postData.id === "new") {
-        removeKeyFromObj(postData, ["id"]);
-        postData.updated_user_id = user.sysUser.id;
-        postData.user_id = user.sysUser.id;
-        returnPost = await API.graphql(
-          graphqlOperation(createPost, { input: postData })
-        );
-        returnPost = getReturnData(returnPost);
+      if (post.id === "new") {
+        await crtPost(post, user.sysUser.id);
       } else {
-        await API.graphql(
-          graphqlOperation(createPostHistory, {
-            input: {
-              post_id: oldPost.id,
-              post: JSON.stringify(oldPost),
-            },
-          })
-        );
-        postData.updated_user_id = user.sysUser.id;
-        returnPost = await API.graphql(
-          graphqlOperation(updatePost, { input: postData })
-        );
-        returnPost = getReturnData(returnPost);
+        await pdtPost(post, user.sysUser.id);
       }
-
-      //DELETE OLD ITEMS
-      for (let i = 0; i < oldItems.length; i++) {
-        let oldItem = oldItems[i];
-        if (!items.find((item) => item.id === oldItem.id)) {
-          await API.graphql(
-            graphqlOperation(deletePostItems, { input: { id: oldItem.id } })
-          );
-        }
-      }
-
-      //CREATE UPDATE NEW ITEMS
-      for (let i = 0; i < items.length; i++) {
-        const { file, ...postItem } = items[i];
-        postItem.file_id = file.id;
-        postItem.order = i;
-        postItem.post_id = returnPost.id;
-        postItem.user_id = user.sysUser.id;
-        if (postItem.id) {
-          await API.graphql(
-            graphqlOperation(updatePostItems, { input: postItem })
-          );
-        } else {
-          await API.graphql(
-            graphqlOperation(createPostItems, { input: postItem })
-          );
-        }
-      }
-
-      await API.graphql(
-        graphqlOperation(updatePost, {
-          input: {
-            id: returnPost.id,
-            status: "PENDING",
-          },
-        })
-      );
 
       setLoading(false);
-      closeModal(history, state);
+      // closeModal(history, state);
 
       history.push(
         { pathname: `/user/${user.sysUser.id}/profile` },
@@ -251,6 +167,8 @@ const AddPost = () => {
                   setIsGroupVisible={setIsGroupVisible}
                   selectedGroup={selectedGroup}
                   setSelectedGroup={setSelectedGroup}
+                  setPost={setPost}
+                  post={post}
                 />
                 <UploadedMediaEdit
                   setPost={setPost}
@@ -304,6 +222,8 @@ const AddPost = () => {
                 setIsGroupVisible={setIsGroupVisible}
                 selectedGroup={selectedGroup}
                 setSelectedGroup={setSelectedGroup}
+                setPost={setPost}
+                post={post}
               />
               <DropZoneWithCaption post={post} setPost={setPost} />
             </Fragment>

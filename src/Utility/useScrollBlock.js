@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 const safeDocument = typeof document !== "undefined" ? document : {};
-
+const root = document.getElementById("root")
 /**
  * Usage:
  * const [blockScroll, allowScroll] = useScrollBlock();
@@ -28,9 +28,9 @@ const useScrollBlock =  () => {
      */
     html.style.position = "relative"; /* [1] */
     html.style.overflow = "hidden"; /* [2] */
-    body.style.position = "relative"; /* [1] */
-    body.style.overflow = "hidden"; /* [2] */
-    body.style.paddingRight = `${bodyPaddingRight + scrollBarWidth}px`;
+    root.style.position = "relative"; /* [1] */
+    root.style.overflow = "hidden"; /* [2] */
+    root.style.paddingRight = `${bodyPaddingRight + scrollBarWidth}px`;
 
     scrollBlocked.current = true;
   };
@@ -40,9 +40,9 @@ const useScrollBlock =  () => {
 
     html.style.position = "";
     html.style.overflow = "";
-    body.style.position = "";
-    body.style.overflow = "";
-    body.style.paddingRight = "";
+    root.style.position = "";
+    root.style.overflow = "";
+    root.style.paddingRight = "";
 
     scrollBlocked.current = false;
   };

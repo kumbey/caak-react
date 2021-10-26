@@ -19,6 +19,11 @@ export const notificationAdded = /* GraphQL */ `
     }
   }
 `;
+export const notification = /* GraphQL */ `
+  mutation Notification($user_id: ID!, $method: String!) {
+    notification(user_id: $user_id, method: $method)
+  }
+`;
 export const createFile = /* GraphQL */ `
   mutation CreateFile(
     $input: CreateFileInput!
@@ -442,6 +447,7 @@ export const createPost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -712,6 +718,7 @@ export const updatePost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -982,6 +989,7 @@ export const deletePost = /* GraphQL */ `
       reacted
       updatedAt
       createdAt
+      version
       user {
         id
         firstname
@@ -1275,6 +1283,7 @@ export const createPostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1407,6 +1416,7 @@ export const updatePostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1539,6 +1549,7 @@ export const deletePostItems = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -1952,6 +1963,7 @@ export const createComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -2177,6 +2189,7 @@ export const updateComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -2402,6 +2415,7 @@ export const deleteComment = /* GraphQL */ `
           reacted
           updatedAt
           createdAt
+          version
         }
         totals {
           post_item_id
@@ -2614,6 +2628,7 @@ export const createReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -2784,6 +2799,7 @@ export const updateReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -2954,6 +2970,7 @@ export const deleteReportedPost = /* GraphQL */ `
         reacted
         updatedAt
         createdAt
+        version
         user {
           id
           firstname
@@ -4077,6 +4094,7 @@ export const createNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname
@@ -4165,6 +4183,7 @@ export const updateNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname
@@ -4253,6 +4272,7 @@ export const deleteNotification = /* GraphQL */ `
       seen
       updatedAt
       createdAt
+      version
       from_user {
         id
         firstname

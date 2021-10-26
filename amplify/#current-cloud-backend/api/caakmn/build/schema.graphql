@@ -116,6 +116,7 @@ type Post @aws_iam @aws_cognito_user_pools {
   reacted: Boolean
   updatedAt: AWSDateTime!
   createdAt: AWSDateTime!
+  version: Int!
   user: User @aws_iam @aws_cognito_user_pools
   updated_user: User @aws_iam @aws_cognito_user_pools
   category: Category @aws_iam @aws_cognito_user_pools
@@ -284,15 +285,17 @@ type Notification @aws_iam @aws_cognito_user_pools {
   action: String!
   from: ID!
   to: ID!
-  seen: Boolean!
+  seen: String!
   updatedAt: AWSDateTime
   createdAt: AWSDateTime
+  version: Int!
   from_user: User @aws_iam @aws_cognito_user_pools
 }
 
 type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
   notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @aws_iam @aws_cognito_user_pools
+  notification(user_id: ID!, method: String!): Boolean @aws_iam @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -944,10 +947,12 @@ input UpdatePostInput {
   category_id: ID
   reacted: Boolean
   updatedAt: AWSDateTime
+  expectedVersion: Int!
 }
 
 input DeletePostInput {
   id: ID!
+  expectedVersion: Int!
 }
 
 input ModelPostConditionInput {
@@ -1519,7 +1524,7 @@ input ModelNotificationFilterInput {
   action: ModelStringInput
   from: ModelIDInput
   to: ModelIDInput
-  seen: ModelBooleanInput
+  seen: ModelStringInput
   updatedAt: ModelStringInput
   createdAt: ModelStringInput
   and: [ModelNotificationFilterInput]
@@ -1535,7 +1540,7 @@ input CreateNotificationInput {
   action: String!
   from: ID!
   to: ID!
-  seen: Boolean!
+  seen: String!
   updatedAt: AWSDateTime
   createdAt: AWSDateTime
 }
@@ -1548,13 +1553,15 @@ input UpdateNotificationInput {
   action: String
   from: ID
   to: ID
-  seen: Boolean
+  seen: String
   updatedAt: AWSDateTime
   createdAt: AWSDateTime
+  expectedVersion: Int!
 }
 
 input DeleteNotificationInput {
   id: ID!
+  expectedVersion: Int!
 }
 
 input ModelNotificationConditionInput {
@@ -1564,7 +1571,7 @@ input ModelNotificationConditionInput {
   action: ModelStringInput
   from: ModelIDInput
   to: ModelIDInput
-  seen: ModelBooleanInput
+  seen: ModelStringInput
   updatedAt: ModelStringInput
   createdAt: ModelStringInput
   and: [ModelNotificationConditionInput]

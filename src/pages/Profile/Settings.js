@@ -3,12 +3,15 @@ import { useHistory, useParams } from "react-router";
 import Button from "../../components/button";
 import Switch from "./Switch";
 import Informations from "./Informations";
-import BottomTabs from "../Home/BottomTabs";
 import Dummy from "dummyjs";
 import { getUserById } from "../../Utility/ApiHelper";
 import { checkUser } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import { getFileUrl } from "../../Utility/Util";
+import Input from "../../components/input";
+import Consts from "../../Utility/Consts";
+import Validate from "../../Utility/Validate";
+import Auth from "@aws-amplify/auth";
 
 const data = [
   {
@@ -44,6 +47,65 @@ export default function Settings() {
   const { user: signedUser } = useUser();
   const history = useHistory();
   const [activeIndex, setActiveIndex] = useState(1);
+  const [showInput, setShowInput] = useState(false);
+  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const validate = {
+    oldPassword: {
+      value: oldPassword,
+      type: Consts.typePassword,
+      onChange: setOldPassword,
+      ignoreOn: true,
+    },
+    password: {
+      value: password,
+      type: Consts.typePassword,
+      onChange: setPassword,
+      ignoreOn: true,
+    },
+    passwordRepeat: {
+      value: passwordRepeat,
+      type: Consts.typePasswordRepeat,
+      onChange: setPasswordRepeat,
+      ignoreOn: true,
+    },
+  };
+
+  const { handleChange, errors, setErrors, handleSubmit } = Validate(validate);
+
+  const handleClick = () => {
+    setShowInput(true);
+  };
+
+  const doConfirm = async () => {
+    try {
+      const authUser = await Auth.currentAuthenticatedUser();
+
+      setLoading(true);
+      await Auth.changePassword(authUser, oldPassword, password);
+      setMessage("Нууц үг амжилттай солигдлоо!");
+      setLoading(false);
+      setShowInput(false);
+    } catch (ex) {
+      setLoading(false);
+      if (ex.code === "CodeMismatchException") {
+        setErrors({ ...errors, code: "Баталгаажуулах код буруу байна" });
+      } else if (ex.code === "UserNotFoundException") {
+        setError("Бүртгэлтэй хэрэглэгч олдсонгүй");
+      } else if (ex.code === "InvalidParameterException") {
+        setError("Имэйл хаяг буруу байна");
+      } else if (ex.code === "NotAuthorizedException") {
+        setError("Хуучин нууц үг буруу байна");
+      } else {
+        console.log(ex);
+      }
+    }
+  };
 
   useEffect(() => {
     try {
@@ -92,15 +154,15 @@ export default function Settings() {
       </div>
       <div className="md:flex-row sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto">
         <div
-          style={{ marginTop: "34px", height: "217px" }}
+          style={{ marginTop: "34px" }}
           className=" pl-c3 pr-c60 bg-white rounded-lg"
         >
           {data.map(({ icon, title, id }) => (
             <div
               key={id}
               onClick={() => setActiveIndex(id)}
-              style={{ marginTop: "24px" }}
-              className={`flex items-center cursor-pointer
+              style={{ marginTop: "24px", marginBottom: "24px" }}
+              className={`flex items-center cursor-pointer 
                                     ${
                                       id === activeIndex
                                         ? "text-caak-primary"
@@ -108,13 +170,13 @@ export default function Settings() {
                                     }`}
             >
               {icon}
-              <p className="text-17px ml-b1 font-medium">{title}</p>
+              <p className="text-17px ml-px-10 font-medium">{title}</p>
             </div>
           ))}
         </div>
         <div
           style={{ marginTop: "34px" }}
-          className=" md:ml-c11 bg-white rounded-lg"
+          className="settingsPanel md:ml-c11 bg-white rounded-lg"
         >
           <div
             style={{ paddingBottom: "65px" }}
@@ -124,9 +186,7 @@ export default function Settings() {
           </div>
           <div
             style={{ paddingBottom: "65px" }}
-            className={`lg:w-cl md:w-iw sm:w-cb ph:w-72 ${
-              activeIndex === 2 ? "block" : "hidden"
-            }`}
+            className={` ${activeIndex === 2 ? "block" : "hidden"}`}
           >
             <p
               className="font-medium"
@@ -235,10 +295,7 @@ export default function Settings() {
             >
               Сайтын тохиргоо
             </p>
-            <div
-              style={{ marginTop: "21px" }}
-              className="lg:w-cl md:w-iw sm:w-cb ph:w-72 border-b"
-            >
+            <div style={{ marginTop: "21px" }} className=" border-b">
               <div
                 style={{ paddingBlock: "14px" }}
                 className="px-c3 flex items-center justify-between w-full border-b"
@@ -261,10 +318,7 @@ export default function Settings() {
             >
               Нууцлал
             </p>
-            <div
-              style={{ marginTop: "21px" }}
-              className="lg:w-cl md:w-iw sm:w-cb ph:w-72"
-            >
+            <div style={{ marginTop: "21px" }} className="">
               <div
                 style={{ paddingBlock: "14px" }}
                 className="px-c3 flex items-center justify-between w-full border-b"
@@ -287,25 +341,77 @@ export default function Settings() {
                 style={{ paddingBlock: "14px" }}
                 className="flex items-center justify-between w-full border-b"
               >
-                <p className="text-16px px-c3 font-medium">
+                <p className="text-16px pl-c3 font-medium">
                   Нууц үгээ шинэчлэх
                 </p>
-                <span className="px-c3 icon-fi-rs-pencil text-caak-darkBlue cursor-pointer" />
+                {showInput ? (
+                  <div className="flex w-full">
+                    <div className="flex flex-col w-full">
+                      <p className="error">{error}</p>
+                      <Input
+                        value={oldPassword}
+                        name={"oldPassword"}
+                        type={"password"}
+                        // errorMessage={errors.oldPassword}
+                        onChange={handleChange}
+                        placeholder={"Хуучин нууц үгээ оруулах"}
+                        className={
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                        }
+                      />
+                      <Input
+                        value={password}
+                        name={"password"}
+                        type={"password"}
+                        errorMessage={errors.password}
+                        onChange={handleChange}
+                        placeholder={"Шинэ нууц үг"}
+                        className={
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                        }
+                      />
+                      <Input
+                        value={passwordRepeat}
+                        name={"passwordRepeat"}
+                        type={"password"}
+                        errorMessage={errors.passwordRepeat}
+                        onChange={handleChange}
+                        placeholder={"Шинэ нууц үг давтах"}
+                        className={
+                          "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                        }
+                      />
+                    </div>
+
+                    <button
+                      loading={loading}
+                      onClick={() => handleSubmit(doConfirm)}
+                      className="px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-green-500">{message}</p>
+                    <span
+                      onClick={() => handleClick()}
+                      className="px-c3 icon-fi-rs-pencil text-caak-darkBlue cursor-pointer"
+                    />
+                  </>
+                )}
               </div>
               <div
                 style={{ marginTop: "60px", paddingBottom: "22px" }}
                 className="text-caak-red px-c3 flex items-center justify-end cursor-pointer"
               >
                 <span className="icon-fi-rs-delete text-15px" />
-                <p className="text-15px ml-a1 font-medium">Бүртгэлээ устгах</p>
+                <p className="text-15px ml-px-6 font-medium">
+                  Бүртгэлээ устгах
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <footer className={` block md:hidden sticky bottom-0 z-10`}>
-        <BottomTabs />
-      </footer>
     </div>
   ) : null;
 }

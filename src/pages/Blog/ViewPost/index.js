@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ImageCarousel from "../../../components/carousel/ImageCarousel";
 import PostHeader from "./PostHeader";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { getPostView } from "../../../graphql-custom/post/queries";
@@ -12,8 +12,8 @@ import { createPostViews } from "../../../graphql-custom/postViews/mutation";
 import { useUser } from "../../../context/userContext";
 import AddComment from "./AddComment";
 import PostBody from "./PostBody";
-import GroupInformationDrop from "../../../components/PendingPost/GroupInformationDrop";
-import PostMore from "../../../components/card/PostMore";
+import PostMoreMenu from "../../../components/card/PostMoreMenu";
+import DropDown from "../../../components/navigation/DropDown";
 
 const ViewPost = ({ pending }) => {
   const [post, setPost] = useState();
@@ -79,7 +79,7 @@ const ViewPost = ({ pending }) => {
 
   const createPostView = async () => {
     try {
-      if(checkUser(user)){
+      if (checkUser(user)) {
         await API.graphql(
           graphqlOperation(createPostViews, {
             input: { post_id: post.id, user_id: user.sysUser.id },
@@ -142,7 +142,7 @@ const ViewPost = ({ pending }) => {
   return post ? (
     <div
       className={
-        "z-50 fullscreen_header_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "z-4 fullscreen_footer_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
@@ -236,13 +236,13 @@ const ViewPost = ({ pending }) => {
                   onTouchMove={handleTouchMove}
                   // onTouchMove={(e) => swiperHandler(e)}
                   key={index}
-                  className={"w-full flex-shrink-0 transition duration-300"}
+                  className={"w-full h-full flex-shrink-0 transition duration-300"}
                   style={{
                     transform: `translateX(-${activeIndex * 100}%)`,
                   }}
                 >
                   <img
-                    className={`w-full max-h-half lg:max-h-full md:h-full sm:max-h-half object-contain z-0`}
+                    className={`block w-full h-full max-w-full max-h-full object-contain z-0`}
                     key={index}
                     src={getFileUrl(item.file)}
                     alt={""}
@@ -280,12 +280,18 @@ const ViewPost = ({ pending }) => {
               "flex justify-center p-3 rounded-full items-center absolute right-4 top-6 z-10 cursor-pointer "
             }
           >
-            <span className={"icon-fi-rs-dots text-4px"} />
-            <GroupInformationDrop
-              className="right-1 top-4 absolute"
+            <span className="icon-fi-rs-dots text-4px" />
+            <DropDown
               open={isMenuOpen}
               onToggle={toggleMenu}
-              content={<PostMore postId={postId} postUser={user} />}
+              content={
+                <PostMoreMenu
+                  groupId={post.group.id}
+                  postId={postId}
+                  postUser={user}
+                />
+              }
+              className={"top-6 -right-2"}
             />
           </div>
 
@@ -302,7 +308,7 @@ const ViewPost = ({ pending }) => {
                 alt={post.group?.profile?.name}
               />
               <img
-                className="-bottom-2 -right-3 w-9 absolute border-2 border-white rounded-full"
+                className="-bottom-2 -right-3 w-9 h-9 absolute border-2 border-white rounded-full"
                 src={
                   post.user.pic
                     ? getFileUrl(post.user.pic)
@@ -315,13 +321,19 @@ const ViewPost = ({ pending }) => {
               <span className={"text-caak-generalblack font-bold text-18px"}>
                 {post.group.name}
               </span>
-              <span className={"text-caak-generalblack text-15px"}>
-                {post.user.nickname}
-              </span>
+              <Link
+                to={{
+                  pathname: `/user/${post.user.id}/profile`,
+                }}
+              >
+                <span className={"text-caak-generalblack text-15px"}>
+                  {post.user.nickname}
+                </span>
+              </Link>
             </div>
           </div>
           <PostHeader
-              postId={post.id}
+            postId={post.id}
             groupId={post.group.id}
             pending={pending}
             addCommentRef={addCommentRef}

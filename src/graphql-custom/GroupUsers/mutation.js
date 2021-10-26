@@ -7,3 +7,9 @@ export const createGroupUsers = /* GraphQL */ `
     }
 `;
 
+export const deleteGroupUsers = /* GraphQL */ `
+    mutation DeleteGroupUsers($input: DeleteGroupUsersInput!) {
+        deleteGroupUsers(input: $input) ${groupUsers0001}
+    }
+`;
+

@@ -13,9 +13,9 @@ const GroupInformationDrop = ({
     <div
       onClick={onToggle}
       onMouseEnter={onMouseEnter}
-      className={`dropdown bg-white ${shadow ? "" : "shadow-dropdown"} ${
+      className={`dropdown py-2 ${shadow ? "shadow-dropdown" : ""} ${
         open ? "" : "hidden"
-      } ${className && className}`}
+      } ${className ? className : ""}`}
     >
       <div>{content || <PendingPostMenu />}</div>
     </div>

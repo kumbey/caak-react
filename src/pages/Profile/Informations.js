@@ -2,6 +2,7 @@ import { useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { updateUser } from "../../graphql-custom/user/mutation";
+import Input from "../../components/input";
 
 export default function Informations({ currentUser }) {
   const [showInput, setShowInput] = useState(false);
@@ -78,10 +79,7 @@ export default function Informations({ currentUser }) {
     setText({ ...text, [e.target.name]: e.target.value });
   };
   return (
-    <div
-      style={{ marginTop: "34px" }}
-      className="lg:w-cl md:w-iw sm:w-cb w-80 rounded-lg"
-    >
+    <div style={{ marginTop: "34px" }} className="rounded-lg">
       <p
         className="font-medium"
         style={{ marginLeft: "30px", marginTop: "30px", fontSize: "24px" }}
@@ -94,37 +92,44 @@ export default function Informations({ currentUser }) {
             <div key={index} className=" flex">
               <div
                 style={{ paddingBlock: "14px" }}
-                className="text-14px sm:text-16px flex items-center w-full border-b"
+                className="text-16px flex items-center w-full border-b justify-between"
               >
-                <p className="my-a4 w-32 font-medium">{setting.text}</p>
+                <div className="flex lg:mr-6 mr-4">
+                  <p className="my-px-9 pr-9 w-24 font-medium">
+                    {setting.text}
+                  </p>
+                </div>
                 {showInput && index === currentIndex ? (
-                  <div className="flex">
-                    <input
+                  <div className="flex w-full">
+                    <Input
                       name={setting.name}
-                      className="w-full"
+                      // errorMessage={errors.oldPassword}
+                      className={
+                        "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                      }
                       readOnly={setting.isReadOnly}
                       autoFocus
                       id={setting.id}
                       onChange={handleChange}
                       placeholder={setting.placeholder}
                       type={setting.type}
-                    />
-
+                    />{" "}
                     <button
                       onClick={handleSubmit}
-                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
-                    />
+                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-10"
+                    />{" "}
                   </div>
                 ) : (
-                  <p>{setting.value}</p>
+                  <>
+                    <div className="flex w-full">
+                      <p className="w-full">{setting.value}</p>
+                      <span
+                        onClick={() => handleClick(index)}
+                        className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
+                      />{" "}
+                    </div>
+                  </>
                 )}
-              </div>
-
-              <div className=" flex items-center">
-                <span
-                  onClick={() => handleClick(index)}
-                  className="icon-fi-rs-pencil text-caak-darkBlue ml-4 cursor-pointer"
-                />
               </div>
             </div>
           );

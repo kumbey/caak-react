@@ -15,29 +15,32 @@ const Input = ({
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className={`input relative ${containerStyle}`}>
+    <div className={`w-full input relative ${containerStyle}`}>
       {hideLabel ? null : (
         <label htmlFor={id} className={`${labelStyle}`}>
           {label}
         </label>
       )}
-      {type === "password" ? (
-        <span
-          onClick={() => setShowPassword(!showPassword)}
-          className="icon-fi-rs-view text-caak-darkBlue right-2 absolute cursor-pointer"
-          style={{ top: "10px" }}
+      <div className={"relative"}>
+        {type === "password" ? (
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className={`${
+              showPassword ? "icon-fi-rs-view text-sm" : "icon-fi-rs-hide"
+            } right-2 top-1/2  text-caak-darkBlue absolute transform -translate-y-1/2 cursor-pointer`}
+          />
+        ) : null}
+        <input
+          type={showPassword ? "text" : type}
+          {...props}
+          className={` ${className} ${
+            errorMessage ? `border border-caak-red` : ``
+          }`}
         />
-      ) : null}
-      <input
-        type={showPassword ? "text" : type}
-        {...props}
-        className={`${className} ${
-          errorMessage ? `border border-caak-red` : ``
-        }`}
-      />
+      </div>
 
       {!hideError && (
-        <p className="error w-80" id="email-error">
+        <p className=" text-13px error text-left" id="email-error">
           {errorMessage}
         </p>
       )}

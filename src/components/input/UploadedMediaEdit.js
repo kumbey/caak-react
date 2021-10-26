@@ -75,9 +75,6 @@ const UploadedMediaEdit = ({
   loading,
   uploadPost,
 }) => {
-  const onChangeText = (e) => {
-    setPost({ ...post, title: e.target.value });
-  };
 
   return (
     <div>
@@ -99,23 +96,23 @@ const UploadedMediaEdit = ({
           </span>
         </div>
       )}
-      <div className={"relative flex flex-row mt-2 items-center px-7"}>
-        <textarea
-          rows={1}
-          onChange={onChangeText}
-          value={post.title}
-          maxLength={"60"}
-          placeholder={"Нийтлэлийн тайлбар оруулах..."}
-          className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"
-        />
-        <span
-          className={
-            "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"
-          }
-        >
-          {post.title.length}/60
-        </span>
-      </div>
+      {/*<div className={"relative flex flex-row mt-2 items-center px-7"}>*/}
+      {/*  <textarea*/}
+      {/*    rows={1}*/}
+      {/*    onChange={onChangeText}*/}
+      {/*    value={post.title}*/}
+      {/*    maxLength={"200"}*/}
+      {/*    placeholder={"Нийтлэлийн тайлбар оруулах..."}*/}
+      {/*    className="placeholder-caak-aleutian text-16px focus:outline-none focus:ring-1 focus:ring-caak-primary focus:border-caak-primary w-full pr-12 mb-2 border-transparent rounded resize"*/}
+      {/*  />*/}
+      {/*  <span*/}
+      {/*    className={*/}
+      {/*      "absolute right-9 bottom-4 text-14px text-caak-darkBlue font-medium"*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    {post.title.length}/200*/}
+      {/*  </span>*/}
+      {/*</div>*/}
       <div
         className={
           "relative border-caak-titaniumwhite  border border-dashed rounded-square p-1 mx-7"
