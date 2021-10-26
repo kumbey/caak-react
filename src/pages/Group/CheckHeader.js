@@ -5,7 +5,7 @@ export default function CheckHeader({ itemTitle, updatedAt, user }) {
   const date = extractDate(updatedAt);
   return (
     <div
-      style={{ paddingInline: "30px", paddingBottom: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+      style={{ paddingInline: "30px", paddingBottom: "15px", overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all" }}
       className="mt-c6 justify-between w-full"
     >
       <p className="text-18px">{itemTitle}</p>
