@@ -198,14 +198,14 @@ export default function Check() {
             <div className="mt-b4 flex justify-end">
               <Button
                 loading={loading}
-                onClick={() => postHandler(postId, "CONFIRMED")}
+                onClick={() => postHandler(postId, "ARCHIVED")}
                 className="text-caak-generalblack text-15px w-c14 bg-white"
               >
                 Татгалзах
               </Button>
               <Button
                 loading={loading}
-                onClick={() => postHandler(postId, "ARCHIVED")}
+                onClick={() => postHandler(postId, "CONFIRMED")}
                 className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
               >
                 Зөвшөөрөх
