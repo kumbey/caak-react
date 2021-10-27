@@ -33,13 +33,13 @@ export default function PassConfirmation() {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
   };
 
@@ -53,10 +53,8 @@ export default function PassConfirmation() {
   }, [counter]);
 
   const doGetCode = async () => {
-    console.log("code", code);
-    setCounter(3);
+    setCounter(60);
     setReset(!reset);
-    console.log(code);
 
     try {
       setLoading(true);

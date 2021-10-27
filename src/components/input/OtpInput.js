@@ -10,7 +10,7 @@ export default function Test({ name, onChange, errorMessage, reset }) {
     arr[pointer] = "";
     setOtp(arr);
     refs.current[pointer].current.focus();
-    console.log("pointer: ", pointer);
+
     // eslint-disable-next-line
   }, [pointer]);
 
