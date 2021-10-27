@@ -14,7 +14,10 @@ import { useHistory, useLocation, useParams } from "react-router";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
+import {
+  getGroupView,
+  listGroupsForAddPost,
+} from "../../../graphql-custom/group/queries";
 import { getPost } from "../../../graphql-custom/post/queries";
 import { crtPost, pdtPost } from "../../../apis/post";
 
@@ -22,6 +25,7 @@ const AddPost = () => {
   const history = useHistory();
   const { state } = useLocation();
   const { postId } = useParams();
+  const { groupId } = useParams();
   const { user } = useUser();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +44,6 @@ const AddPost = () => {
   const addPostClickOutSideRef = useClickOutSide(() => {
     history.goBack();
   });
-
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -53,10 +56,16 @@ const AddPost = () => {
   });
 
   useEffect(() => {
-    getGroups();
-    if (postId !== "new") {
+    if (postId) {
+      getGroups();
       loadPost(postId);
+    } else if (groupId) {
+      setSelectedGroupId(groupId);
+      getGroup(groupId);
+      setPermissionDenied(false);
     } else {
+      getGroups();
+      setSelectedGroupId(groupId);
       setPermissionDenied(false);
     }
     const handler = (e) => {
@@ -73,13 +82,6 @@ const AddPost = () => {
   }, []);
 
   useEffect(() => {
-    if (groupData && selectedGroupId) {
-      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
-    }
-    // eslint-disable-next-line
-  }, [selectedGroupId]);
-
-  useEffect(() => {
     if (selectedGroup) {
       post.group_id = selectedGroup.id;
       post.category_id = selectedGroup.category_id;
@@ -88,11 +90,29 @@ const AddPost = () => {
   }, [selectedGroup]);
 
   useEffect(() => {
-    if (groupData && selectedGroupId) {
-      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
+    if (groupData !== undefined && selectedGroupId) {
+      if (groupData.member) {
+        let grData = [];
+        for (let key in groupData) {
+          grData.push(...groupData[key]);
+        }
+        setSelectedGroup(grData.find((item) => item.id === selectedGroupId));
+      } else {
+        setSelectedGroup(groupData);
+      }
     }
     // eslint-disable-next-line
-  }, [groupData]);
+  }, [groupData, selectedGroupId]);
+
+  const getGroup = async (id) => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
+      resp = getReturnData(resp);
+      setGroupData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const getGroups = async () => {
     try {
@@ -137,11 +157,12 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-
-      if (post.id === "new") {
+      if (groupId === "new") {
         await crtPost(post, user.sysUser.id);
-      } else {
+      } else if (postId) {
         await pdtPost(post, user.sysUser.id);
+      } else {
+        await crtPost(post, user.sysUser.id);
       }
 
       setLoading(false);

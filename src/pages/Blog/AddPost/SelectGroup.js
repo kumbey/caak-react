@@ -82,13 +82,14 @@ const SelectGroup = ({
             icon={faCaretDown}
           />
           <span />
-          <DropDownSelect
-            onSelect={setSelectedGroup}
-            open={isGroupVisible}
-            onToggle={() => setIsGroupVisible(!isGroupVisible)}
-            groupData={groupData}
-            className={"-top-3 left-0 right-0 bg-white rounded-square w-full"}
-          />
+          {groupData.member && <DropDownSelect
+              onSelect={setSelectedGroup}
+              open={isGroupVisible}
+              onToggle={() => setIsGroupVisible(!isGroupVisible)}
+              groupData={groupData}
+              className={"-top-3 left-0 right-0 bg-white rounded-square w-full"}
+          /> }
+
         </div>
       </div>
       <div className={"relative flex flex-row mt-2 items-center px-7"}>
