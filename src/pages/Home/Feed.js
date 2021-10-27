@@ -61,40 +61,28 @@ const Feed = () => {
 
   const listGroups = async () => {
     try {
-      let adminResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: {
-            or: [
-              { role_on_group: { eq: "ADMIN" } },
-              { role_on_group: { eq: "MODERATOR" } },
-            ],
-          },
-        })
-      );
+      const grData = {
+        adminModerator: [],
+        member: [],
+        unMember: [],
+      };
 
-      let memberResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: { role_on_group: { eq: "MEMBER" } },
-        })
-      );
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
 
-      let unMemberResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: {
-            and: [
-              { role_on_group: { ne: "ADMIN" } },
-              { role_on_group: { ne: "MODERATOR" } },
-              { role_on_group: { ne: "MEMBER" } },
-            ],
-          },
-        })
-      );
+      resp = getReturnData(resp).items;
 
-      setGroupData({
-        adminModerator: getReturnData(adminResp).items,
-        member: getReturnData(memberResp).items,
-        unMember: getReturnData(unMemberResp).items,
-      });
+      for (let i = 0; i < resp.length; i++) {
+        let item = resp[i];
+        if (item.role_on_group === "NOT_MEMBER") {
+          grData.unMember.push(item);
+        } else if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
     } catch (ex) {
       console.log(ex);
     }
@@ -267,11 +255,11 @@ const Feed = () => {
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                     <span className={"text-15px text-caak-darkBlue"}>
-                      {`Миний дагасан бүлгүүд`}
+                      {`Миний удирдаж буй бүлгүүд`}
                     </span>
                   </div>
                   <div className={"px-2 pb-5"}>
-                    {groupData.member.map((data, index) => {
+                    {groupData.adminModerator.map((data, index) => {
                       return (
                         <Link
                           key={index}
@@ -289,6 +277,7 @@ const Feed = () => {
                   </div>
                 </>
               ) : null}
+
               {groupData.member.length > 0 ? (
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
@@ -334,7 +323,7 @@ const Feed = () => {
                         >
                           <Suggest
                             item={data}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4"
+                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
                           />
                         </Link>
                       );
