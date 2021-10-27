@@ -119,18 +119,10 @@ export default function PostArchivedUser({ userId }) {
 
   return (
     <div className={"w-full"}>
-      <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
-        <div className="text-16px flex items-center w-full">
-          <div className="w-1/2 text-center">
-            <p>Постын нэр</p>
-          </div>
-          <div className="w-1/4">
-            <p>Нийтлэгч</p>
-          </div>
-          <div className="w-1/4">
-            <p>Хугацаа</p>
-          </div>
-        </div>
+      <div className="text-16px flex py-b4 items-center w-full bg-white">
+        <p className="w-1/2 text-center">Постын нэр</p>
+        <p className="w-1/4">Нийтлэгч</p>
+        <p className="w-1/4">Хугацаа</p>
       </div>
       {userArchivedPosts.map((data, index) => {
         return (

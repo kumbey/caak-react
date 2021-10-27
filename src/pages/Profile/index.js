@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Button from "../../components/button";
 import Card from "../../components/card";
 import { useLocation, useParams } from "react-router";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
+import { getPostByUser } from "../../graphql-custom/post/queries";
 import useInfiniteScroll from "../Home/useFetch";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader";
@@ -112,11 +112,11 @@ export default function Profile() {
   }, [user]);
 
   const [nextPosts] = useListPager({
-    query: getPostByStatus,
+    query: getPostByUser,
     variables: {
-      filter: { user_id: { eq: userId } },
+      filter: { status: { eq: "CONFIRMED" } },
       sortDirection: "DESC",
-      status: "CONFIRMED",
+      user_id: userId,
       limit: 6,
     },
   });
@@ -451,7 +451,7 @@ export default function Profile() {
               activeIndex === 2 ? "" : "hidden"
             }`}
           >
-            <PostPendingUser userId={userId} />
+            <PostPendingUser sid={userId} />
           </div>
           <div
             className={`flex mt-b5  justify-center ${

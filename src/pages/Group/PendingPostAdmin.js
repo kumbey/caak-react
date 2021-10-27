@@ -68,8 +68,6 @@ export default function PendingPostAdmin() {
               </div>
               <select className="font-medium rounded-lg border-0 shadow cursor-pointer text-15px text-caak-generalblack">
                 <option>Шинэ постууд</option>
-                <option>Шинэ постууд</option>
-                <option>Шинэ постууд</option>
               </select>
             </div>
 

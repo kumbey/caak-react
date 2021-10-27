@@ -3,7 +3,7 @@ import VideoJS from "../card/VideoJS";
 export default function PostName({files, title,video, onClick}){
     return (
         <div 
-            style={{overflow: "clip"}} 
+            style={{textOverflow: "ellipsis", wordBreak: "break-all"}} 
             onClick={onClick} 
             className='flex items-center cursor-pointer pl-6 mr-5'>
 

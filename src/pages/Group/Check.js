@@ -113,10 +113,10 @@ export default function Check() {
           <span className="icon-fi-rs-dots text-4px flex items-center" />
         </div>
         <div className={"w-full"}>
-          <div style={{whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
+          <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
             <p
               style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px flex justify-center font-bold"
+              className="text-20px flex justify-center font-bold px-6"
             >
               {post.title}
             </p>
