@@ -113,7 +113,7 @@ export default function NavBar() {
     <Fragment>
       {isTablet && (
         <nav
-          className={`navbarDesktop z-3 fixed block w-full bg-white shadow-sm`}
+          className={`navbarDesktop z-5 fixed block w-full bg-white shadow-sm`}
         >
           <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
             <div className="relative flex items-center justify-between w-full h-full">

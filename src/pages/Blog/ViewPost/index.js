@@ -142,12 +142,12 @@ const ViewPost = ({ pending }) => {
   return post ? (
     <div
       className={
-        "z-4 fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "viewPost z-4 fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
         className={
-          "relative backBlur w-full flex justify-center items-center h-full sm:h-1/2 md:h-1/2 lg:h-full"
+          "relative backBlur w-full flex justify-center items-center h-half sm:h-1/2 md:h-1/2 lg:h-full"
         }
       >
         <span
