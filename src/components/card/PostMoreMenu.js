@@ -86,7 +86,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
             history.push({
-              pathname: `/post/add/${postId}`,
+              pathname: `/post/edit/${postId}`,
               state: { background: location },
             })
           }

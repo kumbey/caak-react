@@ -119,7 +119,21 @@ const Routes = [
     page: () => <FederatedLogin />,
   },
   {
-    path: "/post/add/:postId",
+    path: "/post/add/new",
+    exact: true,
+    background: true,
+    auth: true,
+    page: () => <AddPost />,
+  },
+  {
+    path: "/post/add/group/:groupId",
+    exact: true,
+    background: true,
+    auth: true,
+    page: () => <AddPost />,
+  },
+  {
+    path: "/post/edit/:postId",
     exact: true,
     background: true,
     auth: true,

@@ -1,6 +1,9 @@
 import Dummy from "dummyjs";
+import {useHistory, useLocation} from "react-router-dom";
 
-const GroupSubHeader = () => {
+const GroupSubHeader = ({groupId}) => {
+    const history = useHistory();
+    const location = useLocation()
   return (
     <div className="sm:flex sm:py-c6 py-px-8 sm:rounded-lg sm:px-c3 px-c6 ph:w-full mt-5 bg-white">
       <div className="flex items-center justify-center w-full">
@@ -11,7 +14,12 @@ const GroupSubHeader = () => {
             "w-c28 h-c28 ph:w-c25 ph:h-c25 block object-cover rounded-full"
           }
         />
-        <div className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
+        <div onClick={()=> {
+            history.push({
+                pathname: `/post/add/group/${groupId}`,
+                state: {background:location}
+            })
+        }} className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
           <p className="text-15px text-caak-darkBlue h-c30 ph:h-c37 bg-caak-liquidnitrogen pl-px-10 hover:bg-gray-200 flex items-center w-full rounded-lg cursor-pointer">
             Энэ бүлэгт пост нийтлэх...
           </p>

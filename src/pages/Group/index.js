@@ -194,7 +194,7 @@ export default function Group() {
 
       {/* post */}
       <div className="flex flex-col items-center">
-        <GroupSubHeader />
+        <GroupSubHeader groupId={groupId} />
         <GroupBody
           groupFeedRef={groupFeedRef}
           groupPosts={groupPosts}
