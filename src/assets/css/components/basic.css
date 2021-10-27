@@ -11,6 +11,21 @@
     max-width: 608px;
     width: clamp(320px, 100%, 608px);
   }
+  .settingsMenuPanel {
+    min-width: 280px;
+    max-width: 290px;
+    width: clamp(280px, 100%, 290px);
+    height: 217px;
+  }
+
+  @media (max-width: 768px) {
+    .settingsMenuPanel {
+      width: 100%;
+    }
+    .settingsPanel {
+      width: 100%;
+    }
+  }
 
   p.error {
     @apply mt-2 text-sm text-red-600 text-left;

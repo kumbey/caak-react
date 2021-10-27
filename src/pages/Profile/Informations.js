@@ -79,7 +79,7 @@ export default function Informations({ currentUser }) {
     setText({ ...text, [e.target.name]: e.target.value });
   };
   return (
-    <div style={{ marginTop: "34px" }} className="rounded-lg">
+    <>
       <p
         className="font-medium"
         style={{ marginLeft: "30px", marginTop: "30px", fontSize: "24px" }}
@@ -89,52 +89,49 @@ export default function Informations({ currentUser }) {
       <div style={{ marginTop: "21px" }} className="mx-c3">
         {settings.map((setting, index) => {
           return (
-            <div key={index} className=" flex">
-              <div
-                style={{ paddingBlock: "14px" }}
-                className="text-16px flex items-center w-full border-b justify-between"
-              >
-                <div className="flex lg:mr-6 mr-4">
-                  <p className="my-px-9 pr-9 w-24 font-medium">
-                    {setting.text}
-                  </p>
+            <div
+              key={index}
+              style={{ paddingBlock: "14px" }}
+              className="text-16px flex items-center w-full border-b justify-between"
+            >
+              <div className="flex lg:mr-6 mr-4">
+                <p className="my-px-9 pr-9 w-24 font-medium">{setting.text}</p>
+              </div>
+              {showInput && index === currentIndex ? (
+                <div className="flex w-full">
+                  <Input
+                    name={setting.name}
+                    // errorMessage={errors.oldPassword}
+                    className={
+                      "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    }
+                    readOnly={setting.isReadOnly}
+                    autoFocus
+                    id={setting.id}
+                    onChange={handleChange}
+                    placeholder={setting.placeholder}
+                    type={setting.type}
+                  />{" "}
+                  <button
+                    onClick={handleSubmit}
+                    className="icon-fi-rs-thick-check text-caak-algalfuel ml-10"
+                  />{" "}
                 </div>
-                {showInput && index === currentIndex ? (
+              ) : (
+                <>
                   <div className="flex w-full">
-                    <Input
-                      name={setting.name}
-                      // errorMessage={errors.oldPassword}
-                      className={
-                        "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                      }
-                      readOnly={setting.isReadOnly}
-                      autoFocus
-                      id={setting.id}
-                      onChange={handleChange}
-                      placeholder={setting.placeholder}
-                      type={setting.type}
-                    />{" "}
-                    <button
-                      onClick={handleSubmit}
-                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-10"
+                    <p className="w-full">{setting.value}</p>
+                    <span
+                      onClick={() => handleClick(index)}
+                      className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
                     />{" "}
                   </div>
-                ) : (
-                  <>
-                    <div className="flex w-full">
-                      <p className="w-full">{setting.value}</p>
-                      <span
-                        onClick={() => handleClick(index)}
-                        className="icon-fi-rs-pencil text-caak-darkBlue ml-10 cursor-pointer"
-                      />{" "}
-                    </div>
-                  </>
-                )}
-              </div>
+                </>
+              )}
             </div>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
