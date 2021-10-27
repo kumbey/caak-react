@@ -1,11 +1,16 @@
 import Dummy from "dummyjs";
-import {useHistory, useLocation} from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
-const GroupSubHeader = ({groupId}) => {
-    const history = useHistory();
-    const location = useLocation()
+const GroupSubHeader = ({ groupId }) => {
+  const history = useHistory();
+  const location = useLocation();
   return (
-    <div className="sm:flex sm:py-c6 py-px-8 sm:rounded-lg sm:px-c3 px-c6 ph:w-full mt-5 bg-white">
+    <div onClick={()=> {
+        history.push({
+            pathname: `/post/add/group/${groupId}`,
+            state: {background:location}
+        })
+    }} className="sm:flex sm:py-c6 py-px-8 sm:rounded-lg sm:px-c3 px-c6 ph:w-full mt-5 bg-white">
       <div className="flex items-center justify-center w-full">
         <img
           alt=""
@@ -14,12 +19,7 @@ const GroupSubHeader = ({groupId}) => {
             "w-c28 h-c28 ph:w-c25 ph:h-c25 block object-cover rounded-full"
           }
         />
-        <div onClick={()=> {
-            history.push({
-                pathname: `/post/add/group/${groupId}`,
-                state: {background:location}
-            })
-        }} className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
+        <div className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
           <p className="text-15px text-caak-darkBlue h-c30 ph:h-c37 bg-caak-liquidnitrogen pl-px-10 hover:bg-gray-200 flex items-center w-full rounded-lg cursor-pointer">
             Энэ бүлэгт пост нийтлэх...
           </p>
@@ -30,10 +30,10 @@ const GroupSubHeader = ({groupId}) => {
           <span className="icon-fi-rs-image mr-px-8 text-22px text-caak-algalfuel" />
           <p className="text-15px text-caak-blue">Зураг/Видео</p>
         </div>
-        <div className="flex items-center cursor-pointer">
-          <span className="icon-fi-rs-link pr-px-8 text-20px text-caak-bleudefrance" />
-          <p className="text-15px text-caak-blue">Линк</p>
-        </div>
+        {/*<div className="flex items-center cursor-pointer">*/}
+        {/*  <span className="icon-fi-rs-link pr-px-8 text-20px text-caak-bleudefrance" />*/}
+        {/*  <p className="text-15px text-caak-blue">Линк</p>*/}
+        {/*</div>*/}
       </div>
     </div>
   );
