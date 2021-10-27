@@ -334,7 +334,7 @@ const Feed = () => {
                         >
                           <Suggest
                             item={data}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                            className="ph:mb-4 sm:mb-4 btn:mb-4"
                           />
                         </Link>
                       );
@@ -383,16 +383,19 @@ const Feed = () => {
                 "grid-container justify-center md:justify-center lg:justify-start"
               }
             >
-              {posts.map((data, index) => {
-                return (
-                  <Card
-                    key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                );
-              })}
+              {posts.length > 0 &&
+                posts.map((data, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      video={data?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  );
+                })}
             </div>
             <div ref={feedRef} className={"flex justify-center items-center"}>
               <Loader
