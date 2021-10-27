@@ -202,7 +202,7 @@ export default function NavBar() {
                   <div
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className={
-                      "flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
+                      "relative flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
                     }
                   >
                     <span
@@ -210,12 +210,14 @@ export default function NavBar() {
                         "icon-fi-rs-dots text-caak-generalblack text-4px"
                       }
                     />
+                    <DropDown
+                        className={"top-8 -right-3"}
+                        open={isMenuOpen}
+                        onToggle={toggleMenu}
+                        content={<NavBarMenu />}
+                    />
                   </div>
-                  <DropDown
-                    open={isMenuOpen}
-                    onToggle={toggleMenu}
-                    content={<NavBarMenu />}
-                  />
+
                 </div>
               )}
             </div>
