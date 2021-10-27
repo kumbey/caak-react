@@ -16,9 +16,6 @@ const GroupSubHeader = ({param, group}) => {
             "w-c28 h-c28 ph:w-c25 ph:h-c25 block object-cover rounded-full"
           }
         />
-        {
-          console.log(group)
-        }
         <div 
           onClick={() =>
           history.push({
