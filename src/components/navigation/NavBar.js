@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Button from "../button";
 import logo from "../../assets/images/logo.svg";
 import SearchInput from "../input/SearchInput";
 import DropDown from "./DropDown";
-import { Link } from "react-router-dom";
-import {
-  checkUser,
-  getFileUrl,
-  getReturnData,
-  useClickOutSide,
-} from "../../Utility/Util";
-import Dummy from "dummyjs";
+import { checkUser, getReturnData, useClickOutSide } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import { useHistory, useLocation } from "react-router";
-import NotificationDropDown from "./NotificationDropDown";
-import MobileMenu from "./MobileMenu";
+import MobileSideMenu from "./MobileSideMenu";
 import { useWrapper } from "../../context/wrapperContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -22,6 +14,8 @@ import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 import { getUserTotal } from "../../graphql-custom/totals/queries";
 import { getUserAura } from "../../graphql-custom/user/queries";
 import NavBarMenu from "./NavBarMenu";
+import SubMenu from "./SubMenu";
+import useMediaQuery from "./useMeduaQuery";
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,14 +34,12 @@ export default function NavBar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const { isNotificationMenu, setIsNotificationMenu } = useWrapper();
-
-  const notificationRef = useClickOutSide(() => {
-    setIsNotificationMenu(false);
-  });
-
   const menuRef = useClickOutSide(() => {
     setIsMenuOpen(false);
+  });
+
+  const mobileMenuRef = useClickOutSide(() => {
+    setIsMobileMenuOpen(false);
   });
 
   const fetchUserTotal = async () => {
@@ -115,210 +107,135 @@ export default function NavBar() {
     // eslint-disable-next-line
   }, [subscripTotal]);
 
-  return (
-    <nav className="z-3 sticky top-0 bg-white shadow-sm">
-      <div className="px-7 sm:px-6 lg:px-c13 px-2 py-1 mx-auto">
-        <div className="relative flex items-center justify-between h-16">
-          <div className="flex flex-row items-center">
-            <img
-              onClick={() => history.push({ pathname: "/" })}
-              className="h-c25 w-auto mr-1 cursor-pointer"
-              src={logo}
-              alt="Caak Logo"
-            />
-          </div>
+  const isTablet = useMediaQuery("(max-width: 767px)");
 
-          <div className="sm:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
-            <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
+  return (
+    <Fragment>
+      {isTablet && (
+        <nav
+          className={`navbarDesktop z-3 fixed block w-full bg-white shadow-sm`}
+        >
+          <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
+            <div className="relative flex items-center justify-between w-full h-full">
+              <div className="flex-row items-center">
+                <img
+                  onClick={() => history.push({ pathname: "/" })}
+                  className="h-c25 w-auto mr-1 cursor-pointer"
+                  src={logo}
+                  alt="Caak Logo"
+                />
+              </div>
+              {/* Mobile menu button */}
+              <div className="flex">
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
+                >
+                  <span className="sr-only">Open main menu</span>
+                  <span className={"icon-fi-sp-hamburger-menu"} />
+                </button>
+              </div>
+            </div>
           </div>
-          {/* Mobile menu button */}
-          <div className="md:hidden lg:hidden flex">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-caak-generalblack inline-flex items-center justify-center p-2 rounded-md"
-            >
-              <span className="sr-only">Open main menu</span>
-              <span className={"icon-fi-sp-hamburger-menu"} />
-            </button>
-          </div>
-          <div
-            className={
-              "flex flex-row items-center hidden md:inline-flex lg:inline-flex"
-            }
-          >
-            {checkUser(user) ? (
-              <div className={"flex flex-row items-center justify-center"}>
-                <div className={"mr-6"}>
+        </nav>
+      )}
+
+      <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
+        <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
+          <div className="relative flex items-center justify-between w-full h-full">
+            <div className="md:block flex flex-row items-center hidden">
+              <img
+                onClick={() => history.push({ pathname: "/" })}
+                className="h-c25 w-auto mr-1 cursor-pointer"
+                src={logo}
+                alt="Caak Logo"
+              />
+            </div>
+
+            <div className="md:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
+              <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
+            </div>
+
+            <div className={"relative flex h-full w-full md:w-auto"}>
+              <SubMenu
+                params={{
+                  userTotal,
+                  isMenuOpen,
+                  setIsMenuOpen,
+                  type: isTablet ? "mobile" : "web",
+                }}
+              />
+              {!checkUser(user) && (
+                <div className={"hidden md:flex flex-row items-center"}>
                   <Button
-                    roundedSquare
-                    skin={"primary"}
-                    className={"w-36px h-36px px-0 py-0"}
-                    icon={<span className={"icon-fi-rs-add text-15px"} />}
+                    round
+                    skin={"secondary"}
+                    className={"mr-2"}
                     onClick={() =>
                       history.push({
-                        pathname: "/post/add/new",
+                        pathname: "/login",
                         state: { background: location },
                       })
                     }
-                  />
+                    // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.c
+                  >
+                    Нэвтрэх
+                  </Button>
+                  <Button
+                    round
+                    skin={"primary"}
+                    className={"mr-2"}
+                    onClick={() =>
+                      history.push({
+                        pathname: "/register",
+                        state: { background: location },
+                      })
+                    }
+                  >
+                    Бүртгүүлэх
+                  </Button>
                 </div>
-                <div
-                  ref={notificationRef}
-                  onClick={() => {
-                    setIsNotificationMenu((oldState) => !oldState);
-                  }}
-                  className={"relative flex items-center mr-6 cursor-pointer"}
-                >
-                  <span
-                    className={`${
-                      isNotificationMenu && "bg-caak-titaniumwhite"
-                    } icon-fi-rs-notification text-22px text-caak-generalblack p-2 rounded-square hover:bg-caak-titaniumwhite`}
-                  />
-                  {parseInt(userTotal.unseen) > 0 ? (
+              )}
+
+              {!checkUser(user) && !isTablet && (
+                <div ref={menuRef} className={"flex items-center relative"}>
+                  <div
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className={
+                      "flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
+                    }
+                  >
                     <span
                       className={
-                        "absolute text-center top-1 -right-0.5 w-18px h-18px border-1 rounded-full border-white font-medium border border-white bg-caak-bleudefrance text-white text-12px"
+                        "icon-fi-rs-dots text-caak-generalblack text-4px"
                       }
-                    >
-                      {userTotal.unseen > 9 ? "9+" : userTotal.unseen}
-                    </span>
-                  ) : null}
-                  <NotificationDropDown
-                    isOpen={isNotificationMenu}
-                    setIsOpen={setIsNotificationMenu}
-                  />
-                </div>
-                <div className={"relative flex flex-row mr-6"}>
+                    />
+                  </div>
                   <DropDown
                     open={isMenuOpen}
                     onToggle={toggleMenu}
                     content={<NavBarMenu />}
-                    // items={menu_data}
-                    className={"top-10 -right-4"}
-                  />
-                  <div className={"w-45px h-45px mr-2 cursor-pointer"}>
-                    <img
-                      alt={user.sysUser.nickname}
-                      src={
-                        user.sysUser.pic
-                          ? getFileUrl(user.sysUser.pic)
-                          : Dummy.img("200x200")
-                      }
-                      className={
-                        "block w-px-45 h-px-45 object-cover rounded-full"
-                      }
-                    />
-                  </div>
-                  <div className={"flex flex-col items-center justify-center"}>
-                    <div
-                      className={"flex flex-row justify-center items-center"}
-                    >
-                      <div className="flex flex-col items-center">
-                        <Link
-                          to={{
-                            pathname: `/user/${user.sysUser.id}/profile`,
-                          }}
-                        >
-                          <span
-                            className={
-                              "text-generalblack text-14px font-bold cursor-pointer"
-                            }
-                          >
-                            {user.sysUser.nickname}
-                          </span>
-                        </Link>
-                        <div
-                          className={"flex flex-row items-center self-start"}
-                        >
-                          <span
-                            className={"icon-fi-rs-auro auroGradient mr-1"}
-                          />
-                          <span
-                            className={
-                              "text-14px text-caak-darkBlue font-medium"
-                            }
-                          >
-                            {user.sysUser.aura}
-                          </span>
-                        </div>
-                      </div>
-                      <div
-                        ref={menuRef}
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="text-12px hover:bg-caak-liquidnitrogen flex items-center justify-center w-6 h-6 ml-1 text-center transition duration-100 ease-linear transform -rotate-90 rounded-full cursor-pointer"
-                      >
-                        <span className="icon-fi-rs-back" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className={"flex flex-row"}>
-                <Button
-                  round
-                  skin={"secondary"}
-                  className={"mr-2"}
-                  onClick={() =>
-                    history.push({
-                      pathname: "/login",
-                      state: { background: location },
-                    })
-                  }
-                  // onClick={() => history.push({pathname: "/register/confirmation/", state: {background: location, username: "nanoshdee@gmail.com"}})}
-                >
-                  Нэвтрэх
-                </Button>
-                <Button
-                  round
-                  skin={"primary"}
-                  className={"mr-2"}
-                  onClick={() =>
-                    history.push({
-                      pathname: "/register",
-                      state: { background: location },
-                    })
-                  }
-                >
-                  Бүртгүүлэх
-                </Button>
-              </div>
-            )}
-            {!checkUser(user) && (
-              <div ref={menuRef} className={"relative"}>
-                <div
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={
-                    "flex cursor-pointer justify-center items-center w-px-34 h-px-34 rounded-full bg-caak-liquidnitrogen"
-                  }
-                >
-                  <span
-                    className={
-                      "icon-fi-rs-dots text-caak-generalblack text-4px"
-                    }
                   />
                 </div>
-                <DropDown
-                  open={isMenuOpen}
-                  onToggle={toggleMenu}
-                  content={<NavBarMenu />}
-                />
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
-          isMobileMenuOpen
-            ? "transform translate-x-0"
-            : "transform translate-x-full"
-        }`}
-        id="mobile-menu"
-      >
-        <MobileMenu setOpen={setIsMobileMenuOpen} />
-      </div>
-    </nav>
+        {isTablet && (
+          <div
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            ref={mobileMenuRef}
+            className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
+              isMobileMenuOpen
+                ? "transform translate-x-0"
+                : "transform translate-x-full"
+            }`}
+            id="mobile-menu"
+          >
+            <MobileSideMenu setOpen={setIsMobileMenuOpen} />
+          </div>
+        )}
+      </nav>
+    </Fragment>
   );
 }
