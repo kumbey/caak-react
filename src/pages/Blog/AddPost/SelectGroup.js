@@ -86,7 +86,7 @@ const SelectGroup = ({
             onSelect={setSelectedGroup}
             open={isGroupVisible}
             onToggle={() => setIsGroupVisible(!isGroupVisible)}
-            items={groupData}
+            groupData={groupData}
             className={"-top-3 left-0 right-0 bg-white rounded-square w-full"}
           />
         </div>

@@ -5,7 +5,11 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import { closeModal, useClickOutSide } from "../../../Utility/Util";
+import {
+  closeModal,
+  getReturnData,
+  useClickOutSide,
+} from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
@@ -26,7 +30,11 @@ const AddPost = () => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
-  const [groupData, setGroupData] = useState([]);
+  const [groupData, setGroupData] = useState({
+    adminModerator: [],
+    member: [],
+    unMember: [],
+  });
   const [permissionDenied, setPermissionDenied] = useState(true);
 
   const addPostClickOutSideRef = useClickOutSide(() => {
@@ -88,8 +96,25 @@ const AddPost = () => {
 
   const getGroups = async () => {
     try {
+      const grData = {
+        adminModerator: [],
+        member: [],
+      };
+
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-      setGroupData(resp.data.listGroups.items);
+
+      resp = getReturnData(resp).items;
+
+      for (let i = 0; i < resp.length; i++) {
+        let item = resp[i];
+        if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
     } catch (ex) {
       console.log(ex);
     }

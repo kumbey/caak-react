@@ -3,7 +3,8 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../Utility/Util";
 
-const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
+const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
+  console.log(groupData)
   return (
     <div
       onClick={onToggle}
@@ -42,14 +43,14 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
         <div className={"z-50"}>
           <div className={"flex flex-row justify-between px-3.5 pt-2"}>
             <span className={"text-15px text-caak-darkBlue"}>
-              Миний үүсгэсэн бүлгүүд
+              Миний удирдаж буй бүлгүүд
             </span>
             <span className={"text-15px font-medium text-caak-primary"}>
               Шинэ бүлэг үүсгэх
             </span>
           </div>
           <div className={"px-2"}>
-            {items.map((item, index) => {
+            {groupData.adminModerator.map((item, index) => {
               return (
                 <div
                   key={index}
@@ -87,7 +88,7 @@ const DropDownSelect = ({ items, open, onToggle, className, onSelect }) => {
             </span>
           </div>
           <div className={"px-2"}>
-            {items.map((item, index) => {
+            {groupData.member.map((item, index) => {
               return (
                 <div
                   key={index}
