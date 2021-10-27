@@ -20,6 +20,7 @@ export default function PassConfirmation() {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [counter, setCounter] = useState();
+  const [reset, setReset] = useState(false);
 
   const validate = {
     code: {
@@ -32,13 +33,13 @@ export default function PassConfirmation() {
       value: password,
       type: Consts.typePassword,
       onChange: setPassword,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
     passwordRepeat: {
       value: passwordRepeat,
       type: Consts.typePasswordRepeat,
       onChange: setPasswordRepeat,
-      ignoreOn: true,
+      // ignoreOn: true,
     },
   };
 
@@ -53,6 +54,7 @@ export default function PassConfirmation() {
 
   const doGetCode = async () => {
     setCounter(60);
+    setReset(!reset);
 
     try {
       setLoading(true);
@@ -104,7 +106,7 @@ export default function PassConfirmation() {
             "text-caak-generalblack text-center font-bold text-24px mt-c3"
           }
         >
-          Сэргээх код <br /> илгээгдлээ!
+          Нууц үг сэргээх
         </div>
         <div className="text-center text-15px text-caak-darkBlue mt-c3">
           Таны {mailNumber(state.username.replace("+976", ""))} руу <br />{" "}
@@ -116,34 +118,35 @@ export default function PassConfirmation() {
               errorMessage={errors.code}
               name={"code"}
               onChange={handleChange}
+              reset={reset}
             />
           </div>
           <div className={" flex flex-col "}>
             <div className="px-c8 ">
-              <div className=" flex justify-center text-14px text-caak-darkBlue mt-8">
-                {counter > 0 ? (
-                  <p className="text-green-600">
+              <div className=" flex justify-center text-14px text-caak-darkBlue mt-8"></div>
+              {counter > 0 ? (
+                <>
+                  <p className="text-green-600 text-center">
                     Сэргээх код амжилттай илгээгдлээ
                   </p>
-                ) : (
-                  <p>Баталгаажуулах код ирсэнгүй</p>
-                )}
-              </div>
-              {counter > 0 ? (
-                <div
-                  className="                 
+                  <div
+                    className="                 
                    mb-8 w-full flex justify-center items-center  text-14px   bg-transparent shadow-none  "
-                >
-                  <p className="flex justify-center">{counter}</p>
-                </div>
+                  >
+                    <p className="flex justify-center">{counter}</p>
+                  </div>
+                </>
               ) : (
-                <div
-                  onClick={() => doGetCode()}
-                  className="cursor-pointer mb-8 w-full flex justify-center items-center  text-14px text-caak-primary bg-transparent shadow-none font-bold "
-                >
-                  <span className={"icon-fi-rs-resend text-13px mr-1"} />
-                  Дахин илгээх
-                </div>
+                <>
+                  <p className="text-center">Баталгаажуулах код ирсэнгүй</p>
+                  <div
+                    onClick={() => doGetCode()}
+                    className="cursor-pointer mb-8 w-full flex justify-center items-center  text-14px text-caak-primary bg-transparent shadow-none font-bold "
+                  >
+                    <span className={"icon-fi-rs-resend text-13px mr-1"} />
+                    Дахин илгээх
+                  </div>
+                </>
               )}
             </div>
 
@@ -166,7 +169,7 @@ export default function PassConfirmation() {
                 type={"password"}
                 errorMessage={errors.passwordRepeat}
                 onChange={handleChange}
-                placeholder={"Шинэ нууц үг давтах"}
+                placeholder={"Нууц үг давтах"}
                 className={
                   "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
                 }
@@ -186,7 +189,7 @@ export default function PassConfirmation() {
                       h-c9 
                       text-17px`}
               >
-                Үргэлжлүүлэх
+                Өөрчлөх
               </Button>
             </div>
           </div>

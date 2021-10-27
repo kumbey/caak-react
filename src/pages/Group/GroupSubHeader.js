@@ -25,20 +25,26 @@ const GroupSubHeader = ({ groupId }) => {
       <div className="flex items-center justify-center w-full">
         <img
           alt=""
-          src={Dummy.img("200x200")}
+          src={param.sysUser.pic ? getFileUrl(param.sysUser.pic) : Dummy.img("200x200")}
           className={
             "w-c28 h-c28 ph:w-c25 ph:h-c25 block object-cover rounded-full"
           }
         />
-        <div className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
+        <div 
+          onClick={() =>
+          history.push({
+            pathname: "/post/add/new",
+            state: { background: location },
+            })
+          } className="ml-c6 w-ci 2xl:w-cg xl:w-cc md:w-ce">
           <p className="text-15px text-caak-darkBlue h-c30 ph:h-c37 bg-caak-liquidnitrogen pl-px-10 hover:bg-gray-200 flex items-center w-full rounded-lg cursor-pointer">
-            Энэ бүлэгт пост нийтлэх...
+            Группт пост оруулах
           </p>
         </div>
       </div>
       <div className="mt-px-12 sm:mt-0 flex items-center justify-center">
         <div className="sm:ml-b5 w-c132 flex cursor-pointer">
-          <span className="icon-fi-rs-image mr-px-8 text-22px text-caak-algalfuel" />
+          <span className="icon-fi-rs-image text-22px text-caak-algalfuel" />
           <p className="text-15px text-caak-blue">Зураг/Видео</p>
         </div>
         {/*<div className="flex items-center cursor-pointer">*/}
