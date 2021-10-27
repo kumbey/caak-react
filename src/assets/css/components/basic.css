@@ -10,6 +10,10 @@
     padding-top: var(--topBarSize);
   }
 
+  .viewPost {
+    padding-top: var(--topBarSize);
+  }
+
   .mobileSideMenu {
     width: 295px;
   }
@@ -50,7 +54,10 @@
       padding-bottom: var(--bottomTabSize);
     }
     .backdrop {
-      padding-top: 0;
+      padding-bottom: var(--bottomTabSize);
+    }
+
+    .viewPost {
       padding-bottom: var(--bottomTabSize);
     }
   }
