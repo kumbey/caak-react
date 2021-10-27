@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, createRef } from "react";
 
-export default function Test({ name, onChange, errorMessage }) {
+export default function Test({ name, onChange, errorMessage, reset }) {
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const refs = useRef(otp.map(() => createRef()));
   const [pointer, setPointer] = useState(0);
@@ -10,6 +10,7 @@ export default function Test({ name, onChange, errorMessage }) {
     arr[pointer] = "";
     setOtp(arr);
     refs.current[pointer].current.focus();
+
     // eslint-disable-next-line
   }, [pointer]);
 
@@ -22,6 +23,17 @@ export default function Test({ name, onChange, errorMessage }) {
     });
     // eslint-disable-next-line
   }, [otp]);
+
+  useEffect(() => {
+    if (reset) {
+      clearOtp();
+    }
+  }, [reset]);
+
+  const clearOtp = () => {
+    setOtp(["", "", "", "", "", ""]);
+    setPointer(0);
+  };
 
   const handleChange = (value, index) => {
     if (isNaN(value)) return false;
