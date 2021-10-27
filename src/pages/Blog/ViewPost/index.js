@@ -321,7 +321,13 @@ const ViewPost = ({ pending }) => {
             </div>
             <div className={"flex flex-col justify-center ml-5 self-center"}>
               <span className={"text-caak-generalblack font-bold text-18px"}>
+              <Link
+                to={{
+                  pathname: `/group/${post.group.id}`,
+                }}
+              >
                 {post.group.name}
+                </Link>
               </span>
               <Link
                 to={{
