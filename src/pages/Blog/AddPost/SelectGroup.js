@@ -3,7 +3,7 @@ import Dummy from "dummyjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import DropDownSelect from "../../../components/input/DropDownSelect";
-import { generateFileUrl } from "../../../Utility/Util";
+import { generateFileUrl, useClickOutSide } from "../../../Utility/Util";
 import { useUser } from "../../../context/userContext";
 
 const SelectGroup = ({
@@ -18,6 +18,11 @@ const SelectGroup = ({
 }) => {
   const { user } = useUser();
   const textareaRef = useRef();
+
+  const dropDownClickOutsideRef = useClickOutSide(() => {
+    setIsGroupVisible(false);
+  });
+
   const onChangeText = (e) => {
     setPost({ ...post, title: e.target.value });
   };
@@ -33,11 +38,16 @@ const SelectGroup = ({
       <div className={"flex flex-row items-center px-7"}>
         <img
           data-dummy="100x100"
-          src={user ? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
+          src={
+            user.sysUser.pic
+              ? generateFileUrl(user.sysUser.pic)
+              : Dummy.img("100x100")
+          }
           className={"w-12 h-12 rounded-full object-cover mr-2"}
           alt={""}
         />
         <div
+          ref={dropDownClickOutsideRef}
           onClick={() => setIsGroupVisible(!isGroupVisible)}
           className={`relative flex flex-row items-center cursor-pointer ${
             selectedGroup ? "bg-white" : "bg-caak-liquidnitrogen"
@@ -76,7 +86,7 @@ const SelectGroup = ({
             onSelect={setSelectedGroup}
             open={isGroupVisible}
             onToggle={() => setIsGroupVisible(!isGroupVisible)}
-            items={groupData}
+            groupData={groupData}
             className={"-top-3 left-0 right-0 bg-white rounded-square w-full"}
           />
         </div>

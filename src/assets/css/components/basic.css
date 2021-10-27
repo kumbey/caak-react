@@ -62,30 +62,71 @@
     }
   }
 
-  p.error {
-    @apply mt-2 text-sm text-red-600 text-left;
+  .viewPost {
+    padding-top: var(--topBarSize);
   }
 
-  .bottomTabs {
-    margin-top: calc(100vh - var(--topBarSize) - var(--bottomTabSize));
+  .mobileSideMenu {
+    width: 295px;
+  }
+
+  .navbarDesktop {
+    top: 0;
+    height: var(--topBarSize);
+  }
+
+  .navbar {
+    top: 0;
+    bottom: unset;
+    height: var(--topBarSize);
+  }
+
+  .backdrop {
+    z-index: 4;
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    min-width: max-content;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    padding-top: var(--topBarSize);
+  }
+
+  @media (max-width: 767px) {
+    .navbar {
+      top: unset;
+      bottom: 0;
+      height: var(--bottomTabSize);
+    }
+    #root {
+      padding-bottom: var(--bottomTabSize);
+    }
+    .backdrop {
+      padding-bottom: var(--bottomTabSize);
+    }
+
+    .viewPost {
+      padding-bottom: var(--bottomTabSize);
+    }
+  }
+
+  .settingsPanel {
+    min-width: 320px;
+    max-width: 608px;
+    width: clamp(320px, 100%, 608px);
+  }
+
+  p.error {
+    @apply mt-2 text-sm text-left text-red-600;
   }
 
   .notificationMobile {
     padding-top: var(--topBarSize);
     padding-bottom: var(--bottomTabSize);
-  }
-
-  .backdrop {
-    z-index: 50;
-    position: fixed;
-    overflow: scroll;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    min-width: max-content;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
   }
 
   .spinner {
@@ -157,13 +198,9 @@
     @apply max-h-80;
   }
 
-  .fullscreen_footer_size {
-    height: 100vh;
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .fullscreen_footer_size {
-      height: calc(100vh - 50px) !important;
+      padding-bottom: var(--bottomTabSize);
     }
   }
 
