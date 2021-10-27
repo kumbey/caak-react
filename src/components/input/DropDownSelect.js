@@ -4,7 +4,6 @@ import Input from "./index";
 import { generateFileUrl } from "../../Utility/Util";
 
 const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
-  console.log(groupData)
   return (
     <div
       onClick={onToggle}
