@@ -1,4 +1,9 @@
 {
+  "prod": {
+    "configLevel": "project",
+    "useProfile": true,
+    "profileName": "nano"
+  },
   "devs": {
     "configLevel": "project",
     "useProfile": true,
