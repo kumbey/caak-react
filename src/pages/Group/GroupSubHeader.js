@@ -1,16 +1,27 @@
 import Dummy from "dummyjs";
 import { useHistory, useLocation } from "react-router-dom";
+import { useUser } from "../../context/userContext";
+import { checkUser } from "../../Utility/Util";
 
 const GroupSubHeader = ({ groupId }) => {
   const history = useHistory();
   const location = useLocation();
+  const { user } = useUser();
+
   return (
-    <div onClick={()=> {
-        history.push({
-            pathname: `/post/add/group/${groupId}`,
-            state: {background:location}
-        })
-    }} className="sm:flex sm:py-c6 py-px-8 sm:rounded-lg sm:px-c3 px-c6 ph:w-full mt-5 bg-white">
+    <div
+      onClick={() => {
+        history.push(
+          checkUser(user)
+            ? {
+                pathname: `/post/add/group/${groupId}`,
+                state: { background: location },
+              }
+            : { pathname: `/login`, state: { background: location } }
+        );
+      }}
+      className="sm:flex sm:py-c6 py-px-8 sm:rounded-lg sm:px-c3 px-c6 ph:w-full mt-5 bg-white"
+    >
       <div className="flex items-center justify-center w-full">
         <img
           alt=""
