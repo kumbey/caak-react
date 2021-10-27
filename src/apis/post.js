@@ -25,7 +25,7 @@ export const crtPost = async (newPost, userId) => {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const resp = await ApiFileUpload(item.file);
-      const postItem = _objectWithoutKeys(item, ["file"]);
+      const postItem = _objectWithoutKeys(item, ["file", "chosen"]);
       postItem.file_id = resp.id;
       postItem.order = i;
       postItem.post_id = savedPost.id;
@@ -87,7 +87,7 @@ export const pdtPost = async (oldPost, userId) => {
       // UPDATE POST ITEM
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const postItem = _objectWithoutKeys(item, ["file"]);
+        const postItem = _objectWithoutKeys(item, ["file","chosen"]);
         if (!item.id) {
           const resp = await ApiFileUpload(item.file);
           postItem.file_id = resp.id;

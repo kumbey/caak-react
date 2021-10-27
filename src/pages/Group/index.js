@@ -23,6 +23,10 @@ export default function Group() {
   const [subscriptionTotal, setSubscriptionTotal] = useState();
   const [reRender, setReRender] = useState(0);
   const groupFeedRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
+
   const [nextPosts] = useListPager({
     query: getPostByStatus,
     variables: {
@@ -32,13 +36,12 @@ export default function Group() {
       limit: 6,
     },
   });
+
   const [setPostScroll] = useInfiniteScroll(
     groupPosts,
     setGroupPosts,
     groupFeedRef
   );
-  //FORCE RENDER STATE
-  const [loading, setLoading] = useState(false);
 
   const getGroupDataById = async () => {
     try {
@@ -75,8 +78,6 @@ export default function Group() {
       console.log(ex);
     }
   };
-  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
-  const subscriptions = {};
 
   const subscrib = () => {
     let authMode = "AWS_IAM";
@@ -160,7 +161,12 @@ export default function Group() {
   }, [subscriptionTotal]);
 
   useEffect(() => {
-    if (groupId) subscrib();
+    if (groupId) {
+      getGroupDataById();
+      fetchGroupPosts(groupPosts, setGroupPosts);
+      setPostScroll(fetchGroupPosts);
+      subscrib();
+    }
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
@@ -168,15 +174,6 @@ export default function Group() {
       });
       setPostScroll(null);
     };
-    // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    getGroupDataById();
-
-    fetchGroupPosts(groupPosts, setGroupPosts);
-    setPostScroll(fetchGroupPosts);
-
     // eslint-disable-next-line
   }, [user]);
 
@@ -194,7 +191,7 @@ export default function Group() {
 
       {/* post */}
       <div className="flex flex-col items-center">
-        <GroupSubHeader groupId={groupId} />
+        <GroupSubHeader groupId={groupId}/>
         <GroupBody
           groupFeedRef={groupFeedRef}
           groupPosts={groupPosts}

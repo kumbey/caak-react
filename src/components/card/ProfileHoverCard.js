@@ -92,6 +92,11 @@ export default function ProfileHoverCard({ userId }) {
       // style={{ top: "45px" }}
     >
       <div className="flex flex-row justify-between items-center w-full">
+      <Link
+          to={{
+            pathname: `/user/${profileUser.id}/profile`,
+          }}
+        >
         <img
           className="w-12 h-12 rounded-full border-2 border-white"
           alt=""
@@ -101,11 +106,12 @@ export default function ProfileHoverCard({ userId }) {
               : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
           }
         />
+        </Link>
         {/*If no user is logged, show only follow button*/}
         {/*And If user is there show follow or unfollow button*/}
         {checkUser(user) ? (
           user.sysUser.id !== profileUser.id ? (
-            <button onClick={handleClick} className={"button small"}>
+            <button onClick={handleClick} className={"button small  bg-caak-titaniumwhite text-black"}>
               {profileUser.followed ? "Дагасан" : "Дагах"}
             </button>
           ) : null
@@ -116,16 +122,17 @@ export default function ProfileHoverCard({ userId }) {
         )}
       </div>
       <div className="mb-px-10">
+          <div className="flex items-center">
         <Link
+          className="flex items-center"
           to={{
             pathname: `/user/${profileUser.id}/profile`,
           }}
         >
-          <div className="flex items-center">
             <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
             <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
-          </div>
         </Link>
+          </div>
         <p className="font-light text-15px">{profileUser.about}</p>
       </div>
       <div className="flex flex-row justify-between items-center pr-14">

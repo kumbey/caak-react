@@ -52,8 +52,7 @@ const Feed = () => {
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
-  const [addedPost, setAddedPost] = useState(0);
-  const [removedPost, setRemovedPost] = useState();
+  const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
 
   //FORCE RENDER STATE
@@ -121,7 +120,10 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setAddedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "add",
+        });
       },
     });
 
@@ -133,7 +135,10 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setRemovedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
       },
     });
 
@@ -145,33 +150,33 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setRemovedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
       },
     });
   };
 
   useEffect(() => {
-    if (addedPost) {
-      setPosts([addedPost, ...posts]);
-    }
-
-    // eslint-disable-next-line
-  }, [addedPost]);
-
-  useEffect(() => {
-    if (removedPost) {
-      let postIndex = posts.findIndex(
-        (post, index) => post.id === removedPost.id
+    if (subscripedPost) {
+      const postIndex = posts.findIndex(
+        (post) => post.id === subscripedPost.post.id
       );
 
-      if (postIndex > -1) {
-        posts.splice(postIndex, 1);
-        setRender(render + 1);
+      if (subscripedPost.type === "add") {
+        if (postIndex <= -1) {
+          setPosts([subscripedPost.post, ...posts]);
+        }
+      } else {
+        if (postIndex > -1) {
+          posts.splice(postIndex, 1);
+          setRender(render + 1);
+        }
       }
     }
-
     // eslint-disable-next-line
-  }, [removedPost]);
+  }, [subscripedPost]);
 
   useEffect(() => {
     // fetchPosts(posts, setPosts);
@@ -201,11 +206,6 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
-  useEffect(() => {
-    return () => {
-      setActiveIndex(null);
-    };
-  }, []);
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>

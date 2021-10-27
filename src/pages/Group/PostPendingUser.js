@@ -137,14 +137,10 @@ export default function PostPendingUser({ userId }) {
 
   return (
     <div className={"w-full"}>
-      <div className="py-b4 flex items-center w-full pr-2 bg-white border-t">
-        <div className="text-16px text-caak-generalblack flex items-center w-full">
-          <p className="ml-c2 flex justify-start w-full">Постын нэр</p>
-          <div className=" pr-7 flex justify-between w-full">
-            <p>Нийтлэгч</p>
-            <p>Хугацаа</p>
-          </div>
-        </div>
+      <div className="text-16px flex py-b4 items-center w-full bg-white">
+        <p className="w-1/2 text-center">Постын нэр</p>
+        <p className="w-1/4">Нийтлэгч</p>
+        <p className="w-1/4">Хугацаа</p>
       </div>
       {userPendingPosts.map((data, index) => {
         return (

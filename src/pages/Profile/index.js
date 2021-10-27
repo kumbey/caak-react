@@ -1,15 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "../../components/button";
-import Card from "../../components/card";
 import { useLocation, useParams } from "react-router";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
-import useInfiniteScroll from "../Home/useFetch";
 import { Link } from "react-router-dom";
 import Loader from "../../components/loader";
 import {
   ApiFileUpload,
   getUserById,
-  useListPager,
 } from "../../Utility/ApiHelper";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
@@ -21,105 +17,21 @@ import {
   getFileExt,
   getFileName,
   getFileUrl,
-  getReturnData,
 } from "../../Utility/Util";
 import { updateUser } from "../../graphql-custom/user/mutation";
 import { deleteFile } from "../../graphql-custom/file/mutation";
 import { useUser } from "../../context/userContext";
-import PostPendingUser from "../Group/PostPendingUser";
-import PostArchivedUser from "../Group/PosArchivedUser";
-import { onPostByUser } from "../../graphql-custom/post/subscription";
+import UserPosts from "./UserPosts";
 
 export default function Profile() {
   const [user, setUser] = useState();
   const { userId } = useParams();
-  const [posts, setPosts] = useState([]);
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const temp = useLocation();
   const [activeIndex, setActiveIndex] = useState(
     temp.state ? temp.state.index : 1
   );
-
-  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
-  const profilePostRef = useRef();
-  const subscriptions = {};
-
-  const subscrib = () => {
-    let authMode = "AWS_IAM";
-    if (checkUser(signedUser)) {
-      authMode = "AMAZON_COGNITO_USER_POOLS";
-    }
-    subscriptions.onPostByUserConfirmed = API.graphql({
-      query: onPostByUser,
-      variables: {
-        user_id: userId,
-        status: "CONFIRMED",
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        const onData = getReturnData(data, true);
-        setSubscriptionPosts(onData);
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
-    subscriptions.onPostByUserPending = API.graphql({
-      query: onPostByUser,
-      variables: {
-        user_id: userId,
-        status: "PENDING",
-      },
-      authMode: authMode,
-    }).subscribe({
-      next: (data) => {
-        const onData = getReturnData(data, true);
-        setSubscriptionPosts(onData);
-      },
-      error: (error) => {
-        console.warn(error);
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (setSubscriptionPosts) {
-      if (!posts.find((item) => item?.id === subscriptionPosts?.id)) {
-        setPosts((prev) => [subscriptionPosts, ...prev]);
-      } else {
-        const filtered = posts.filter(
-          (item) => item?.id !== subscriptionPosts.id
-        );
-        setPosts([...filtered]);
-      }
-    }
-    // eslint-disable-next-line
-  }, [subscriptionPosts]);
-
-  useEffect(() => {
-    if (userId) subscrib();
-    setPostScroll(fetchPosts);
-    return () => {
-      Object.keys(subscriptions).map((key) => {
-        subscriptions[key].unsubscribe();
-        return true;
-      });
-      setPostScroll(null);
-    };
-    // eslint-disable-next-line
-  }, [user]);
-
-  const [nextPosts] = useListPager({
-    query: getPostByStatus,
-    variables: {
-      filter: { user_id: { eq: userId } },
-      sortDirection: "DESC",
-      status: "CONFIRMED",
-      limit: 6,
-    },
-  });
 
   const onDrop = useCallback((file) => {
     setProfilePictureDropZone({
@@ -175,10 +87,7 @@ export default function Profile() {
     if (profilePictureDropZone.name) updateProfileImage();
     // eslint-disable-next-line
   }, [profilePictureDropZone]);
-
-  const [setPostScroll] = useInfiniteScroll(posts, setPosts, profilePostRef);
   //FORCE RENDER STATE
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
@@ -199,29 +108,6 @@ export default function Profile() {
       console.log(ex);
     }
   }, [signedUser, userId]);
-
-  // useEffect(() => {
-  //   // fetchPosts(posts, setPosts);
-  //   setPostScroll(fetchPosts);
-  //   // eslint-disable-next-line
-  // }, []);
-
-  const fetchPosts = async (data, setData) => {
-    try {
-      if (!loading) {
-        setLoading(true);
-
-        let resp = await nextPosts();
-        if (resp) {
-          setData([...data, ...resp]);
-        }
-
-        setLoading(false);
-      }
-    } catch (ex) {
-      console.log(ex);
-    }
-  };
 
   return user ? (
     <div>
@@ -432,18 +318,7 @@ export default function Profile() {
               activeIndex === 1 ? "" : "hidden"
             }`}
           >
-            {posts.map((data, index) => {
-              return (
-                data && (
-                  <Card
-                    key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                )
-              );
-            })}
+            <UserPosts userId={userId} type="CONFIRMED" card/>
           </div>
 
           <div
@@ -451,26 +326,15 @@ export default function Profile() {
               activeIndex === 2 ? "" : "hidden"
             }`}
           >
-            <PostPendingUser userId={userId} />
+            <UserPosts userId={userId} type="PENDING"/>
           </div>
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 3 ? "" : "hidden"
             }`}
           >
-            <PostArchivedUser userId={userId} />
+            <UserPosts userId={userId} type="ARCHIVED"/>
           </div>
-        </div>
-        <div
-          ref={profilePostRef}
-          className={"flex justify-center items-center"}
-        >
-          <Loader
-            containerClassName={"self-center"}
-            className={`bg-caak-primary ${
-              loading ? "opacity-100" : "opacity-0"
-            }`}
-          />
         </div>
       </div>
     </div>
