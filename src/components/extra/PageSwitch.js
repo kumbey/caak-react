@@ -6,7 +6,6 @@ import WithAuth from "../auth/WithAuth";
 import NavBar from "../navigation/NavBar";
 import PrivateRoute from "./PrivateRoute";
 import UnAuthRoute from "./UnAuthRoute";
-import BottomTabs from "../../pages/Home/BottomTabs";
 
 const PageSwitch = (props) => {
   let location = useLocation();
@@ -100,7 +99,6 @@ const PageSwitch = (props) => {
       })}
       <Route path="/" component={null} />
       <QueryModals />
-      <BottomTabs />
     </UserProvider>
   );
 };
