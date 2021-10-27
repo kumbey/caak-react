@@ -5,8 +5,7 @@ export default function Switch() {
     <label
       onClick={() => setActive(!active)}
       style={{ minWidth: "40px", height: "22px" }}
-      className={`
-                cursor-pointer
+      className={`ml-1 cursor-pointer
                 rounded-full 
                 bg-caak-${active ? "algalfuel" : "titaniumwhite"}  
                 flex items-center 

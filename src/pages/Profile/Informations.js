@@ -86,15 +86,15 @@ export default function Informations({ currentUser }) {
       >
         Хувийн мэдээлэл
       </p>
-      <div style={{ marginTop: "21px" }} className="mx-c3">
+      <div style={{ marginTop: "21px" }} className="mx-c3 ">
         {settings.map((setting, index) => {
           return (
             <div
               key={index}
               style={{ paddingBlock: "14px" }}
-              className="text-16px flex items-center w-full border-b justify-between"
+              className="text-16px flex items-center w-full border-b justify-between "
             >
-              <div className="flex lg:mr-6 mr-4">
+              <div className="flex lg:mr-6 mr-4 ">
                 <p className="my-px-9 pr-9 w-24 font-medium">{setting.text}</p>
               </div>
               {showInput && index === currentIndex ? (
@@ -110,6 +110,8 @@ export default function Informations({ currentUser }) {
                     id={setting.id}
                     onChange={handleChange}
                     placeholder={setting.placeholder}
+                    defaultValue={currentUser[setting.name]}
+                    value={text.value}
                     type={setting.type}
                   />{" "}
                   <button

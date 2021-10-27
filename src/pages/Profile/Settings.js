@@ -40,7 +40,7 @@ export default function Settings() {
       style={{ marginTop: "36px" }}
       className="grid items-center justify-center"
     >
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full settingsPanel">
         <div className=" flex items-center justify-start w-full bg-transparent">
           <span
             onClick={() => history.goBack()}
@@ -57,7 +57,7 @@ export default function Settings() {
             data-dummy="200x200"
             src={user.pic ? getFileUrl(user.pic) : Dummy.img("200x200")}
           />
-          <div className="sm:flex-row flex flex-col items-center">
+          <div className="flex-row flex items-center">
             <p
               style={{ marginRight: "8px" }}
               className=" text-24px  font-medium"
@@ -90,8 +90,8 @@ export default function Settings() {
             ))}
           </div>
           <div
-            style={{ marginTop: "34px" }}
-            className="settingsPanel md:ml-c11 bg-white rounded-lg"
+            style={{ marginTop: "24px" }}
+            className="settingsDiv md:ml-c11 bg-white rounded-lg"
           >
             {activeIndex === 1 ? (
               <Informations currentUser={user} />
