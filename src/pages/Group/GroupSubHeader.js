@@ -26,7 +26,7 @@ const GroupSubHeader = ({ groupId }) => {
         <img
           alt=""
           src={
-            user.sysUser.pic
+            checkUser(user) && user.sysUser.pic
               ? getFileUrl(user.sysUser.pic)
               : Dummy.img("200x200")
           }
