@@ -33,7 +33,7 @@ const SelectGroup = ({
       <div className={"flex flex-row items-center px-7"}>
         <img
           data-dummy="100x100"
-          src={user ? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
+          src={user.sysUser.pic ? generateFileUrl(user.sysUser.pic) : Dummy.img("100x100")}
           className={"w-12 h-12 rounded-full object-cover mr-2"}
           alt={""}
         />

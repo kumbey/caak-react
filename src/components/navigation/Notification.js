@@ -127,7 +127,7 @@ const Notification = ({ item, ...props }) => {
 
           <div className={"flex justify-center items-center  w-10 h-10"}>
             <img
-              className={"rounded-full w-full h-full"}
+              className={"rounded-full w-full h-full object-cover"}
               src={
                 item.from_user.pic
                   ? generateFileUrl(item.from_user.pic)

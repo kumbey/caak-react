@@ -60,28 +60,25 @@ const Feed = () => {
 
   const listGroups = async () => {
     try {
-
       const grData = {
         adminModerator: [],
         member: [],
         unMember: [],
-      }
+      };
 
-      let resp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost)
-      );
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
 
-      resp = getReturnData(resp).items
+      resp = getReturnData(resp).items;
 
-      for(let i = 0; i < resp.length; i++){
-          let item = resp[i]
-          if(item.role_on_group === "NOT_MEMBER"){
-            grData.unMember.push(item)
-          }else if(item.role_on_group === "MEMBER"){
-            grData.member.push(item)
-          }else{
-            grData.adminModerator.push(item)
-          }
+      for (let i = 0; i < resp.length; i++) {
+        let item = resp[i];
+        if (item.role_on_group === "NOT_MEMBER") {
+          grData.unMember.push(item);
+        } else if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else {
+          grData.adminModerator.push(item);
+        }
       }
 
       setGroupData(grData);
@@ -279,6 +276,7 @@ const Feed = () => {
                   </div>
                 </>
               ) : null}
+
               {groupData.member.length > 0 ? (
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
@@ -373,16 +371,19 @@ const Feed = () => {
                 "grid-container justify-center md:justify-center lg:justify-start"
               }
             >
-              {posts.map((data, index) => {
-                return (
-                  <Card
-                    key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                );
-              })}
+              {posts.length > 0 &&
+                posts.map((data, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      video={data?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  );
+                })}
             </div>
             <div ref={feedRef} className={"flex justify-center items-center"}>
               <Loader
