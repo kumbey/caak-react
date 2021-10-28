@@ -109,7 +109,7 @@ export default function Check() {
             onClick={() => closeModal(history, state)}
             className="icon-fi-rs-back flex items-center"
           />
-          <p className="text-20px">Фост шалгах</p>
+          <p className="text-20px">Пост шалгах</p>
           <span className="icon-fi-rs-dots text-4px flex items-center" />
         </div>
         <div className={"w-full"}>
