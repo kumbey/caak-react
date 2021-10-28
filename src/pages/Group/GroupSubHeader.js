@@ -1,9 +1,9 @@
 import Dummy from "dummyjs";
 import { useHistory, useLocation } from "react-router-dom";
 import { useUser } from "../../context/userContext";
-import { checkUser } from "../../Utility/Util";
+import { checkUser, getFileUrl } from "../../Utility/Util";
 
-const GroupSubHeader = ({ groupId }) => {
+const GroupSubHeader = ({ groupId, param }) => {
   const history = useHistory();
   const location = useLocation();
   const { user } = useUser();
