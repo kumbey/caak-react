@@ -18,6 +18,12 @@
     padding-top: var(--topBarSize);
   }
 
+  .viewPendingPost {
+    max-width: 800px;
+    min-width: 320px;
+    width: max(320px, 100%, 800px);
+  }
+
   .mobileSideMenu {
     width: 295px;
   }
