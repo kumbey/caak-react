@@ -122,7 +122,7 @@ const Feed = () => {
       next: (data) => {
         setSubscripedPost({
           post: getReturnData(data, true),
-          type: "add"
+          type: "add",
         });
       },
     });
@@ -137,7 +137,7 @@ const Feed = () => {
       next: (data) => {
         setSubscripedPost({
           post: getReturnData(data, true),
-          type: "remove"
+          type: "remove",
         });
       },
     });
@@ -152,30 +152,31 @@ const Feed = () => {
       next: (data) => {
         setSubscripedPost({
           post: getReturnData(data, true),
-          type: "remove"
+          type: "remove",
         });
       },
     });
   };
 
   useEffect(() => {
-    if (subscripedPost){
+    if (subscripedPost) {
+      const postIndex = posts.findIndex(
+        (post) => post.id === subscripedPost.post.id
+      );
 
-      const postIndex = posts.findIndex((post) => post.id === subscripedPost.post.id);
-
-      if(subscripedPost.type === "add"){
+      if (subscripedPost.type === "add") {
         if (postIndex <= -1) {
-          setPosts([subscripedPost.post, ...posts])
+          setPosts([subscripedPost.post, ...posts]);
         }
-      }else{
+      } else {
         if (postIndex > -1) {
           posts.splice(postIndex, 1);
           setRender(render + 1);
         }
       }
-  }
+    }
     // eslint-disable-next-line
-}, [subscripedPost]);
+  }, [subscripedPost]);
 
   useEffect(() => {
     // fetchPosts(posts, setPosts);

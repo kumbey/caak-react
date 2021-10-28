@@ -6,60 +6,8 @@
     --topBarSize: 72px;
   }
 
-  .settingsMenuPanel {
-    min-width: 280px;
-    max-width: 290px;
-    width: clamp(280px, 100%, 290px);
-    height: 217px;
-  }
-  .settingsDiv {
-    width: 608px;
-  }
-  .widthSocial {
-    width: 400px;
-  }
-
-  @media (max-width: 900px) {
-    .settingsMenuPanel {
-      width: 100%;
-    }
-    .settingsPanel {
-      width: 100%;
-    }
-    .settingsDiv {
-      width: 75%;
-    }
-    .widthSocial {
-      width: 230px;
-    }
-  }
-  @media (max-width: 770px) {
-    .settingsMenuPanel {
-      width: 100%;
-    }
-    .settingsPanel {
-      width: 100%;
-    }
-    .settingsDiv {
-      width: 100%;
-    }
-    .widthSocial {
-      width: 230px;
-    }
-  }
-  @media (max-width: 450px) {
-    .settingsMenuPanel {
-      width: 100%;
-    }
-    .settingsPanel {
-      width: 70%;
-    }
-    .settingsDiv {
-      width: 100%;
-    }
-    .widthSocial {
-      width: 150px;
-    }
+  #root {
+    padding-top: var(--topBarSize);
   }
 
   .viewPost {

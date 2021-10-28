@@ -15,7 +15,6 @@ import { onPostByGroup } from "../../graphql-custom/post/subscription";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 export default function Group() {
-
   const history = useHistory();
   const { user } = useUser();
   const { groupId } = useParams();
@@ -43,7 +42,7 @@ export default function Group() {
     setGroupPosts,
     groupFeedRef
   );
-  
+
   const getGroupDataById = async () => {
     try {
       if (checkUser(user)) {
@@ -192,7 +191,7 @@ export default function Group() {
 
       {/* post */}
       <div className="flex flex-col items-center">
-        <GroupSubHeader groupId={groupId} />
+        <GroupSubHeader groupId={groupId}/>
         <GroupBody
           groupFeedRef={groupFeedRef}
           groupPosts={groupPosts}
