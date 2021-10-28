@@ -94,32 +94,54 @@ export default function Check() {
       if (
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        updateStatus(post, user.sysUser.ID,status)
-        setLoading(false)
-        closeModal(history, state)
+        updateStatus(post, user.sysUser.ID, status);
+        setLoading(false);
+        closeModal(history, state);
       }
     }
   };
 
   return post ? (
-    <Backdrop className="flex justify-center">
-      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute flex w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
-        <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
-          <span
-            onClick={() => closeModal(history, state)}
-            className="icon-fi-rs-back flex items-center"
-          />
-          <p className="text-20px">Фост шалгах</p>
-          <span className="icon-fi-rs-dots text-4px flex items-center" />
-        </div>
-        <div className={"w-full"}>
-          <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
-            <p
-              style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px flex justify-center font-bold px-6"
-            >
-              {post.title}
-            </p>
+    <Backdrop>
+      <div className="md:hidden z-1 py-px-6 px-c6 border-caak-liquidnitrogen relative sticky top-0 flex justify-between block w-full bg-white border-b">
+        <span
+          onClick={() => closeModal(history, state)}
+          className="icon-fi-rs-back flex items-center"
+        />
+        <p className="text-20px">Пост шалгах</p>
+        <span className="icon-fi-rs-dots text-4px flex items-center" />
+      </div>
+
+      <div
+        className={`flex justify-center w-screen md:w-auto items-center h-screen md:h-auto md:mt-10 md:mb-10 h-full rounded-square`}
+      >
+        <div
+          className={`flex flex-col relative viewPendingPost bg-transparent h-full md:h-auto`}
+        >
+          <div
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              wordBreak: "break-all",
+            }}
+            className="rounded-square md:rounded-t-square relative overflow-y-auto bg-white rounded-t-none"
+          >
+            <div className={"relative py-4"}>
+              <div
+                className={
+                  "hidden md:flex items-center justify-center absolute top-1/2 transform -translate-y-1/2 right-0 mr-4  w-c3 h-c3 cursor-pointer"
+                }
+              >
+                <span
+                  onClick={() => closeModal(history, state)}
+                  className="icon-fi-rs-close text-30px ph:flex ph:justify-center ph:hidden text-caak-liquidnitrogen"
+                />
+              </div>
+              <p className="text-20px flex justify-center px-12 font-bold">
+                {post.title}
+              </p>
+            </div>
+
             <div className="bg-opacity-80 flex items-center h-auto bg-black">
               <span
                 style={{ paddingInline: "19px", paddingBlock: "15px" }}
@@ -213,10 +235,6 @@ export default function Check() {
             </div>
           ) : null}
         </div>
-        <span
-          onClick={() => closeModal(history, state)}
-          className="icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden text-white cursor-pointer"
-        />
       </div>
     </Backdrop>
   ) : null;
