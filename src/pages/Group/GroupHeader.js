@@ -10,13 +10,17 @@ import GroupInformationDrop from "../../components/PendingPost/GroupInformationD
 import { useHistory } from "react-router-dom";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { createGroupUsers } from "../../graphql-custom/GroupUsers/mutation";
+import {
+  createGroupUsers,
+  deleteGroupUsers,
+} from "../../graphql-custom/GroupUsers/mutation";
 import { useUser } from "../../context/userContext";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
-export default function GroupHeader({ group, bodyRender, setBodyRender }) {
+export default function GroupHeader({ group, setBodyRender }) {
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
   const [forceRender, setForceRender] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [subscriptionTotal, setSubscriptionTotal] = useState();
   const subscriptions = {};
 
@@ -50,7 +54,7 @@ export default function GroupHeader({ group, bodyRender, setBodyRender }) {
       group.totals.pending = parseInt(subscriptionTotal.pending);
       setForceRender(forceRender + 1);
       if (setForceRender) {
-        setBodyRender(bodyRender + 1);
+        setBodyRender((prev) => prev + 1);
       }
     }
     // eslint-disable-next-line
@@ -80,20 +84,37 @@ export default function GroupHeader({ group, bodyRender, setBodyRender }) {
   const followGroup = async () => {
     try {
       if (checkUser(user)) {
-        await API.graphql(
-          graphqlOperation(createGroupUsers, {
-            input: {
-              group_id: group.id,
-              user_id: user.sysUser.id,
-              role: "MEMBER",
-            },
-          })
-        );
-        group.followed = true;
-        group.totals.member += 1;
-        setForceRender(forceRender + 1);
+        setLoading(true);
+        if (group.followed) {
+          await API.graphql(
+            graphqlOperation(deleteGroupUsers, {
+              input: {
+                group_id: group.id,
+                user_id: user.sysUser.id,
+              },
+            })
+          );
+          group.followed = false;
+          group.totals.member -= 1;
+          setForceRender(forceRender + 1);
+        } else {
+          await API.graphql(
+            graphqlOperation(createGroupUsers, {
+              input: {
+                group_id: group.id,
+                user_id: user.sysUser.id,
+                role: "MEMBER",
+              },
+            })
+          );
+          group.followed = true;
+          group.totals.member += 1;
+          setForceRender(forceRender + 1);
+        }
+        setLoading(false);
       }
     } catch (ex) {
+      setLoading(false);
       console.log(ex);
     }
   };
@@ -134,8 +155,9 @@ export default function GroupHeader({ group, bodyRender, setBodyRender }) {
         <div className="ph:flex-col ph:justify-evenly flex items-end">
           <Button
             className="h-c13 text-15px rounded rounded-lg"
-            disabled={group.followed}
+            disabled={loading}
             onClick={followGroup}
+            skin={group.followed ? "secondary" : "primary"}
           >
             {group.followed ? (
               <span className="icon-fi-rs-check text-12px mr-px-6" />
