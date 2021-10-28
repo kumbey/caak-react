@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { removeItemByIndex } from "../../Utility/ArrayUtil";
 import { getFileUrl } from "../../Utility/Util";
@@ -9,44 +9,52 @@ const EditNewPostCaption = ({
   post,
   setCurrentEditingIndex,
   currentEditingIndex,
-  setIsEditing
+  setIsEditing,
 }) => {
-
   const videoRef = useRef();
+  const textareaRef = useRef();
 
-  const [sortedArray, setSortedArray] = useState()
-  const [data, setData] = useState([...post.items])
-  const [current, setCurrent] = useState(currentEditingIndex)
-  const [maxTextLength] = useState(700)
+  const [sortedArray, setSortedArray] = useState();
+  const [data, setData] = useState([...post.items]);
+  const [current, setCurrent] = useState(currentEditingIndex);
+  const [maxTextLength] = useState(700);
+
+  const currentData = data[current]
 
   const featuredPostHandler = (e, index) => {
     e.stopPropagation();
-    
-    let featured = data[index]
-    let arr = [...data]
-    removeItemByIndex(arr, index)
-    setData([featured, ...arr])
-    setCurrent(0)
+
+    let featured = data[index];
+    let arr = [...data];
+    removeItemByIndex(arr, index);
+    setData([featured, ...arr]);
+    setCurrent(0);
   };
 
   const captionHandler = (e) => {
-    let arr = [...data]
-    let cur = arr[current]
-    arr[current] = {...cur, title: e.target.value}
-    setData([...arr])
+    let arr = [...data];
+    let cur = arr[current];
+    arr[current] = { ...cur, title: e.target.value };
+    setData([...arr]);
   };
 
   const handleSave = () => {
-      setCurrentEditingIndex(current)
-      setPost({...post, items: data})
-      setIsEditing(false)
-  }
+    setCurrentEditingIndex(current);
+    setPost({ ...post, items: data });
+    setIsEditing(false);
+  };
+
+  useEffect(() => {
+    textareaRef.current.style.height = "0px";
+    const scrollHeight = textareaRef.current.scrollHeight;
+    textareaRef.current.style.height = scrollHeight + "px";
+  }, [currentData.title]);
 
   return (
     <div>
-      {data[current] && (
+      {currentData && (
         <div>
-          {data[current].file.type.startsWith("video") ? (
+          {currentData.file.type.startsWith("video") ? (
             <video
               ref={videoRef}
               disablePictureInPicture
@@ -56,20 +64,20 @@ const EditNewPostCaption = ({
                 "videoPlayer w-full max-h-80 block object-contain  bg-black"
               }
             >
-              <source src={getFileUrl(data[current].file)} type="video/mp4" />
+              <source src={getFileUrl(currentData.file)} type="video/mp4" />
             </video>
           ) : (
             <img
               className={"max-h-80 w-full object-contain bg-black"}
-              src={getFileUrl(data[current].file)}
+              src={getFileUrl(currentData.file)}
               alt={"sdd"}
             />
           )}
 
           <div className={"relative flex flex-row mt-2 items-center px-4"}>
             <textarea
-              rows={2}
-              value={data[current].title}
+              ref={textareaRef}
+              value={currentData.title}
               onChange={captionHandler}
               maxLength={"700"}
               placeholder={"Зургийн тайлбар оруулах..."}
@@ -80,7 +88,7 @@ const EditNewPostCaption = ({
                 "absolute right-8 bottom-4 text-14px font-medium text-caak-darkBlue"
               }
             >
-              {data[current].title.length}/{maxTextLength}
+              {currentData.title.length}/{maxTextLength}
             </span>
           </div>
         </div>
@@ -98,8 +106,7 @@ const EditNewPostCaption = ({
               key={index}
               onClick={() => setCurrent(index)}
               className={`relative flex justify-center items-center group border-2 border-transparent w-20 h-20 mr-1 mt-2 p-1 rounded-square ${
-                current === index &&
-                "border-2 border-caak-mortargrey"
+                current === index && "border-2 border-caak-mortargrey"
               }`}
             >
               <span
@@ -131,9 +138,9 @@ const EditNewPostCaption = ({
         })}
       </ReactSortable>
       <div className={"flex flex-row px-4"}>
-        <Button
-          onClick={handleSave}
-          className={"mr-2 mt-4 w-full text-17px"}>Хадгалах</Button>
+        <Button onClick={handleSave} className={"mr-2 mt-4 w-full text-17px"}>
+          Хадгалах
+        </Button>
       </div>
     </div>
   );
