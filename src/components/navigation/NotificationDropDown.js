@@ -11,7 +11,7 @@ import {
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
-import { updateNotification } from "../../graphql-custom/notification/mutation";
+import { methodNoitification, updateNotification } from "../../graphql-custom/notification/mutation";
 import { useHistory, useLocation } from "react-router";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
@@ -77,29 +77,20 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = () => {
-    notifications.map(async (item, index) => {
-      if (item.seen === "FALSE") {
-        notifications[index].seen = "TRUE";
-        try {
-          await API.graphql(
-            graphqlOperation(updateNotification, {
-              input: {
-                id: item.id,
-                seen: "TRUE",
-                expectedVersion: item.version,
-              },
-            })
-          );
-        } catch (ex) {
-          if (
-            ex.errors[0].errorType ===
-            "DynamoDB:ConditionalCheckFailedException"
-          ) {
-          } else console.log(ex);
+
+    try{
+
+      API.graphql(graphqlOperation(methodNoitification, {method: "SeenALL", user_id: user.sysUser.id}))
+
+      notifications.map((item, index) => {
+        if (item.seen === "FALSE") {
+          notifications[index].seen = "TRUE";
         }
-      }
-      return null;
-    });
+        return null;
+      });
+    }catch(ex){
+      console.log(ex)
+    }
   };
 
   const handleNotificationClick = async (index) => {

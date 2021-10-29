@@ -359,7 +359,8 @@ type Notification @model @versioned
     { allow: groups, groups: ["users"], operations: [read, update, create, delete]}
     { allow: public, provider: iam, operations: [read]}
   ])
-  @key(name:"byUser", fields:["to","createdAt"], queryField:"listNotificationByUser"){
+  @key(name:"byUser", fields:["to","createdAt"], queryField:"listNotificationByUser")
+  @key(name:"byUserAndSeen", fields:["to","seen"],  queryField:"listNotificationByUserAndSeen"){
     id: ID!
     section: String!
     type: String!
@@ -381,7 +382,6 @@ type Mutation {
   @aws_iam
   @aws_cognito_user_pools
   notification(user_id: ID!, method: String!): Boolean @function(name:"notification-${env}")
-  @aws_iam
   @aws_cognito_user_pools
 }
 
