@@ -126,7 +126,7 @@ export default function Profile() {
         <div className="md:flex md:justify-around grid justify-center w-full">
           <div className="ph:text-center">
             <div className="ph:grid flex">
-              <div className="ph:grid ph:justify-center relative flex items-center justify-center">
+              <div className="grid sm:flex relative items-center justify-center">
                 <img
                   style={{ height: "120px", width: "120px" }}
                   alt={user.nickname}
@@ -253,7 +253,7 @@ export default function Profile() {
           <Button
             key={1}
             onClick={() => setActiveIndex(1)}
-            className={`text-15px h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+            className={`text-15px h-c32 mb-4 md:mb-0 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
                                       1 === activeIndex
                                         ? "bg-white shadow"
@@ -273,7 +273,7 @@ export default function Profile() {
               <Button
                 key={2}
                 onClick={() => setActiveIndex(2)}
-                className={`text-15px h-c32 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
+                className={`text-15px h-c32 mb-4 md:mb-0 text-caak-primary mr-px-6 hover:bg-caak-titaniumwhite flex items-center justify-center font-bold  rounded-lg 
                                     ${
                                       2 === activeIndex
                                         ? "bg-white shadow"
@@ -325,7 +325,7 @@ export default function Profile() {
             className={`flex mt-b5  justify-center ${
               activeIndex === 2 ? "" : "hidden"
             }`}
-          >
+          > 
             <UserPosts userId={userId} type="PENDING"/>
           </div>
           <div
