@@ -65,7 +65,7 @@ export default function PostPending() {
                         className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
                     />
                     <div className="flex w-full justify-evenly">
-                        <p className="md:w-1/3">Пост</p>
+                        <p className="md:w-1/3 md:ml-c32">Пост</p>
                         <div className="md:w-1/3 hidden md:flex">
                             <p className="md:w-1/2">Нийтлэгч</p>
                             <p className="md:w-1/2 text-center">Хугацаа</p>

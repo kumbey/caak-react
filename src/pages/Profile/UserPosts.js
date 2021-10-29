@@ -168,6 +168,11 @@ export default function UserPosts({ userId, type, card }) {
         </div>
         :
         <div>
+          <div style={{paddingBlock: "21px"}} className="hidden md:flex bg-white rounded-t-xl">
+            <p className="w-1/2 md:ml-c32">Пост</p>
+            <p className="w-1/4 text-center">Грүпп</p>
+            <p className="w-1/4 text-center">Хугацаа</p>
+          </div>
           {
             userPosts.length > 0 && 
               userPosts.map((data, index) => {

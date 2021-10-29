@@ -49,22 +49,18 @@ export default function UserPostItem({ post, className }) {
               <p className="text-15px" style={{marginInline: "20px"}}>{post.title}</p>
             </div>
           </div>
-          <div className="w-full flex flex-col items-center ph:mt-3 sm:w-1/2">
-            <div className="flex items-center justify-center sm:justify-evenly w-full">
-              <div className="flex items-center ph:w-1/2">
-                <img
-                  className="ph:w-c2 ph:h-c2 w-8 h-8 rounded-full object-cover"
-                  src={post.group?.profile ? getFileUrl(post.group?.profile) : Dummy.img("100x100")}
-                  alt=""
-                />
-                <p className="text-15px ml-px-7">{post.group?.name}</p>
-              </div>
-              <div className="flex items-center">
-                <span className={"text-darkblue text-12px text-center flex justify-center"}>
-                  {generateTimeAgo(post.updatedAt)}
-                </span>
-              </div>
+          <div className="w-full flex items-center ph:mt-3 sm:w-1/2">
+            <div className="flex items-center w-full md:w-1/2">
+              <img
+                className="ph:w-c2 ph:h-c2 w-8 h-8 ph:ml-10 rounded-full object-cover"
+                src={post.group?.profile ? getFileUrl(post.group?.profile) : Dummy.img("100x100")}
+                alt=""
+              />
+              <p className="text-15px ml-px-7">{post.group?.name}</p>
             </div>
+            <span className={"text-darkblue w-1/2 text-12px flex justify-center"}>
+              {generateTimeAgo(post.updatedAt)}
+            </span>
           </div>
         </div>
     </Link>

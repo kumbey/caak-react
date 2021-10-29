@@ -118,7 +118,7 @@ export default function PendingPostItem({ post, className }) {
           ref={menuRef}
           className={`flex justify-center w-1/2 h-c8 items-center relative rounded-full`}
         >
-          <div className="fl hidden sm:flex">
+          <div className="hidden md:flex">
             <Button
               loading={loading}
               onClick={() => postHandler(post.id, "CONFIRMED")}
@@ -135,7 +135,7 @@ export default function PendingPostItem({ post, className }) {
             </Button>
           </div>
           <span 
-            onClick={toggleMenu} className="icon-fi-rs-dots text-4px sm:hidden cursor-pointer  hover:bg-caak-liquidnitrogen" 
+            onClick={toggleMenu} className="icon-fi-rs-dots text-4px md:hidden cursor-pointer  hover:bg-caak-liquidnitrogen" 
           />
           <DropDown
             className={"top-5"}

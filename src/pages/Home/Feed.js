@@ -215,7 +215,7 @@ const Feed = () => {
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <aside
-            className={`hidden mr-4 md:flex flex flex-col w-2/6 lg:w-72 ${
+            className={`mr-4 fixed w-2/6 lg:w-72 ${
               user && "sticky top-0"
             }`}
           >

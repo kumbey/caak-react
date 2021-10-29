@@ -78,7 +78,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       >
         <span className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">
-          {groupFollowed ? "Группээс гарах" : "Группт элсэх"}
+          {groupFollowed ? "Грүппээс гарах" : "Грүппт элсэх"}
         </p>
       </div>
       {checkUser(user) && postUser.id === user.sysUser.id && (
