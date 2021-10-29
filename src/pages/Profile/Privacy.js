@@ -98,9 +98,11 @@ export default function Privacy() {
         </div>
         <div
           style={{ paddingBlock: "14px" }}
-          className="flex items-center justify-between w-full border-b"
+          className="ph:ml-7 ph:flex-col md:flex-row flex items-center justify-between w-full border-b"
         >
-          <p className="text-16px pl-c3 font-medium">Нууц үгээ шинэчлэх</p>
+          <p className="ph:w-full ph:mb-3 text-16px ph:pl-0 pl-c3 font-medium">
+            Нууц үгээ шинэчлэх
+          </p>
           {showInput ? (
             <div className="flex w-full">
               <div className="flex flex-col w-full">
@@ -143,7 +145,7 @@ export default function Privacy() {
               <button
                 loading={loading}
                 onClick={() => handleSubmit(doConfirm)}
-                className="px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                className="ph:mr-10 px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
               />
             </div>
           ) : (

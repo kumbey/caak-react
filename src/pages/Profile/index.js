@@ -131,7 +131,7 @@ export default function Profile() {
                   style={{ height: "120px", width: "120px" }}
                   alt={user.nickname}
                   src={user.pic ? getFileUrl(user.pic) : Dummy.img("200x200")}
-                  className="ph:w-c31 ph:h-c31 rounded-full cursor-pointer"
+                  className="ph:w-c31 ph:h-c31 rounded-full cursor-pointer object-cover"
                 />
                 {uploading && (
                   <Loader
@@ -314,7 +314,7 @@ export default function Profile() {
         <div className="grid_container_container flex flex-col justify-center w-full">
           {/* contents */}
           <div
-            className={`grid-container mt-b5  justify-center ${
+            className={`${
               activeIndex === 1 ? "" : "hidden"
             }`}
           >

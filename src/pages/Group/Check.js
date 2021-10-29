@@ -94,9 +94,9 @@ export default function Check() {
       if (
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        updateStatus(post, user.sysUser.ID,status)
-        setLoading(false)
-        closeModal(history, state)
+        updateStatus(post, user.sysUser.ID, status);
+        setLoading(false);
+        closeModal(history, state);
       }
     }
   };
@@ -109,7 +109,7 @@ export default function Check() {
             onClick={() => closeModal(history, state)}
             className="icon-fi-rs-back flex items-center"
           />
-          <p className="text-20px">Фост шалгах</p>
+          <p className="text-20px">Пост шалгах</p>
           <span className="icon-fi-rs-dots text-4px flex items-center" />
         </div>
         <div className={"w-full"}>
@@ -213,10 +213,6 @@ export default function Check() {
             </div>
           ) : null}
         </div>
-        <span
-          onClick={() => closeModal(history, state)}
-          className="icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden text-white cursor-pointer"
-        />
       </div>
     </Backdrop>
   ) : null;

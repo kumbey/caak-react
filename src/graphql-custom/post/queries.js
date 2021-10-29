@@ -55,3 +55,26 @@ export const getPostByUser = /* GraphQL */ `
 
     }
 `;
+
+export const getPostByGroup = /* GraphQL */ `
+    query GetPostByGroup(
+        $group_id: ID!, 
+        $sortDirection: ModelSortDirection,  
+        $filter: ModelPostFilterInput,  
+        $limit: Int,
+        $nextToken: String) {
+            getPostByGroup(
+                group_id: $group_id,
+                sortDirection: $sortDirection, 
+                filter: $filter,  
+                limit: $limit,
+                nextToken: $nextToken
+        )
+        {
+            items ${post0004}
+            nextToken
+        }
+
+    }
+`;
+

@@ -38,10 +38,10 @@ export default function Settings() {
   return user ? (
     <div
       style={{ marginTop: "36px" }}
-      className="grid items-center justify-center"
+      className="flex justify-center  items-center w-full px-4 md:px-6 max-w-4xl mx-auto"
     >
       <div className="flex flex-col w-full settingsPanel">
-        <div className=" flex items-center justify-start w-full bg-transparent">
+        <div className="flex items-center bg-transparent">
           <span
             onClick={() => history.goBack()}
             className="icon-fi-rs-back bg-caak-titaniumwhite flex items-center justify-center rounded-full cursor-pointer"
@@ -67,10 +67,10 @@ export default function Settings() {
             <p className="text-18px">@{user.nickname}</p>
           </div>
         </div>
-        <div className="md:flex-row sm:justify-between md:justify-center  2xl:justify-start 3xl:justify-center px-auto flex flex-col mx-auto w-full">
+        <div className=" sm:justify-between md:justify-between lg:justify-center  2xl:justify-start 3xl:justify-center  flex flex-col md:flex-row  w-full">
           <div
-            style={{ marginTop: "34px" }}
-            className=" px-c3 settingsMenuPanel bg-white rounded-lg"
+            style={{ marginTop: "24px" }}
+            className="settingsMenuPanel px-c3  bg-white rounded-lg"
           >
             {data.map(({ icon, title, id }) => (
               <div
@@ -91,7 +91,7 @@ export default function Settings() {
           </div>
           <div
             style={{ marginTop: "24px" }}
-            className="settingsDiv md:ml-c11 bg-white rounded-lg"
+            className="md:ml-c11 sm:ml-0 mb-c11 bg-white rounded-lg settingsDiv"
           >
             {activeIndex === 1 ? (
               <Informations currentUser={user} />

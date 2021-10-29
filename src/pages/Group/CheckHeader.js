@@ -8,7 +8,7 @@ export default function CheckHeader({ itemTitle, updatedAt, user }) {
       style={{ paddingInline: "30px", paddingBottom: "15px", overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all" }}
       className="mt-c6 justify-between w-full"
     >
-      <p className="text-18px">{itemTitle}</p>
+      <p className="text-18px whitespace-pre-wrap">{itemTitle}</p>
       <div className="my-c6 flex items-center justify-between">
         <div className="flex items-center">
           <img
