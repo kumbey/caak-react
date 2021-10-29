@@ -52,8 +52,7 @@ const Feed = () => {
   });
   const [setPostScroll] = useInfiniteScroll(posts, setPosts, feedRef);
   const [loading, setLoading] = useState(false);
-  const [addedPost, setAddedPost] = useState(0);
-  const [removedPost, setRemovedPost] = useState();
+  const [subscripedPost, setSubscripedPost] = useState(0);
   const subscriptions = {};
 
   //FORCE RENDER STATE
@@ -61,40 +60,28 @@ const Feed = () => {
 
   const listGroups = async () => {
     try {
-      let adminResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: {
-            or: [
-              { role_on_group: { eq: "ADMIN" } },
-              { role_on_group: { eq: "MODERATOR" } },
-            ],
-          },
-        })
-      );
+      const grData = {
+        adminModerator: [],
+        member: [],
+        unMember: [],
+      };
 
-      let memberResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: { role_on_group: { eq: "MEMBER" } },
-        })
-      );
+      let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
 
-      let unMemberResp = await API.graphql(
-        graphqlOperation(listGroupsForAddPost, {
-          filter: {
-            and: [
-              { role_on_group: { ne: "ADMIN" } },
-              { role_on_group: { ne: "MODERATOR" } },
-              { role_on_group: { ne: "MEMBER" } },
-            ],
-          },
-        })
-      );
+      resp = getReturnData(resp).items;
 
-      setGroupData({
-        adminModerator: getReturnData(adminResp).items,
-        member: getReturnData(memberResp).items,
-        unMember: getReturnData(unMemberResp).items,
-      });
+      for (let i = 0; i < resp.length; i++) {
+        let item = resp[i];
+        if (item.role_on_group === "NOT_MEMBER") {
+          grData.unMember.push(item);
+        } else if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
     } catch (ex) {
       console.log(ex);
     }
@@ -133,7 +120,10 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setAddedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "add",
+        });
       },
     });
 
@@ -145,7 +135,10 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setRemovedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
       },
     });
 
@@ -157,33 +150,33 @@ const Feed = () => {
       authMode: authMode,
     }).subscribe({
       next: (data) => {
-        setRemovedPost(getReturnData(data, true));
+        setSubscripedPost({
+          post: getReturnData(data, true),
+          type: "remove",
+        });
       },
     });
   };
 
   useEffect(() => {
-    if (addedPost) {
-      setPosts([addedPost, ...posts]);
-    }
-
-    // eslint-disable-next-line
-  }, [addedPost]);
-
-  useEffect(() => {
-    if (removedPost) {
-      let postIndex = posts.findIndex(
-        (post, index) => post.id === removedPost.id
+    if (subscripedPost) {
+      const postIndex = posts.findIndex(
+        (post) => post.id === subscripedPost.post.id
       );
 
-      if (postIndex > -1) {
-        posts.splice(postIndex, 1);
-        setRender(render + 1);
+      if (subscripedPost.type === "add") {
+        if (postIndex <= -1) {
+          setPosts([subscripedPost.post, ...posts]);
+        }
+      } else {
+        if (postIndex > -1) {
+          posts.splice(postIndex, 1);
+          setRender(render + 1);
+        }
       }
     }
-
     // eslint-disable-next-line
-  }, [removedPost]);
+  }, [subscripedPost]);
 
   useEffect(() => {
     // fetchPosts(posts, setPosts);
@@ -213,11 +206,6 @@ const Feed = () => {
     // eslint-disable-next-line
   }, [user]);
 
-  useEffect(() => {
-    return () => {
-      setActiveIndex(null);
-    };
-  }, []);
   return (
     <div id={"feed"}>
       <div className={`pt-3 px-0 md:px-10 w-full`}>
@@ -267,11 +255,11 @@ const Feed = () => {
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
                     <span className={"text-15px text-caak-darkBlue"}>
-                      {`Миний дагасан бүлгүүд`}
+                      {`Миний удирдаж буй бүлгүүд`}
                     </span>
                   </div>
                   <div className={"px-2 pb-5"}>
-                    {groupData.member.map((data, index) => {
+                    {groupData.adminModerator.map((data, index) => {
                       return (
                         <Link
                           key={index}
@@ -289,6 +277,7 @@ const Feed = () => {
                   </div>
                 </>
               ) : null}
+
               {groupData.member.length > 0 ? (
                 <>
                   <div className={"flex flex-row justify-between px-3.5 pt-2"}>
@@ -383,16 +372,19 @@ const Feed = () => {
                 "grid-container justify-center md:justify-center lg:justify-start"
               }
             >
-              {posts.map((data, index) => {
-                return (
-                  <Card
-                    key={index}
-                    video={data.items.items[0].file.type.startsWith("video")}
-                    post={data}
-                    className="ph:mb-4 sm:mb-4"
-                  />
-                );
-              })}
+              {posts.length > 0 &&
+                posts.map((data, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      video={data?.items?.items[0]?.file?.type?.startsWith(
+                        "video"
+                      )}
+                      post={data}
+                      className="ph:mb-4 sm:mb-4"
+                    />
+                  );
+                })}
             </div>
             <div ref={feedRef} className={"flex justify-center items-center"}>
               <Loader

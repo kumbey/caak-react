@@ -21,7 +21,6 @@ async function seenALL(event) {
         tableContents = await queryDB(params);
         
     }catch(err){
-        console.log(err);
         return false
     }
     
@@ -43,7 +42,6 @@ async function seenALL(event) {
     try{
         await Promise.all(calls);
     }catch(err){
-        console.log(err);
         return false
     }
     return true;

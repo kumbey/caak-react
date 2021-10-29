@@ -5,12 +5,15 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import { closeModal } from "../../../Utility/Util";
+import { closeModal, getReturnData } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { listGroupsForAddPost } from "../../../graphql-custom/group/queries";
+import {
+  getGroupView,
+  listGroupsForAddPost,
+} from "../../../graphql-custom/group/queries";
 import { getPost } from "../../../graphql-custom/post/queries";
 import { crtPost, pdtPost } from "../../../apis/post";
 
@@ -18,6 +21,7 @@ const AddPost = () => {
   const history = useHistory();
   const { state } = useLocation();
   const { postId } = useParams();
+  const { groupId } = useParams();
   const { user } = useUser();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -26,9 +30,16 @@ const AddPost = () => {
   const [selectedGroup, setSelectedGroup] = useState();
   const [selectedGroupId, setSelectedGroupId] = useState();
   const [loading, setLoading] = useState(false);
-  const [groupData, setGroupData] = useState([]);
+  const [groupData, setGroupData] = useState({
+    adminModerator: [],
+    member: [],
+    unMember: [],
+  });
   const [permissionDenied, setPermissionDenied] = useState(true);
 
+  // const addPostClickOutSideRef = useClickOutSide(() => {
+  //   history.goBack();
+  // });
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -41,22 +52,30 @@ const AddPost = () => {
   });
 
   useEffect(() => {
-    getGroups();
-    if (postId !== "new") {
+    if (postId) {
+      getGroups();
       loadPost(postId);
+    } else if (groupId) {
+      getGroup(groupId);
+      setSelectedGroupId(groupId);
+      setPermissionDenied(false);
     } else {
+      getGroups();
+      setSelectedGroupId(groupId);
       setPermissionDenied(false);
     }
+    const handler = (e) => {
+      if (e.keyCode === 27) {
+        history.goBack();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => {
+      document.removeEventListener("keydown", handler);
+    };
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (groupData && selectedGroupId) {
-      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
-    }
-    // eslint-disable-next-line
-  }, [selectedGroupId]);
 
   useEffect(() => {
     if (selectedGroup) {
@@ -67,16 +86,51 @@ const AddPost = () => {
   }, [selectedGroup]);
 
   useEffect(() => {
-    if (groupData && selectedGroupId) {
-      setSelectedGroup(groupData.find((item) => item.id === selectedGroupId));
+    if (groupData !== undefined && selectedGroupId) {
+      if (groupData.member) {
+        let grData = [];
+        for (let key in groupData) {
+          grData.push(...groupData[key]);
+        }
+        setSelectedGroup(grData.find((item) => item.id === selectedGroupId));
+      } else {
+        setSelectedGroup(groupData);
+      }
     }
     // eslint-disable-next-line
-  }, [groupData]);
+  }, [groupData, selectedGroupId]);
+
+  const getGroup = async (id) => {
+    try {
+      let resp = await API.graphql(graphqlOperation(getGroupView, { id }));
+      resp = getReturnData(resp);
+      setGroupData(resp);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
 
   const getGroups = async () => {
     try {
+      const grData = {
+        adminModerator: [],
+        member: [],
+      };
+
       let resp = await API.graphql(graphqlOperation(listGroupsForAddPost));
-      setGroupData(resp.data.listGroups.items);
+
+      resp = getReturnData(resp).items;
+
+      for (let i = 0; i < resp.length; i++) {
+        let item = resp[i];
+        if (item.role_on_group === "MEMBER") {
+          grData.member.push(item);
+        } else if(item.role_on_group === "ADMIN" || item.role_on_group === "MODERATOR") {
+          grData.adminModerator.push(item);
+        }
+      }
+
+      setGroupData(grData);
     } catch (ex) {
       console.log(ex);
     }
@@ -99,11 +153,12 @@ const AddPost = () => {
   const uploadPost = async () => {
     try {
       setLoading(true);
-
-      if (post.id === "new") {
+      if (groupId === "new") {
         await crtPost(post, user.sysUser.id);
-      } else {
+      } else if (postId) {
         await pdtPost(post, user.sysUser.id);
+      } else {
+        await crtPost(post, user.sysUser.id);
       }
 
       setLoading(false);
@@ -123,10 +178,11 @@ const AddPost = () => {
   return !permissionDenied ? (
     <Backdrop>
       <div
-        className={`flex justify-center items-center h-screen md:h-auto md:mt-10 h-full`}
+        className={`flex justify-center items-center h-screen md:h-auto md:mt-10 md:mb-10 h-full`}
       >
         <div
-          className={`flex flex-col w-screen sm:w-full max-w-xl bg-white mx-auto rounded-square shadow-card h-full md:h-auto`}
+          // ref={addPostClickOutSideRef}
+          className={`flex flex-col w-screen md:max-w-xl bg-white mx-auto rounded-square shadow-card h-full md:h-auto`}
         >
           {post.items.length !== 0 ? (
             !isEditing ? (

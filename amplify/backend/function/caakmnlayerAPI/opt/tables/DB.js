@@ -31,7 +31,6 @@ const db = (table , client) => {
             }
             return result.Item
         } catch (err) {
-            console.log(err)
             return err
         }
     }

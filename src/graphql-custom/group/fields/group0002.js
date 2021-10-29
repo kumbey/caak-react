@@ -4,6 +4,7 @@ const group0002 = /* GraphQL */ `{
     id
     name
     category_id
+    role_on_group
     profile ${file0001}
 }`
 

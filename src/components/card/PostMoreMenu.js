@@ -78,7 +78,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       >
         <span className={"icon-fi-rs-add-group-f  mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">
-          {groupFollowed ? "Бүлгийг дагахаа болих" : "Бүлгийг дагах"}
+          {groupFollowed ? "Группээс гарах" : "Группт элсэх"}
         </p>
       </div>
       {checkUser(user) && postUser.id === user.sysUser.id && (
@@ -86,7 +86,7 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
           className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer"
           onClick={() =>
             history.push({
-              pathname: `/post/add/${postId}`,
+              pathname: `/post/edit/${postId}`,
               state: { background: location },
             })
           }
@@ -101,21 +101,21 @@ export default function PostMoreMenu({ postUser, postId, groupId }) {
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-bookmark mr-px-12 w-c1  w-c1 text-16px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">
-          Постыг хадгалах
+          Хадгалах
         </p>
       </div>
       <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-report mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">
-          Зөрчилтэй мэдээлэл
+          Репорт
         </p>
       </div>
-      <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+      {/* <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
         <span className={"icon-fi-rs-hide mr-px-12 w-c1  text-16px"} />
         <p className="text-14px text-caak-extraBlack font-roboto">
           Дахин харагдуулахгүй
         </p>
-      </div>
+      </div> */}
     </div>
   ) : (
     <div className={"dropdown-item-wrapper"}>

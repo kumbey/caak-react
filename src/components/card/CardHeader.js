@@ -22,16 +22,16 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
   return group ? (
     <div className="flex relative justify-between items-center px-4 h-14">
       <div className="flex justify-between items-center py-4">
-        <div className={"relative"}>
+        <div className={"relative w-34px h-34px"}>
           <img
-            className="w-34px m-34px rounded-square"
+            className="object-cover w-34px h-34px m-34px rounded-square"
             src={
               group.profile ? getFileUrl(group?.profile) : Dummy.img("100x100")
             }
             alt="Alex"
           />
           <img
-            className="-bottom-1.5 -right-1.5 absolute w-22px border-2 border-white rounded-full"
+            className="-bottom-1.5 -right-1.5 absolute w-22px h-22px border-2 border-white rounded-full object-cover"
             src={
               postUser.pic ? getFileUrl(postUser?.pic) : Dummy.img("100x100")
             }
@@ -58,14 +58,13 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
           </div>
 
           <div className={"flex flex-row items-center"}>
-            
             <Tooltip
-                className={"-left-14 top-4"}
+              className={"-left-14 top-4"}
               content={
                 <ProfileHoverCard userId={postUser.id} postUser={postUser} />
               }
             >
-              <Link 
+              <Link
                 to={{
                   pathname: `/user/${postUser.id}/profile`,
                 }}
@@ -91,7 +90,13 @@ const CardHeader = ({ verifiedUser, postUser, group, updatedAt, postId }) => {
         <DropDown
           open={isMenuOpen}
           onToggle={toggleMenu}
-          content={<PostMoreMenu groupId={group.id} postId={postId} postUser={postUser} />}
+          content={
+            <PostMoreMenu
+              groupId={group.id}
+              postId={postId}
+              postUser={postUser}
+            />
+          }
           className={"top-6 -right-6"}
         />
       </div>

@@ -22,7 +22,7 @@ async function insert(id){
 
         return resp
     }catch(ex){
-        console.log(ex)
+        return ex
     }
 }
 
@@ -38,7 +38,7 @@ async function modify(id, items){
     return resp
 
   }catch(ex){
-      console.log(ex)
+      return ex
   }
 }
 
@@ -49,7 +49,7 @@ async function remove(id){
         
         return resp
     }catch(ex){
-        console.log(ex)
+        return ex
     }
 }
 
@@ -60,7 +60,7 @@ async function get(id){
         
         return resp
     }catch(ex){
-        console.log(ex)
+        return ex
     }
 }
 

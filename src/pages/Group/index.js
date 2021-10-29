@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
 import { useHistory, useParams } from "react-router-dom";
 import useInfiniteScroll from "../Home/useFetch";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
-import { useListPager } from "../../Utility/ApiHelper";
 import GroupSubHeader from "./GroupSubHeader";
-import GroupBody from "./GroupBody";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import { onPostByGroup } from "../../graphql-custom/post/subscription";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import GroupPosts from "./GroupPosts";
 
 export default function Group() {
   const history = useHistory();
@@ -23,22 +21,15 @@ export default function Group() {
   const [subscriptionTotal, setSubscriptionTotal] = useState();
   const [reRender, setReRender] = useState(0);
   const groupFeedRef = useRef();
-  const [nextPosts] = useListPager({
-    query: getPostByStatus,
-    variables: {
-      filter: { group_id: { eq: groupId } },
-      sortDirection: "DESC",
-      status: "CONFIRMED",
-      limit: 6,
-    },
-  });
+  const [loading, setLoading] = useState(false);
+  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
+  const subscriptions = {};
+
   const [setPostScroll] = useInfiniteScroll(
     groupPosts,
     setGroupPosts,
     groupFeedRef
   );
-  //FORCE RENDER STATE
-  const [loading, setLoading] = useState(false);
 
   const getGroupDataById = async () => {
     try {
@@ -64,19 +55,13 @@ export default function Group() {
     try {
       if (!loading) {
         setLoading(true);
-        let resp = await nextPosts();
-        if (resp) {
-          setData([...data, ...resp]);
-        }
 
-        setLoading(false);
+        setLoading(false);  
       }
     } catch (ex) {
       console.log(ex);
     }
   };
-  const [subscriptionPosts, setSubscriptionPosts] = useState(null);
-  const subscriptions = {};
 
   const subscrib = () => {
     let authMode = "AWS_IAM";
@@ -160,7 +145,12 @@ export default function Group() {
   }, [subscriptionTotal]);
 
   useEffect(() => {
-    if (groupId) subscrib();
+    if (groupId) {
+      getGroupDataById();
+      fetchGroupPosts(groupPosts, setGroupPosts);
+      setPostScroll(fetchGroupPosts);
+      subscrib();
+    }
     return () => {
       Object.keys(subscriptions).map((key) => {
         subscriptions[key].unsubscribe();
@@ -168,15 +158,6 @@ export default function Group() {
       });
       setPostScroll(null);
     };
-    // eslint-disable-next-line
-  }, [user]);
-
-  useEffect(() => {
-    getGroupDataById();
-
-    fetchGroupPosts(groupPosts, setGroupPosts);
-    setPostScroll(fetchGroupPosts);
-
     // eslint-disable-next-line
   }, [user]);
 
@@ -194,12 +175,8 @@ export default function Group() {
 
       {/* post */}
       <div className="flex flex-col items-center">
-        <GroupSubHeader />
-        <GroupBody
-          groupFeedRef={groupFeedRef}
-          groupPosts={groupPosts}
-          loading={loading}
-        />
+        <GroupSubHeader groupId={groupId} param={user} />
+        <GroupPosts groupId={groupId} type="CONFIRMED" card/>
       </div>
     </div>
   );

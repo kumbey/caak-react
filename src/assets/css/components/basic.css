@@ -4,38 +4,81 @@
     --card-grid-gap: 16px;
     --bottomTabSize: 50px;
     --topBarSize: 72px;
+
+    /* Profile settings */
+    --minSettingsPanelWidth: 288px;
+    --maxSettingsPanelWidth: 608px;
   }
 
-  .settingsPanel {
+  #root {
+    padding-top: var(--topBarSize);
+  }
+
+  .viewPost {
+    padding-top: var(--topBarSize);
+  }
+
+  .viewPendingPost {
+    max-width: 800px;
     min-width: 320px;
-    max-width: 608px;
-    width: clamp(320px, 100%, 608px);
+    width: max(320px, 100%, 800px);
+  }
+
+  .mobileSideMenu {
+    width: 295px;
+  }
+
+  .navbarDesktop {
+    top: 0;
+    height: var(--topBarSize);
+  }
+
+  .navbar {
+    top: 0;
+    bottom: unset;
+    height: var(--topBarSize);
+  }
+
+  .backdrop {
+    z-index: 4;
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    min-width: max-content;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    padding-top: var(--topBarSize);
+  }
+
+  @media (max-width: 767px) {
+    .navbar {
+      top: unset;
+      bottom: 0;
+      height: var(--bottomTabSize);
+    }
+    #root {
+      padding-bottom: var(--bottomTabSize);
+    }
+    .backdrop {
+      padding-bottom: var(--bottomTabSize);
+    }
+
+    .viewPost {
+      padding-bottom: var(--bottomTabSize);
+    }
   }
 
   p.error {
-    @apply mt-2 text-sm text-red-600 text-left;
-  }
-
-  .bottomTabs {
-    margin-top: calc(100vh - var(--topBarSize) - var(--bottomTabSize));
+    @apply mt-2 text-sm text-left text-red-600;
   }
 
   .notificationMobile {
     padding-top: var(--topBarSize);
     padding-bottom: var(--bottomTabSize);
-  }
-
-  .backdrop {
-    z-index: 50;
-    position: fixed;
-    overflow: scroll;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    min-width: max-content;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
   }
 
   .spinner {
@@ -107,13 +150,9 @@
     @apply max-h-80;
   }
 
-  .fullscreen_footer_size {
-    height: 100vh;
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .fullscreen_footer_size {
-      height: calc(100vh - 50px) !important;
+      padding-bottom: var(--bottomTabSize);
     }
   }
 
@@ -197,5 +236,20 @@
     opacity: 0.6;
     cursor: not-allowed;
     background: transparent;
+  }
+
+  .settingsMenuPanel {
+    min-width: 280px;
+    max-width: 290px;
+    width: clamp(280px, 100%, 290px);
+    height: 217px;
+  }
+
+  .settingsDiv {
+    width: clamp(
+      var(--minSettingsPanelWidth),
+      100%,
+      var(--maxSettingsPanelWidth)
+    );
   }
 }

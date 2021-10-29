@@ -40,7 +40,6 @@ exports.handler = async (event) => {
 
         throw new Error("Resolver not found")
     } catch (ex) {
-        console.log(ex)
         throw new Error("Error on Post lambda function", ex)
     } 
 };

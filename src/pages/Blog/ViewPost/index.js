@@ -15,7 +15,7 @@ import PostBody from "./PostBody";
 import PostMoreMenu from "../../../components/card/PostMoreMenu";
 import DropDown from "../../../components/navigation/DropDown";
 
-const ViewPost = ({ pending }) => {
+const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
   const toggleMenu = () => {
@@ -142,12 +142,12 @@ const ViewPost = ({ pending }) => {
   return post ? (
     <div
       className={
-        "z-4 fullscreen_footer_size fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
+        "viewPost z-4 fixed top-0 w-full h-full flex flex-col justify-between sm:flex-col md:flex-col lg:flex-row"
       }
     >
       <div
         className={
-          "relative backBlur max-w-full w-full flex justify-center items-center h-full sm:h-1/2 md:h-1/2 lg:h-full"
+          "relative backBlur w-full flex justify-center items-center h-half sm:h-1/2 md:h-1/2 lg:h-full"
         }
       >
         <span
@@ -236,7 +236,9 @@ const ViewPost = ({ pending }) => {
                   onTouchMove={handleTouchMove}
                   // onTouchMove={(e) => swiperHandler(e)}
                   key={index}
-                  className={"w-full h-full flex-shrink-0 transition duration-300"}
+                  className={
+                    "w-full h-full flex-shrink-0 transition duration-300"
+                  }
                   style={{
                     transform: `translateX(-${activeIndex * 100}%)`,
                   }}
@@ -319,7 +321,13 @@ const ViewPost = ({ pending }) => {
             </div>
             <div className={"flex flex-col justify-center ml-5 self-center"}>
               <span className={"text-caak-generalblack font-bold text-18px"}>
-                {post.group.name}
+                <Link
+                  to={{
+                    pathname: `/group/${post.group.id}`,
+                  }}
+                >
+                  {post.group.name}
+                </Link>
               </span>
               <Link
                 to={{
@@ -333,26 +341,17 @@ const ViewPost = ({ pending }) => {
             </div>
           </div>
           <PostHeader
-            postId={post.id}
-            groupId={post.group.id}
-            pending={pending}
             addCommentRef={addCommentRef}
-            item={post.items.items[activeIndex]}
-            updatedAt={post.updatedAt}
-            title={post.title}
-          />
-          <PostBody
-            posts={post}
             activeIndex={activeIndex}
-            post={post.items.items[activeIndex]}
+            post={post}
           />
+          <PostBody post={post} activeIndex={activeIndex} />
         </div>
-        {!pending && (
+        {post.status === "CONFIRMED" && (
           <AddComment
             addCommentRef={addCommentRef}
-            posts={post}
+            post={post}
             activeIndex={activeIndex}
-            item={post.items.items[activeIndex]}
           />
         )}
       </div>

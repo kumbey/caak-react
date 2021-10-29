@@ -27,7 +27,7 @@ const NotificationDropDown = ({ isOpen }) => {
   const subscriptions = {};
   const history = useHistory();
   const location = useLocation();
-  let localNotifications = notifications;
+  // let localNotifications = notifications;
   const notificationRef = useRef();
 
   const [nextNotification] = useListPager({
@@ -79,7 +79,7 @@ const NotificationDropDown = ({ isOpen }) => {
   const handleAllNotifications = () => {
     notifications.map(async (item, index) => {
       if (item.seen === "FALSE") {
-        localNotifications[index].seen = "TRUE";
+        notifications[index].seen = "TRUE";
         try {
           await API.graphql(
             graphqlOperation(updateNotification, {
@@ -95,7 +95,6 @@ const NotificationDropDown = ({ isOpen }) => {
             ex.errors[0].errorType ===
             "DynamoDB:ConditionalCheckFailedException"
           ) {
-            console.log("ALREADY UPDATED");
           } else console.log(ex);
         }
       }
@@ -103,32 +102,37 @@ const NotificationDropDown = ({ isOpen }) => {
     });
   };
 
-  const handleNotificationClick = async (item, index) => {
+  const handleNotificationClick = async (index) => {
     try {
       const item = notifications[index];
 
-      await API.graphql(
-        graphqlOperation(updateNotification, {
-          input: {
-            id: item.id,
-            seen: "TRUE",
-            expectedVersion: item.version,
-          },
-        })
-      );
-      if (item.seen === "FALSE") localNotifications[index].seen = "TRUE";
+      if (item.seen === "FALSE") {
+        await API.graphql(
+          graphqlOperation(updateNotification, {
+            input: {
+              id: item.id,
+              seen: "TRUE",
+              expectedVersion: item.version,
+            },
+          })
+        );
+      }
+
+      if (item.seen === "FALSE") notifications[index].seen = "TRUE";
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
         history.push({
           pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
-      } else if (
-        item.action === "POST_PENDING" ||
-        item.action === "POST_ARCHIVED"
-      ) {
+      } else if (item.action === "POST_PENDING") {
         history.push({
-          pathname: `/post/view/pending/${item.item_id}`,
+          pathname: `/post/view/${item.item_id}`,
+          state: { background: location },
+        });
+      } else if (item.action === "POST_ARCHIVED") {
+        history.push({
+          pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
@@ -160,10 +164,10 @@ const NotificationDropDown = ({ isOpen }) => {
       }
     } catch (ex) {
       if (
+        ex.errors &&
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        console.log("ALREADY UPDATED");
-        localNotifications[index].seen = "TRUE";
+        notifications[index].seen = "TRUE";
       } else console.log(ex);
     }
   };
@@ -227,7 +231,7 @@ const NotificationDropDown = ({ isOpen }) => {
         // onClick={(e) => e.stopPropagation()}
         className={`${
           !isOpen && "hidden"
-        } notificationMobile dropdown overflow-y-scroll pb-c20 absolute md:fixed sm:absolute z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
+        } notificationMobile h-full dropdown overflow-y-scroll pb-c20 fixed z-2 mt-0 md:z-50 top-0 right-0 w-full md:mb-2 lg:mb-2 md:bottom-0 md:h-auto md:w-px360 md:top-14 md:right-10 md:py-2 md:top-10 md:right-10 md:my-2 flex flex-col bg-white shadow-dropdown w-px360 cursor-auto  `}
       >
         <div
           className={
@@ -256,10 +260,10 @@ const NotificationDropDown = ({ isOpen }) => {
           >
             Шинэ
           </span>
-          {localNotifications.map((item, index) => {
+          {notifications.map((item, index) => {
             return (
               <Notification
-                onClick={() => handleNotificationClick(item, index)}
+                onClick={() => handleNotificationClick(index)}
                 key={index}
                 item={item}
               />

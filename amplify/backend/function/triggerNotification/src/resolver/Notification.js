@@ -38,12 +38,11 @@ async function insert(record){
             },
             operation: "NotificationAdded"
         })
-        console.log(resp)
 
         return true
 
     }catch(ex){
-        console.log(ex)
+        return ex
     }
 }
 
@@ -53,13 +52,13 @@ async function modify(record){
         const { NewImage, OldImage } = record
         const newImg = getValuesFromRecord(NewImage)
         const oldImg = getValuesFromRecord(OldImage)
-
+        let resp = {}
 
         if(newImg.seen === "TRUE" && oldImg.seen === "FALSE"){
              
             //UPDATE USER TOTAL
             if(newImg.section === "USER"){
-                await UserTotal.modify(newImg.to, [
+                resp = await UserTotal.modify(newImg.to, [
                     {
                         field: "unseen",
                         increase: false,
@@ -68,7 +67,7 @@ async function modify(record){
                 ])
             }else if(newImg.section === "GROUP"){
                 //UPDATE GROUP TOTAL
-                await GroupTotal.modify(newImg.to, [
+                resp =  await GroupTotal.modify(newImg.to, [
                     {
                         field: "unseen",
                         increase: false,
@@ -77,11 +76,13 @@ async function modify(record){
                 ])
             }
         }
+        console.log(resp)
 
         return true
 
     }catch(ex){
         console.log(ex)
+        return ex
     }
 }
 
@@ -116,7 +117,7 @@ async function remove(record){
     return true
 
   }catch(ex){
-      console.log(ex)
+      return ex
   }
 }
 

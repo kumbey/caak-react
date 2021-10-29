@@ -14,7 +14,7 @@ const CommentCard = ({ comment, children }) => {
   // };
   return (
     <div
-      className={"flex flex-row border-t pl-c3 pr-c11 pt-b5 pb-b6"}
+      className={"flex flex-row border-t pl-c3 pr-c11 pt-b5 pb-b5"}
     >
         <Tooltip className={"-left-6 top-10"} content={<ProfileHoverCard userId={comment.user.id} />}>
             <Link to={`/user/${comment.user.id}/profile`} className={"m-34px w-10 h-10"}>

@@ -29,7 +29,9 @@ export const useClickOutSide = (handler) => {
     return () => {
       document.removeEventListener("click", checkIfClickedOutside);
     };
-  });
+    
+    // eslint-disable-next-line
+  }, []);
   return domNode;
 };
 
