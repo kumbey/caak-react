@@ -95,7 +95,6 @@ const NotificationDropDown = ({ isOpen }) => {
             ex.errors[0].errorType ===
             "DynamoDB:ConditionalCheckFailedException"
           ) {
-            console.log("ALREADY UPDATED");
           } else console.log(ex);
         }
       }
@@ -105,10 +104,9 @@ const NotificationDropDown = ({ isOpen }) => {
 
   const handleNotificationClick = async (index) => {
     try {
+      const item = notifications[index];
 
-      const item = notifications[index]
-
-      if(item.seen === "FALSE"){
+      if (item.seen === "FALSE") {
         await API.graphql(
           graphqlOperation(updateNotification, {
             input: {
@@ -119,7 +117,7 @@ const NotificationDropDown = ({ isOpen }) => {
           })
         );
       }
-      
+
       if (item.seen === "FALSE") notifications[index].seen = "TRUE";
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
@@ -127,12 +125,14 @@ const NotificationDropDown = ({ isOpen }) => {
           pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
-      } else if (
-        item.action === "POST_PENDING" ||
-        item.action === "POST_ARCHIVED"
-      ) {
+      } else if (item.action === "POST_PENDING") {
         history.push({
-          pathname: `/post/view/pending/${item.item_id}`,
+          pathname: `/post/view/${item.item_id}`,
+          state: { background: location },
+        });
+      } else if (item.action === "POST_ARCHIVED") {
+        history.push({
+          pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
@@ -164,9 +164,9 @@ const NotificationDropDown = ({ isOpen }) => {
       }
     } catch (ex) {
       if (
-        ex.errors && ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+        ex.errors &&
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        console.log("ALREADY UPDATED");
         notifications[index].seen = "TRUE";
       } else console.log(ex);
     }
