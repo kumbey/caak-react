@@ -295,7 +295,7 @@ type Notification @aws_iam @aws_cognito_user_pools {
 type Mutation {
   changedTotals(type: String!, id: ID!, totals: String!): ChangedTotalsType @aws_iam @aws_cognito_user_pools
   notificationAdded(section: String!, to: ID!, id: ID!): NotificationAddedType @aws_iam @aws_cognito_user_pools
-  notification(user_id: ID!, method: String!): Boolean @aws_iam @aws_cognito_user_pools
+  notification(user_id: ID!, method: String!): Boolean @aws_cognito_user_pools
   createFile(input: CreateFileInput!, condition: ModelFileConditionInput): File
   updateFile(input: UpdateFileInput!, condition: ModelFileConditionInput): File
   deleteFile(input: DeleteFileInput!, condition: ModelFileConditionInput): File
@@ -600,6 +600,7 @@ type Query {
   getNotification(id: ID!): Notification @aws_iam @aws_cognito_user_pools
   listNotifications(filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
   listNotificationByUser(to: ID, createdAt: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
+  listNotificationByUserAndSeen(to: ID, seen: ModelStringKeyConditionInput, sortDirection: ModelSortDirection, filter: ModelNotificationFilterInput, limit: Int, nextToken: String): ModelNotificationConnection @aws_iam @aws_cognito_user_pools
 }
 
 input CreateFileInput {

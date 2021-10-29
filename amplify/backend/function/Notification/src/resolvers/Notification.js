@@ -12,11 +12,14 @@ async function seenALL(event) {
         const params = {
             TableName: process.env.API_CAAKMN_NOTIFICATIONTABLE_NAME,
             IndexName: "byUserAndSeen",
-            KeyConditionExpression: "to = :to and seen = :seen",
+            KeyConditionExpression: "#to = :to AND seen = :seen",
             ExpressionAttributeValues: {
                 ":to": user_id,
                 ":seen": "FALSE"
             },
+            ExpressionAttributeNames: {
+                "#to": "to"
+            }
         };
         tableContents = await queryDB(params);
         
@@ -50,7 +53,7 @@ async function queryDB(params) {
     let dynamoContents = [];
     let items;
     do{
-        items =  await docClient.scan(params).promise();
+        items =  await docClient.query(params).promise();
         items.Items.forEach((item) => dynamoContents.push(item));
         params.ExclusiveStartKey  = items.LastEvaluatedKey;
     }while(typeof items.LastEvaluatedKey != "undefined");
