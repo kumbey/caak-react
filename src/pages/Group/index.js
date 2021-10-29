@@ -181,24 +181,3 @@ export default function Group() {
     </div>
   );
 }
-
-exports.handler = async (event) => {
-	try{
-
-		const resolver = Resolver[event.resolver]
-		if(resolver){
-			const method = resolver[event.method]
-			if(method){
-				const resp = await method(event)
-				return resp
-			}else{
-				return "Resolver not found"
-			}
-		}else{
-			return "Resolver not found"
-		}
-
-	}catch(ex){
-		return false
-	}
-};
