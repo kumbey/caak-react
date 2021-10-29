@@ -29,7 +29,6 @@ async function isReacted(ctx){
         }
 
     }catch(ex){
-        console.log(ex)
         return false
     }
 }
@@ -58,7 +57,6 @@ async function isFollowed(ctx){
         }
 
     }catch(ex){
-        console.log(ex)
         return false
     }
 }
@@ -86,7 +84,6 @@ async function isFollowedGroup(ctx){
         }
 
     }catch(ex){
-        console.log(ex)
         return false
     }
 }

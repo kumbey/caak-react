@@ -18,9 +18,10 @@ const Types = {
 }
 
 exports.handler = async (event) => {
-    //eslint-disable-line
     try{
       
+	  let result = []
+
       for(let i=0; i < event.Records.length; i++){
 		
         let record = event.Records[i]
@@ -38,19 +39,17 @@ exports.handler = async (event) => {
 			const resolver = typeHandler[record.eventName]
 
 			if(resolver){
-				let result = await resolver(record.dynamodb)
-				return result
+				result.push = await resolver(record.dynamodb)
 			}else{
-				console.log("RESOLVER NOT FOUND:", record.eventName)
+				result.push("RESOLVER NOT FOUND:") 
 			}
 		}else{
-			console.log("TYPE HANDLER NOT FOUND:", db_name)
+			result.push("TYPE HANDLER NOT FOUND:")
 		}
 	}
-  
+		
       return Promise.resolve('Successfully processed DynamoDB record');
     }catch(ex){
-      console.log(ex)
       return Promise.resolve('Error processed DynamoDB record %j', ex);
     }
   };

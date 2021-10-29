@@ -14,7 +14,6 @@ async function insert(record){
         return true
 
     }catch(ex){
-        console.log(ex)
         return "NOT_MEMBER"
     }
 }
@@ -32,7 +31,6 @@ async function remove(record){
       return true
 
   }catch(ex){
-      console.log(ex)
       return "NOT_MEMBER"
   }
 }

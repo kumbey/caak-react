@@ -26,7 +26,6 @@ async function roleOnGroup(ctx){
         }
 
     }catch(ex){
-        console.log(ex)
         return "NOT_MEMBER"
     }
 }

@@ -26,14 +26,13 @@ exports.handler = async (event) => {
 				const resp = await method(event)
 				return resp
 			}else{
-				console.log("Resolver not found")
+				return "Resolver not found"
 			}
 		}else{
-			console.log("Resolver not found")
+			return "Resolver not found"
 		}
 
 	}catch(ex){
-		console.log(ex)
 		return false
 	}
 };

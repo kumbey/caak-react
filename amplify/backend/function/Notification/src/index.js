@@ -23,12 +23,10 @@ exports.handler = async (event) => {
         if(resolver){   
             return await resolver(event)
         }else{
-            console.log("RESOLVER NOT FOUND: ", event.arguments.method)
-            console.log(false)
+            return ("RESOLVER NOT FOUND")
         }
     }else{
-        console.log("TYPE NOT FOUND: ", event.type)
-        return false
+        return ("TYPE NOT FOUND")
     }
 
     return true

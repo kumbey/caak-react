@@ -12,7 +12,6 @@ async function fixVersion(event, context) {
         tableContents = await scanDB(params);
         
     }catch(err){
-        console.log(err);
         return err;
     }
     
@@ -34,7 +33,7 @@ async function fixVersion(event, context) {
     try{
         response = await Promise.all(calls);
     }catch(err){
-        console.log(err);
+        return err
     }
     return response;
 }
