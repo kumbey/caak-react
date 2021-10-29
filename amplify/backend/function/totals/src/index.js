@@ -15,6 +15,5 @@
 Amplify Params - DO NOT EDIT */
 
 exports.handler = async (event) => {
-	console.log(event.arguments)
     return event.arguments
 };

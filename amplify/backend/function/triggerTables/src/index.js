@@ -59,6 +59,7 @@ exports.handler = async (event) => {
         let record = event.Records[i]
 
 		let db_name = ""
+		const result = []
 
 		if(record.eventName === "INSERT" || record.eventName === "MODIFY"){
 			db_name = record.dynamodb.NewImage["__typename"].S
@@ -71,19 +72,18 @@ exports.handler = async (event) => {
 			const resolver = typeHandler[record.eventName]
 
 			if(resolver){
-				let result = await resolver(record.dynamodb)
-				return result
+				let resp = await resolver(record.dynamodb)
+				result.push(resp)
 			}else{
-				console.log("RESOLVER NOT FOUND:", record.eventName)
+				result.push("RESOLVER NOT FOUND")
 			}
 		}else{
-			console.log("TYPE HANDLER NOT FOUND:", db_name)
+			result.push("TYPE HANDLER NOT FOUND:")
 		}
 	}
   
       return Promise.resolve('Successfully processed DynamoDB record');
     }catch(ex){
-      console.log(ex)
       return Promise.resolve('Error processed DynamoDB record %j', ex);
     }
   };
