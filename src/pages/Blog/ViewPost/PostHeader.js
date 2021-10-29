@@ -15,16 +15,9 @@ import { updatePost } from "../../../graphql-custom/post/mutation";
 import { useHistory, useLocation } from "react-router-dom";
 import { getGroupView } from "../../../graphql-custom/group/queries";
 
-const PostHeader = ({
-  title,
-  updatedAt,
-  item,
-  addCommentRef,
-  pending,
-  groupId,
-  postId,
-}) => {
-  const date = extractDate(updatedAt);
+const PostHeader = ({ addCommentRef, post, activeIndex }) => {
+  const item = post.items.items[activeIndex];
+  const date = extractDate(post.updatedAt);
   const { user } = useUser();
   const [isReacted, setIsReacted] = useState(false);
   const [userRole, setUserRole] = useState("");
@@ -48,10 +41,8 @@ const PostHeader = ({
     setIsReacted(item.reacted);
   }, [item]);
 
-  // console.log(item)
-
   useEffect(() => {
-    if (item) getUsers(groupId);
+    if (item) getUsers(post.group.id);
     // eslint-disable-next-line
   }, [item]);
 
@@ -60,7 +51,7 @@ const PostHeader = ({
     try {
       await API.graphql(
         graphqlOperation(updatePost, {
-          input: { id, status },
+          input: { id, status, expectedVersion: post.version },
         })
       );
       setLoading(false);
@@ -102,16 +93,18 @@ const PostHeader = ({
           "break-words font-bold text-20px text-caak-generalblack pt-2 px-7 "
         }
       >
-        {title} {pending ? "(Хүлээгдэж байгаа пост.)" : ""}
+        {post.title}
       </div>
       <div className={"text-caak-darkBlue text-14px pt-2 px-7"}>
-        {generateTimeAgo(updatedAt)} ·{" "}
+        {generateTimeAgo(post.updatedAt)} ·{" "}
         {`${date.year}/${date.month}/${date.day}`}
+        {post.status === "PENDING" && " (Хүлээгдэж байгаа пост)"}
+        {post.status === "ARCHIVED" && " (Архивлагдсан пост)"}
       </div>
       <div className={"break-words text-15px text-caak-generalblack pt-2 px-7"}>
         {item.title}
       </div>
-      {!pending ? (
+      {post.status === "CONFIRMED" ? (
         <div
           className={
             "flex flex row justify-between text-blue-primary text-14px py-2 px-7"
@@ -122,7 +115,7 @@ const PostHeader = ({
               className={"flex flex-row items-center mr-4 cursor-pointer group"}
             >
               <div
-                onClick={() => !pending && reactionHandler()}
+                onClick={() => post.status === "CONFIRMED" && reactionHandler()}
                 className={
                   "flex justify-center items-center group-hover:bg-caak-peachbreeze group-hover:text-caak-primary rounded-full p-2 h-8 w-8"
                 }
@@ -142,7 +135,9 @@ const PostHeader = ({
             <div className={"flex flex-row items-center mr-4 cursor-pointer"}>
               <i className={"icon-fi-rs-comment text-18px mr-1.5"} />
               <span
-                onClick={() => !pending && addCommentRef.current.focus()}
+                onClick={() =>
+                  post.status === "CONFIRMED" && addCommentRef.current.focus()
+                }
                 className={"text-15px"}
               >
                 {item.totals?.comments} сэтгэгдэлтэй
@@ -154,18 +149,19 @@ const PostHeader = ({
             <span className={"text-15px"}>Хуваалцах</span>
           </div>
         </div>
-      ) : userRole === "ADMIN" || userRole === "MODERATOR" ? (
-        <div className="px-7 mt-b4 flex items-center">
+      ) : post.status === "PENDING" &&
+        (userRole === "ADMIN" || userRole === "MODERATOR") ? (
+        <div className="px-7 mt-b4 flex items-center pb-3">
           <Button
             loading={loading}
-            onClick={() => handler(postId, "CONFIRMED")}
-            className="bg-caak-bleudefrance text-15px ml-px-10 mr-c11 w-c132 text-white"
+            onClick={() => handler(post.id, "CONFIRMED")}
+            className="bg-caak-bleudefrance text-15px mr-c11 w-c132 text-white"
           >
             Зөвшөөрөх
           </Button>
           <Button
             loading={loading}
-            onClick={() => handler(postId, "ARCHIVED")}
+            onClick={() => handler(post.id, "ARCHIVED")}
             className="text-caak-generalblack text-15px w-c14 bg-white"
           >
             Татгалзах
