@@ -15,7 +15,7 @@ import PostBody from "./PostBody";
 import PostMoreMenu from "../../../components/card/PostMoreMenu";
 import DropDown from "../../../components/navigation/DropDown";
 
-const ViewPost = ({ pending }) => {
+const ViewPost = () => {
   const [post, setPost] = useState();
   const [activeIndex, setActiveIndex] = useState(0);
   const toggleMenu = () => {
@@ -321,12 +321,12 @@ const ViewPost = ({ pending }) => {
             </div>
             <div className={"flex flex-col justify-center ml-5 self-center"}>
               <span className={"text-caak-generalblack font-bold text-18px"}>
-              <Link
-                to={{
-                  pathname: `/group/${post.group.id}`,
-                }}
-              >
-                {post.group.name}
+                <Link
+                  to={{
+                    pathname: `/group/${post.group.id}`,
+                  }}
+                >
+                  {post.group.name}
                 </Link>
               </span>
               <Link
@@ -341,26 +341,17 @@ const ViewPost = ({ pending }) => {
             </div>
           </div>
           <PostHeader
-            postId={post.id}
-            groupId={post.group.id}
-            pending={pending}
             addCommentRef={addCommentRef}
-            item={post.items.items[activeIndex]}
-            updatedAt={post.updatedAt}
-            title={post.title}
-          />
-          <PostBody
-            posts={post}
             activeIndex={activeIndex}
-            post={post.items.items[activeIndex]}
+            post={post}
           />
+          <PostBody post={post} activeIndex={activeIndex} />
         </div>
-        {!pending && (
+        {post.status === "CONFIRMED" && (
           <AddComment
             addCommentRef={addCommentRef}
-            posts={post}
+            post={post}
             activeIndex={activeIndex}
-            item={post.items.items[activeIndex]}
           />
         )}
       </div>

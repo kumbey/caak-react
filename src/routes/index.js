@@ -164,12 +164,6 @@ const Routes = [
     page: () => <Check />,
   },
   {
-    path: "/post/view/pending/:postId",
-    exact: true,
-    background: true,
-    page: () => <ViewPost pending={true} />,
-  },
-  {
     path: "/user/:userId/profile",
     exact: true,
     background: true,
