@@ -4,6 +4,10 @@
     --card-grid-gap: 16px;
     --bottomTabSize: 50px;
     --topBarSize: 72px;
+
+    /* Profile settings */
+    --minSettingsPanelWidth: 288px;
+    --maxSettingsPanelWidth: 608px;
   }
 
   #root {
@@ -12,6 +16,12 @@
 
   .viewPost {
     padding-top: var(--topBarSize);
+  }
+
+  .viewPendingPost {
+    max-width: 800px;
+    min-width: 320px;
+    width: max(320px, 100%, 800px);
   }
 
   .mobileSideMenu {
@@ -60,12 +70,6 @@
     .viewPost {
       padding-bottom: var(--bottomTabSize);
     }
-  }
-
-  .settingsPanel {
-    min-width: 320px;
-    max-width: 608px;
-    width: clamp(320px, 100%, 608px);
   }
 
   p.error {
@@ -232,5 +236,20 @@
     opacity: 0.6;
     cursor: not-allowed;
     background: transparent;
+  }
+
+  .settingsMenuPanel {
+    min-width: 280px;
+    max-width: 290px;
+    width: clamp(280px, 100%, 290px);
+    height: 217px;
+  }
+
+  .settingsDiv {
+    width: clamp(
+      var(--minSettingsPanelWidth),
+      100%,
+      var(--maxSettingsPanelWidth)
+    );
   }
 }

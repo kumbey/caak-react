@@ -94,9 +94,9 @@ export default function Check() {
       if (
         ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        updateStatus(post, user.sysUser.ID,status)
-        setLoading(false)
-        closeModal(history, state)
+        updateStatus(post, user.sysUser.ID, status);
+        setLoading(false);
+        closeModal(history, state);
       }
     }
   };
@@ -213,10 +213,6 @@ export default function Check() {
             </div>
           ) : null}
         </div>
-        <span
-          onClick={() => closeModal(history, state)}
-          className="icon-fi-rs-close text-30px mt-c3 ml-c3 ph:flex ph:justify-center ph:hidden text-white cursor-pointer"
-        />
       </div>
     </Backdrop>
   ) : null;

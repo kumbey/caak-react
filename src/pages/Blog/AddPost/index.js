@@ -5,11 +5,7 @@ import UploadedMediaEdit from "../../../components/input/UploadedMediaEdit";
 import EditNewPostCaption from "../../../components/input/EditNewPostCaption";
 import Header from "./Header";
 import SelectGroup from "./SelectGroup";
-import {
-  closeModal,
-  getReturnData,
-  useClickOutSide,
-} from "../../../Utility/Util";
+import { closeModal, getReturnData } from "../../../Utility/Util";
 import { useHistory, useLocation, useParams } from "react-router";
 import { useUser } from "../../../context/userContext";
 import API from "@aws-amplify/api";
@@ -41,9 +37,9 @@ const AddPost = () => {
   });
   const [permissionDenied, setPermissionDenied] = useState(true);
 
-  const addPostClickOutSideRef = useClickOutSide(() => {
-    history.goBack();
-  });
+  // const addPostClickOutSideRef = useClickOutSide(() => {
+  //   history.goBack();
+  // });
   const [post, setPost] = useState({
     id: postId,
     title: "",
@@ -185,7 +181,7 @@ const AddPost = () => {
         className={`flex justify-center items-center h-screen md:h-auto md:mt-10 md:mb-10 h-full`}
       >
         <div
-          ref={addPostClickOutSideRef}
+          // ref={addPostClickOutSideRef}
           className={`flex flex-col w-screen md:max-w-xl bg-white mx-auto rounded-square shadow-card h-full md:h-auto`}
         >
           {post.items.length !== 0 ? (
