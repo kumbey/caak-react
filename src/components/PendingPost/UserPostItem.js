@@ -22,10 +22,10 @@ export default function UserPostItem({ post, className }) {
             className ? className : ""
           }`}
         >
-          <div className="flex w-1/2">
+          <div className="flex sm:w-1/2">
             <div 
               style={{textOverflow: "ellipsis", wordBreak: "break-all"}} 
-              className='flex items-center cursor-pointer pl-6 mr-5'
+              className='flex items-center cursor-pointer pl-6 mr-5 '
             >
               {post.items.items[0].file.type.startsWith("video") ? (
                 <VideoJS
@@ -49,9 +49,9 @@ export default function UserPostItem({ post, className }) {
               <p className="text-15px" style={{marginInline: "20px"}}>{post.title}</p>
             </div>
           </div>
-          <div className="ph:w-full ph:mt-3 w-1/3">
-            <div className="sm:flex flex-row items-center justify-between w-full">
-              <div className="flex items-center">
+          <div className="w-full flex flex-col items-center ph:mt-3 sm:w-1/2">
+            <div className="flex items-center justify-center sm:justify-evenly w-full">
+              <div className="flex items-center ph:w-1/2">
                 <img
                   className="ph:w-c2 ph:h-c2 w-8 h-8 rounded-full object-cover"
                   src={post.group?.profile ? getFileUrl(post.group?.profile) : Dummy.img("100x100")}

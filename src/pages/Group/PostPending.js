@@ -64,13 +64,13 @@ export default function PostPending() {
                         isChecked={isCheckAll}
                         className="w-b4 h-b4 ml-c34 border-caak-darkgray border-2 rounded cursor-pointer"
                     />
-                    <div className="flex w-full">
-                        <p className="w-1/3 text-center">Постын нэр</p>
-                        <div className="w-1/3 flex">
-                            <p className="w-1/2">Нийтлэгч</p>
-                            <p className="w-1/2 text-center">Хугацаа</p>
+                    <div className="flex w-full justify-evenly">
+                        <p className="md:w-1/3">Пост</p>
+                        <div className="md:w-1/3 hidden md:flex">
+                            <p className="md:w-1/2">Нийтлэгч</p>
+                            <p className="md:w-1/2 text-center">Хугацаа</p>
                         </div>
-                        <p className="text-center w-1/3">Үйлдэл</p>
+                        <p className="text-center md:w-1/3">Үйлдэл</p>
                     </div>
                 </div>
                 )}
