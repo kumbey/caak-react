@@ -102,26 +102,6 @@ export default function Check() {
   };
 
   return post ? (
-<<<<<<< HEAD
-    <Backdrop className="flex justify-center">
-      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute flex w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
-        <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
-          <span
-            onClick={() => closeModal(history, state)}
-            className="icon-fi-rs-back flex items-center"
-          />
-          <p className="text-20px">Пост шалгах</p>
-          <span className="icon-fi-rs-dots text-4px flex items-center" />
-        </div>
-        <div className={"w-full"}>
-          <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
-            <p
-              style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px flex justify-center font-bold px-6"
-            >
-              {post.title}
-            </p>
-=======
     <Backdrop>
       <div className="md:hidden z-1 py-px-6 px-c6 border-caak-liquidnitrogen relative sticky top-0 flex justify-between block w-full bg-white border-b">
         <span
@@ -162,7 +142,6 @@ export default function Check() {
               </p>
             </div>
 
->>>>>>> 03c83c6b39268df08e5f8b3f53817021c6dfaded
             <div className="bg-opacity-80 flex items-center h-auto bg-black">
               <span
                 style={{ paddingInline: "19px", paddingBlock: "15px" }}
