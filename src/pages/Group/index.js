@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
-import { getPostByStatus } from "../../graphql-custom/post/queries";
 import { useHistory, useParams } from "react-router-dom";
 import useInfiniteScroll from "../Home/useFetch";
 import { getGroupView } from "../../graphql-custom/group/queries";
 import GroupHeader from "./GroupHeader";
-import { useListPager } from "../../Utility/ApiHelper";
 import GroupSubHeader from "./GroupSubHeader";
-import GroupBody from "./GroupBody";
 import { checkUser, getReturnData } from "../../Utility/Util";
 import { useUser } from "../../context/userContext";
 import { onPostByGroup } from "../../graphql-custom/post/subscription";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
+import GroupPosts from "./GroupPosts";
 
 export default function Group() {
   const history = useHistory();
@@ -26,16 +24,6 @@ export default function Group() {
   const [loading, setLoading] = useState(false);
   const [subscriptionPosts, setSubscriptionPosts] = useState(null);
   const subscriptions = {};
-
-  const [nextPosts] = useListPager({
-    query: getPostByStatus,
-    variables: {
-      filter: { group_id: { eq: groupId } },
-      sortDirection: "DESC",
-      status: "CONFIRMED",
-      limit: 6,
-    },
-  });
 
   const [setPostScroll] = useInfiniteScroll(
     groupPosts,
@@ -67,12 +55,8 @@ export default function Group() {
     try {
       if (!loading) {
         setLoading(true);
-        let resp = await nextPosts();
-        if (resp) {
-          setData([...data, ...resp]);
-        }
 
-        setLoading(false);
+        setLoading(false);  
       }
     } catch (ex) {
       console.log(ex);
@@ -191,12 +175,8 @@ export default function Group() {
 
       {/* post */}
       <div className="flex flex-col items-center">
-        <GroupSubHeader groupId={groupId}/>
-        <GroupBody
-          groupFeedRef={groupFeedRef}
-          groupPosts={groupPosts}
-          loading={loading}
-        />
+        <GroupSubHeader groupId={groupId} param={user} />
+        <GroupPosts groupId={groupId} type="CONFIRMED" card/>
       </div>
     </div>
   );
