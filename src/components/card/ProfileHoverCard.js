@@ -88,30 +88,33 @@ export default function ProfileHoverCard({ userId }) {
   };
   return !loading && profileUser.id ? (
     <div
-      className="pt-3 pr-6 pb-3 pl-7 bg-white w-ch h-px-154 rounded-square shadow-dropdown"
+      className={`pl-7 w-ch h-px-154 rounded-square shadow-dropdown pt-3 pb-3 pr-6 bg-white`}
       // style={{ top: "45px" }}
     >
-      <div className="flex flex-row justify-between items-center w-full">
-      <Link
+      <div className="flex flex-row items-center justify-between w-full">
+        <Link
           to={{
             pathname: `/user/${profileUser.id}/profile`,
           }}
         >
-        <img
-          className="w-12 h-12 rounded-full border-2 border-white"
-          alt=""
-          src={
-            profileUser.pic
-              ? getFileUrl(profileUser.pic)
-              : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
-          }
-        />
+          <img
+            className="object-cover w-12 h-12 border-2 border-white rounded-full"
+            alt=""
+            src={
+              profileUser.pic
+                ? getFileUrl(profileUser.pic)
+                : "https://st2.depositphotos.com/1009634/7235/v/600/depositphotos_72350117-stock-illustration-no-user-profile-picture-hand.jpg"
+            }
+          />
         </Link>
         {/*If no user is logged, show only follow button*/}
         {/*And If user is there show follow or unfollow button*/}
         {checkUser(user) ? (
           user.sysUser.id !== profileUser.id ? (
-            <button onClick={handleClick} className={"button small  bg-caak-titaniumwhite text-black"}>
+            <button
+              onClick={handleClick}
+              className={"button small  bg-caak-titaniumwhite text-black"}
+            >
               {profileUser.followed ? "Дагасан" : "Дагах"}
             </button>
           ) : null
@@ -122,31 +125,31 @@ export default function ProfileHoverCard({ userId }) {
         )}
       </div>
       <div className="mb-px-10">
-          <div className="flex items-center">
-        <Link
-          className="flex items-center"
-          to={{
-            pathname: `/user/${profileUser.id}/profile`,
-          }}
-        >
+        <div className="flex items-center">
+          <Link
+            className="flex items-center"
+            to={{
+              pathname: `/user/${profileUser.id}/profile`,
+            }}
+          >
             <p className="text-17px mr-0.5 font-bold">{profileUser.nickname}</p>
             <span className="icon-fi-rs-verified w-3.5 h-3.5 text-caak-buttonblue " />
-        </Link>
-          </div>
-        <p className="font-light text-15px">{profileUser.about}</p>
+          </Link>
+        </div>
+        <p className="text-15px font-light">{profileUser.about}</p>
       </div>
-      <div className="flex flex-row justify-between items-center pr-14">
+      <div className="pr-14 flex flex-row items-center justify-between">
         <div className="flex items-center" style={{ marginRight: "22px" }}>
-          <p className="mr-1 font-medium text-18px">{profileUser.aura}</p>
-          <p className="font-light text-15px text-caak-darkBlue font-roboto">
+          <p className="text-18px mr-1 font-medium">{profileUser.aura}</p>
+          <p className="text-15px text-caak-darkBlue font-roboto font-light">
             Аура
           </p>
         </div>
         <div className="flex items-center">
-          <p className="mr-1 font-medium text-18px">
+          <p className="text-18px mr-1 font-medium">
             {profileUser.totals?.followers}
           </p>
-          <p className="font-light text-15px text-caak-darkBlue"> дагагчид</p>
+          <p className="text-15px text-caak-darkBlue font-light"> дагагчид</p>
         </div>
       </div>
     </div>

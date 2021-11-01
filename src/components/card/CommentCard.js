@@ -13,22 +13,26 @@ const CommentCard = ({ comment, children }) => {
   //   setCommentInputValue((prev) => `${comment.user.nickname}: ${prev}`);
   // };
   return (
-    <div
-      className={"flex flex-row border-t pl-c3 pr-c11 pt-b5 pb-b5"}
-    >
-        <Tooltip className={"-left-6 top-10"} content={<ProfileHoverCard userId={comment.user.id} />}>
-            <Link to={`/user/${comment.user.id}/profile`} className={"m-34px w-10 h-10"}>
-                <img
-                    className="w-10 h-10 rounded-full"
-                    src={
-                        comment.user.pic
-                            ? getFileUrl(comment.user.pic)
-                            : Dummy.image("50x50")
-                    }
-                    alt="Alex"
-                />
-            </Link>
-        </Tooltip>
+    <div className={"flex flex-row border-t pl-c3 pr-c11 pt-b5 pb-b5"}>
+      <Tooltip
+        className={"-left-6"}
+        content={<ProfileHoverCard userId={comment.user.id} />}
+      >
+        <Link
+          to={`/user/${comment.user.id}/profile`}
+          className={"m-34px w-10 h-10"}
+        >
+          <img
+            className="w-10 h-10 rounded-full"
+            src={
+              comment.user.pic
+                ? getFileUrl(comment.user.pic)
+                : Dummy.image("50x50")
+            }
+            alt="Alex"
+          />
+        </Link>
+      </Tooltip>
 
       <div className={"relative flex flex-col ml-2 justify-between w-full"}>
         <div className={"relative flex flex-row items-center"}>
@@ -39,7 +43,10 @@ const CommentCard = ({ comment, children }) => {
           >
             <span className={"icon-fi-rs-dots text-4px"} />
           </div>
-          <Tooltip className={"-left-16 top-6"} content={<ProfileHoverCard userId={comment.user.id} />}>
+          <Tooltip
+            className={"-left-16"}
+            content={<ProfileHoverCard userId={comment.user.id} />}
+          >
             <Link to={`/user/${comment.user.id}/profile`}>
               <span className={"text-16px font-bold text-caak-generalblack"}>
                 {comment.user.nickname}
