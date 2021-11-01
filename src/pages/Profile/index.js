@@ -305,8 +305,8 @@ export default function Profile() {
         </div>
         <select className="md:block text-15px w-c132 text-caak-generalblack hidden font-semibold bg-transparent border-0 cursor-pointer">
           <option>Илүү ихийг</option>
-          <option>Илүү ихийг</option>
-          <option>Илүү ихийг</option>
+          {/* <option>Илүү ихийг</option>
+          <option>Илүү ихийг</option> */}
         </select>
       </div>
       <div className="flex flex-col items-center justify-center">
@@ -320,12 +320,11 @@ export default function Profile() {
           >
             <UserPosts userId={userId} type="CONFIRMED" card/>
           </div>
-
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 2 ? "" : "hidden"
             }`}
-          > 
+          >
             <UserPosts userId={userId} type="PENDING"/>
           </div>
           <div

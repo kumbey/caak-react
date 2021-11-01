@@ -213,6 +213,7 @@ export default function Check() {
             </div>
           ) : null}
         </div>
+        <span onClick={() => closeModal(history, state)} style={{marginLeft: "30px", marginTop: "30px"}} className="icon-fi-rs-close hidden md:flex text-30px text-white cursor-pointer"/>
       </div>
     </Backdrop>
   ) : null;
