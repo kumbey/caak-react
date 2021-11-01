@@ -2,8 +2,42 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../Utility/Util";
+import { useEffect, useRef, useState } from "react";
 
 const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
+  const [filteredData, setFilteredData] = useState({
+    adminModerator: [],
+    member: [],
+  });
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    setFilteredData(groupData);
+  }, [groupData]);
+
+  const useUpdateEffect = (effect, deps) => {
+    const isFirstMount = useRef(true);
+
+    useEffect(() => {
+      if (!isFirstMount.current) effect();
+      else isFirstMount.current = false;
+      // eslint-disable-next-line
+    }, deps);
+  };
+
+  //Only runs when inputValue changes, ignoring first render.
+  useUpdateEffect(() => {
+    const adminModerator = groupData.adminModerator.filter((item) =>
+      item.name.toLowerCase().includes(inputValue)
+    );
+    const member = groupData.member.filter((item) =>
+      item.name.toLowerCase().includes(inputValue)
+    );
+    setFilteredData({ member, adminModerator });
+
+    // eslint-disable-next-line
+  }, [inputValue]);
+
   return (
     <div
       onClick={onToggle}
@@ -25,6 +59,8 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
           />
           <Input
             onClick={(e) => e.stopPropagation()}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             hideLabel
             placeholder={"Хайлт хийх"}
             className={
@@ -42,14 +78,14 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
         <div className={"z-50"}>
           <div className={"flex flex-row justify-between px-3.5 pt-2"}>
             <span className={"text-15px text-caak-darkBlue"}>
-              Миний удирдаж буй бүлгүүд
+              Миний группүүд
             </span>
             <span className={"text-15px font-medium text-caak-primary"}>
               Шинэ бүлэг үүсгэх
             </span>
           </div>
           <div className={"px-2"}>
-            {groupData.adminModerator.map((item, index) => {
+            {filteredData.adminModerator.map((item, index) => {
               return (
                 <div
                   key={index}
@@ -83,11 +119,11 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
             }
           >
             <span className={"text-15px text-caak-darkBlue pt-2"}>
-              Миний дагасан бүлгүүд
+              Элссэн бүлгүүд
             </span>
           </div>
           <div className={"px-2"}>
-            {groupData.member.map((item, index) => {
+            {filteredData.member.map((item, index) => {
               return (
                 <div
                   key={index}

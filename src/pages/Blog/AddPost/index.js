@@ -206,7 +206,7 @@ const AddPost = () => {
                       </span>
                     </Fragment>
                   }
-                  title={"Нийтлэл нэмэх"}
+                  title={postId ? "Пост засах" : "Пост нэмэх"}
                   iconLeft={
                     <span
                       onClick={() => closeModal(history, state)}
@@ -269,7 +269,7 @@ const AddPost = () => {
                     }
                   />
                 }
-                title={"Нийтлэл нэмэх"}
+                title={"Пост нэмэх"}
               />
               <SelectGroup
                 containerClassName={"mt-2"}
