@@ -2,13 +2,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import Input from "./index";
 import { generateFileUrl } from "../../Utility/Util";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
-  const [filteredData, setFilteredData] = useState(groupData);
+  const [filteredData, setFilteredData] = useState({
+    adminModerator: [],
+    member: [],
+  });
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
+    setFilteredData(groupData);
+  }, [groupData]);
+
+  const useUpdateEffect = (effect, deps) => {
+    const isFirstMount = useRef(true);
+
+    useEffect(() => {
+      if (!isFirstMount.current) effect();
+      else isFirstMount.current = false;
+      // eslint-disable-next-line
+    }, deps);
+  };
+
+  //Only runs when inputValue changes, ignoring first render.
+  useUpdateEffect(() => {
     const adminModerator = groupData.adminModerator.filter((item) =>
       item.name.toLowerCase().includes(inputValue)
     );
