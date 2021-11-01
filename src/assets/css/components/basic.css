@@ -228,9 +228,11 @@
     }
 
     .leftSideBar {
-        /*height: 100%;*/
+        scrollbar-gutter: stable;
+        height: calc(100vh - var(--topBarSize)) !important;
         flex-grow: 1;
         top: var(--topBarSize);
+        overflow-y: auto;
         padding-top: 40px;
         max-width: 360px;
         min-width: 280px;
