@@ -171,7 +171,10 @@ export default function UserPosts({ userId, type, card }) {
           <div style={{paddingBlock: "21px"}} className="hidden md:flex bg-white rounded-t-xl">
             <p className="w-1/2 md:ml-c32">Пост</p>
             <p className="w-1/4 text-center">Грүпп</p>
-            <p className="w-1/4 text-center">Хугацаа</p>
+            <div className="w-1/4 flex items-center justify-evenly">
+              <p>Хугацаа</p>
+              <p>Үйлдэл</p>
+            </div>
           </div>
           {
             userPosts.length > 0 && 
@@ -182,7 +185,7 @@ export default function UserPosts({ userId, type, card }) {
                     className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
                   >
                     <div className="flex items-center w-full">
-                      <UserPostItem post={data} className="ph:mb-4 sm:mb-4 " />
+                      <UserPostItem post={data} className="ph:mb-4 sm:mb-4 "/>
                     </div>
                   </div>
                 )
