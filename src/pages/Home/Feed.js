@@ -208,21 +208,21 @@ const Feed = () => {
 
   return (
     <div id={"feed"}>
-      <div className={`pt-3 px-0 md:px-10 w-full`}>
+      <div className={`px-0 md:px-10 w-full relative`}>
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <aside
-            className={`hidden mr-4 md:flex flex flex-col w-2/6 lg:w-72 ${
-              user && "sticky top-0"
+            className={`leftSideBar hidden mr-4 md:flex flex flex-col ${
+              user && "sticky"
             }`}
           >
             <div
               className={`flex ${
                 user ? "flex-col" : "flex-row w-full"
-              } justify-center mt-b4 pb-4 pr-6`}
+              } justify-center  pb-4 pr-6`}
             >
               {feedType.map(({ icon, type, id }) => {
                 return (
@@ -335,7 +335,7 @@ const Feed = () => {
           </aside>
           <div
             className={
-              "grid_container_container w-full flex flex-col justify-center"
+              "grid_container_container  w-full flex flex-col justify-center"
             }
           >
             <div
