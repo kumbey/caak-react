@@ -140,9 +140,8 @@ export default function UserPosts({ userId, type, card }) {
   }, [subscriptionPost]);
   return (
     <div
-      style={{marginTop: "25px"}}
       className={
-        "grid_container_container w-full flex flex-col justify-center"
+        "grid_container_container mt-c2 w-full flex flex-col justify-center"
       }
     > 
       {

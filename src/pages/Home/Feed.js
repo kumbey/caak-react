@@ -343,11 +343,11 @@ const Feed = () => {
           </aside>
           <div
             className={
-              "grid_container_container  w-full flex flex-col justify-center"
+              "grid_container_container mx-auto mt-2 md:mt-10 w-full flex flex-col justify-center"
             }
           >
             <div
-              className={`flex justify-center text-center whitespace-nowrap block sm:block md:hidden lg:hidden`}
+              className={`flex flex-wrap justify-center text-center whitespace-nowrap sm:block md:hidden lg:hidden`}
             >
               {feedType.map(({ icon, type, id }) => {
                 return (
