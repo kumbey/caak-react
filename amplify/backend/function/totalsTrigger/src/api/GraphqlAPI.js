@@ -46,7 +46,6 @@ const Call = async (params) => {
         };
 
     }catch(ex){
-        console.log(JSON.stringify(ex))
         return {
             statusCode: 400,
             body: JSON.stringify(ex)

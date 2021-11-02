@@ -2,7 +2,7 @@ import Divider from "../../../components/divider";
 
 const Header = ({ title, iconLeft, iconRight, hideDivider, containerClassName }) => {
   return (
-    <div className={`bg-white relative header flex flex-row items-center justify-center px-3.5 shadow-sm ${containerClassName}`}>
+    <div className={`bg-white relative rounded-square header flex flex-row items-center justify-center px-3.5 shadow-sm ${containerClassName}`}>
       {iconLeft}
       <div
         className={

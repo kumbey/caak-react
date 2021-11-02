@@ -40,7 +40,7 @@ const counter = (table , client) => {
             return retData
  
         } catch (err) {
-            return err
+            return true
         }
     }
     

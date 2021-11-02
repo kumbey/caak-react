@@ -10,6 +10,7 @@ import { onPostByUser } from "../../graphql-custom/post/subscription";
 import Card from "../../components/card";
 
 export default function UserPosts({ userId, type, card }) {
+  
   const [userPosts, setUserPosts] = useState([]);
   const [subscriptionPost, setSubscriptionPost] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -87,7 +88,9 @@ export default function UserPosts({ userId, type, card }) {
     try {
       if (!loading) {
         setLoading(true);
+
         let resp = await nextPosts();
+        
         if (resp) {
           setData([...data, ...resp]);
         }
@@ -136,28 +139,60 @@ export default function UserPosts({ userId, type, card }) {
     // eslint-disable-next-line
   }, [subscriptionPost]);
   return (
-    <div className={"w-full"}>
-      {userPosts.length > 0 &&
-        userPosts.map((data, index) => {
-          return card ? (
-            <div key={index} className="grid-container mt-b5 justify-center">
-              <Card
-                video={data.items.items[0].file.type.startsWith("video")}
-                post={data}
-                className="ph:mb-4 sm:mb-4"
-              />
+    <div
+      style={{marginTop: "25px"}}
+      className={
+        "grid_container_container w-full flex flex-col justify-center"
+      }
+    > 
+      {
+        card
+        ?
+        <div
+          className={
+            "grid-container justify-center md:justify-center lg:justify-start"
+          }
+        >
+          {userPosts.length > 0 &&
+            userPosts.map((data, index) => {
+              return (
+                <Card
+                  video={data.items.items[0].file.type.startsWith("video")}
+                  post={data}
+                  className="ph:mb-4 sm:mb-4"
+                  key={index}
+                />
+              )
+            })
+          }
+        </div>
+        :
+        <div>
+          <div style={{paddingBlock: "21px"}} className="hidden md:flex bg-white rounded-t-xl">
+            <p className="w-1/2 md:ml-c32">Пост</p>
+            <p className="w-1/4 text-center">Грүпп</p>
+            <div className="w-1/4 flex items-center justify-evenly">
+              <p>Хугацаа</p>
+              <p>Үйлдэл</p>
             </div>
-          ) : (
-            <div
-              key={index}
-              className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
-            >
-              <div className="flex items-center w-full">
-                <UserPostItem post={data} className="ph:mb-4 sm:mb-4 " />
-              </div>
-            </div>
-          );
-        })}
+          </div>
+          {
+            userPosts.length > 0 && 
+              userPosts.map((data, index) => {
+                return(
+                  <div
+                    key={index}
+                    className="hover:shadow hover:bg-caak-liquidnitrogen flex items-center bg-white border-t"
+                  >
+                    <div className="flex items-center w-full">
+                      <UserPostItem post={data} className="ph:mb-4 sm:mb-4 "/>
+                    </div>
+                  </div>
+                )
+              })
+          }
+        </div>
+      }
       <div ref={itemRef} className={"flex justify-center items-center"}>
         <Loader
           containerClassName={"self-center"}

@@ -26,7 +26,6 @@ async function calcAura(ctx){
         return point
 
     }catch(ex){
-        console.log(ex)
         return 0
     }
 }

@@ -208,21 +208,21 @@ const Feed = () => {
 
   return (
     <div id={"feed"}>
-      <div className={`pt-3 px-0 md:px-10 w-full`}>
+      <div className={`px-0 md:px-10 w-full relative`}>
         <div
           className={`h-full flex ${
             user ? "flex-row items-start" : "flex-col items-center"
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <aside
-            className={`hidden mr-4 md:flex flex flex-col w-2/6 lg:w-72 ${
-              user && "sticky top-0"
+            className={`leftSideBar hidden mr-4 md:flex flex flex-col ${
+              user && "sticky"
             }`}
           >
             <div
               className={`flex ${
                 user ? "flex-col" : "flex-row w-full"
-              } justify-center mt-b4 pb-4 pr-6`}
+              } justify-center  pb-4 pr-6`}
             >
               {feedType.map(({ icon, type, id }) => {
                 return (
@@ -250,92 +250,100 @@ const Feed = () => {
                 );
               })}
             </div>
-            <div className={`pr-6 `}>
-              {groupData.adminModerator.length > 0 ? (
-                <>
-                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                    <span className={"text-15px text-caak-darkBlue"}>
-                      {`Миний удирдаж буй бүлгүүд`}
-                    </span>
-                  </div>
-                  <div className={"px-2 pb-5"}>
-                    {groupData.adminModerator.map((data, index) => {
-                      return (
-                        <Link
-                          key={index}
-                          to={{
-                            pathname: `/group/${data.id}`,
-                          }}
-                        >
-                          <Suggest
-                            item={data}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                          />
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : null}
+            <div className={""}>
+              <div className={`pr-6`}>
+                {groupData.adminModerator.length > 0 ? (
+                  <>
+                    <div
+                      className={"flex flex-row justify-between px-3.5 pt-2"}
+                    >
+                      <span className={"text-15px text-caak-darkBlue"}>
+                        {`Миний группүүд`}
+                      </span>
+                    </div>
+                    <div className={"px-2"}>
+                      {groupData.adminModerator.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/group/${data.id}`,
+                            }}
+                          >
+                            <Suggest
+                              item={data}
+                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : null}
 
-              {groupData.member.length > 0 ? (
-                <>
-                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                    <span className={"text-15px text-caak-darkBlue"}>
-                      {`Миний дагасан бүлгүүд`}
-                    </span>
-                  </div>
-                  <div className={"px-2 pb-5"}>
-                    {groupData.member.map((data, index) => {
-                      return (
-                        <Link
-                          key={index}
-                          to={{
-                            pathname: `/group/${data.id}`,
-                          }}
-                        >
-                          <Suggest
-                            item={data}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                          />
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : null}
+                {groupData.member.length > 0 ? (
+                  <>
+                    <div
+                      className={"flex flex-row justify-between px-3.5 pt-2"}
+                    >
+                      <span className={"text-15px text-caak-darkBlue"}>
+                        {`Миний элссэн группүүд`}
+                      </span>
+                    </div>
+                    <div className={"px-2"}>
+                      {groupData.member.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/group/${data.id}`,
+                            }}
+                          >
+                            <Suggest
+                              item={data}
+                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : null}
 
-              {groupData.unMember.length > 0 ? (
-                <>
-                  <div className={"flex flex-row justify-between px-3.5 pt-2"}>
-                    <span className={"text-15px text-caak-darkBlue"}>
-                      {`Бүлгүүд`}
-                    </span>
-                  </div>
-                  <div className={"px-2 pb-5"}>
-                    {groupData.unMember.map((data, index) => {
-                      return (
-                        <Link
-                          key={index}
-                          to={{
-                            pathname: `/group/${data.id}`,
-                          }}
-                        >
-                          <Suggest
-                            item={data}
-                            className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
-                          />
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : null}
+                {groupData.unMember.length > 0 ? (
+                  <>
+                    <div
+                      className={"flex flex-row justify-between px-3.5 pt-2"}
+                    >
+                      <span className={"text-15px text-caak-darkBlue"}>
+                        {`Бүлгүүд`}
+                      </span>
+                    </div>
+                    <div className={"px-2"}>
+                      {groupData.unMember.map((data, index) => {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/group/${data.id}`,
+                            }}
+                          >
+                            <Suggest
+                              item={data}
+                              className="ph:mb-4 sm:mb-4 btn:mb-4 word-break"
+                            />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : null}
+              </div>
             </div>
           </aside>
           <div
             className={
-              "grid_container_container w-full flex flex-col justify-center"
+              "grid_container_container  w-full flex flex-col justify-center"
             }
           >
             <div

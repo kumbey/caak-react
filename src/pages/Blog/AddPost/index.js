@@ -56,8 +56,8 @@ const AddPost = () => {
       getGroups();
       loadPost(postId);
     } else if (groupId) {
-      setSelectedGroupId(groupId);
       getGroup(groupId);
+      setSelectedGroupId(groupId);
       setPermissionDenied(false);
     } else {
       getGroups();
@@ -125,7 +125,7 @@ const AddPost = () => {
         let item = resp[i];
         if (item.role_on_group === "MEMBER") {
           grData.member.push(item);
-        } else {
+        } else if(item.role_on_group === "ADMIN" || item.role_on_group === "MODERATOR") {
           grData.adminModerator.push(item);
         }
       }
@@ -206,7 +206,7 @@ const AddPost = () => {
                       </span>
                     </Fragment>
                   }
-                  title={"Нийтлэл нэмэх"}
+                  title={postId ? "Пост засах" : "Пост нэмэх"}
                   iconLeft={
                     <span
                       onClick={() => closeModal(history, state)}
@@ -269,7 +269,7 @@ const AddPost = () => {
                     }
                   />
                 }
-                title={"Нийтлэл нэмэх"}
+                title={"Пост нэмэх"}
               />
               <SelectGroup
                 containerClassName={"mt-2"}

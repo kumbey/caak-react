@@ -11,7 +11,7 @@ import {
 import API from "@aws-amplify/api";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import { onNoficationAdded } from "../../graphql-custom/notification/subscription";
-import { updateNotification } from "../../graphql-custom/notification/mutation";
+import { methodNoitification, updateNotification } from "../../graphql-custom/notification/mutation";
 import { useHistory, useLocation } from "react-router";
 import { getPostItems } from "../../graphql-custom/postItems/queries";
 import { getComment } from "../../graphql-custom/comment/queries";
@@ -77,38 +77,27 @@ const NotificationDropDown = ({ isOpen }) => {
   };
 
   const handleAllNotifications = () => {
-    notifications.map(async (item, index) => {
-      if (item.seen === "FALSE") {
-        notifications[index].seen = "TRUE";
-        try {
-          await API.graphql(
-            graphqlOperation(updateNotification, {
-              input: {
-                id: item.id,
-                seen: "TRUE",
-                expectedVersion: item.version,
-              },
-            })
-          );
-        } catch (ex) {
-          if (
-            ex.errors[0].errorType ===
-            "DynamoDB:ConditionalCheckFailedException"
-          ) {
-            console.log("ALREADY UPDATED");
-          } else console.log(ex);
+
+    try{
+
+      API.graphql(graphqlOperation(methodNoitification, {method: "SeenALL", user_id: user.sysUser.id}))
+
+      notifications.map((item, index) => {
+        if (item.seen === "FALSE") {
+          notifications[index].seen = "TRUE";
         }
-      }
-      return null;
-    });
+        return null;
+      });
+    }catch(ex){
+      console.log(ex)
+    }
   };
 
   const handleNotificationClick = async (index) => {
     try {
+      const item = notifications[index];
 
-      const item = notifications[index]
-
-      if(item.seen === "FALSE"){
+      if (item.seen === "FALSE") {
         await API.graphql(
           graphqlOperation(updateNotification, {
             input: {
@@ -119,7 +108,7 @@ const NotificationDropDown = ({ isOpen }) => {
           })
         );
       }
-      
+
       if (item.seen === "FALSE") notifications[index].seen = "TRUE";
 
       if (item.action === "POST_CONFIRMED" || item.action === "REACTION_POST") {
@@ -127,12 +116,14 @@ const NotificationDropDown = ({ isOpen }) => {
           pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
-      } else if (
-        item.action === "POST_PENDING" ||
-        item.action === "POST_ARCHIVED"
-      ) {
+      } else if (item.action === "POST_PENDING") {
         history.push({
-          pathname: `/post/view/pending/${item.item_id}`,
+          pathname: `/post/view/${item.item_id}`,
+          state: { background: location },
+        });
+      } else if (item.action === "POST_ARCHIVED") {
+        history.push({
+          pathname: `/post/view/${item.item_id}`,
           state: { background: location },
         });
       } else if (item.action === "REACTION_POST_ITEM") {
@@ -164,9 +155,9 @@ const NotificationDropDown = ({ isOpen }) => {
       }
     } catch (ex) {
       if (
-        ex.errors && ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
+        ex.errors &&
+        ex.errors[0].errorType === "DynamoDB:ConditionalCheckFailedException"
       ) {
-        console.log("ALREADY UPDATED");
         notifications[index].seen = "TRUE";
       } else console.log(ex);
     }

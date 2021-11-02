@@ -44,14 +44,12 @@ exports.handler = async (event) => {
           variables: data,
           operation: "ChangedTotals"
         })
-        console.log(resp)
       }
   
     } 
 
     return Promise.resolve('Successfully processed DynamoDB record');
   }catch(ex){
-    console.log(ex)
     return Promise.resolve('Error processed DynamoDB record %j', ex);
   }
 };

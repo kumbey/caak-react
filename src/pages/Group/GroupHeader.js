@@ -18,17 +18,19 @@ import { useUser } from "../../context/userContext";
 import { onChangedTotalsBy } from "../../graphql-custom/totals/subscription";
 
 export default function GroupHeader({ group, setBodyRender }) {
+  
   const [groupOptionsMenu, setGroupOptionsMenu] = useState(false);
   const [forceRender, setForceRender] = useState(0);
   const [loading, setLoading] = useState(false);
   const [subscriptionTotal, setSubscriptionTotal] = useState();
+
+  const { user } = useUser();
+  const history = useHistory();
   const subscriptions = {};
 
-  const history = useHistory();
   const groupAdminRef = useClickOutSide(() => {
     setGroupOptionsMenu(false);
   });
-  const { user } = useUser();
 
   const subscrip = () => {
     subscriptions.onChangedTotalsBy = API.graphql({
@@ -122,7 +124,7 @@ export default function GroupHeader({ group, setBodyRender }) {
   return (
     <div className="h-c18 relative bg-white">
       <img
-        alt="cover"
+        alt=""
         src={generateFileUrl(group.cover)}
         className="h-c17 ph:h-c31 object-cover w-full"
       />

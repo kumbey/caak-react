@@ -3,10 +3,31 @@ import Consts from "./Consts";
 import CryptoJS from "crypto-js";
 import Configure from "../configure";
 import { DateTime } from "luxon";
-import { useEffect, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
 
 const regexEmail = "^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$";
 const regexNumber = "^[0-9]{8}$";
+
+export function useDebounce(value, delay) {
+  // State and setters for debounced value
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(
+      () => {
+        // Update debounced value after delay
+        const handler = setTimeout(() => {
+          setDebouncedValue(value);
+        }, delay);
+        // Cancel the timeout if value changes (also on delay change or unmount)
+        // This is how we prevent debounced value from updating if value is changed ...
+        // .. within the delay period. Timeout gets cleared and restarted.
+        return () => {
+          clearTimeout(handler);
+        };
+      },
+      [value, delay] // Only re-call effect if value or delay changes
+  );
+  return debouncedValue;
+}
 
 export const getFileExt = (fileName) => {
   return fileName.substring(fileName.lastIndexOf(".") + 1);

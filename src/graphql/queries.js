@@ -3302,3 +3302,55 @@ export const listNotificationByUser = /* GraphQL */ `
     }
   }
 `;
+export const listNotificationByUserAndSeen = /* GraphQL */ `
+  query ListNotificationByUserAndSeen(
+    $to: ID
+    $seen: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotificationByUserAndSeen(
+      to: $to
+      seen: $seen
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        section
+        type
+        item_id
+        action
+        from
+        to
+        seen
+        updatedAt
+        createdAt
+        version
+        from_user {
+          id
+          firstname
+          lastname
+          nickname
+          birthdate
+          gender
+          pic_id
+          cover_pic_id
+          about
+          aura
+          is_public
+          status
+          followed
+          verified
+          createdAt
+          updatedAt
+        }
+      }
+      nextToken
+    }
+  }
+`;
