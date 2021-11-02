@@ -49,9 +49,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
       title: "Facebook",
       btn: (
         <FacebookShareButton
-          // url={`${window.location.origin}/post/view/${postId}`}
           url={`${window.location.origin}/post/view/${postId}`}
-          imageUrl="adadsad"
           className="Demo__some-network__share-button"
         >
           {/* <FacebookIcon size={32} round />  */}
