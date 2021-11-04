@@ -290,7 +290,7 @@ const ViewPost = () => {
                 <PostMoreMenu
                   groupId={post.group.id}
                   postId={postId}
-                  postUser={user}
+                  postUser={post.user}
                 />
               }
               className={"top-6 -right-2"}
