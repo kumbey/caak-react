@@ -1,7 +1,7 @@
 @layer components {
     :root {
-        --card-width: 384px;
-        --card-grid-gap: 16px;
+        --card-width: 390px;
+        --card-grid-gap: 20px;
         --bottomTabSize: 50px;
         --topBarSize: 72px;
 
@@ -136,8 +136,39 @@
         }
     }
 
+    .my-masonry-grid {
+        display: -webkit-box; /* Not needed if autoprefixing */
+        display: -ms-flexbox; /* Not needed if autoprefixing */
+        display: flex;
+        width: auto;
+    }
+
+    .my-masonry-grid_column {
+        /*padding-left: 4px; !* gutter size *!*/
+        background-clip: padding-box;
+        margin-right: 4px;
+    }
+
+    /* Style your items */
+    .my-masonry-grid_column > div {
+        /* change div to reference your elements you put in <Masonry> */
+        @apply max-h-80;
+    }
+
     .grid_container_container {
-        max-width: calc(var(--card-width) * 3 + var(--card-grid-gap) * 2);
+        max-width: 1210px;
+    }
+
+    .leftSideBar {
+        scrollbar-gutter: stable;
+        height: calc(100vh - var(--topBarSize)) !important;
+        flex-grow: 1;
+        top: var(--topBarSize);
+        overflow-y: auto;
+        padding-top: 40px;
+        max-width: 320px;
+        min-width: 280px;
+        margin-right: 1rem;
     }
 
     @media (max-width: 767px) {
@@ -200,6 +231,11 @@
         filter: blur(0);
     }
 
+    .card {
+        min-width: 320px;
+        width: var(--card-width);
+    }
+
     .grid-container {
         display: grid;
         grid-auto-columns: auto;
@@ -209,18 +245,6 @@
     );
         grid-gap: var(--card-grid-gap);
         padding: initial;
-    }
-
-
-    .leftSideBar {
-        scrollbar-gutter: stable;
-        height: calc(100vh - var(--topBarSize)) !important;
-        flex-grow: 1;
-        top: var(--topBarSize);
-        overflow-y: auto;
-        padding-top: 40px;
-        max-width: 360px;
-        min-width: 280px;
     }
 
     .image_size {

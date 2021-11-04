@@ -147,7 +147,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
   }, [subscripTotal]);
 
   return (
-    <div className="xs:w-full xs:max-w-full sm:w-96 md:96 max-w-8xl relative flex flex-col justify-between h-full px-4 py-2 pb-4">
+    <div className="relative flex flex-col justify-between h-full px-4 py-2 pb-4">
       <Link
         to={{
           pathname: `/post/view/${postId}`,
