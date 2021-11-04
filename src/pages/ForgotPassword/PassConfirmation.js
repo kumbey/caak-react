@@ -201,16 +201,6 @@ export default function PassConfirmation() {
             "signFooter flex self-end justify-between border-t items-center divide-x divide-gray-primary mt-8 pt-4  px-c11 divide-opacity-20 text-sm mb-c1"
           }
         >
-          <div className="text-caak-blue text-15px">
-            <span>Бүртгэлтэй хэрэглэгч бол </span>
-            <a
-              href="/register"
-              className="text-caak-primary text-15px font-bold cursor-pointer"
-            >
-              {" "}
-              Нэвтрэх
-            </a>
-          </div>
           <span className="icon-fi-rs-help text-18px text-caak-darkBlue " />
         </div>
       </div>
