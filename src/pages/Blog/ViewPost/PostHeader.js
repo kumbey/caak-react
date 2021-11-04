@@ -101,7 +101,7 @@ const PostHeader = ({ addCommentRef, post, activeIndex }) => {
         {post.status === "PENDING" && " (Хүлээгдэж байгаа пост)"}
         {post.status === "ARCHIVED" && " (Архивлагдсан пост)"}
       </div>
-      <div className={"break-words text-15px text-caak-generalblack pt-2 px-7"}>
+      <div className={"break-words text-15px text-caak-generalblack pt-2 px-7 whitespace-pre-wrap"}>
         {item.title}
       </div>
       {post.status === "CONFIRMED" ? (
