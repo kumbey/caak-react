@@ -31,7 +31,7 @@ export default function PendingPostAdmin() {
   }, []);
 
   return checkUser(user) ? (
-    groupData.role_on_group === ("ADMIN" || "MODERATOR") && (
+    (groupData.role_on_group === "ADMIN" || groupData.role_on_group === "MODERATOR") && (
       <div>
         <div className="flex justify-between items-center bg-white border-t border-b sm:hidden px-c6 py-px-11">
           <span
