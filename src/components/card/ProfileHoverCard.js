@@ -9,6 +9,7 @@ import { checkUser, getFileUrl } from "../../Utility/Util";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { getUserById } from "../../Utility/ApiHelper";
 import Loader from "../loader";
+import Button from "../button";
 
 export default function ProfileHoverCard({ userId }) {
   const { user } = useUser();
@@ -111,12 +112,12 @@ export default function ProfileHoverCard({ userId }) {
         {/*And If user is there show follow or unfollow button*/}
         {checkUser(user) ? (
           user.sysUser.id !== profileUser.id ? (
-            <button
+            <Button
               onClick={handleClick}
-              className={"button small  bg-caak-titaniumwhite text-black"}
+              skin={`${profileUser.followed ? "secondary" : "primary"}`}
             >
               {profileUser.followed ? "Дагасан" : "Дагах"}
-            </button>
+            </Button>
           ) : null
         ) : (
           <button onClick={handleClick} className={"button small"}>
