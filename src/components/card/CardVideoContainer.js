@@ -52,14 +52,16 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         toggleVideo();
       }, 200);
     } else {
-      clearTimeout(clickTimer);
-      clickTimer = null;
-      //When double clicked
-      if (playerRef.current) playerRef.current.pause();
-      history.push({
-        pathname: `/post/view/${postId}`,
-        state: { background: location },
-      });
+      if (!addPost) {
+        clearTimeout(clickTimer);
+        clickTimer = null;
+        //When double clicked
+        if (playerRef.current) playerRef.current.pause();
+        history.push({
+          pathname: `/post/view/${postId}`,
+          state: { background: location },
+        });
+      }
     }
   }
 
@@ -100,6 +102,7 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
           isTouching && doubleTapHandler();
         }}
         onDoubleClick={() =>
+          !addPost &&
           history.push({
             pathname: `/post/view/${postId}`,
             state: { background: location },
