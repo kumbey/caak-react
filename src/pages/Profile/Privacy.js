@@ -104,50 +104,52 @@ export default function Privacy() {
             Нууц үгээ шинэчлэх
           </p>
           {showInput ? (
-            <div className="flex w-full">
-              <div className="flex flex-col w-full">
-                <p className="error">{error}</p>
-                <Input
-                  value={oldPassword}
-                  name={"oldPassword"}
-                  type={"password"}
-                  // errorMessage={errors.oldPassword}
-                  onChange={handleChange}
-                  placeholder={"Хуучин нууц үгээ оруулах"}
-                  className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                  }
-                />
-                <Input
-                  value={password}
-                  name={"password"}
-                  type={"password"}
-                  errorMessage={errors.password}
-                  onChange={handleChange}
-                  placeholder={"Шинэ нууц үг"}
-                  className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                  }
-                />
-                <Input
-                  value={passwordRepeat}
-                  name={"passwordRepeat"}
-                  type={"password"}
-                  errorMessage={errors.passwordRepeat}
-                  onChange={handleChange}
-                  placeholder={"Шинэ нууц үг давтах"}
-                  className={
-                    "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                  }
+            <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+              <div className="flex w-full">
+                <div className="flex flex-col w-full">
+                  <p className="error">{error}</p>
+                  <Input
+                    value={oldPassword}
+                    name={"oldPassword"}
+                    type={"password"}
+                    // errorMessage={errors.oldPassword}
+                    onChange={handleChange}
+                    placeholder={"Хуучин нууц үгээ оруулах"}
+                    className={
+                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    }
+                  />
+                  <Input
+                    value={password}
+                    name={"password"}
+                    type={"password"}
+                    errorMessage={errors.password}
+                    onChange={handleChange}
+                    placeholder={"Шинэ нууц үг"}
+                    className={
+                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    }
+                  />
+                  <Input
+                    value={passwordRepeat}
+                    name={"passwordRepeat"}
+                    type={"password"}
+                    errorMessage={errors.passwordRepeat}
+                    onChange={handleChange}
+                    placeholder={"Шинэ нууц үг давтах"}
+                    className={
+                      "w-full border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                    }
+                  />
+                </div>
+
+                <button
+                  loading={loading}
+                  onClick={() => handleSubmit(doConfirm)}
+                  className="ph:mr-10 px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
                 />
               </div>
-
-              <button
-                loading={loading}
-                onClick={() => handleSubmit(doConfirm)}
-                className="ph:mr-10 px-c3 icon-fi-rs-thick-check text-caak-algalfuel ml-4"
-              />
-            </div>
+            </form>
           ) : (
             <>
               <p className="text-green-500">{message}</p>

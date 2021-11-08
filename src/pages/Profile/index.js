@@ -31,7 +31,6 @@ export default function Profile() {
   const [uploading, setUploading] = useState(false);
   const temp = useLocation();
   const [doRender, setDoRender] = useState(0);
-  const [profileUser, setProfileUser] = useState({});
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const location = useLocation();
@@ -161,7 +160,7 @@ export default function Profile() {
 
   return !loading && user ? (
     <div>
-      <div className="ph:block flex hidden">
+      <div className="ph:block flex">
         <span />
         <p />
         <div>
@@ -261,7 +260,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="md:justify-center flex justify-end">
+            <div className="w-44 md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -275,8 +274,13 @@ export default function Profile() {
                 </Link>
               ) : (
                 <Button
+                  className="h-c13"
+                  icon={<span className="icon-fi-rs-add-friend mr-1" />}
+                  iconPosition="left"
                   onClick={handleClick}
-                  skin={`${user.followed ? "secondary" : "primary"}`}
+                  skin={`${
+                    user.followed ? "secondary" : "bg-caak-generalblack"
+                  }`}
                 >
                   {user.followed ? "Дагасан" : "Дагах"}
                 </Button>
