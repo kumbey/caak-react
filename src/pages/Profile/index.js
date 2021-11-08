@@ -260,7 +260,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="w-44 md:justify-center flex justify-end">
+            <div className=" md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -274,7 +274,7 @@ export default function Profile() {
                 </Link>
               ) : (
                 <Button
-                  className="h-c13"
+                  className="h-c13 w-28"
                   icon={<span className="icon-fi-rs-add-friend mr-1" />}
                   iconPosition="left"
                   onClick={handleClick}

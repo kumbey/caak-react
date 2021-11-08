@@ -116,11 +116,16 @@ export default function Informations({ currentUser }) {
                       defaultValue={currentUser[setting.name]}
                       value={text.value}
                       type={setting.type}
-                    />{" "}
+                    />
+
+                    <button
+                      onClick={() => setShowInput(false)}
+                      className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
+                    />
                     <button
                       onClick={handleSubmit}
-                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-10"
-                    />{" "}
+                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                    />
                   </div>
                 </form>
               ) : (
