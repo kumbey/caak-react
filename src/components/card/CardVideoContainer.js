@@ -45,21 +45,30 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
   };
 
   //Double click checker on mobile device
-  function doubleTapHandler() {
-    if (clickTimer == null) {
-      clickTimer = setTimeout(function () {
-        clickTimer = null;
-        toggleVideo();
-      }, 200);
-    } else {
-      clearTimeout(clickTimer);
-      clickTimer = null;
-      //When double clicked
-      if (playerRef.current) playerRef.current.pause();
+  function doubleTapHandler(web) {
+    if (web) {
       history.push({
         pathname: `/post/view/${postId}`,
         state: { background: location },
       });
+    } else {
+      if (clickTimer == null) {
+        clickTimer = setTimeout(function () {
+          clickTimer = null;
+          toggleVideo();
+        }, 200);
+      } else {
+        if (!addPost) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+          //When double clicked
+          if (playerRef.current) playerRef.current.pause();
+          history.push({
+            pathname: `/post/view/${postId}`,
+            state: { background: location },
+          });
+        }
+      }
     }
   }
 
@@ -73,14 +82,14 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
       <div
         className={`z-1 flex flex-row tracking-wide items-center leading-none text-center align-middle absolute font-bold top-3 ${
           !addPost ? (files.length === 2 ? "right-16" : "right-3") : "left-3"
-        } text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
+        } text-white text-11px bg-black bg-opacity-20 h-5 px-2 py-1`}
       >
         <span className={"icon-fi-rs-rec mr-1 text-9px"} />
         {`${formattedTime.minutes}:${formattedTime.seconds}`}
       </div>
       {files.length > 1 ? (
         <div
-          className={`z-1 flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 right-3 text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1`}
+          className={`z-1 flex flex-row tracking-wide items-center text-center align-middle absolute font-bold top-3 right-3 text-white text-11px bg-black bg-opacity-20 h-5 px-2 py-1`}
         >
           <span className={"icon-fi-rs-album mr-1 text-11px"} />+{files.length}
         </div>
@@ -99,18 +108,17 @@ const CardVideoContainer = ({ files, addPost, postId }) => {
         onTouchEnd={() => {
           isTouching && doubleTapHandler();
         }}
-        onDoubleClick={() =>
-          history.push({
-            pathname: `/post/view/${postId}`,
-            state: { background: location },
-          })
-        }
+        onDoubleClick={() => !addPost && doubleTapHandler(true)}
         onLoadedMetadata={(e) => setVideoDuration(e.target.duration)}
         files={files}
         options={videoJsOptions}
-        style={{ objectFit: "cover", width: "100%" }}
+        style={{
+          objectFit: "cover",
+          width: "100%",
+          borderRadius: addPost ? "0.375rem" : "0",
+        }}
         videoClassName={`videoPlayer video-js vjs-big-play-centered ${
-          addPost ? "w-full rounded-square" : ""
+          addPost ? "w-full" : ""
         } ${
           files?.length > 0 ? "max-h-100 h-100" : "max-h-80"
         } block cursor-pointer`}

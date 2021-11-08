@@ -215,21 +215,21 @@ const Feed = () => {
           } sm:justify-between md:justify-between lg:justify-between 2xl:justify-start 3xl:justify-center`}
         >
           <aside
-            className={`leftSideBar hidden mr-4 md:flex flex flex-col ${
-              user && "sticky"
+            className={`py-5 hidden md:flex flex flex-col ${
+              user && "sticky leftSideBar py-10"
             }`}
           >
             <div
               className={`flex ${
                 user ? "flex-col" : "flex-row w-full"
-              } justify-center  pb-4 pr-6`}
+              } justify-center`}
             >
               {feedType.map(({ icon, type, id }) => {
                 return (
                   <Button
                     key={id}
                     onClick={() => setActiveIndex(id)}
-                    className={`w-56 min-w-max ${
+                    className={`${checkUser(user) ? "w-56" : "w-full"} min-w-max ${
                       id === activeIndex
                         ? "white shadow-button mb-2"
                         : "transparent mb-2"
@@ -342,12 +342,12 @@ const Feed = () => {
             </div>
           </aside>
           <div
-            className={
-              "grid_container_container mx-auto mt-2 md:mt-10 w-full flex flex-col justify-center"
-            }
+            className={`grid_container_container mx-auto ${
+              user ? "mt-2 md:mt-10" : ""
+            }  w-full flex flex-col justify-center`}
           >
             <div
-              className={`flex flex-wrap justify-center text-center whitespace-nowrap sm:block md:hidden lg:hidden`}
+              className={`flex flex-wrap justify-center text-center whitespace-nowrap sm:block md:hidden lg:hidden py-2`}
             >
               {feedType.map(({ icon, type, id }) => {
                 return (
@@ -355,16 +355,14 @@ const Feed = () => {
                     key={id}
                     onClick={() => setActiveIndex(id)}
                     className={`h-8 w-auto mr-2 ${
-                      id === activeIndex
-                        ? "white shadow-button mb-2"
-                        : "transparent mb-2"
+                      id === activeIndex ? "white shadow-button" : "transparent"
                     }`}
                     iconPosition={"left"}
                     icon={
                       <div className={"w-5 mr-4 ph:w-4 ph:mr-2"}>
                         <i
                           className={`${icon}${
-                            id === activeIndex ? "" : "-o"
+                            id === activeIndex ? "" : ""
                           } text-19px ph:text-15px`}
                         />
                       </div>
