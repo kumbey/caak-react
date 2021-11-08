@@ -58,15 +58,17 @@ export default function Informations({ currentUser }) {
   ];
 
   const handleSubmit = async (e) => {
-    await API.graphql(
-      graphqlOperation(updateUser, {
-        input: {
-          id: currentUser.id,
-          ...text,
-        },
-      })
-    );
-    setText("");
+    if (text !== e.target.value) {
+      await API.graphql(
+        graphqlOperation(updateUser, {
+          input: {
+            id: currentUser.id,
+            ...text,
+          },
+        })
+      );
+      setText("");
+    }
     setShowInput(false);
   };
 
@@ -98,27 +100,34 @@ export default function Informations({ currentUser }) {
                 <p className="my-px-9 pr-9 w-24 font-medium">{setting.text}</p>
               </div>
               {showInput && index === currentIndex ? (
-                <div className="flex w-full">
-                  <Input
-                    name={setting.name}
-                    // errorMessage={errors.oldPassword}
-                    className={
-                      "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
-                    }
-                    readOnly={setting.isReadOnly}
-                    autoFocus
-                    id={setting.id}
-                    onChange={handleChange}
-                    placeholder={setting.placeholder}
-                    defaultValue={currentUser[setting.name]}
-                    value={text.value}
-                    type={setting.type}
-                  />{" "}
-                  <button
-                    onClick={handleSubmit}
-                    className="icon-fi-rs-thick-check text-caak-algalfuel ml-10"
-                  />{" "}
-                </div>
+                <form className="w-full" onSubmit={(e) => e.preventDefault()}>
+                  <div className="flex w-full">
+                    <Input
+                      name={setting.name}
+                      // errorMessage={errors.oldPassword}
+                      className={
+                        "border border-caak-titaniumwhite  bg-caak-liquidnitrogen"
+                      }
+                      readOnly={setting.isReadOnly}
+                      autoFocus
+                      id={setting.id}
+                      onChange={handleChange}
+                      placeholder={setting.placeholder}
+                      defaultValue={currentUser[setting.name]}
+                      value={text.value}
+                      type={setting.type}
+                    />
+
+                    <button
+                      onClick={() => setShowInput(false)}
+                      className="icon-fi-rs-close font-bold text-caak-boilingmagma ml-10"
+                    />
+                    <button
+                      onClick={handleSubmit}
+                      className="icon-fi-rs-thick-check text-caak-algalfuel ml-4"
+                    />
+                  </div>
+                </form>
               ) : (
                 <>
                   <div className="flex w-full">

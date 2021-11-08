@@ -16,8 +16,10 @@ const Button = ({
   return (
     <button
       {...props}
-      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${round ? "round" : ""} ${
-        disabled && "bg-caak-titaniumwhite text-caak-shit cursor-not-allowed"
+      className={`button ${small ? "small" : ""} ${skin ? skin : ""} ${
+        round ? "round" : ""
+      } ${
+        disabled && "bg-caak-titaniumwhite  text-caak-shit cursor-not-allowed"
       } ${circular ? "circular" : ""} ${
         roundedSquare ? "rounded-square" : ""
       } ${props.className}`}

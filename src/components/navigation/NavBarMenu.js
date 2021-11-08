@@ -26,7 +26,7 @@ export default function NavBarMenu({ type }) {
             </Link>
           )}
 
-          <Link to={`/user}/profile`}>
+          <Link to={`/`}>
             <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
               <span
                 className={
@@ -47,7 +47,7 @@ export default function NavBarMenu({ type }) {
               </p>
             </div>
           </Link>
-          <Link to={`/user/profile`}>
+          <Link to={`/`}>
             <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
               <span className={"icon-fi-rs-help text-18px w-5 h-5 mr-2"} />
               <p className="text-14px text-caak-extraBlack font-roboto">
@@ -58,7 +58,7 @@ export default function NavBarMenu({ type }) {
         </Fragment>
       )}
       {checkUser(user) && <Divider className={"my-2"} />}
-      <Link to={`/user/profile`}>
+      <Link to={`/`}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -70,7 +70,19 @@ export default function NavBarMenu({ type }) {
           </p>
         </div>
       </Link>
-      <Link to={{ pathname: `/newcaak` }}>
+      <Link to={`/`}>
+        <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
+          <span
+            className={
+              "icon-fi-rs-resend text-18 px5 text-center w-5 flex items-center h-5 mr-2"
+            }
+          />
+          <p className="text-14px text-caak-extraBlack font-roboto">
+            Шинэчлэлт
+          </p>
+        </div>
+      </Link>
+      {/* <Link to={{ pathname: `/newcaak` }}>
         <div className="hover:bg-caak-liquidnitrogen h-c25 dropdown-items flex items-center cursor-pointer">
           <span
             className={
@@ -142,7 +154,7 @@ export default function NavBarMenu({ type }) {
             Үйлчилгээний нөхцөл
           </p>
         </div>
-      </Link>
+      </Link> */}
       {checkUser(user) && type !== "mobile" && (
         <Link to={`/logout`}>
           <Divider className={"my-2"} />

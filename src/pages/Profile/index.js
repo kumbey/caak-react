@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Button from "../../components/button";
-import { useLocation, useParams } from "react-router";
-import { Link } from "react-router-dom";
-import Loader from "../../components/loader";
 import {
-  ApiFileUpload,
-  getUserById,
-} from "../../Utility/ApiHelper";
+  createFollowedUsers,
+  deleteFollowedUsers,
+} from "../../graphql-custom/user/mutation";
 import API from "@aws-amplify/api";
+import Button from "../../components/button";
+import { useParams } from "react-router";
+import Loader from "../../components/loader";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { ApiFileUpload, getUserById } from "../../Utility/ApiHelper";
 import { graphqlOperation } from "@aws-amplify/api-graphql";
 import Dummy from "dummyjs";
 import { useDropzone } from "react-dropzone";
@@ -29,6 +30,10 @@ export default function Profile() {
   const { user: signedUser } = useUser();
   const [uploading, setUploading] = useState(false);
   const temp = useLocation();
+  const [doRender, setDoRender] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  const location = useLocation();
   const [activeIndex, setActiveIndex] = useState(
     temp.state ? temp.state.index : 1
   );
@@ -54,6 +59,49 @@ export default function Profile() {
     noClick: false,
     multiple: false,
   });
+
+  const createFollowUser = async () => {
+    await API.graphql({
+      query: createFollowedUsers,
+      variables: {
+        input: { followed_user_id: signedUser.sysUser.id, user_id: userId },
+      },
+    });
+    user.totals.followers += 1;
+    user.followed = true;
+    setDoRender(doRender + 1);
+  };
+
+  const deleteFollowUser = async () => {
+    await API.graphql({
+      query: deleteFollowedUsers,
+      variables: {
+        input: {
+          followed_user_id: signedUser.sysUser.id,
+          user_id: userId,
+        },
+      },
+    });
+    user.totals.followers -= 1;
+    user.followed = false;
+    setDoRender(doRender + 1);
+  };
+
+  const handleClick = () => {
+    if (checkUser(signedUser)) {
+      if (!user.followed) {
+        createFollowUser();
+      } else if (user.followed) {
+        deleteFollowUser();
+      }
+    } else {
+      history.push({
+        pathname: `/login`,
+        state: { background: location },
+      });
+    }
+  };
+
   useEffect(() => {
     const updateProfileImage = async () => {
       try {
@@ -90,28 +138,29 @@ export default function Profile() {
   //FORCE RENDER STATE
 
   useEffect(() => {
+    setLoading(true);
     try {
       if (checkUser(signedUser)) {
         getUserById({
           id: userId,
           setUser,
           authMode: "AMAZON_COGNITO_USER_POOLS",
-        });
+        }).then(() => setLoading(false));
       } else {
         getUserById({
           id: userId,
           setUser,
           authMode: "AWS_IAM",
-        });
+        }).then(() => setLoading(false));
       }
     } catch (ex) {
       console.log(ex);
     }
   }, [signedUser, userId]);
 
-  return user ? (
+  return !loading && user ? (
     <div>
-      <div className="ph:block flex hidden">
+      <div className="ph:block flex">
         <span />
         <p />
         <div>
@@ -211,7 +260,7 @@ export default function Profile() {
             </p>
           </div>
           <div>
-            <div className="md:justify-center flex justify-end">
+            <div className=" md:justify-center flex justify-end">
               {checkUser(signedUser) && userId === signedUser.sysUser.id ? (
                 <Link
                   to={{
@@ -223,7 +272,19 @@ export default function Profile() {
                     <p className="text-15px font-medium">Тохиргоо</p>
                   </div>
                 </Link>
-              ) : null}
+              ) : (
+                <Button
+                  className="h-c13 w-28"
+                  icon={<span className="icon-fi-rs-add-friend mr-1" />}
+                  iconPosition="left"
+                  onClick={handleClick}
+                  skin={`${
+                    user.followed ? "secondary" : "bg-caak-generalblack"
+                  }`}
+                >
+                  {user.followed ? "Дагасан" : "Дагах"}
+                </Button>
+              )}
               <span
                 style={{ width: "49px", marginInlineStart: "10px" }}
                 className="h-c13 text-4px icon-fi-rs-dots text-caak-generalblack flex items-center justify-center rounded-lg shadow cursor-pointer"
@@ -313,26 +374,22 @@ export default function Profile() {
         {/* post */}
         <div className="grid_container_container flex flex-col justify-center w-full">
           {/* contents */}
-          <div
-            className={`${
-              activeIndex === 1 ? "" : "hidden"
-            }`}
-          >
-            <UserPosts userId={userId} type="CONFIRMED" card/>
+          <div className={`${activeIndex === 1 ? "" : "hidden"}`}>
+            <UserPosts userId={userId} type="CONFIRMED" card />
           </div>
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 2 ? "" : "hidden"
             }`}
           >
-            <UserPosts userId={userId} type="PENDING"/>
+            <UserPosts userId={userId} type="PENDING" />
           </div>
           <div
             className={`flex mt-b5  justify-center ${
               activeIndex === 3 ? "" : "hidden"
             }`}
           >
-            <UserPosts userId={userId} type="ARCHIVED"/>
+            <UserPosts userId={userId} type="ARCHIVED" />
           </div>
         </div>
       </div>
