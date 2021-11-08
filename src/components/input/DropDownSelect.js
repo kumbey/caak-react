@@ -81,7 +81,7 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
               Миний группүүд
             </span>
             <span className={"text-15px font-medium text-caak-primary"}>
-              Шинэ бүлэг үүсгэх
+              Шинэ групп үүсгэх
             </span>
           </div>
           <div className={"px-2"}>
@@ -119,7 +119,7 @@ const DropDownSelect = ({ groupData, open, onToggle, className, onSelect }) => {
             }
           >
             <span className={"text-15px text-caak-darkBlue pt-2"}>
-              Элссэн бүлгүүд
+              Элссэн группүүд
             </span>
           </div>
           <div className={"px-2"}>

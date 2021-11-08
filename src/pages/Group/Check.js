@@ -102,21 +102,28 @@ export default function Check() {
   };
 
   return post ? (
-    <Backdrop className="flex justify-center">
-      <div className="top-1/2 left-1/2 sm:px-2 md:px-10 lg:w-3/5 absolute flex w-full px-0 mt-10 transform -translate-x-1/2 -translate-y-1/2">
-        <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 flex justify-between w-full bg-white">
+    <Backdrop>
+      <div className="sm:hidden py-px-6 px-c6 relative sticky top-0 z-50 flex justify-between w-full bg-white">
           <span
-            onClick={() => closeModal(history, state)}
-            className="icon-fi-rs-back flex items-center"
+              onClick={() => closeModal(history, state)}
+              className="icon-fi-rs-back flex items-center"
           />
-          <p className="text-20px">Пост шалгах</p>
-          <span className="icon-fi-rs-dots text-4px flex items-center" />
-        </div>
-        <div className={"w-full"}>
-          <div style={{overflow: "hidden", textOverflow: "ellipsis", wordBreak: "break-all"}} className="sm:h-auto md:h-auto lg:h-auto w-full h-screen bg-white rounded-lg">
+        <p className="text-20px">Пост шалгах</p>
+        <span className="icon-fi-rs-dots text-4px flex items-center" />
+      </div>
+      <div className="flex justify-center">
+        <div className={"viewPendingPost py-4"}>
+          <div
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              wordBreak: "break-all",
+            }}
+            className="sm:h-auto md:h-auto lg:h-auto w-full bg-white rounded-lg"
+          >
             <p
               style={{ paddingBlockStart: "21px", marginBlockEnd: "17px" }}
-              className="text-20px flex justify-center font-bold px-6"
+              className="text-20px flex justify-center px-6 font-bold"
             >
               {post.title}
             </p>
@@ -213,7 +220,11 @@ export default function Check() {
             </div>
           ) : null}
         </div>
-        <span onClick={() => closeModal(history, state)} style={{marginLeft: "30px", marginTop: "30px"}} className="icon-fi-rs-close hidden md:flex text-30px text-white cursor-pointer"/>
+        <span
+          onClick={() => closeModal(history, state)}
+          style={{ marginLeft: "30px", marginTop: "30px" }}
+          className="icon-fi-rs-close md:flex text-30px hidden text-white cursor-pointer"
+        />
       </div>
     </Backdrop>
   ) : null;

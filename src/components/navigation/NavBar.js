@@ -38,9 +38,9 @@ export default function NavBar() {
     setIsMenuOpen(false);
   });
 
-  const mobileMenuRef = useClickOutSide(() => {
-    setIsMobileMenuOpen(false);
-  });
+  // const mobileMenuRef = useClickOutSide(() => {
+  //   setIsMobileMenuOpen(false);
+  // });
 
   const fetchUserTotal = async () => {
     try {
@@ -226,7 +226,7 @@ export default function NavBar() {
         {isTablet && (
           <div
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            ref={mobileMenuRef}
+            // ref={mobileMenuRef}
             className={`block md:hidden w-full flex z-50 bg-transparent justify-end fixed right-0 top-0 transition ease-linear duration-300 ${
               isMobileMenuOpen
                 ? "transform translate-x-0"

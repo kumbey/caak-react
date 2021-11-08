@@ -8,14 +8,14 @@ const CardImageContainer = ({ files, postId }) => {
     <Link
       to={{ pathname: `/post/view/${postId}`, state: { background: location } }}
     >
-      <div className={"relative max-w-8xl xs:w-full w-96 h-100"}>
+      <div className={"relative h-100"}>
         {files.length > 1 ? (
           <div
             className={
               "flex flex-row tracking-wide items-center text-center align-middle absolute font-bold h-5 top-3 right-3 text-white text-11px bg-black bg-opacity-20 rounded h-5 px-2 py-1"
             }
           >
-            <span className={"icon-fi-rs-album mr-1 text-11px"} />+
+            <span className={"icon-fi-rs-album mr-1 text-11px"} />
             {files?.length}
           </div>
         ) : (
@@ -23,9 +23,7 @@ const CardImageContainer = ({ files, postId }) => {
         )}
         <img
           src={getFileUrl(files[0].file)}
-          className={
-            "image_size h-100 xs:w-full w-96 md:w-auto block object-cover"
-          }
+          className={"h-100 block object-cover"}
           alt={""}
         />
       </div>
