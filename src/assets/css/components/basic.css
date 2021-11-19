@@ -3,7 +3,7 @@
         --card-width: 390px;
         --card-grid-gap: 20px;
         --bottomTabSize: 50px;
-        --topBarSize: 72px;
+        --topBarSize: 54px;
 
         /* Profile settings */
         --minSettingsPanelWidth: 288px;
@@ -12,6 +12,10 @@
 
     #root {
         padding-top: var(--topBarSize);
+    }
+
+    .navbarSearch {
+        width: clamp(320px, 100%, 480px);
     }
 
     .viewPost {

@@ -115,7 +115,7 @@ const CardFooter = ({ title, totals, items, postId, reacted }) => {
       if (initReacted.current !== !isReacted) {
         reactionTimer.current = setTimeout(
           () => reactionHandler(!isReacted),
-          3000
+          1000
         );
       }
     } else {
