@@ -299,7 +299,6 @@ const ViewPost = () => {
 
           <div className={"relative flex flex-row px-7"}>
             <div className={"relative"}>
-              {/* eslint-disable-next-line jsx-a11y/alt-text */}
               <img
                 className="w-c60 m-34px rounded-square"
                 src={

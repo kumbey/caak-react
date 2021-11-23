@@ -229,7 +229,9 @@ const Feed = () => {
                   <Button
                     key={id}
                     onClick={() => setActiveIndex(id)}
-                    className={`${checkUser(user) ? "w-56" : "w-full"} min-w-max ${
+                    className={`${
+                      checkUser(user) ? "w-56" : "w-full"
+                    } min-w-max ${
                       id === activeIndex
                         ? "white shadow-button mb-2"
                         : "transparent mb-2"
@@ -245,7 +247,7 @@ const Feed = () => {
                       </div>
                     }
                   >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
+                    <p className="font-bold text-16px ph:text-15px">{type}</p>
                   </Button>
                 );
               })}
@@ -368,7 +370,7 @@ const Feed = () => {
                       </div>
                     }
                   >
-                    <p className="text-16px ph:text-15px font-bold">{type}</p>
+                    <p className="font-bold text-16px ph:text-15px">{type}</p>
                   </Button>
                 );
               })}

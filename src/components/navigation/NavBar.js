@@ -142,7 +142,7 @@ export default function NavBar() {
 
       <nav className="navbar border-caak-liquidnitrogen md:border-t-0 z-5 fixed w-full bg-white border-t shadow-sm">
         <div className="px-7 sm:px-6 lg:px-c13 flex items-center h-full px-2 py-1">
-          <div className="relative flex items-center justify-between w-full h-full">
+          <div className="relative flex items-center justify-between w-full h-c25">
             <div className="md:block flex flex-row items-center hidden">
               <img
                 onClick={() => history.push({ pathname: "/" })}
@@ -152,8 +152,8 @@ export default function NavBar() {
               />
             </div>
 
-            <div className="md:block md:px-2 lg:px-4 xl:col-span-6 flex-1 hidden max-w-xl min-w-0 px-1 py-4 mx-4">
-              <SearchInput hideLabel placeholder={"Бүлэг болон пост хайх"} />
+            <div className="navbarSearch hidden md:block px-1 mx-4">
+              <SearchInput hideLabel placeholder={"Групп болон пост хайх"} />
             </div>
 
             <div className={"relative flex h-full w-full md:w-auto"}>
