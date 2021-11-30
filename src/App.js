@@ -6,11 +6,9 @@ import { WrapperProvider } from "./context/wrapperContext";
 
 function App() {
   return (
-    <WrapperProvider>
-      <Router>
-        <PageSwitch />
-      </Router>
-    </WrapperProvider>
+    <Router>
+      <PageSwitch />
+    </Router>
   );
 }
 
